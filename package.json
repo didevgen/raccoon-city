@@ -8,6 +8,9 @@
         }
     },
     "homepage": "https://didevgen.github.io/raccoon-city/",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    },
     "dependencies": {
         "@types/jest": "^24.0.23",
         "@types/node": "^12.12.7",
