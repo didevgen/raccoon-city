@@ -7,6 +7,7 @@
             "pre-commit": "pretty-quick --staged"
         }
     },
+    "homepage": "https://didevgen.github.io/raccoon-city/",
     "dependencies": {
         "@types/jest": "^24.0.23",
         "@types/node": "^12.12.7",
