@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[![Build Status](https://travis-ci.com/didevgen/raccoon-city.svg?branch=master)](https://travis-ci.com/didevgen/raccoon-city)
+
 ## Available Scripts
 
 In the project directory, you can run:
