@@ -18,6 +18,7 @@
         "react": "^16.11.0",
         "react-dom": "^16.11.0",
         "react-scripts": "3.2.0",
+        "tslint": "^5.20.1",
         "typescript": "^3.7.2"
     },
     "scripts": {
@@ -25,7 +26,9 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "prettier": "pretty-quick"
+        "prettier": "pretty-quick",
+        "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
+        "tslint-check": "tslint-config-prettier-check ./tslint.json"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -41,5 +44,11 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "lint-staged": "^9.4.2",
+        "tslint-config-prettier": "^1.18.0",
+        "tslint-plugin-prettier": "^2.0.1",
+        "tslint-react": "^4.1.0"
     }
 }
