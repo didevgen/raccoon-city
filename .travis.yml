@@ -1,19 +1,19 @@
 language: node_js
 node_js:
-    - 'stable'
+  - "stable"
 cache:
-    directories:
-        - node_modules
+  directories:
+    - node_modules
 
 before_script: cd packages/raccoon-city-ui
 script:
-    - yarn
-    - yarn run build
+  - yarn
+  - yarn run build
 
 deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
-    local_dir: build
-    on:
-        branch: master
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: packages/raccoon-city-ui/build
+  on:
+    branch: master
