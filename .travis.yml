@@ -4,8 +4,11 @@ node_js:
 cache:
     directories:
         - node_modules
+
+before_script: cd packages/raccoon-city-ui
 script:
-    - npm run build
+    - yarn
+    - yarn run build
 
 deploy:
     provider: pages
