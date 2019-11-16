@@ -1,8 +1,10 @@
 import React from 'react';
+import {Route, Switch} from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
 import {useStyles} from './drawerStyles';
+import {PropertyList} from './PropertyList/PropertyList';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -27,7 +29,11 @@ export function Main() {
             />
             <main className={drawerStyles.content}>
                 <div className={drawerStyles.toolbar} />
-                <h1>Main</h1>
+                <Switch>
+                    <Route exact path="/">
+                        <PropertyList />
+                    </Route>
+                </Switch>
             </main>
         </div>
     );

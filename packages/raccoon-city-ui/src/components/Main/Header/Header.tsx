@@ -1,7 +1,6 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -11,6 +10,7 @@ interface HeaderProps {
     drawerStyles: any;
     handleDrawerOpen: () => void;
 }
+
 export function Header({open, handleDrawerOpen, drawerStyles}: HeaderProps) {
     return (
         <div className={drawerStyles.root}>
@@ -32,9 +32,6 @@ export function Header({open, handleDrawerOpen, drawerStyles}: HeaderProps) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap>
-                        Mini variant drawer
-                    </Typography>
                 </Toolbar>
             </AppBar>
         </div>
