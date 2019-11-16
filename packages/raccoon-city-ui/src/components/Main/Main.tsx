@@ -5,6 +5,7 @@ import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
 import {useStyles} from './drawerStyles';
 import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
+import {ApartmentComplexBuilder} from './ApartmentComplexBuilder/ApartmentComplexBuilder';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -32,6 +33,9 @@ export function Main() {
                 <Switch>
                     <Route exact path="/">
                         <ApartmentComplexList />
+                    </Route>
+                    <Route exact path="/apartmentComplex/new">
+                        <ApartmentComplexBuilder />
                     </Route>
                 </Switch>
             </main>
