@@ -1,8 +1,8 @@
 import React from 'react';
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import {PropertyItem} from './PropertyItem/PropertyItem';
-import {AddProperty} from './AddProperty/AddProperty';
+import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
+import {AddProperty} from './AddApartmentComplexList/AddProperty';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function PropertyList() {
+export function ApartmentComplexList() {
     const classes = useStyles();
 
     return (
@@ -27,22 +27,22 @@ export function PropertyList() {
                     <AddProperty />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <PropertyItem />
+                    <ApartmentComplex />
                 </Grid>
             </Grid>
         </div>

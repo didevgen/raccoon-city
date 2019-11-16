@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
 import {useStyles} from './drawerStyles';
-import {PropertyList} from './PropertyList/PropertyList';
+import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -31,7 +31,7 @@ export function Main() {
                 <div className={drawerStyles.toolbar} />
                 <Switch>
                     <Route exact path="/">
-                        <PropertyList />
+                        <ApartmentComplexList />
                     </Route>
                 </Switch>
             </main>

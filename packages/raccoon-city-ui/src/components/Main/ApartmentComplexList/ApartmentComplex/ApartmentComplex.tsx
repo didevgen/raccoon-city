@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function PropertyItem() {
+export function ApartmentComplex() {
     const classes = useStyles();
 
     return (
