@@ -1,0 +1,14 @@
+type District {
+    key: String
+    displayName: String
+}
+
+type City {
+    key: String
+    displayName: String
+    districts: [District]
+}
+
+type Query {
+    cities: [City]
+}

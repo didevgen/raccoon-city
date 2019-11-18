@@ -1,0 +1,23 @@
+type ApartmentComplexType {
+    key: String
+    displayName: String
+}
+
+type ApartmentComplexClass {
+    key: String
+    displayName: String
+}
+
+type ApartmentComplex {
+    id: String
+    type: ApartmentComplexType
+    name: String
+    city: City
+    district: District
+    class: ApartmentComplexClass
+    levels: Int
+    sections: Int
+    price: Float
+    beginDate: String
+    endDate: String
+}
