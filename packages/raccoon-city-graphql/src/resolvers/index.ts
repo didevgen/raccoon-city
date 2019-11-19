@@ -1,11 +1,13 @@
 import {constants} from './queries/constants.resolver';
-import {apartmentComplex} from './mutations/apartmentComplex';
+import {apartmentComplex as apartmentComplexQuery} from './queries/apartmentComplex.resolver';
+import {apartmentComplex as apartmentComplexMutation} from './mutations/apartmentComplex';
 
 export default {
     Query: {
-        ...constants
+        ...constants,
+        ...apartmentComplexQuery
     },
     Mutation: {
-        ...apartmentComplex
+        ...apartmentComplexMutation
     }
 };

@@ -3,9 +3,8 @@ import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
 
 export const apartmentComplex = {
-    async createApartmentComplex(parent, args, ctx: Context) {
+    async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
         const apartmentComplex: ApartmentComplexInputArgs = args.apartmentComplex;
-        const result: ApartmentComplex = await ApartmentComplexModel.create(apartmentComplex);
-        return result;
+        return await ApartmentComplexModel.create(apartmentComplex);
     }
 };
