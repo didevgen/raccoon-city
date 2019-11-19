@@ -1,19 +1,11 @@
-import {Subscription} from './Subscription';
-import {auth} from './Mutation/auth';
-import {post} from './Mutation/post';
-import {User} from './User';
-import {Post} from './Post';
-import {city} from "./queries/city.resolver";
+import {constants} from './queries/constants.resolver';
+import {apartmentComplex} from './mutations/apartmentComplex';
 
 export default {
     Query: {
-        ...city
+        ...constants
     },
     Mutation: {
-        ...auth,
-        ...post
-    },
-    Subscription,
-    User,
-    Post
+        ...apartmentComplex
+    }
 };

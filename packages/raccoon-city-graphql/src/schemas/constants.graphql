@@ -1,0 +1,36 @@
+type KeyDisplayName {
+    key: String
+    displayName: String
+}
+
+input KeyDisplayNameInput {
+    key: String
+    displayName: String
+}
+
+type District {
+    key: String
+    displayName: String
+}
+
+type City {
+    key: String
+    displayName: String
+    districts: [District]
+}
+
+type ApartmentComplexType {
+    key: String
+    displayName: String
+}
+
+type ApartmentComplexClass {
+    key: String
+    displayName: String
+}
+
+type Query {
+    cities: [City]
+    apartmentComplexTypes: [ApartmentComplexType]
+    apartmentComplexClasses: [ApartmentComplexClass]
+}

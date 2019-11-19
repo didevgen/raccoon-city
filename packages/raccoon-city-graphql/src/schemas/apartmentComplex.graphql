@@ -1,13 +1,3 @@
-type ApartmentComplexType {
-    key: String
-    displayName: String
-}
-
-type ApartmentComplexClass {
-    key: String
-    displayName: String
-}
-
 type ApartmentComplex {
     id: String
     type: ApartmentComplexType
@@ -20,4 +10,21 @@ type ApartmentComplex {
     price: Float
     beginDate: String
     endDate: String
+}
+
+input ApartmentComplexInput {
+    type: KeyDisplayNameInput
+    name: String
+    city: KeyDisplayNameInput
+    district: KeyDisplayNameInput
+    class: KeyDisplayNameInput
+    levels: Int
+    sections: Int
+    price: Float
+    beginDate: String
+    endDate: String
+}
+
+extend type Mutation {
+    createApartmentComplex(apartmentComplex: ApartmentComplexInput): ApartmentComplex
 }

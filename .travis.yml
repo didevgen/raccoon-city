@@ -5,7 +5,7 @@ cache:
   directories:
     - node_modules
 
-before_script: cd packages/raccoon-city-ui
+before_script: cd packages/raccoon-constants-ui
 script:
   - yarn
   - yarn run build
@@ -14,6 +14,6 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: packages/raccoon-city-ui/build
+  local_dir: packages/raccoon-constants-ui/build
   on:
     branch: master
