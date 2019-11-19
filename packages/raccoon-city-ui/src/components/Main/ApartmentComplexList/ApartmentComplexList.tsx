@@ -1,8 +1,11 @@
-import React from 'react';
-import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
+import {useQuery} from '@apollo/react-hooks';
 import Grid from '@material-ui/core/Grid';
-import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import React from 'react';
+import {ALL_APARTMENT_COMPLEXES} from '../../../graphql/queries/apartmentComplexQuery';
+import {ApartmentComplexType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
+import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -19,31 +22,30 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function ApartmentComplexList() {
     const classes = useStyles();
+    const {loading, error, data} = useQuery<{getAllApartmentComplexes: ApartmentComplexType[]}>(
+        ALL_APARTMENT_COMPLEXES
+    );
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    if (error) {
+        return <p>Error :(</p>;
+    }
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={3} alignItems="center">
-                <Grid item xs={12} md={3}>
+            <Grid container={true} spacing={3} alignItems="center">
+                <Grid item={true} xs={12} md={3}>
                     <AddProperty />
                 </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <ApartmentComplex />
-                </Grid>
+                {data &&
+                    data.getAllApartmentComplexes.map((complex: ApartmentComplexType) => {
+                        return (
+                            <Grid item={true} xs={12} md={3} key={complex.id}>
+                                <ApartmentComplex />
+                            </Grid>
+                        );
+                    })}
             </Grid>
         </div>
     );

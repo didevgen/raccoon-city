@@ -1,3 +1,4 @@
+import {useQuery} from '@apollo/react-hooks';
 import {MenuItem} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -7,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import React, {Fragment, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import {cities, complexTypes, propertyClasses} from './constants';
+import {APARTMENT_COMPLEX_DROPDOWNS} from '../../../../graphql/queries/apartmentComplexQuery';
 
 const FormContainer = styled.div`
     border: 1px solid #aaa;
@@ -33,6 +34,12 @@ const StyledLink = styled(Link)`
 
 export function ApartmentComplexForm() {
     const [selectedCity, setCity] = useState();
+    const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
+    if (loading || error) {
+        return null;
+    }
+
+    const {cities, apartmentComplexClasses, apartmentComplexTypes} = data;
     return (
         <Fragment>
             <Container maxWidth="md">
@@ -50,7 +57,7 @@ export function ApartmentComplexForm() {
                                     fullWidth={true}
                                     variant="outlined"
                                 >
-                                    {complexTypes.map((item) => {
+                                    {apartmentComplexTypes.map((item: any) => {
                                         return (
                                             <MenuItem key={item.key} value={item.key}>
                                                 {item.displayName}
@@ -76,11 +83,11 @@ export function ApartmentComplexForm() {
                                     fullWidth={true}
                                     value={selectedCity}
                                     onChange={(e) => {
-                                        setCity(cities.find((i) => i.key === e.target.value));
+                                        setCity(cities.find((i: any) => i.key === e.target.value));
                                     }}
                                     variant="outlined"
                                 >
-                                    {cities.map((item) => {
+                                    {cities.map((item: any) => {
                                         return (
                                             <MenuItem key={item.key} value={item.key}>
                                                 {item.displayName}
@@ -116,7 +123,7 @@ export function ApartmentComplexForm() {
                                     fullWidth={true}
                                     variant="outlined"
                                 >
-                                    {propertyClasses.map((item) => {
+                                    {apartmentComplexClasses.map((item: any) => {
                                         return (
                                             <MenuItem key={item.key} value={item.key}>
                                                 {item.displayName}

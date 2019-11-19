@@ -10,6 +10,7 @@ type ApartmentComplex {
     price: Float
     beginDate: String
     endDate: String
+    image: String
 }
 
 input ApartmentComplexInput {
