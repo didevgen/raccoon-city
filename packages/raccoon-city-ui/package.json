@@ -21,7 +21,6 @@
         "final-form": "^4.18.6",
         "graphql": "^14.5.8",
         "husky": "^3.0.9",
-        "material-ui-react-final-form": "^0.1.4",
         "node-sass": "^4.13.0",
         "prettier": "^1.19.1",
         "pretty-quick": "^2.0.1",
