@@ -27,6 +27,7 @@
         "react": "^16.11.0",
         "react-avatar-editor": "^12.0.0-beta.0",
         "react-dom": "^16.11.0",
+        "react-dropzone": "^10.2.0",
         "react-final-form": "^6.3.3",
         "react-router-dom": "^5.1.2",
         "react-scripts": "3.2.0",

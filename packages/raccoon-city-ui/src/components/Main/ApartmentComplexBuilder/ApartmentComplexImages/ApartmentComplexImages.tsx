@@ -1,4 +1,5 @@
 import {AppBar, Box, Theme} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
@@ -6,6 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment} from 'react';
+import {ImageDialog} from './ImageDialog/ImageDialog';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -41,6 +43,7 @@ function TabPanel(props: TabPanelProps) {
 export function ApartmentComplexImages() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -62,7 +65,16 @@ export function ApartmentComplexImages() {
                         </Tabs>
                     </AppBar>
                     <TabPanel value={value} index={0}>
-                        Item One
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => {
+                                setOpen(true);
+                            }}
+                        >
+                            Open form dialog
+                        </Button>
+                        <ImageDialog setOpen={setOpen} open={open} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         Item Two
