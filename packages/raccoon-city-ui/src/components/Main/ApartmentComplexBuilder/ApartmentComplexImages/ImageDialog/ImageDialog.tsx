@@ -3,10 +3,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import AvatarEditor from 'react-avatar-editor';
-import Dropzone from 'react-dropzone';
 import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
+import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 
 export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
@@ -15,7 +16,11 @@ export interface ImageDialogProps {
 
 export function ImageDialog({setOpen, open}: ImageDialogProps) {
     const [image, setImage] = useState();
+    const [scale, setScale] = useState(1);
+    const [rotate, setRotate] = useState(0);
+
     const handleClose = () => {
+        setImage(undefined);
         setOpen(false);
     };
 
@@ -29,23 +34,58 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
             <DialogContent>
                 {!image && <StyledDropzone onDrop={handleDrop} />}
                 {image && (
-                    <AvatarEditor
-                        image={image}
-                        width={250}
-                        height={250}
-                        border={50}
-                        color={[255, 255, 255, 0.6]} // RGBA
-                        scale={1.2}
-                        rotate={0}
-                    />
+                    <Fragment>
+                        <AvatarEditor
+                            image={image}
+                            width={250}
+                            height={250}
+                            border={50}
+                            scale={scale}
+                            rotate={rotate}
+                        />
+                        <div>
+                            <Typography id="discrete-slider" gutterBottom>
+                                Размер
+                            </Typography>
+                            <Slider
+                                defaultValue={1}
+                                onChange={(e, value: any) => {
+                                    setScale(value);
+                                }}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                step={0.1}
+                                marks
+                                min={0.1}
+                                max={3}
+                            />
+                        </div>
+                        <div>
+                            <Typography id="discrete-slider" gutterBottom>
+                                Выровнять
+                            </Typography>
+                            <Slider
+                                defaultValue={1}
+                                onChange={(e, value: any) => {
+                                    setRotate(value);
+                                }}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                step={1}
+                                marks
+                                min={0}
+                                max={360}
+                            />
+                        </div>
+                    </Fragment>
                 )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Cancel
+                    Отмена
                 </Button>
                 <Button onClick={handleClose} color="primary">
-                    Subscribe
+                    Сохранить
                 </Button>
             </DialogActions>
         </Dialog>
