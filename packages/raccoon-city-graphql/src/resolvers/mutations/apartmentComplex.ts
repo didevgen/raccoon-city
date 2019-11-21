@@ -5,6 +5,7 @@ import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartment
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
         const apartmentComplex: ApartmentComplexInputArgs = args.apartmentComplex;
+        console.log(apartmentComplex);
         return await ApartmentComplexModel.create(apartmentComplex);
     }
 };

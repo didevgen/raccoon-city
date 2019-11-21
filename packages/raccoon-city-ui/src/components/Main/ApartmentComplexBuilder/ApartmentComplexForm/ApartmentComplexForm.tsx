@@ -7,10 +7,12 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, {ChangeEvent, Fragment, useState} from 'react';
 import {Field, Form} from 'react-final-form';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
 import {APARTMENT_COMPLEX_DROPDOWNS} from '../../../../graphql/queries/apartmentComplexQuery';
+import {ApartmentComplexFormValues} from '../../../shared/types/apartmentComplex.types';
+import {getApartmentComplexVariables} from './utils';
 
 const FormContainer = styled.div`
     border: 1px solid #aaa;
@@ -40,6 +42,11 @@ export function ApartmentComplexForm() {
     const [selectedCity, setCity] = useState();
     const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
+
+    if (apartmentComplex && apartmentComplex.createApartmentComplex) {
+        return <Redirect to={`/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/images`} />;
+    }
+
     if (loading || error) {
         return null;
     }
@@ -168,7 +175,7 @@ export function ApartmentComplexForm() {
                                                         >
                                                             {apartmentComplexClasses.map((item: any) => {
                                                                 return (
-                                                                    <MenuItem key={item.key} value={item.key}>
+                                                                    <MenuItem key={item.key} value={item}>
                                                                         {item.displayName}
                                                                     </MenuItem>
                                                                 );
@@ -286,7 +293,13 @@ export function ApartmentComplexForm() {
                                         <StyledButton
                                             disabled={invalid}
                                             onClick={() => {
-                                                // createApartmentComplex()
+                                                createApartmentComplex({
+                                                    variables: {
+                                                        apartmentComplex: getApartmentComplexVariables(
+                                                            values as ApartmentComplexFormValues
+                                                        )
+                                                    }
+                                                });
                                             }}
                                             variant="outlined"
                                             color="primary"
