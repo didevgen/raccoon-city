@@ -18,11 +18,11 @@ export const apartmentComplex = {
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                     resolve(downloadURL);
                 });
-            })
+            });
         });
         const downloadUrl = await promise;
-        return  {
+        return {
             downloadUrl
-        }
+        };
     }
 };

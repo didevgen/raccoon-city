@@ -9,5 +9,5 @@ export function initFirebase() {
         storageBucket: 'raccoon-city-c14f4.appspot.com',
         messagingSenderId: '714571509896',
         appId: '1:714571509896:web:12064a6502349b7d026f3d'
-    })
+    });
 }
