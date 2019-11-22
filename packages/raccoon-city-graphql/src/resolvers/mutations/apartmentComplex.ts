@@ -1,23 +1,28 @@
 import {Context} from '../../utils';
 import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
+import * as firebase from 'firebase';
 
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
         const apartmentComplex: ApartmentComplexInputArgs = args.apartmentComplex;
         return await ApartmentComplexModel.create(apartmentComplex);
     },
-    async addImage(parent, { file }) {
-        const { stream, filename, mimetype, encoding } = await file;
-        console.log(stream, filename, mimetype, encoding)
-        // 1. Validate file metadata.
-
-        // 2. Stream file contents into cloud storage:
-        // https://nodejs.org/api/stream.html
-
-        // 3. Record the file upload in your DB.
-        // const id = await recordFile( … )
-
-        return { filename, mimetype, encoding };
+    async addImage(parent, {file}, ctx: Context) {
+        const {Firebase} = ctx;
+        const f = await file;
+        const storageRef = Firebase.storage().ref();
+        const uploadTask: firebase.storage.UploadTask = storageRef.put(f);
+        const promise = new Promise<string>((resolve, reject) => {
+            uploadTask.on('state_changed', () => {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    resolve(downloadURL);
+                });
+            })
+        });
+        const downloadUrl = await promise;
+        return  {
+            downloadUrl
+        }
     }
 };

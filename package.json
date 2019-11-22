@@ -5,8 +5,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "devDependencies": {
-    "lerna": "^3.18.4",
-    "husky": "^3.0.4"
+    "husky": "^3.0.4",
+    "lerna": "^3.18.4"
   },
   "scripts": {
     "lint": "lerna run lint --stream",
@@ -16,5 +16,8 @@
     "hooks": {
       "pre-commit": "npx lerna run --concurrency 1 --stream precommit"
     }
+  },
+  "dependencies": {
+    "ts-node": "^8.5.2"
   }
 }

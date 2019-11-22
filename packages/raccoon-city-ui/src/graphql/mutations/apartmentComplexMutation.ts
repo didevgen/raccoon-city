@@ -11,7 +11,7 @@ export const CREATE_APARTMENT_COMPLEX = gql`
 export const UPLOAD_FILE = gql`
     mutation addImage($file: Upload!) {
         addImage(file: $file) {
-            filename
+            downloadUrl
         }
     }
 `;

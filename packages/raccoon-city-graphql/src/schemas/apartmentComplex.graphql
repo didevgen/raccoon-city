@@ -26,9 +26,12 @@ input ApartmentComplexInput {
     endDate: String
 }
 
+type ImageMeta {
+    downloadUrl: String
+}
 extend type Mutation {
     createApartmentComplex(apartmentComplex: ApartmentComplexInput): ApartmentComplex
-    addImage(file: Upload!): File!
+    addImage(file: Upload!): ImageMeta!
 }
 
 extend type Query {

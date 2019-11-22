@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "moduleResolution": "node",
+        "lib": ["es6"],
         "module": "commonjs",
+        "moduleResolution": "node",
         "sourceMap": true,
-        "rootDir": "src",
-        "outDir": "dist",
-        "lib": ["esnext", "dom"]
+        "target": "es6",
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "typeRoots": [ "node_modules/@types" ]
     }
 }
