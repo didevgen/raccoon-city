@@ -1,16 +1,22 @@
-import {GraphQLServer} from 'graphql-yoga';
 import {prisma} from './generated/prisma-client';
+import {Firebase} from './firebase';
 import resolvers from './resolvers';
 import { default as typeDefs } from './schemas'
 import connect from './db/mongoose.client';
-const server = new GraphQLServer({
+import {ApolloServer} from 'apollo-server';
+
+
+const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: (request) => ({
         ...request,
-        prisma
+        prisma,
+        Firebase
     })
 });
 const db = process.env.MONGODB_URI;
 connect({db});
-server.start(() => console.log(`Server is running on http://localhost:4000`));
+server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+});

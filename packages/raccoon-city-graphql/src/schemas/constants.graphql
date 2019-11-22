@@ -1,3 +1,9 @@
+type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+}
+
 type KeyDisplayName {
     key: String
     displayName: String

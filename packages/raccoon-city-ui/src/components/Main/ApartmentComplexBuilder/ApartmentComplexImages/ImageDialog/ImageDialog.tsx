@@ -1,13 +1,15 @@
+import {useMutation} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import React, {useState, Fragment} from 'react';
-import AvatarEditor from 'react-avatar-editor';
-import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import React, {Fragment, useState} from 'react';
+import AvatarEditor from 'react-avatar-editor';
+import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
 
 export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
@@ -18,7 +20,7 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
-
+    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE);
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
@@ -44,7 +46,7 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                             rotate={rotate}
                         />
                         <div>
-                            <Typography id="discrete-slider" gutterBottom>
+                            <Typography id="discrete-slider" gutterBottom={true}>
                                 Размер
                             </Typography>
                             <Slider
@@ -55,13 +57,13 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                                 aria-labelledby="discrete-slider"
                                 valueLabelDisplay="auto"
                                 step={0.1}
-                                marks
+                                marks={true}
                                 min={0.1}
                                 max={3}
                             />
                         </div>
                         <div>
-                            <Typography id="discrete-slider" gutterBottom>
+                            <Typography id="discrete-slider" gutterBottom={true}>
                                 Выровнять
                             </Typography>
                             <Slider
@@ -72,7 +74,7 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                                 aria-labelledby="discrete-slider"
                                 valueLabelDisplay="auto"
                                 step={1}
-                                marks
+                                marks={true}
                                 min={0}
                                 max={360}
                             />
@@ -84,7 +86,16 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button
+                    onClick={async () => {
+                        await uploadFile({
+                            variables: {
+                                file: image
+                            }
+                        });
+                    }}
+                    color="primary"
+                >
                     Сохранить
                 </Button>
             </DialogActions>
