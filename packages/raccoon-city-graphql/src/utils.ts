@@ -1,11 +1,11 @@
 import * as jwt from 'jsonwebtoken';
 import {Prisma} from './generated/prisma-client';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase-admin';
 
 export interface Context {
     prisma: Prisma;
     request: any;
-    Firebase: firebase.app.App;
+    Firebase: firebase.app.App
 }
 
 export function getUserId(ctx: Context) {

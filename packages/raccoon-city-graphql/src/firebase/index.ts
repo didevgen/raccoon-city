@@ -1,13 +1,11 @@
-import * as firebase from 'firebase/app';
+import * as admin from 'firebase-admin';
+
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 export function initFirebase() {
-    return firebase.initializeApp({
-        apiKey: 'AIzaSyDYUF48YatqUvPq-vXuWZIovft07VYv3ZY',
-        authDomain: 'raccoon-city-c14f4.firebaseapp.com',
-        databaseURL: 'https://raccoon-city-c14f4.firebaseio.com',
-        projectId: 'raccoon-city-c14f4',
-        storageBucket: 'raccoon-city-c14f4.appspot.com',
-        messagingSenderId: '714571509896',
-        appId: '1:714571509896:web:12064a6502349b7d026f3d'
+    return admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://raccoon-city-c14f4.firebaseio.com",
+        storageBucket: "gs://raccoon-city-c14f4.appspot.com"
     });
 }

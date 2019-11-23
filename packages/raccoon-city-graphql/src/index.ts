@@ -5,7 +5,7 @@ import connect from './db/mongoose.client';
 import {ApolloServer} from 'apollo-server';
 import {initFirebase} from './firebase';
 
-const Firebase = initFirebase();
+const Firebase: any = initFirebase();
 const server = new ApolloServer({
     typeDefs,
     resolvers,
