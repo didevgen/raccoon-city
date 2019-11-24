@@ -1,14 +1,15 @@
+import {useQuery} from '@apollo/react-hooks';
 import {AppBar, Box, Theme} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
-import {Fragment} from 'react';
-import {ImageDialog} from './ImageDialog/ImageDialog';
-import {useParams} from 'react-router-dom';
+import {Fragment, useState} from 'react';
+import {useParams} from 'react-router';
+import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
+import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 
 interface TabPanelProps {
@@ -44,11 +45,28 @@ function TabPanel(props: TabPanelProps) {
 
 export function ApartmentComplexImages() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const {uuid} = useParams();
+
+    const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplex}>(APARTMENT_COMPLEX_IMAGES, {
+        variables: {
+            uuid
+        }
+    });
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    if (error || !data) {
+        return <p>Error :(</p>;
+    }
+
+    const images = data.getApartmentComplex.images;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
+
     return (
         <Fragment>
             <Container maxWidth="lg">
@@ -66,7 +84,7 @@ export function ApartmentComplexImages() {
                         </Tabs>
                     </AppBar>
                     <TabPanel value={value} index={0}>
-                        <MainApartmentComplexImages />
+                        <MainApartmentComplexImages images={images} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         Item Two

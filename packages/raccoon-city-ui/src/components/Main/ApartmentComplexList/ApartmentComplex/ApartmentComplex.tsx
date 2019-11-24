@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {apartmentComplexDefaultImage} from '../../../../core/constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,10 +45,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                 <Link to={`/apartmentComplex/${props.id}/images`}>
                     <CardMedia
                         className={classes.media}
-                        image={
-                            props.imageUrl ||
-                            'https://images.all-free-download.com/images/graphicthumb/city_background_buildings_icon_colored_flat_outline_6838998.jpg'
-                        }
+                        image={props.imageUrl || apartmentComplexDefaultImage}
                         title={props.name}
                     />
                     <CardContent>

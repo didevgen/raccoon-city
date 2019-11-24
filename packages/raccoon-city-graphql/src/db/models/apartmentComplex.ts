@@ -23,7 +23,7 @@ export interface ApartmentComplex extends Document {
     price: number;
     beginDate: String;
     endDate: String;
-    images?: ApartmentComplexImages;
+    images: ApartmentComplexImages;
 }
 
 const imagesSchema: Schema = new Schema({

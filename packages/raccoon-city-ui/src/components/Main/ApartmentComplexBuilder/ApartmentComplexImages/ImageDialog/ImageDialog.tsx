@@ -5,13 +5,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slider from '@material-ui/core/Slider';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, {Fragment, useState} from 'react';
 import AvatarEditor from 'react-avatar-editor';
-import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
-import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
-import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
+import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
+import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../../shared/types/apartmentComplex.types';
 
 const EditorContainer = styled.div`
@@ -38,12 +39,27 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
 
     const {uuid, mode} = params;
 
-    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE);
+    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE, {
+        refetchQueries: [
+            {
+                query: APARTMENT_COMPLEX_IMAGES,
+                variables: {
+                    uuid
+                }
+            }
+        ]
+    });
     const editor = React.createRef<any>();
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
     };
+
+    if (file) {
+        setTimeout(() => {
+            handleClose();
+        });
+    }
 
     const handleDrop = (dropped: any) => {
         setImage(dropped);

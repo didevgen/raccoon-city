@@ -35,3 +35,39 @@ export const APARTMENT_COMPLEX_DROPDOWNS = gql`
         }
     }
 `;
+
+export const APARTMENT_COMPLEX_IMAGES = gql`
+    query getApartmentComplex($uuid: String!) {
+        getApartmentComplex(uuid: $uuid) {
+            images {
+                CHESS_GRID {
+                    uuid
+                    downloadUrl
+                }
+                SITE {
+                    uuid
+                    downloadUrl
+                }
+                MOBILE {
+                    uuid
+                    downloadUrl
+                }
+                PHOTO {
+                    uuid
+                    downloadUrl
+                    name
+                }
+                VR {
+                    uuid
+                    downloadUrl
+                    name
+                }
+                HALF_VR {
+                    uuid
+                    downloadUrl
+                    name
+                }
+            }
+        }
+    }
+`;

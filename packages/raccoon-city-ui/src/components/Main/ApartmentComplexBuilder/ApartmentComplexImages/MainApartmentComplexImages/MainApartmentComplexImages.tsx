@@ -1,17 +1,17 @@
-import Button from '@material-ui/core/Button';
-import {ImageDialog} from '../ImageDialog/ImageDialog';
-import * as React from 'react';
-import {useParams} from 'react-router';
-import Grid from '@material-ui/core/Grid';
+import {CardActionArea, createStyles, makeStyles, Theme} from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import {CardActionArea, createStyles, makeStyles, Theme} from '@material-ui/core';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import {ImageType} from '../../../../shared/types/apartmentComplex.types';
+import * as React from 'react';
+import {useParams} from 'react-router';
+import {apartmentComplexDefaultImage} from '../../../../../core/constants';
+import {ApartmentComplexImages, ImageType, SingleImage} from '../../../../shared/types/apartmentComplex.types';
+import {ImageDialog} from '../ImageDialog/ImageDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -33,11 +33,16 @@ interface Mode {
 interface PreviewComponentProps {
     uuid: string;
     mode: Mode;
+    images: ApartmentComplexImages;
 }
 
 function PreviewComponent(props: PreviewComponentProps) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const image: SingleImage = (props.images[props.mode.value] || {
+        uuid: '',
+        downloadUrl: apartmentComplexDefaultImage
+    }) as SingleImage;
 
     return (
         <Card className={classes.card}>
@@ -54,13 +59,9 @@ function PreviewComponent(props: PreviewComponentProps) {
                     setOpen(true);
                 }}
             >
-                <CardMedia
-                    className={classes.media}
-                    image="https://www.zhilstroj-2.ua/wp-content/uploads/2019/09/17967-500x354.jpg"
-                    title="МФК «МАНХЭТТЕН»"
-                />
+                <CardMedia className={classes.media} image={image.downloadUrl} />
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p"></Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" />
                 </CardContent>
             </CardActionArea>
             <ImageDialog setOpen={setOpen} open={open} params={{uuid: props.uuid, mode: props.mode.value}} />
@@ -68,12 +69,17 @@ function PreviewComponent(props: PreviewComponentProps) {
     );
 }
 
-export function MainApartmentComplexImages() {
+interface MainApartmentComplexImagesProps {
+    images: ApartmentComplexImages;
+}
+
+export function MainApartmentComplexImages({images}: MainApartmentComplexImagesProps) {
     const {uuid} = useParams();
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={4}>
+        <Grid container={true} spacing={3}>
+            <Grid item={true} xs={4}>
                 <PreviewComponent
+                    images={images}
                     uuid={uuid as string}
                     mode={{
                         title: 'Сайт',
@@ -81,8 +87,9 @@ export function MainApartmentComplexImages() {
                     }}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
                 <PreviewComponent
+                    images={images}
                     uuid={uuid as string}
                     mode={{
                         title: 'Приложение',
@@ -90,8 +97,9 @@ export function MainApartmentComplexImages() {
                     }}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item={true} xs={4}>
                 <PreviewComponent
+                    images={images}
                     uuid={uuid as string}
                     mode={{
                         title: 'Шахматка',
