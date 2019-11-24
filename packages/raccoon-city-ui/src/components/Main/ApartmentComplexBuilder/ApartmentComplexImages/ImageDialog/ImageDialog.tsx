@@ -10,7 +10,14 @@ import React, {Fragment, useState} from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
+import TextField from '@material-ui/core/TextField';
+import styled from 'styled-components';
+import {ImageType} from '../../../../shared/types/apartmentComplex.types';
 
+const EditorContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 const blobToFile = (theBlob: Blob, fileName: string): File => {
     return new File([theBlob], fileName);
 };
@@ -18,13 +25,20 @@ const blobToFile = (theBlob: Blob, fileName: string): File => {
 export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
     open: boolean;
-    params: any;
+    params: {
+        uuid: string;
+        mode: ImageType;
+    };
 }
 
-export function ImageDialog({setOpen, open}: ImageDialogProps) {
+export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
+    const [name, setName] = useState('');
+
+    const {uuid, mode} = params;
+
     const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE);
     const editor = React.createRef<any>();
     const handleClose = () => {
@@ -43,27 +57,31 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
             const file = blobToFile(blob, image.name);
             await uploadFile({
                 variables: {
-                    file
+                    file,
+                    uuid,
+                    mode
                 }
             });
         }
     };
     return (
-        <Dialog open={open} aria-labelledby="form-dialog-title">
+        <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
             <DialogContent>
                 {!image && <StyledDropzone onDrop={handleDrop} />}
                 {image && (
                     <Fragment>
-                        <AvatarEditor
-                            ref={editor}
-                            image={image}
-                            width={250}
-                            height={250}
-                            border={50}
-                            scale={scale}
-                            rotate={rotate}
-                        />
+                        <EditorContainer>
+                            <AvatarEditor
+                                ref={editor}
+                                image={image}
+                                width={500}
+                                height={354}
+                                border={50}
+                                scale={scale}
+                                rotate={rotate}
+                            />
+                        </EditorContainer>
                         <div>
                             <Typography id="discrete-slider" gutterBottom={true}>
                                 Размер
@@ -96,6 +114,18 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                                 marks={true}
                                 min={0}
                                 max={360}
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                label="Название картинки"
+                                margin="normal"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                }}
+                                fullWidth={true}
+                                variant="outlined"
                             />
                         </div>
                     </Fragment>

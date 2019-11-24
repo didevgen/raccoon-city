@@ -29,9 +29,12 @@ input ApartmentComplexInput {
 type ImageMeta {
     downloadUrl: String
 }
+type ImageType {
+    value: String
+}
 extend type Mutation {
     createApartmentComplex(apartmentComplex: ApartmentComplexInput): ApartmentComplex
-    addImage(file: Upload!): ImageMeta!
+    addImage(file: Upload!, mode: String, uuid: String): ImageMeta!
 }
 
 extend type Query {

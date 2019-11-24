@@ -9,6 +9,7 @@ import * as React from 'react';
 import {Fragment} from 'react';
 import {ImageDialog} from './ImageDialog/ImageDialog';
 import {useParams} from 'react-router-dom';
+import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -43,9 +44,7 @@ function TabPanel(props: TabPanelProps) {
 
 export function ApartmentComplexImages() {
     const classes = useStyles();
-    const {uuid} = useParams();
     const [value, setValue] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -67,16 +66,7 @@ export function ApartmentComplexImages() {
                         </Tabs>
                     </AppBar>
                     <TabPanel value={value} index={0}>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            onClick={() => {
-                                setOpen(true);
-                            }}
-                        >
-                            Open form dialog
-                        </Button>
-                        <ImageDialog setOpen={setOpen} open={open} params={{any: 1}} />
+                        <MainApartmentComplexImages />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         Item Two

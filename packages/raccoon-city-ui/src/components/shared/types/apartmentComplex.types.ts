@@ -53,3 +53,12 @@ export interface ApartmentComplexFormValues {
     beginDate: string;
     endDate: string;
 }
+
+export enum ImageType {
+    CHESS_GRID = 'CHESS_GRID',
+    SITE = 'SITE',
+    MOBILE = 'MOBILE',
+    PHOTO = 'PHOTO',
+    ROUND_ABOUT = '360',
+    ROUND_HALF = '180'
+}
