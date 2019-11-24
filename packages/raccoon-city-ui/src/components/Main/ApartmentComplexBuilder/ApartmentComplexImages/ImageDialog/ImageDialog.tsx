@@ -35,7 +35,6 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
-    const [name, setName] = useState('');
 
     const {uuid, mode} = params;
 
@@ -114,18 +113,6 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
                                 marks={true}
                                 min={0}
                                 max={360}
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                label="Название картинки"
-                                margin="normal"
-                                value={name}
-                                onChange={(event) => {
-                                    setName(event.target.value);
-                                }}
-                                fullWidth={true}
-                                variant="outlined"
                             />
                         </div>
                     </Fragment>

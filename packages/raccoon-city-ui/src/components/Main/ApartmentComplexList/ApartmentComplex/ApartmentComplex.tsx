@@ -48,9 +48,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                         title="МФК «МАНХЭТТЕН»"
                     />
                     <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            Descr
-                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p" />
                     </CardContent>
                 </Link>
             </CardActionArea>

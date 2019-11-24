@@ -59,6 +59,6 @@ export enum ImageType {
     SITE = 'SITE',
     MOBILE = 'MOBILE',
     PHOTO = 'PHOTO',
-    ROUND_ABOUT = '360',
-    ROUND_HALF = '180'
+    VR = 'VR',
+    HALF_VR = 'HALF_VR'
 }

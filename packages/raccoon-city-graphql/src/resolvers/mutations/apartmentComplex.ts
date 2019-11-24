@@ -3,6 +3,7 @@ import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
 import { uuid } from 'uuidv4';
 import * as fs from 'fs';
+import {appendImage} from '../../services/apartmentComplex/image.service';
 
 function getFileExtension(fileName: string): string {
     return fileName.split('.').pop();
@@ -12,10 +13,11 @@ export const apartmentComplex = {
         const apartmentComplex: ApartmentComplexInputArgs = args.apartmentComplex;
         return await ApartmentComplexModel.create(apartmentComplex);
     },
-    async addImage(parent, {file: filePromise}, ctx: Context) {
+    async addImage(parent, {file: filePromise, uuid: apartmentComplexId, mode}, ctx: Context) {
         const {Firebase} = ctx;
         const file = await filePromise;
-        const newFileName = `${uuid()}.${getFileExtension(file.filename)}`;
+        const imageUuid = uuid();
+        const newFileName = `${imageUuid}.${getFileExtension(file.filename)}`;
         const fileUrl = `./uploadedFiles/${newFileName}`;
         try {
             const writeStream = fs.createWriteStream(fileUrl);
@@ -38,6 +40,12 @@ export const apartmentComplex = {
             const config = {action: 'read', expires: '01-01-2025'};
             // @ts-ignore
             const [downloadUrl] = await fileData.getSignedUrl(config);
+            await appendImage({
+                mode,
+                downloadUrl,
+                imageUuid,
+                apartmentComplexId
+            });
             return {
                 downloadUrl
             };
