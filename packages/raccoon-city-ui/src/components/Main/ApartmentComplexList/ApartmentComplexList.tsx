@@ -23,7 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export function ApartmentComplexList() {
     const classes = useStyles();
     const {loading, error, data} = useQuery<{getAllApartmentComplexes: ApartmentComplexType[]}>(
-        ALL_APARTMENT_COMPLEXES
+        ALL_APARTMENT_COMPLEXES,
+        {
+            fetchPolicy: 'cache-and-network'
+        }
     );
     if (loading) {
         return <p>Loading...</p>;
