@@ -11,9 +11,14 @@ import AvatarEditor from 'react-avatar-editor';
 import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
 
+const blobToFile = (theBlob: Blob, fileName: string): File => {
+    return new File([theBlob], fileName);
+};
+
 export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
     open: boolean;
+    params: any;
 }
 
 export function ImageDialog({setOpen, open}: ImageDialogProps) {
@@ -21,6 +26,7 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
     const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE);
+    const editor = React.createRef<any>();
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
@@ -30,14 +36,27 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
         setImage(dropped);
     };
 
+    const onSave = async () => {
+        if (editor) {
+            const canvasScaled = editor.current.getImageScaledToCanvas();
+            const blob = await fetch(canvasScaled.toDataURL()).then((res) => res.blob());
+            const file = blobToFile(blob, image.name);
+            await uploadFile({
+                variables: {
+                    file
+                }
+            });
+        }
+    };
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+            <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
             <DialogContent>
                 {!image && <StyledDropzone onDrop={handleDrop} />}
                 {image && (
                     <Fragment>
                         <AvatarEditor
+                            ref={editor}
                             image={image}
                             width={250}
                             height={250}
@@ -86,16 +105,7 @@ export function ImageDialog({setOpen, open}: ImageDialogProps) {
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button
-                    onClick={async () => {
-                        await uploadFile({
-                            variables: {
-                                file: image
-                            }
-                        });
-                    }}
-                    color="primary"
-                >
+                <Button disabled={!image} onClick={onSave} color="primary">
                     Сохранить
                 </Button>
             </DialogActions>

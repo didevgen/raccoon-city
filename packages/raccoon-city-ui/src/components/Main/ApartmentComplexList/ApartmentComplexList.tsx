@@ -42,7 +42,7 @@ export function ApartmentComplexList() {
                     data.getAllApartmentComplexes.map((complex: ApartmentComplexType) => {
                         return (
                             <Grid item={true} xs={12} md={3} key={complex.id}>
-                                <ApartmentComplex />
+                                <ApartmentComplex name={complex.name} id={complex.id} />
                             </Grid>
                         );
                     })}

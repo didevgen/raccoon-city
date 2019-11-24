@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment} from 'react';
 import {ImageDialog} from './ImageDialog/ImageDialog';
+import {useParams} from 'react-router-dom';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -42,6 +43,7 @@ function TabPanel(props: TabPanelProps) {
 
 export function ApartmentComplexImages() {
     const classes = useStyles();
+    const {uuid} = useParams();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
 
@@ -74,7 +76,7 @@ export function ApartmentComplexImages() {
                         >
                             Open form dialog
                         </Button>
-                        <ImageDialog setOpen={setOpen} open={open} />
+                        <ImageDialog setOpen={setOpen} open={open} params={{any: 1}} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         Item Two

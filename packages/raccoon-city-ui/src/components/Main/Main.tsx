@@ -41,6 +41,9 @@ export function Main() {
                     <Route exact={true} path="/apartmentComplex/:uuid/images">
                         <ApartmentComplexImages />
                     </Route>
+                    <Route path="*">
+                        <ApartmentComplexList />
+                    </Route>
                 </Switch>
             </main>
         </div>
