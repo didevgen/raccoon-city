@@ -74,8 +74,8 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
                             <AvatarEditor
                                 ref={editor}
                                 image={image}
-                                width={500}
-                                height={354}
+                                width={400}
+                                height={200}
                                 border={50}
                                 scale={scale}
                                 rotate={rotate}

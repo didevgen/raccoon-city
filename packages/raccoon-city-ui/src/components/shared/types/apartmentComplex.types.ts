@@ -1,3 +1,12 @@
+export interface SingleImage {
+    uuid: string;
+    downloadUrl: string;
+}
+
+export interface NamedImage extends SingleImage {
+    name: string;
+}
+
 export interface City {
     key: string;
     displayName: string;
@@ -27,6 +36,15 @@ export interface ApartmentComplexDTO {
     endDate: string;
 }
 
+export interface ApartmentComplexImages {
+    CHESS_GRID?: SingleImage;
+    SITE?: SingleImage;
+    MOBILE?: SingleImage;
+    PHOTO?: NamedImage[];
+    VR?: NamedImage[];
+    HALF_VR?: NamedImage[];
+}
+
 export interface ApartmentComplexType {
     id: string;
     type: KeyDisplayName;
@@ -39,6 +57,7 @@ export interface ApartmentComplexType {
     price: number;
     beginDate: string;
     endDate: string;
+    images: ApartmentComplexImages;
 }
 
 export interface ApartmentComplexFormValues {

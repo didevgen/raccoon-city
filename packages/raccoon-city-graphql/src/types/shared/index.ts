@@ -8,6 +8,6 @@ export interface SingleImage {
     downloadUrl: string;
 }
 
-export interface NamedImage extends SingleImage{
+export interface NamedImage extends SingleImage {
     name: string;
 }

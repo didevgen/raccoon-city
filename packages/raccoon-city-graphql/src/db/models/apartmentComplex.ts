@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Schema, Document } from 'mongoose';
+import {Schema, Document} from 'mongoose';
 import {KeyDisplayName, NamedImage, SingleImage} from '../../types/shared';
 import {KeyDisplayNameSchema, NamedImageSchema, SingleImageSchema} from './shared';
 
@@ -35,16 +35,16 @@ const imagesSchema: Schema = new Schema({
     HALF_VR: {type: [NamedImageSchema]}
 });
 const ApartmentComplexSchema: Schema = new Schema({
-    type: { type: KeyDisplayNameSchema, required: true },
-    name: { type: Schema.Types.String, required: true },
-    city: { type: KeyDisplayNameSchema, required: true },
-    district: { type: KeyDisplayNameSchema, required: true },
-    class: { type: KeyDisplayNameSchema, required: true },
-    levels: { type: Schema.Types.Number, required: true },
-    sections: { type: Schema.Types.Number, required: true },
-    price: { type: Schema.Types.Number, required: true },
-    beginDate: { type: Schema.Types.String, required: true },
-    endDate: { type: Schema.Types.String, required: true },
+    type: {type: KeyDisplayNameSchema, required: true},
+    name: {type: Schema.Types.String, required: true},
+    city: {type: KeyDisplayNameSchema, required: true},
+    district: {type: KeyDisplayNameSchema, required: true},
+    class: {type: KeyDisplayNameSchema, required: true},
+    levels: {type: Schema.Types.Number, required: true},
+    sections: {type: Schema.Types.Number, required: true},
+    price: {type: Schema.Types.Number, required: true},
+    beginDate: {type: Schema.Types.String, required: true},
+    endDate: {type: Schema.Types.String, required: true},
     images: {type: imagesSchema}
 });
 

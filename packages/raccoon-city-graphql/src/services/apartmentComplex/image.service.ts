@@ -22,18 +22,14 @@ async function singleImage(params: AppendImageParams) {
         images[params.mode] = {
             uuid: params.imageUuid,
             downloadUrl: params.downloadUrl
-        }
+        };
         apartmentComplex.images = images;
         apartmentComplex.save();
     });
 }
 
-function multipleImages(params: AppendImageParams) {
-
-}
+function multipleImages(params: AppendImageParams) {}
 
 export async function appendImage(params: AppendImageParams) {
     await singleImage(params);
 }
-
-

@@ -5,6 +5,12 @@ export const ALL_APARTMENT_COMPLEXES = gql`
         getAllApartmentComplexes {
             id
             name
+            images {
+                CHESS_GRID {
+                    uuid
+                    downloadUrl
+                }
+            }
         }
     }
 `;

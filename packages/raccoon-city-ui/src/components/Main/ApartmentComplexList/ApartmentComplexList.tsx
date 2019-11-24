@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import React from 'react';
 import {ALL_APARTMENT_COMPLEXES} from '../../../graphql/queries/apartmentComplexQuery';
-import {ApartmentComplexType} from '../../shared/types/apartmentComplex.types';
+import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
 
@@ -40,9 +40,13 @@ export function ApartmentComplexList() {
                 </Grid>
                 {data &&
                     data.getAllApartmentComplexes.map((complex: ApartmentComplexType) => {
+                        const apartmentComplexImages = complex.images;
+                        const chessGridImage = complex.images[ImageType.CHESS_GRID];
+                        const imageUrl = chessGridImage ? chessGridImage.downloadUrl : undefined;
+
                         return (
                             <Grid item={true} xs={12} md={3} key={complex.id}>
-                                <ApartmentComplex name={complex.name} id={complex.id} />
+                                <ApartmentComplex name={complex.name} id={complex.id} imageUrl={imageUrl} />
                             </Grid>
                         );
                     })}

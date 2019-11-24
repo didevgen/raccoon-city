@@ -10,7 +10,7 @@ type ApartmentComplex {
     price: Float
     beginDate: String
     endDate: String
-    image: String
+    images: ApartmentComplexImage
 }
 
 input ApartmentComplexInput {
@@ -24,6 +24,26 @@ input ApartmentComplexInput {
     price: Float
     beginDate: String
     endDate: String
+}
+
+type SingleImage {
+    uuid: String
+    downloadUrl: String
+}
+
+type NamedImage {
+    uuid: String
+    downloadUrl: String
+    name: String
+}
+
+type ApartmentComplexImage {
+    CHESS_GRID: SingleImage
+    SITE: SingleImage
+    MOBILE: SingleImage
+    VR: [NamedImage]
+    HALF_VR: [NamedImage]
+    PHOTO: [NamedImage]
 }
 
 type ImageMeta {

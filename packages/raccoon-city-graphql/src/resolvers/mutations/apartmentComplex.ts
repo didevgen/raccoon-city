@@ -1,7 +1,7 @@
 import {Context} from '../../utils';
 import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
-import { uuid } from 'uuidv4';
+import {uuid} from 'uuidv4';
 import * as fs from 'fs';
 import {appendImage} from '../../services/apartmentComplex/image.service';
 
@@ -52,6 +52,5 @@ export const apartmentComplex = {
         } finally {
             fs.unlinkSync(fileUrl);
         }
-
     }
 };

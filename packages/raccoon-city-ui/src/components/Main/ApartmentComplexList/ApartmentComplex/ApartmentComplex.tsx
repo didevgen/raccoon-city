@@ -44,8 +44,11 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                 <Link to={`/apartmentComplex/${props.id}/images`}>
                     <CardMedia
                         className={classes.media}
-                        image="https://www.zhilstroj-2.ua/wp-content/uploads/2019/09/17967-500x354.jpg"
-                        title="МФК «МАНХЭТТЕН»"
+                        image={
+                            props.imageUrl ||
+                            'https://images.all-free-download.com/images/graphicthumb/city_background_buildings_icon_colored_flat_outline_6838998.jpg'
+                        }
+                        title={props.name}
                     />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />
