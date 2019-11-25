@@ -1,4 +1,5 @@
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
+import {SingleImage} from 'shared';
 
 export enum ImageType {
     CHESS_GRID = 'CHESS_GRID',
@@ -19,10 +20,13 @@ export interface AppendImageParams {
 async function singleImage(params: AppendImageParams) {
     await ApartmentComplexModel.findById(params.apartmentComplexId, (err, apartmentComplex) => {
         const images = apartmentComplex.images ? apartmentComplex.images : {};
-        images[params.mode] = {
+        const newImage: SingleImage = {
             uuid: params.imageUuid,
             downloadUrl: params.downloadUrl
         };
+
+        // @ts-ignore
+        images[params.mode] = newImage;
         apartmentComplex.images = images;
         apartmentComplex.save();
     });
