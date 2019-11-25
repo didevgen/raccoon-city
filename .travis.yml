@@ -1,16 +1,16 @@
 language: node_js
 node_js:
-- stable
+  - stable
 cache:
   directories:
-  - node_modules
+    - node_modules
 before_script: cd packages/raccoon-city-ui
 script:
-- yarn
-- yarn run build
-- cd ../raccoon-city-graphql
-- yarn
-- yarn run build
+  - yarn
+  - yarn run build
+  - cd ../raccoon-city-graphql
+  - yarn
+  - yarn run build
 deploy:
   - provider: heroku
     on:
