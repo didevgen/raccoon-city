@@ -10,6 +10,7 @@ script:
   - yarn
   - yarn run build
   - cd ./raccoon-city-graphql
+  - yarn
   - yarn run build
 
 deploy:
