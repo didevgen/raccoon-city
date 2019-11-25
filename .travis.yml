@@ -5,15 +5,23 @@ cache:
   directories:
     - node_modules
 
-before_script: cd packages/raccoon-constants-ui
+before_script: cd packages/raccoon-city-ui
 script:
   - yarn
   - yarn run build
+  - cd ./raccoon-city-graphql
+  - yarn run build
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: packages/raccoon-constants-ui/build
-  on:
-    branch: master
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: packages/raccoon-city-ui/build
+    on:
+      branch: master
+  - provider: heroku
+    local_dir: packages/raccoon-city-graphql/dist
+    api_key:
+      secure: WIVATh6aO5qDvR48AxjQ+UMGQ66oedJW1TIhHK7+CaEGFQzqvERQdwYENxMTsUcSP+b9TYJjDVJehTvKrBEN90O8GHXX/McVG3Yp5okkaGOEwGHBvLaQ9j36EMktyuAhXHAuRT55az1w7YAkXvphlOzcmonc+ITLv34EMBi3ds2NIYmQ5hh8u9xAcMBgHeyCkecZLkYys5KIvZNyJRef4bEs209JEr1ENuOf3N3XhcypgGTqrkgRZZb2H8ksRRKTJF7cR18Ffe+zuLF8ePaDMR4zi7mxy1EnHC6mqIWHpqxhHswCei6h9dU/ZpfACUFTSbLoIS0lcQD70D7EsoTEs088aFU2ZzhFOutirmxMBIuBeFSL89zPs9bKyXY4nYfKrwWaEd7AB7zx24EWHj2H/57lcC4ZNurON0JHckYh1aIMgBrfQFgpqEaIkipg2QdNGLVBZUda+sIeygN9DD9uwGqd12EuEzYv5aF3vjrnd8+hhD96eEBFwufFK9r2uVkyWnY1mbSW0cBU7EqH12xfP14EVN70pm0HTJBDVVaFivPKCiitB8xWz9NqstJhEyO15/wMjfYNccZoaYSiai951uUwn+aqP8exx2E50ko0kUuxuiEUs+jQLLTnIFhzkZrkR9fEqKgfWhIsSuEXSZhAUrr6Kttmoo44AW7a9oZZFuE=
+    on:
+      branch: master
