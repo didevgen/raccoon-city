@@ -2,12 +2,14 @@ import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
 import connect from './db/mongoose.client';
-import {ApolloServer} from 'apollo-server';
+import {ApolloServer, gql} from 'apollo-server';
 import {initFirebase} from './firebase';
 
 const Firebase: any = initFirebase();
 const server = new ApolloServer({
-    typeDefs,
+    typeDefs: gql`
+        ${typeDefs}
+    `,
     resolvers,
     context: (request) => ({
         ...request,
