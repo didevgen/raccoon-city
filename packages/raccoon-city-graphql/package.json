@@ -4,9 +4,10 @@
         "registry": "https://registry.npmjs.org"
     },
     "scripts": {
-        "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
+        "start": "node dist/index.js",
+        "start:dev": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
         "debug": "dotenv -- nodemon -e ts,graphql -x node --inspect=9200 -r ts-node/register src/index.ts",
-        "build": "rimraf dist && tsc",
+        "build": "rimraf dist && dotenv -- tsc",
         "precommit": "lint-staged",
         "prettier": "pretty-quick"
     },
