@@ -3,9 +3,6 @@
     "publishConfig": {
         "registry": "https://registry.npmjs.org"
     },
-    "engines": {
-        "node": "10.x"
-    },
     "scripts": {
         "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
         "debug": "dotenv -- nodemon -e ts,graphql -x node --inspect=9200 -r ts-node/register src/index.ts",
