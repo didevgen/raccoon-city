@@ -1,19 +1,18 @@
 language: node_js
 node_js:
-  - stable
+- stable
 cache:
   directories:
-    - node_modules
+  - node_modules
 before_script: cd packages/raccoon-city-ui
 script:
-  - cd ../raccoon-city-graphql
-  - yarn
-  - yarn run build
+- cd ../raccoon-city-graphql
+- yarn
+- yarn run build
 deploy:
   provider: heroku
   local_dir: packages/raccoon-city-graphql/dist
   on:
     branch: master
   api_key:
-    secure: U1oRb5sS/mczI+K23gSdsadW84i9W5zEeqeBL7ex+X4GUZzD/ypxDS+dM8NlvhmpVRzuYvQ2leQJn/cH8yHStwv01/dke+QRDrwd14+ge77JSFFuXZGrECcmc1EDIo4HsGpg9Sq2iG8DbIM392AdkYZqHhp64hpVZ8xLPKebmVAHhkgviqp/35ApdjKGmQtv0CpTmyMLCLvndPfAVcIZFK8QB0nfN+jOyJrWB09Sc/ij4XJ4xczWqzNV+QYWvZthxWLs1/8hLr5ZFR1JTHc3JYpSpeAybubGHTESCFJbTlPeHj3VSdQEWJ9oU80umkK8VeYRlfAMHWZolfmvRHXnQTKgEcEITzV74icxBqISxAqcq/8DohY1UyMTO9ErPWCCJVL7REEk+6JBLqaA/QrXFkSnzIqqKvxE3VshDV+/LqGMeUvrRK/MEsCRIkh91dR0UKGShp680CAeBzkJAou4H27sDLf392HYZ4J5V3DNYGBvq925ar1yvD+JXUHe8/eLmIC3MsjOIHpnDQrVGppBLYK5K7Q8AY1prwwHeZX67oNn/4h3HYSYs21bOnGdC+hva7NCVy+/ZIwqGt8WTdaN1/EpZLDNFabPyqF0YfupZkvPqVK5irxeU2AfsPZMcHQI3LCtyvQnp58Xo0ZlaA0oQLpop/RjMaWsEQ+qV7fRW3Y=
-
+    secure: C461gS1kZx2DgQhsoflOr3oEpEaitz7TXrQpH9iLjD7FP9ImHBX9VGRCIvjKcIeFVPlQD4jEgkvEJEJRCeeqM/6oOhDYv2xzCZQR2DRmJrctlphp3mA8Dsl1XVpD54HPOirK8Nc+VHb7xZF66pAATO2UFjgNbx6Oe1HSxxnZSYu201Rh6whpUXTtzA99fStV18VyBbejV5eui76acync5Wm5ucrEyK29erVJFLqjychzLlpRwYSuGhvrKSrPWdSezY7TDsud4bKIj+/bgC7ggEJfASeZ5n/Lsi3QcmO7/d5JfHMOvMFIKOrCOihk+g0hH/1H6wMviGXJ7rTs6titMbjsUBx+dWColq0eC2UusLeZ/O9Xbsg3A9qIiMeS3lRO1xzy7UjCKNmIKWqBUYQrYAwlk1ag6UxLgNOeclSqT6RGhKRRbyvVZ9cp+lQr5UdG5ipcPDrZ3koeeI6Le8ivnxBkVJnlx0n3X2I9J2ztgpHwGuPXfTxCKxiGZN/z46jaLxVYHV/E437KaWEezToQ0ue/3mGIiQDOk8XZgafEe79P1v3/zGVr9xYTvXS0K1ZSaOsV0S2lXWAhX+5EHBun0s6Bi2PIkWyvQtf4FPzEnzMrHi1+qAYmPktKbeYldJmdihn3TmUJv7qeHEDRLv7QanhUgXbNo5uoPLAB9+x2Nuo=
