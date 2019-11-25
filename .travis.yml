@@ -7,19 +7,11 @@ cache:
 
 before_script: cd packages/raccoon-city-ui
 script:
-  - yarn
-  - yarn run build
-  - cd ./raccoon-city-graphql
+  - cd ../raccoon-city-graphql
   - yarn
   - yarn run build
 
 deploy:
-  - provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
-    local_dir: packages/raccoon-city-ui/build
-    on:
-      branch: master
   - provider: heroku
     local_dir: packages/raccoon-city-graphql/dist
     api_key:

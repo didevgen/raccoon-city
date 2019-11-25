@@ -43,7 +43,6 @@ export function ApartmentComplexList() {
                 </Grid>
                 {data &&
                     data.getAllApartmentComplexes.map((complex: ApartmentComplexType) => {
-                        const apartmentComplexImages = complex.images;
                         const chessGridImage = complex.images[ImageType.CHESS_GRID];
                         const imageUrl = chessGridImage ? chessGridImage.downloadUrl : undefined;
 
