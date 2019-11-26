@@ -11,6 +11,7 @@ import {useParams} from 'react-router';
 import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
+import {VRImages} from './VRImages/VRImages';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -79,7 +80,6 @@ export function ApartmentComplexImages() {
                             <Tab label="Главная" />
                             <Tab label="360" />
                             <Tab label="180" />
-                            <Tab label="Видео" />
                             <Tab label="Фото" />
                         </Tabs>
                     </AppBar>
@@ -87,16 +87,13 @@ export function ApartmentComplexImages() {
                         <MainApartmentComplexImages images={images} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        Item Two
+                        <VRImages />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         Item Three
                     </TabPanel>
                     <TabPanel value={value} index={3}>
                         Item 4
-                    </TabPanel>
-                    <TabPanel value={value} index={4}>
-                        Item 5
                     </TabPanel>
                 </div>
             </Container>

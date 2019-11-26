@@ -45,7 +45,11 @@ const ApartmentComplexSchema: Schema = new Schema({
     price: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String, required: true},
     endDate: {type: Schema.Types.String, required: true},
-    images: {type: imagesSchema}
+    images: {
+        type: imagesSchema, default: () => {
+            return {};
+        }
+    }
 });
 
 export default mongoose.model<ApartmentComplex>('ApartmentComplex', ApartmentComplexSchema);
