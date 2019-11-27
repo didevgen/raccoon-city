@@ -13,6 +13,7 @@ import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMuta
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
 import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../../shared/types/apartmentComplex.types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -38,7 +39,7 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
 
     const {uuid, mode} = params;
 
-    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE, {
+    const [uploadFile, {data: file, loading}] = useMutation(UPLOAD_FILE, {
         refetchQueries: [
             {
                 query: APARTMENT_COMPLEX_IMAGES,
@@ -138,6 +139,7 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
                     Отмена
                 </Button>
                 <Button disabled={!image} onClick={onSave} color="primary">
+                    {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>
             </DialogActions>

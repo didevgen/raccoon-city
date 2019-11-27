@@ -12,7 +12,7 @@ import {ImageType} from '../../../../shared/types/apartmentComplex.types';
 import {useMutation} from '@apollo/react-hooks';
 import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 const EditorContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -39,7 +39,7 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid, mode} = params;
 
-    const [uploadFile] = useMutation(UPLOAD_FILE, {
+    const [uploadFile, {loading, data}] = useMutation(UPLOAD_FILE, {
         refetchQueries: [
             {
                 query: APARTMENT_COMPLEX_IMAGES,
@@ -49,10 +49,17 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
             }
         ]
     });
+
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
     };
+
+    if (data) {
+        setTimeout(() => {
+            handleClose();
+        });
+    }
 
     const handleDrop = (dropped: any) => {
         setImage(dropped);
@@ -100,7 +107,8 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button disabled={!image} onClick={onSave} color="primary">
+                <Button disabled={!image || loading} onClick={onSave} color="primary">
+                    {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>
             </DialogActions>
