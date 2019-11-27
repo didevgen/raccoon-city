@@ -50,7 +50,7 @@ async function addPreviewImage(params: AppendPreviewImageParams) {
         const newImage: PreviewImage = {
             uuid: params.imageUuid,
             downloadUrl: params.downloadUrl,
-            name: 'Preview',
+            name: params.name,
             previewImageUrl: params.previewImageUrl
         };
 
@@ -73,7 +73,7 @@ async function compressImage(fileUrl) {
     await sharp(fileUrl)
         .resize(320, 240)
         .toFile(newFileName);
-    return [newFileName, imageUuid];
+    return [newFileName, imageUuid, `${imageUuid}.jpg`];
 }
 
 export async function saveImage(file): Promise<string[]> {
@@ -88,13 +88,14 @@ export async function saveImage(file): Promise<string[]> {
             resolve();
         });
     });
-    return [fileUrl, imageUuid];
+    return [fileUrl, imageUuid, newFileName];
 }
 
-export async function uploadFileToFirebase(fileUrl: string, Firebase) {
+export async function uploadFileToFirebase(fileUrl: string, Firebase, apartmentComplexUuid: string, fileName: string) {
     const bucket = Firebase.storage().bucket();
 
     const uploadedFileData = await bucket.upload(fileUrl, {
+        destination: `${apartmentComplexUuid}/${fileName}`,
         gzip: true,
         metadata: {
             cacheControl: 'public, max-age=31536000'
@@ -107,11 +108,19 @@ export async function uploadFileToFirebase(fileUrl: string, Firebase) {
     return downloadUrl;
 }
 
+export async function deleteImageFromFirebase(imageUuid, Firebase) {
+    const bucket = Firebase.storage().bucket();
+    return await bucket.deleteFiles({
+        prefix: imageUuid
+    });
+}
+
+
 export async function appendSingleImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
-    const [fileUrl, imageUuid] = await saveImage(await filePromise);
+    const [fileUrl, imageUuid, newFileName] = await saveImage(await filePromise);
     try {
-        const downloadUrl = await uploadFileToFirebase(fileUrl, Firebase);
+        const downloadUrl = await uploadFileToFirebase(fileUrl, Firebase, apartmentComplexId, newFileName);
         await addSingleImage({
             mode,
             downloadUrl,
@@ -128,17 +137,18 @@ export async function appendSingleImage(args, Firebase) {
 
 export async function appendVRImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
-    const [fileUrl, imageUuid] = await saveImage(await filePromise);
-    const [previewImageUrl] = await compressImage(fileUrl);
+    const [fileUrl, imageUuid, newFileName] = await saveImage(await filePromise);
+    const [previewImageUrl, uuid, newPreviewName] = await compressImage(fileUrl);
     try {
-        const downloadUrl = await uploadFileToFirebase(fileUrl, Firebase);
-        const downloadPreviewUrl = await uploadFileToFirebase(previewImageUrl, Firebase);
+        const downloadUrl = await uploadFileToFirebase(fileUrl, Firebase, apartmentComplexId, newFileName);
+        const downloadPreviewUrl = await uploadFileToFirebase(previewImageUrl, Firebase, apartmentComplexId, newPreviewName);
         await addPreviewImage({
             mode,
             downloadUrl,
             imageUuid,
             apartmentComplexId,
-            previewImageUrl: downloadPreviewUrl
+            previewImageUrl: downloadPreviewUrl,
+            name: args.name
         });
         return {
             downloadUrl,

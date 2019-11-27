@@ -9,8 +9,8 @@ export const CREATE_APARTMENT_COMPLEX = gql`
 `;
 
 export const UPLOAD_FILE = gql`
-    mutation addImage($file: Upload!, $mode: String, $uuid: String) {
-        addImage(file: $file, mode: $mode, uuid: $uuid) {
+    mutation addImage($file: Upload!, $mode: String, $uuid: String, $name: String) {
+        addImage(file: $file, mode: $mode, uuid: $uuid, name: $name) {
             downloadUrl
         }
     }

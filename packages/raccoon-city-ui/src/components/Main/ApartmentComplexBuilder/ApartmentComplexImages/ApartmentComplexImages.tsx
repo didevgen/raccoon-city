@@ -10,9 +10,9 @@ import {Fragment, useState} from 'react';
 import {Redirect, useParams} from 'react-router';
 import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {VRImages} from './VRImages/VRImages';
-import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -49,21 +49,26 @@ export function ApartmentComplexImages() {
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {uuid} = useParams();
+    if (!uuid) {
+        return <Redirect to="/" />;
+    }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplex}>(APARTMENT_COMPLEX_IMAGES, {
         variables: {
             uuid
         }
     });
 
-    if (!uuid) {
-        return <Redirect to="/" />;
-    }
-
     if (loading) {
         return <p>Loading...</p>;
     }
     if (error || !data) {
         return <p>Error :(</p>;
+    }
+
+    if (!data.getApartmentComplex) {
+        return <Redirect to="/" />;
     }
 
     const images = data.getApartmentComplex.images;

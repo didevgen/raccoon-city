@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface PreviewComponentProps {
     uuid: string;
+    title?: string;
     mode: ImageType;
     url: string;
     children: (setOpen: (a: boolean) => void, open: boolean, params: any) => React.ReactNode;
@@ -35,6 +36,7 @@ export function ImagePreview(props: PreviewComponentProps) {
     return (
         <Card className={classes.card}>
             <CardHeader
+                title={props.title}
                 action={
                     <IconButton aria-label="settings">
                         <MoreVertIcon />
