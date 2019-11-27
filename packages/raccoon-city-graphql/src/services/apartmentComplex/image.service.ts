@@ -107,7 +107,6 @@ export async function uploadFileToFirebase(fileUrl: string, Firebase) {
     return downloadUrl;
 }
 
-
 export async function appendSingleImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
     const [fileUrl, imageUuid] = await saveImage(await filePromise);
@@ -126,7 +125,6 @@ export async function appendSingleImage(args, Firebase) {
         fs.unlinkSync(fileUrl);
     }
 }
-
 
 export async function appendVRImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
@@ -152,11 +150,10 @@ export async function appendVRImage(args, Firebase) {
     }
 }
 
-
 export async function appendImage(args, Firebase) {
     const {mode} = args;
     if ([ImageType.CHESS_GRID, ImageType.MOBILE, ImageType.SITE].includes(mode)) {
-       return await appendSingleImage(args, Firebase);
+        return await appendSingleImage(args, Firebase);
     } else if ([ImageType.HALF_VR, ImageType.VR].includes(mode)) {
         return await appendVRImage(args, Firebase);
     }
