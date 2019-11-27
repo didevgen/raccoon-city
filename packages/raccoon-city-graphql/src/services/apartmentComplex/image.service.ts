@@ -117,7 +117,9 @@ export async function removeVRImage(params: RemoveImageParams) {
     await ApartmentComplexModel.findById(params.apartmentComplexId, (err, apartmentComplex) => {
         const images = apartmentComplex.images;
         // @ts-ignore
-        images[params.mode] = (<Array<PreviewImage>>images[params.mode]).filter(image => image.uuid !== params.imageUuid);
+        images[params.mode] = (<Array<PreviewImage>>images[params.mode]).filter(
+            (image) => image.uuid !== params.imageUuid
+        );
         apartmentComplex.images = images;
         apartmentComplex.save();
     });

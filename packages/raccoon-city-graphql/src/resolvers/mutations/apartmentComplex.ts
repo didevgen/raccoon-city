@@ -16,6 +16,6 @@ export const apartmentComplex = {
     },
     async deleteImage(parent, args, ctx: Context) {
         await removeImage(args, ctx.Firebase);
-        return 'Success'
+        return 'Success';
     }
 };

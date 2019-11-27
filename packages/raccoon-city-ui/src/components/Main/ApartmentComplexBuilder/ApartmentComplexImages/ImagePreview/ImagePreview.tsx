@@ -41,7 +41,7 @@ export function ImagePreview(props: PreviewComponentProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const menuOpen = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);
-    const [deleteImage, {loading, data}] = useMutation(DELETE_IMAGE, {
+    const [deleteImage] = useMutation(DELETE_IMAGE, {
         refetchQueries: [
             {
                 query: APARTMENT_COMPLEX_IMAGES,
