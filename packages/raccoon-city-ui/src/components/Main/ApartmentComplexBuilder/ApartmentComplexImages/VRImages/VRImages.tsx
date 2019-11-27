@@ -69,6 +69,7 @@ export function VRImages(props: PreviewComponentProps) {
                         <Grid item={true} xs={12} md={3} key={image.uuid}>
                             <ImagePreview
                                 uuid={props.uuid}
+                                imageUuid={image.uuid}
                                 mode={props.mode}
                                 url={image.previewImageUrl}
                                 title={image.name}

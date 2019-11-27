@@ -15,3 +15,9 @@ export const UPLOAD_FILE = gql`
         }
     }
 `;
+
+export const DELETE_IMAGE = gql`
+    mutation deleteImage($mode: String, $uuid: String, $imageId: String) {
+        deleteImage(mode: $mode, uuid: $uuid, imageId: $imageId)
+    }
+`;

@@ -25,6 +25,12 @@ export interface AppendPreviewImageParams extends AppendImageParams {
     previewImageUrl: string;
 }
 
+export interface RemoveImageParams {
+    apartmentComplexId: string;
+    imageUuid: string;
+    mode: ImageType;
+}
+
 function getFileExtension(fileName: string): string {
     return fileName.split('.').pop();
 }
@@ -67,13 +73,12 @@ async function addPreviewImage(params: AppendPreviewImageParams) {
     });
 }
 
-async function compressImage(fileUrl) {
-    const imageUuid = uuid();
-    const newFileName = `./uploadedFiles/${imageUuid}.jpg`;
+async function compressImage(fileUrl, originalName) {
+    const newFileName = `./uploadedFiles/${originalName}x320.jpg`;
     await sharp(fileUrl)
         .resize(320, 240)
         .toFile(newFileName);
-    return [newFileName, imageUuid, `${imageUuid}.jpg`];
+    return [newFileName, originalName, `${originalName}x320.jpg`];
 }
 
 export async function saveImage(file): Promise<string[]> {
@@ -108,13 +113,22 @@ export async function uploadFileToFirebase(fileUrl: string, Firebase, apartmentC
     return downloadUrl;
 }
 
-export async function deleteImageFromFirebase(imageUuid, Firebase) {
-    const bucket = Firebase.storage().bucket();
-    return await bucket.deleteFiles({
-        prefix: imageUuid
+export async function removeVRImage(params: RemoveImageParams) {
+    await ApartmentComplexModel.findById(params.apartmentComplexId, (err, apartmentComplex) => {
+        const images = apartmentComplex.images;
+        // @ts-ignore
+        images[params.mode] = (<Array<PreviewImage>>images[params.mode]).filter(image => image.uuid !== params.imageUuid);
+        apartmentComplex.images = images;
+        apartmentComplex.save();
     });
 }
 
+export async function deleteImageFromFirebase(imageUuid, Firebase, apartmentComplexUuid) {
+    const bucket = Firebase.storage().bucket();
+    return await bucket.deleteFiles({
+        prefix: `${apartmentComplexUuid}/${imageUuid}`
+    });
+}
 
 export async function appendSingleImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
@@ -138,10 +152,15 @@ export async function appendSingleImage(args, Firebase) {
 export async function appendVRImage(args, Firebase) {
     const {file: filePromise, uuid: apartmentComplexId, mode} = args;
     const [fileUrl, imageUuid, newFileName] = await saveImage(await filePromise);
-    const [previewImageUrl, uuid, newPreviewName] = await compressImage(fileUrl);
+    const [previewImageUrl, uuid, newPreviewName] = await compressImage(fileUrl, imageUuid);
     try {
         const downloadUrl = await uploadFileToFirebase(fileUrl, Firebase, apartmentComplexId, newFileName);
-        const downloadPreviewUrl = await uploadFileToFirebase(previewImageUrl, Firebase, apartmentComplexId, newPreviewName);
+        const downloadPreviewUrl = await uploadFileToFirebase(
+            previewImageUrl,
+            Firebase,
+            apartmentComplexId,
+            newPreviewName
+        );
         await addPreviewImage({
             mode,
             downloadUrl,
@@ -166,5 +185,17 @@ export async function appendImage(args, Firebase) {
         return await appendSingleImage(args, Firebase);
     } else if ([ImageType.HALF_VR, ImageType.VR].includes(mode)) {
         return await appendVRImage(args, Firebase);
+    }
+}
+
+export async function removeImage(args, Firebase) {
+    const {mode} = args;
+    if ([ImageType.HALF_VR, ImageType.VR].includes(mode)) {
+        await removeVRImage({
+            apartmentComplexId: args.uuid,
+            imageUuid: args.imageId,
+            mode: args.mode
+        });
+        await deleteImageFromFirebase(args.imageId, Firebase, args.uuid);
     }
 }
