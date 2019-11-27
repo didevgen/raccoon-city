@@ -8,6 +8,10 @@ import {Pannellum} from 'pannellum-react';
 import React, {Fragment, useState} from 'react';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
+import {ImageType} from '../../../../shared/types/apartmentComplex.types';
+import {useMutation} from '@apollo/react-hooks';
+import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -17,11 +21,28 @@ const EditorContainer = styled.div`
 export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
     open: boolean;
+    downloadLink?: string;
+    params: {
+        uuid: string;
+        mode: ImageType;
+    };
 }
 
-export function VRDialog({setOpen, open}: ImageDialogProps) {
+export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps) {
     const [image, setImage] = useState();
+    const [previewUrl, setPreviewUrl] = useState(downloadLink);
+    const {uuid, mode} = params;
 
+    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE, {
+        refetchQueries: [
+            {
+                query: APARTMENT_COMPLEX_IMAGES,
+                variables: {
+                    uuid
+                }
+            }
+        ]
+    });
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
@@ -29,31 +50,40 @@ export function VRDialog({setOpen, open}: ImageDialogProps) {
 
     const handleDrop = (dropped: any) => {
         setImage(dropped);
+        const reader = new FileReader();
+        reader.readAsDataURL(dropped);
+
+        reader.onloadend = (e) => {
+            setPreviewUrl(reader.result as string);
+        };
     };
 
-    const onSave = async () => {};
+    const onSave = async () => {
+        await uploadFile({
+            variables: {
+                file: image,
+                uuid,
+                mode
+            }
+        });
+    };
 
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
             <DialogContent>
-                {!image && <StyledDropzone onDrop={handleDrop} />}
-                {image && (
+                {!previewUrl && <StyledDropzone onDrop={handleDrop} />}
+                {previewUrl && (
                     <Fragment>
                         <EditorContainer>
                             <Pannellum
                                 width="100%"
                                 height="500px"
-                                image={
-                                    'https://firebasestorage.googleapis.com/v0/b/raccoon-city-74eff.appspot.com/o/%D0%A1%D0%A3_360.jpg?alt=media&token=bad8197f-441b-4832-a117-39f7ff1e9733'
-                                }
+                                image={previewUrl}
                                 pitch={10}
                                 yaw={180}
                                 hfov={110}
                                 autoLoad={true}
-                                onLoad={() => {
-                                    console.log('panorama loaded');
-                                }}
                             />
                         </EditorContainer>
                     </Fragment>

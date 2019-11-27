@@ -15,3 +15,10 @@ export const NamedImageSchema = new Schema({
     name: {type: Schema.Types.String, required: true},
     downloadUrl: {type: Schema.Types.String, required: true}
 });
+
+export const PreviewImageSchema = new Schema({
+    uuid: {type: Schema.Types.String, required: true},
+    name: {type: Schema.Types.String, required: true},
+    downloadUrl: {type: Schema.Types.String, required: true},
+    previewImageUrl: {type: Schema.Types.String, required: true}
+});

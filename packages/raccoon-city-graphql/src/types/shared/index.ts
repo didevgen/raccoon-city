@@ -11,3 +11,7 @@ export interface SingleImage {
 export interface NamedImage extends SingleImage {
     name: string;
 }
+
+export interface PreviewImage extends NamedImage {
+    previewImageUrl: string;
+}

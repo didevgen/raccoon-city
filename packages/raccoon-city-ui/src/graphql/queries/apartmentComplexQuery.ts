@@ -61,11 +61,13 @@ export const APARTMENT_COMPLEX_IMAGES = gql`
                     uuid
                     downloadUrl
                     name
+                    previewImageUrl
                 }
                 HALF_VR {
                     uuid
                     downloadUrl
                     name
+                    previewImageUrl
                 }
             }
         }

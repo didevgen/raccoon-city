@@ -7,6 +7,10 @@ export interface NamedImage extends SingleImage {
     name: string;
 }
 
+export interface PreviewImage extends NamedImage {
+    previewImageUrl: string;
+}
+
 export interface City {
     key: string;
     displayName: string;
@@ -41,8 +45,8 @@ export interface ApartmentComplexImages {
     SITE?: SingleImage;
     MOBILE?: SingleImage;
     PHOTO?: NamedImage[];
-    VR?: NamedImage[];
-    HALF_VR?: NamedImage[];
+    VR?: PreviewImage[];
+    HALF_VR?: PreviewImage[];
 }
 
 export interface ApartmentComplexType {

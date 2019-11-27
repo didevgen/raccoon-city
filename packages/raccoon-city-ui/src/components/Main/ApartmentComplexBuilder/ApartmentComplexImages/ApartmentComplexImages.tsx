@@ -7,11 +7,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment, useState} from 'react';
-import {useParams} from 'react-router';
+import {useParams, Redirect} from 'react-router';
 import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {VRImages} from './VRImages/VRImages';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,12 +49,15 @@ export function ApartmentComplexImages() {
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {uuid} = useParams();
-
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplex}>(APARTMENT_COMPLEX_IMAGES, {
         variables: {
             uuid
         }
     });
+
+    if (!uuid) {
+        return <Redirect to="/" />;
+    }
 
     if (loading) {
         return <p>Loading...</p>;
@@ -87,7 +91,7 @@ export function ApartmentComplexImages() {
                         <MainApartmentComplexImages images={images} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <VRImages />
+                        <VRImages uuid={uuid} images={images.VR || []} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         Item Three

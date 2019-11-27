@@ -37,12 +37,18 @@ type NamedImage {
     name: String
 }
 
+type PreviewImage {
+    uuid: String
+    downloadUrl: String
+    name: String
+    previewImageUrl: String
+}
 type ApartmentComplexImage {
     CHESS_GRID: SingleImage
     SITE: SingleImage
     MOBILE: SingleImage
-    VR: [NamedImage]
-    HALF_VR: [NamedImage]
+    VR: [PreviewImage]
+    HALF_VR: [PreviewImage]
     PHOTO: [NamedImage]
 }
 

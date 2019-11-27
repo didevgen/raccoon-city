@@ -1,15 +1,15 @@
 import * as mongoose from 'mongoose';
 import {Schema, Document} from 'mongoose';
-import {KeyDisplayName, NamedImage, SingleImage} from '../../types/shared';
-import {KeyDisplayNameSchema, NamedImageSchema, SingleImageSchema} from './shared';
+import {KeyDisplayName, NamedImage, PreviewImage, SingleImage} from '../../types/shared';
+import {KeyDisplayNameSchema, NamedImageSchema, SingleImageSchema, PreviewImageSchema} from './shared';
 
 export interface ApartmentComplexImages {
     CHESS_GRID?: SingleImage;
     SITE?: SingleImage;
     MOBILE?: SingleImage;
     PHOTO?: NamedImage[];
-    VR?: NamedImage[];
-    HALF_VR?: NamedImage[];
+    VR?: PreviewImage[];
+    HALF_VR?: PreviewImage[];
 }
 
 export interface ApartmentComplex extends Document {
@@ -31,8 +31,8 @@ const imagesSchema: Schema = new Schema({
     SITE: {type: SingleImageSchema},
     MOBILE: {type: SingleImageSchema},
     PHOTO: {type: [NamedImageSchema]},
-    VR: {type: [NamedImageSchema]},
-    HALF_VR: {type: [NamedImageSchema]}
+    VR: {type: [PreviewImageSchema]},
+    HALF_VR: {type: [PreviewImageSchema]}
 });
 const ApartmentComplexSchema: Schema = new Schema({
     type: {type: KeyDisplayNameSchema, required: true},
@@ -46,7 +46,8 @@ const ApartmentComplexSchema: Schema = new Schema({
     beginDate: {type: Schema.Types.String, required: true},
     endDate: {type: Schema.Types.String, required: true},
     images: {
-        type: imagesSchema, default: () => {
+        type: imagesSchema,
+        default: () => {
             return {};
         }
     }
