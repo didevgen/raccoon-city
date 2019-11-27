@@ -7,12 +7,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment, useState} from 'react';
-import {useParams, Redirect} from 'react-router';
+import {Redirect, useParams} from 'react-router';
 import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {VRImages} from './VRImages/VRImages';
-import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;

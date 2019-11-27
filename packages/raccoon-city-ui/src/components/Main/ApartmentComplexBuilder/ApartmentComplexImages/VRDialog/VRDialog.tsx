@@ -33,7 +33,7 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid, mode} = params;
 
-    const [uploadFile, {data: file}] = useMutation(UPLOAD_FILE, {
+    const [uploadFile] = useMutation(UPLOAD_FILE, {
         refetchQueries: [
             {
                 query: APARTMENT_COMPLEX_IMAGES,
