@@ -28,6 +28,12 @@ export interface ImageDialogProps {
     };
 }
 
+const panoramaProps = {
+    haov: 180,
+    minYaw: -90,
+    maxYaw: 90
+};
+
 export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
@@ -67,7 +73,7 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
             }
         });
     };
-
+    const additionalProps = mode === ImageType.HALF_VR ? panoramaProps : {};
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
@@ -84,6 +90,7 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
                                 yaw={180}
                                 hfov={110}
                                 autoLoad={true}
+                                {...additionalProps}
                             />
                         </EditorContainer>
                     </Fragment>

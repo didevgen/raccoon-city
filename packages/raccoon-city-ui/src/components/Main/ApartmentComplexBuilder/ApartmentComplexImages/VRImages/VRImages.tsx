@@ -11,10 +11,12 @@ import {VRDialog} from '../VRDialog/VRDialog';
 interface PreviewComponentProps {
     uuid: string;
     images: PreviewImage[];
+    mode: ImageType;
 }
 
 interface NewVRImageProps {
     uuid: string;
+    mode: ImageType;
 }
 
 const ButtonContainer = styled.div`
@@ -36,7 +38,7 @@ const StyledFab = styled(Fab)`
     }
 `;
 
-function NewVRImage({uuid}: NewVRImageProps) {
+function NewVRImage({uuid, mode}: NewVRImageProps) {
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -50,7 +52,7 @@ function NewVRImage({uuid}: NewVRImageProps) {
             >
                 <AddIcon />
             </StyledFab>
-            <VRDialog setOpen={setOpen} open={open} params={{uuid, mode: ImageType.VR}} />
+            <VRDialog setOpen={setOpen} open={open} params={{uuid, mode}} />
         </ButtonContainer>
     );
 }
@@ -60,12 +62,12 @@ export function VRImages(props: PreviewComponentProps) {
         <Fragment>
             <Grid container={true} spacing={3} alignItems="center">
                 <Grid item={true} xs={12} md={3}>
-                    <NewVRImage uuid={props.uuid} />
+                    <NewVRImage uuid={props.uuid} mode={props.mode} />
                 </Grid>
                 {props.images.map((image) => {
                     return (
                         <Grid item={true} xs={12} md={3} key={image.uuid}>
-                            <ImagePreview uuid={props.uuid} mode={ImageType.VR} url={image.previewImageUrl}>
+                            <ImagePreview uuid={props.uuid} mode={props.mode} url={image.previewImageUrl}>
                                 {(toggle: (a: boolean) => void, state: boolean, params: any) => {
                                     return (
                                         <VRDialog

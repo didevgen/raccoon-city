@@ -12,6 +12,7 @@ import {ApartmentComplex} from '../../../../../../raccoon-city-graphql/src/db/mo
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {VRImages} from './VRImages/VRImages';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -90,10 +91,10 @@ export function ApartmentComplexImages() {
                         <MainApartmentComplexImages images={images} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <VRImages uuid={uuid} images={images.VR || []} />
+                        <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        Item Three
+                        <VRImages uuid={uuid} images={images.HALF_VR || []} mode={ImageType.HALF_VR} />
                     </TabPanel>
                     <TabPanel value={value} index={3}>
                         Item 4
