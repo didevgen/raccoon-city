@@ -3,4 +3,5 @@ packages/raccoon-city-ui/node_modules
 packages/raccoon-city-graphql/node_modules
 packages/raccoon-city-graphql/dist
 packages/raccoon-city-ui/dist
+packages/raccoon-city-ui/.env
 .idea
