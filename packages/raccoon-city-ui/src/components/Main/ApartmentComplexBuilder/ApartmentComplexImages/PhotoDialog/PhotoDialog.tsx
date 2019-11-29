@@ -7,7 +7,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 // @ts-ignore
-import {Pannellum} from 'pannellum-react';
 import React, {Fragment, useState} from 'react';
 import styled from 'styled-components';
 import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
@@ -31,13 +30,15 @@ export interface ImageDialogProps {
     };
 }
 
-const panoramaProps = {
-    haov: 180,
-    minYaw: -90,
-    maxYaw: 90
-};
+const ImageContainer = styled.div`
+    max-width: 720px;
+    align-self: center;
+`;
+const StyledImage = styled.img`
+    max-width: 100%;
+`;
 
-export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps) {
+export function PhotoDialog({setOpen, open, params, downloadLink}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [name, setName] = useState();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
@@ -56,6 +57,7 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
 
     const handleClose = () => {
         setImage(undefined);
+        setPreviewUrl(undefined);
         setOpen(false);
     };
 
@@ -80,7 +82,6 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
         });
         handleClose();
     };
-    const additionalProps = mode === ImageType.HALF_VR ? panoramaProps : {};
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
@@ -89,18 +90,9 @@ export function VRDialog({setOpen, open, params, downloadLink}: ImageDialogProps
                 {previewUrl && (
                     <Fragment>
                         <EditorContainer>
-                            <div>
-                                <Pannellum
-                                    width="100%"
-                                    height="500px"
-                                    image={previewUrl}
-                                    pitch={10}
-                                    yaw={180}
-                                    hfov={110}
-                                    autoLoad={true}
-                                    {...additionalProps}
-                                />
-                            </div>
+                            <ImageContainer>
+                                <StyledImage src={previewUrl} />
+                            </ImageContainer>
                             <div>
                                 <TextField
                                     label="Название"

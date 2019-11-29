@@ -13,6 +13,7 @@ import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentCom
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {VRImages} from './VRImages/VRImages';
+import {Photos} from './Photos/Photos';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -102,7 +103,7 @@ export function ApartmentComplexImages() {
                         <VRImages uuid={uuid} images={images.HALF_VR || []} mode={ImageType.HALF_VR} />
                     </TabPanel>
                     <TabPanel value={value} index={3}>
-                        Item 4
+                        <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
                     </TabPanel>
                 </div>
             </Container>

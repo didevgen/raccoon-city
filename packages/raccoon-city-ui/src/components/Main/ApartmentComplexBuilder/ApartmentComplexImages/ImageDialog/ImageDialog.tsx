@@ -55,12 +55,6 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
         setOpen(false);
     };
 
-    if (file) {
-        setTimeout(() => {
-            handleClose();
-        });
-    }
-
     const handleDrop = (dropped: any) => {
         setImage(dropped);
     };
@@ -77,6 +71,7 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
                     mode
                 }
             });
+            handleClose();
         }
     };
     return (
