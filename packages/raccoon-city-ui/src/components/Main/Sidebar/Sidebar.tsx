@@ -12,6 +12,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import {useTheme} from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 interface SidebarProps {
     open: boolean;
@@ -44,12 +45,12 @@ export function Sidebar({open, handleDrawerClose, drawerStyles}: SidebarProps) {
             </div>
             <Divider />
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
+                <Link to="/">
+                    <ListItem button>
+                        <ListItemIcon>{<MailIcon />}</ListItemIcon>
+                        <ListItemText primary="ApartmentComplex" />
                     </ListItem>
-                ))}
+                </Link>
             </List>
             <Divider />
             <List>
