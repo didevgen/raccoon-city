@@ -2,9 +2,9 @@ import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import * as React from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {FabButtonContainer, StyledFab} from '../../shared/components/styled';
+import {FabButtonContainer, StyledFab, StyledLink} from '../../shared/components/styled';
 
 const EmptyHouseWrapper = styled.div`
     display: flex;
@@ -24,11 +24,11 @@ export function AddHouseButton() {
     const {uuid} = useParams();
     return (
         <FabButtonContainer>
-            <Link to={`/apartmentComplex/${uuid}/house/new`}>
+            <StyledLink to={`/apartmentComplex/${uuid}/house/new`}>
                 <StyledFab color="secondary" aria-label="add">
                     <AddIcon />
                 </StyledFab>
-            </Link>
+            </StyledLink>
         </FabButtonContainer>
     );
 }
@@ -41,12 +41,12 @@ function EmptyHouseList() {
                 У этого жилищного комлпекса еще нет домов. Желаете создать?
             </Typography>
             <div>
-                <Link to={`/apartmentComplex/${uuid}/house/new`}>
+                <StyledLink to={`/apartmentComplex/${uuid}/house/new`}>
                     <Fab variant="extended" size="medium" color="primary" aria-label="add">
                         <StyledAddIcon />
                         Создать
                     </Fab>
-                </Link>
+                </StyledLink>
             </div>
         </EmptyHouseWrapper>
     );
