@@ -2,43 +2,29 @@ import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {KeyDisplayName} from '../../types/shared';
 import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
-import {House} from './house';
 
-export interface ApartmentComplex extends Document {
-    type: KeyDisplayName;
+export interface House extends Document {
     name: string;
-    city: KeyDisplayName;
-    district: KeyDisplayName;
     class: KeyDisplayName;
     levels: number;
-    sections: number;
     price: number;
     beginDate: string;
     endDate: string;
-    houses: House[];
+    apartmentComplex: string;
     images: ApartmentComplexImages;
 }
 
-const ApartmentComplexSchema: Schema = new Schema({
-    type: {type: KeyDisplayNameSchema, required: true},
+const HouseSchema: Schema = new Schema({
     name: {type: Schema.Types.String, required: true},
-    city: {type: KeyDisplayNameSchema, required: true},
-    district: {type: KeyDisplayNameSchema, required: true},
     class: {type: KeyDisplayNameSchema, required: true},
     levels: {type: Schema.Types.Number, required: true},
-    sections: {type: Schema.Types.Number, required: true},
     price: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String, required: true},
     endDate: {type: Schema.Types.String, required: true},
-    houses: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'House',
-            default: () => {
-                return [];
-            }
-        }
-    ],
+    apartmentComplex: {
+        type: Schema.Types.ObjectId,
+        ref: 'ApartmentComplex'
+    },
     images: {
         type: imagesSchema,
         default: () => {
@@ -47,4 +33,4 @@ const ApartmentComplexSchema: Schema = new Schema({
     }
 });
 
-export default mongoose.model<ApartmentComplex>('ApartmentComplex', ApartmentComplexSchema);
+export default mongoose.model<House>('House', HouseSchema);

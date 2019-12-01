@@ -1,4 +1,5 @@
 import {Schema} from 'mongoose';
+import {NamedImage, PreviewImage, SingleImage} from 'shared';
 
 export const KeyDisplayNameSchema = new Schema({
     key: {type: Schema.Types.String, required: true},
@@ -22,3 +23,21 @@ export const PreviewImageSchema = new Schema({
     downloadUrl: {type: Schema.Types.String, required: true},
     previewImageUrl: {type: Schema.Types.String, required: true}
 });
+
+export const imagesSchema: Schema = new Schema({
+    CHESS_GRID: {type: SingleImageSchema},
+    SITE: {type: SingleImageSchema},
+    MOBILE: {type: SingleImageSchema},
+    PHOTO: {type: [NamedImageSchema]},
+    VR: {type: [PreviewImageSchema]},
+    HALF_VR: {type: [PreviewImageSchema]}
+});
+
+export interface ApartmentComplexImages {
+    CHESS_GRID?: SingleImage;
+    SITE?: SingleImage;
+    MOBILE?: SingleImage;
+    PHOTO?: NamedImage[];
+    VR?: PreviewImage[];
+    HALF_VR?: PreviewImage[];
+}

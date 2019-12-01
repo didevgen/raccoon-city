@@ -1,0 +1,14 @@
+input HouseInput {
+    name: String
+    class: KeyDisplayNameInput
+    levels: Int
+    price: Float
+    beginDate: String
+    endDate: String
+}
+
+type Mutation {
+    createHouse(apartmentComplexId: String, houseData: HouseInput): ApartmentComplex
+}
+
+
