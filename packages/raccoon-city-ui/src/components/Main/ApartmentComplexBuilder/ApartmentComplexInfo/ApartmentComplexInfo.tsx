@@ -14,12 +14,12 @@ import {Fragment, useState} from 'react';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import {APARTMENT_COMPLEX_IMAGES} from '../../../../graphql/queries/apartmentComplexQuery';
+import {StyledLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {ApartmentComplexData} from './ApartmentComplexData/ApartmentComplexData';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import {StyledLink} from '../../../shared/components/styled';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -95,16 +95,16 @@ export function ApartmentComplexInfo() {
                     <Grid item={true} xs={3}>
                         <Paper>
                             <List component="nav" aria-label="main mailbox folders">
-                                <ListItem button={true}>
-                                    <StyledLink to={`${url}`}>
+                                <StyledLink to={`${url}`}>
+                                    <ListItem button={true}>
                                         <ListItemText primary="Информация" />
-                                    </StyledLink>
-                                </ListItem>
-                                <ListItem button={true}>
-                                    <StyledLink to={`${url}/houses`}>
+                                    </ListItem>
+                                </StyledLink>
+                                <StyledLink to={`${url}/houses`}>
+                                    <ListItem button={true}>
                                         <ListItemText primary="Дома" />
-                                    </StyledLink>
-                                </ListItem>
+                                    </ListItem>
+                                </StyledLink>
                             </List>
                         </Paper>
                     </Grid>
