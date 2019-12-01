@@ -7,6 +7,7 @@ import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
 import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
+import {HouseBuilder} from './HouseBuilder/HouseBuilder';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -40,6 +41,9 @@ export function Main() {
                     </Route>
                     <Route path="/apartmentComplex/:uuid/overview">
                         <ApartmentComplexInfo />
+                    </Route>
+                    <Route exact={true} path="/apartmentComplex/:uuid/house/new">
+                        <HouseBuilder />
                     </Route>
                     <Route path="*">
                         <ApartmentComplexList />

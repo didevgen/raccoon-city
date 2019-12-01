@@ -2,7 +2,6 @@ import {Fab} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import * as React from 'react';
-import {Fragment} from 'react';
 import styled from 'styled-components';
 import {ImageType, PreviewImage} from '../../../../shared/types/apartmentComplex.types';
 import {ImagePreview} from '../ImagePreview/ImagePreview';
@@ -57,36 +56,34 @@ function NewVRImage({uuid, mode}: NewVRImageProps) {
 
 export function VRImages(props: PreviewComponentProps) {
     return (
-        <Fragment>
-            <Grid container={true} spacing={2} alignItems="center">
-                <Grid item={true} xs={12} md={3}>
-                    <NewVRImage uuid={props.uuid} mode={props.mode} />
-                </Grid>
-                {props.images.map((image) => {
-                    return (
-                        <Grid item={true} xs={12} md={3} key={image.uuid}>
-                            <ImagePreview
-                                uuid={props.uuid}
-                                imageUuid={image.uuid}
-                                mode={props.mode}
-                                url={image.previewImageUrl}
-                                title={image.name}
-                            >
-                                {(toggle: (a: boolean) => void, state: boolean, params: any) => {
-                                    return (
-                                        <VRDialog
-                                            setOpen={toggle}
-                                            open={state}
-                                            params={params}
-                                            downloadLink={image.downloadUrl}
-                                        />
-                                    );
-                                }}
-                            </ImagePreview>
-                        </Grid>
-                    );
-                })}
+        <Grid container={true} spacing={2} alignItems="center">
+            <Grid item={true} xs={12} md={3}>
+                <NewVRImage uuid={props.uuid} mode={props.mode} />
             </Grid>
-        </Fragment>
+            {props.images.map((image) => {
+                return (
+                    <Grid item={true} xs={12} md={3} key={image.uuid}>
+                        <ImagePreview
+                            uuid={props.uuid}
+                            imageUuid={image.uuid}
+                            mode={props.mode}
+                            url={image.previewImageUrl}
+                            title={image.name}
+                        >
+                            {(toggle: (a: boolean) => void, state: boolean, params: any) => {
+                                return (
+                                    <VRDialog
+                                        setOpen={toggle}
+                                        open={state}
+                                        params={params}
+                                        downloadLink={image.downloadUrl}
+                                    />
+                                );
+                            }}
+                        </ImagePreview>
+                    </Grid>
+                );
+            })}
+        </Grid>
     );
 }

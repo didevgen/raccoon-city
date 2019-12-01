@@ -44,7 +44,7 @@ export function ApartmentComplexForm() {
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
     if (apartmentComplex && apartmentComplex.createApartmentComplex) {
-        return <Redirect to={`/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/images`} />;
+        return <Redirect to={`/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview`} />;
     }
 
     if (loading || error) {
