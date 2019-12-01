@@ -39,6 +39,25 @@ export const APARTMENT_COMPLEX_DROPDOWNS = gql`
 export const APARTMENT_COMPLEX_IMAGES = gql`
     query getApartmentComplex($uuid: String!) {
         getApartmentComplex(uuid: $uuid) {
+            id
+            type {
+                displayName
+            }
+            name
+            city {
+                displayName
+            }
+            district {
+                displayName
+            }
+            class {
+                displayName
+            }
+            levels
+            sections
+            price
+            beginDate
+            endDate
             images {
                 CHESS_GRID {
                     uuid

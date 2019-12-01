@@ -42,7 +42,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                 title={props.name}
             />
             <CardActionArea>
-                <Link to={`/apartmentComplex/${props.id}/images`}>
+                <Link to={`/apartmentComplex/${props.id}/overview`}>
                     <CardMedia
                         className={classes.media}
                         image={props.imageUrl || apartmentComplexDefaultImage}

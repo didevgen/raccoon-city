@@ -6,7 +6,7 @@ import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList'
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
-import {ApartmentComplexImages} from './ApartmentComplexBuilder/ApartmentComplexImages/ApartmentComplexImages';
+import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -38,8 +38,8 @@ export function Main() {
                     <Route exact={true} path="/apartmentComplex/new">
                         <ApartmentComplexBuilder />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:uuid/images">
-                        <ApartmentComplexImages />
+                    <Route path="/apartmentComplex/:uuid/overview">
+                        <ApartmentComplexInfo />
                     </Route>
                     <Route path="*">
                         <ApartmentComplexList />
