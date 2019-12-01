@@ -39,7 +39,7 @@ export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
 
     const {uuid, mode} = params;
 
-    const [uploadFile, {data: file, loading}] = useMutation(UPLOAD_FILE, {
+    const [uploadFile, {loading}] = useMutation(UPLOAD_FILE, {
         refetchQueries: [
             {
                 query: APARTMENT_COMPLEX_IMAGES,
