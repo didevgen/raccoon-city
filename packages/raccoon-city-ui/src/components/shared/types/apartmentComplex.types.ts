@@ -1,3 +1,5 @@
+import {House} from './house.types';
+
 export interface SingleImage {
     uuid: string;
     downloadUrl: string;
@@ -22,7 +24,7 @@ export interface District {
     displayName: string;
 }
 
-interface KeyDisplayName {
+export interface KeyDisplayName {
     key: string;
     displayName: string;
 }
@@ -62,6 +64,7 @@ export interface ApartmentComplexType {
     beginDate: string;
     endDate: string;
     images: ApartmentComplexImages;
+    houses: House[];
 }
 
 export interface ApartmentComplexFormValues {

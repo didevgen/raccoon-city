@@ -80,7 +80,7 @@ export function ApartmentComplexInfo() {
         return <Redirect to="/" />;
     }
 
-    const {images, name} = data.getApartmentComplex;
+    const {images, name, houses} = data.getApartmentComplex;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -139,7 +139,7 @@ export function ApartmentComplexInfo() {
                                     </TabPanel>
                                 </Route>
                                 <Route path={`${path}/houses`}>
-                                    <HouseList />
+                                    <HouseList houses={houses} />
                                 </Route>
                             </Switch>
                         </div>

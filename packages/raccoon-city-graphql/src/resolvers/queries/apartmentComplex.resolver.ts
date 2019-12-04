@@ -5,6 +5,19 @@ export const apartmentComplex = {
         return ApartmentComplexModel.find({});
     },
     getApartmentComplex: async (parent, {uuid}) => {
-        return ApartmentComplexModel.findById(uuid);
+        const apartmentComplexData = await ApartmentComplexModel.findById(uuid)
+            .lean()
+            .exec();
+        return {
+            ...apartmentComplexData,
+            houses: async () => {
+                if (apartmentComplexData) {
+                    const data = await ApartmentComplexModel.findOne(apartmentComplexData).populate('houses');
+                    return data.houses || [];
+                } else {
+                    return [];
+                }
+            }
+        };
     }
 };

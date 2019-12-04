@@ -11,6 +11,7 @@ type ApartmentComplex {
     beginDate: String
     endDate: String
     images: ApartmentComplexImage
+    houses: [House]
 }
 
 input ApartmentComplexInput {

@@ -58,6 +58,41 @@ export const APARTMENT_COMPLEX_IMAGES = gql`
             price
             beginDate
             endDate
+            houses {
+                id
+                name
+                images {
+                    CHESS_GRID {
+                        uuid
+                        downloadUrl
+                    }
+                    SITE {
+                        uuid
+                        downloadUrl
+                    }
+                    MOBILE {
+                        uuid
+                        downloadUrl
+                    }
+                    PHOTO {
+                        uuid
+                        downloadUrl
+                        name
+                    }
+                    VR {
+                        uuid
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                    HALF_VR {
+                        uuid
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                }
+            }
             images {
                 CHESS_GRID {
                     uuid

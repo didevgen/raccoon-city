@@ -16,11 +16,13 @@ export interface House extends Document {
 
 const HouseSchema: Schema = new Schema({
     name: {type: Schema.Types.String, required: true},
-    class: {type: KeyDisplayNameSchema, required: true},
-    levels: {type: Schema.Types.Number, required: true},
+    class: {type: KeyDisplayNameSchema},
+    levels: {type: Schema.Types.Number},
     price: {type: Schema.Types.Number, required: true},
-    beginDate: {type: Schema.Types.String, required: true},
-    endDate: {type: Schema.Types.String, required: true},
+    beginDate: {type: Schema.Types.String},
+    address: {type: Schema.Types.String},
+    parking: {type: Schema.Types.Boolean},
+    endDate: {type: Schema.Types.String},
     apartmentComplex: {
         type: Schema.Types.ObjectId,
         ref: 'ApartmentComplex'

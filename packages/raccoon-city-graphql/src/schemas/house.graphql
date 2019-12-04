@@ -1,10 +1,34 @@
+type House {
+    id: String
+    name: String
+    class: KeyDisplayName
+    levels: Int
+    price: Float
+    parking: Boolean
+    address: String
+    beginDate: String
+    endDate: String
+    images: HouseImages
+}
+
 input HouseInput {
     name: String
     class: KeyDisplayNameInput
     levels: Int
     price: Float
+    parking: Boolean
+    address: String
     beginDate: String
     endDate: String
+}
+
+type HouseImages {
+    CHESS_GRID: SingleImage
+    SITE: SingleImage
+    MOBILE: SingleImage
+    VR: [PreviewImage]
+    HALF_VR: [PreviewImage]
+    PHOTO: [NamedImage]
 }
 
 type Mutation {

@@ -1,6 +1,9 @@
+import {useMutation} from '@apollo/react-hooks';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
@@ -8,10 +11,22 @@ import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment} from 'react';
 import {Field, Form} from 'react-final-form';
+import styled from 'styled-components';
+import {CREATE_HOUSE} from '../../../../graphql/mutations/houseMutation';
+import {StyledLink} from '../../../shared/components/styled';
+import {getHouseDataVariables, HouseFormValues} from './utils';
 
 const required = (value: any) => (value ? undefined : 'Required');
 
+const StyledButton = styled(Button)`
+    &.MuiButtonBase-root {
+        margin-left: 4px;
+    }
+`;
+
 export function HouseForm() {
+    const [createHouse] = useMutation(CREATE_HOUSE);
+
     return (
         <Fragment>
             <Typography variant="h5" gutterBottom={true}>
@@ -62,15 +77,17 @@ export function HouseForm() {
                                     />
                                 )}
                             </Field>
-                            <Field name="parking" validate={required}>
+                            <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
                                 {(props) => (
                                     <FormControl component="fieldset">
                                         <FormLabel component="legend">Паркова</FormLabel>
                                         <RadioGroup
                                             defaultValue="false"
                                             aria-label="gender"
-                                            row
-                                            name="customized-radios"
+                                            row={true}
+                                            name={props.input.name}
+                                            value={props.input.value}
+                                            onChange={props.input.onChange}
                                         >
                                             <FormControlLabel value="true" control={<Radio />} label="Есть" />
                                             <FormControlLabel value="false" control={<Radio />} label="Нет" />
@@ -78,6 +95,30 @@ export function HouseForm() {
                                     </FormControl>
                                 )}
                             </Field>
+                            <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
+                                <Grid justify="flex-end" container={true} item={true} xs={6}>
+                                    <StyledLink to="/">
+                                        <StyledButton variant="outlined" size="large">
+                                            Отмена
+                                        </StyledButton>
+                                    </StyledLink>
+                                    <StyledButton
+                                        disabled={invalid}
+                                        onClick={async () => {
+                                            await createHouse({
+                                                variables: {
+                                                    houseData: getHouseDataVariables(values as HouseFormValues)
+                                                }
+                                            });
+                                        }}
+                                        variant="outlined"
+                                        color="primary"
+                                        size="large"
+                                    >
+                                        Далее
+                                    </StyledButton>
+                                </Grid>
+                            </Grid>
                         </Fragment>
                     );
                 }}
