@@ -39,4 +39,3 @@ extend type Query {
     getHouses(apartmentComplexId: String!): [House]
     getHouse(uuid: String!): House
 }
-

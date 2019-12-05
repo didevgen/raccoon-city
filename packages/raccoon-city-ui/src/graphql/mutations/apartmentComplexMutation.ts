@@ -1,7 +1,7 @@
 import {gql} from 'apollo-boost';
 
 export const CREATE_APARTMENT_COMPLEX = gql`
-    mutation createComplex($apartmentComplex: ApartmentComplexInput) {
+    mutation createComplex($apartmentComplex: ApartmentComplexInput!) {
         createApartmentComplex(apartmentComplex: $apartmentComplex) {
             id
         }
@@ -9,7 +9,7 @@ export const CREATE_APARTMENT_COMPLEX = gql`
 `;
 
 export const UPLOAD_FILE = gql`
-    mutation addImage($file: Upload!, $mode: String, $uuid: String, $name: String) {
+    mutation addImage($file: Upload!, $mode: String!, $uuid: String!, $name: String) {
         addImage(file: $file, mode: $mode, uuid: $uuid, name: $name) {
             downloadUrl
         }
@@ -17,7 +17,7 @@ export const UPLOAD_FILE = gql`
 `;
 
 export const DELETE_IMAGE = gql`
-    mutation deleteImage($mode: String, $uuid: String, $imageId: String) {
+    mutation deleteImage($mode: String!, $uuid: String!, $imageId: String!) {
         deleteImage(mode: $mode, uuid: $uuid, imageId: $imageId)
     }
 `;
