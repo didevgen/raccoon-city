@@ -32,7 +32,11 @@ type HouseImages {
 }
 
 type Mutation {
-    createHouse(apartmentComplexId: String, houseData: HouseInput): ApartmentComplex
+    createHouse(apartmentComplexId: String!, houseData: HouseInput!): ApartmentComplex
 }
 
+extend type Query {
+    getHouses(apartmentComplexId: String!): [House]
+    getHouse(uuid: String!): House
+}
 

@@ -13,7 +13,11 @@ export const apartmentComplex = {
             houses: async () => {
                 if (apartmentComplexData) {
                     const data = await ApartmentComplexModel.findOne(apartmentComplexData).populate('houses');
-                    return data.houses || [];
+                    if (data) {
+                        return data.houses || [];
+                    } else {
+                        return [];
+                    }
                 } else {
                     return [];
                 }

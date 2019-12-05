@@ -8,6 +8,7 @@ import {Header} from './Header/Header';
 import {Sidebar} from './Sidebar/Sidebar';
 import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {HouseBuilder} from './HouseBuilder/HouseBuilder';
+import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -41,6 +42,9 @@ export function Main() {
                     </Route>
                     <Route path="/apartmentComplex/:uuid/overview">
                         <ApartmentComplexInfo />
+                    </Route>
+                    <Route path="/apartmentComplex/:uuid/house/:houseUuid">
+                        <HouseInfo />
                     </Route>
                     <Route exact={true} path="/apartmentComplex/:uuid/house/new">
                         <HouseBuilder />

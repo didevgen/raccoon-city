@@ -1,8 +1,8 @@
 import {gql} from 'apollo-boost';
 
-export const ALL_APARTMENT_COMPLEXES = gql`
-    {
-        getAllApartmentComplexes {
+export const HOUSE_LIST = gql`
+    query getHouses($apartmentComplexId: String!) {
+        getHouses(apartmentComplexId: $apartmentComplexId) {
             id
             name
             images {
@@ -15,49 +15,13 @@ export const ALL_APARTMENT_COMPLEXES = gql`
     }
 `;
 
-export const APARTMENT_COMPLEX_DROPDOWNS = gql`
-    {
-        cities {
-            key
-            displayName
-            districts {
-                key
-                displayName
-            }
-        }
-        apartmentComplexClasses {
-            key
-            displayName
-        }
-        apartmentComplexTypes {
-            key
-            displayName
-        }
-    }
-`;
-
-export const APARTMENT_COMPLEX_INFO = gql`
-    query getApartmentComplex($uuid: String!) {
-        getApartmentComplex(uuid: $uuid) {
+export const HOUSE_INFO = gql`
+    query getHouse($uuid: String!) {
+        getHouse(uuid: $uuid) {
             id
-            type {
-                displayName
-            }
             name
-            city {
-                displayName
-            }
-            district {
-                displayName
-            }
-            class {
-                displayName
-            }
-            levels
-            sections
-            price
-            beginDate
-            endDate
+            address
+            parking
             images {
                 CHESS_GRID {
                     uuid

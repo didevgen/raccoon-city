@@ -13,14 +13,13 @@ import * as React from 'react';
 import {Fragment, useState} from 'react';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
-import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {StyledLink} from '../../../shared/components/styled';
-import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
-import {ApartmentComplexData} from './ApartmentComplexData/ApartmentComplexData';
-import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
-import {Photos} from './Photos/Photos';
-import {VRImages} from './VRImages/VRImages';
-import {HouseList} from '../../HouseList/HouseList';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
+import {Photos} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/Photos/Photos';
+import {VRImages} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/VRImages/VRImages';
+import {MainApartmentComplexImages} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/MainApartmentComplexImages/MainApartmentComplexImages';
+import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
+import {House} from '../../../shared/types/house.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -53,17 +52,18 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-export function ApartmentComplexInfo() {
+export function HouseInfo() {
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
-    const {uuid} = useParams();
+    const {houseUuid: uuid} = useParams();
     if (!uuid) {
         return <Redirect to="/" />;
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(APARTMENT_COMPLEX_INFO, {
+    const {loading, error, data} = useQuery<{getHouse: House}>(HOUSE_INFO, {
+        fetchPolicy: 'network-only',
         variables: {
             uuid
         }
@@ -76,11 +76,11 @@ export function ApartmentComplexInfo() {
         return <p>Error :(</p>;
     }
 
-    if (!data.getApartmentComplex) {
+    if (!data.getHouse) {
         return <Redirect to="/" />;
     }
 
-    const {images, name} = data.getApartmentComplex;
+    const {name, images} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -101,11 +101,6 @@ export function ApartmentComplexInfo() {
                                         <ListItemText primary="Информация" />
                                     </ListItem>
                                 </StyledLink>
-                                <StyledLink to={`${url}/houses`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Дома" />
-                                    </ListItem>
-                                </StyledLink>
                             </List>
                         </Paper>
                     </Grid>
@@ -123,7 +118,7 @@ export function ApartmentComplexInfo() {
                                         </Tabs>
                                     </AppBar>
                                     <TabPanel value={value} index={0}>
-                                        <ApartmentComplexData apartmentComplex={data.getApartmentComplex} />
+                                        {/*<ApartmentComplexData apartmentComplex={data.getApartmentComplex}/>*/}
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
                                         <MainApartmentComplexImages images={images} />
@@ -137,9 +132,6 @@ export function ApartmentComplexInfo() {
                                     <TabPanel value={value} index={4}>
                                         <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
                                     </TabPanel>
-                                </Route>
-                                <Route path={`${path}/houses`}>
-                                    <HouseList />
                                 </Route>
                             </Switch>
                         </div>

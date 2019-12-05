@@ -1,4 +1,3 @@
-import {useMutation} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,11 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import React, {Fragment, useState} from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import styled from 'styled-components';
-import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
-import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
-import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
-import {ImageType} from '../../../../shared/types/apartmentComplex.types';
+import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {MutationTuple} from '@apollo/react-hooks/lib/types';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -30,25 +28,17 @@ export interface ImageDialogProps {
         uuid: string;
         mode: ImageType;
     };
+    mutation: MutationTuple<any, any>;
 }
 
-export function ImageDialog({setOpen, open, params}: ImageDialogProps) {
+export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
 
     const {uuid, mode} = params;
 
-    const [uploadFile, {loading}] = useMutation(UPLOAD_FILE, {
-        refetchQueries: [
-            {
-                query: APARTMENT_COMPLEX_IMAGES,
-                variables: {
-                    uuid
-                }
-            }
-        ]
-    });
+    const [uploadFile, {loading}] = mutation;
     const editor = React.createRef<any>();
     const handleClose = () => {
         setImage(undefined);

@@ -7,6 +7,9 @@ import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {FabButtonContainer, StyledFab, StyledLink} from '../../shared/components/styled';
 import {House} from '../../shared/types/house.types';
+import {HousePreview} from '../HouseBuilder/HousePreview/HousePreview';
+import {useQuery} from '@apollo/react-hooks';
+import {HOUSE_LIST} from '../../../graphql/queries/houseQuery';
 
 const EmptyHouseWrapper = styled.div`
     display: flex;
@@ -54,25 +57,46 @@ function EmptyHouseList() {
     );
 }
 
-interface HouseListProps {
+interface HouseGridProps {
     houses: House[];
 }
 
-function HouseGrid({houses}: HouseListProps) {
+function HouseGrid({houses}: HouseGridProps) {
     return (
         <Grid container={true} spacing={2} alignItems="center">
-            <Grid item={true} xs={12} md={3}>
+            <Grid item={true} xs={12} md={4}>
                 <AddHouseButton />
             </Grid>
+            {houses.map((house) => {
+                return (
+                    <Grid item={true} xs={12} md={4} key={house.id}>
+                        <HousePreview house={house} />
+                    </Grid>
+                );
+            })}
         </Grid>
     );
 }
 
-export function HouseList(props: HouseListProps) {
-    const {houses} = props;
+export function HouseList() {
+    const {uuid} = useParams();
+    const {loading, error, data} = useQuery<{getHouses: House[]}>(HOUSE_LIST, {
+        variables: {
+            apartmentComplexId: uuid
+        }
+    });
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    if (error || !data) {
+        return <p>Error :(</p>;
+    }
+
+    const houses = data && data.getHouses;
     if (!houses || houses.length === 0) {
         return <EmptyHouseList />;
     } else {
-        return <HouseGrid {...props} />;
+        return <HouseGrid houses={houses} />;
     }
 }

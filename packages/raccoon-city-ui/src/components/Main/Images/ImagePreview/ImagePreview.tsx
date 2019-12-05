@@ -5,11 +5,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
-import {ImageType} from '../../../../shared/types/apartmentComplex.types';
-import {useMutation} from '@apollo/react-hooks';
-import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
-import {DELETE_IMAGE} from '../../../../../graphql/mutations/apartmentComplexMutation';
-import {CardHeaderWithMenu} from '../../../../shared/components/menus/CardHeaderWithMenu';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
+import {MutationTuple} from '@apollo/react-hooks';
+import {CardHeaderWithMenu} from '../../../shared/components/menus/CardHeaderWithMenu';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,6 +26,7 @@ interface PreviewComponentProps {
     imageUuid: string;
     title?: string;
     mode: ImageType;
+    deleteMutation: MutationTuple<any, any>;
     url: string;
     children: (setOpen: (a: boolean) => void, open: boolean, params: any) => React.ReactNode;
 }
@@ -35,16 +34,7 @@ interface PreviewComponentProps {
 export function ImagePreview(props: PreviewComponentProps) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [deleteImage] = useMutation(DELETE_IMAGE, {
-        refetchQueries: [
-            {
-                query: APARTMENT_COMPLEX_IMAGES,
-                variables: {
-                    uuid: props.uuid
-                }
-            }
-        ]
-    });
+    const [deleteImage] = props.deleteMutation;
 
     const handleRemove = async () => {
         await deleteImage({

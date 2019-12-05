@@ -1,5 +1,6 @@
 import {useMutation} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -11,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment} from 'react';
 import {Field, Form} from 'react-final-form';
+import {Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_HOUSE} from '../../../../graphql/mutations/houseMutation';
 import {StyledLink} from '../../../shared/components/styled';
@@ -25,7 +27,12 @@ const StyledButton = styled(Button)`
 `;
 
 export function HouseForm() {
-    const [createHouse] = useMutation(CREATE_HOUSE);
+    const [createHouse, {data, loading}] = useMutation(CREATE_HOUSE);
+    const {uuid} = useParams();
+
+    if (data) {
+        return <Redirect to={`/apartmentComplex/${uuid}/overview/houses`} />;
+    }
 
     return (
         <Fragment>
@@ -97,7 +104,7 @@ export function HouseForm() {
                             </Field>
                             <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
                                 <Grid justify="flex-end" container={true} item={true} xs={6}>
-                                    <StyledLink to="/">
+                                    <StyledLink to={`/apartmentComplex/${uuid}/overview/houses`}>
                                         <StyledButton variant="outlined" size="large">
                                             Отмена
                                         </StyledButton>
@@ -107,6 +114,7 @@ export function HouseForm() {
                                         onClick={async () => {
                                             await createHouse({
                                                 variables: {
+                                                    apartmentComplexId: uuid,
                                                     houseData: getHouseDataVariables(values as HouseFormValues)
                                                 }
                                             });
@@ -115,6 +123,7 @@ export function HouseForm() {
                                         color="primary"
                                         size="large"
                                     >
+                                        {loading && <CircularProgress size={30} thickness={5} />}
                                         Далее
                                     </StyledButton>
                                 </Grid>

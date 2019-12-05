@@ -11,7 +11,10 @@ import * as React from 'react';
 import {useParams} from 'react-router';
 import {apartmentComplexDefaultImage} from '../../../../../core/constants';
 import {ApartmentComplexImages, ImageType, SingleImage} from '../../../../shared/types/apartmentComplex.types';
-import {ImageDialog} from '../ImageDialog/ImageDialog';
+import {ImageDialog} from '../../../Images/ImageDialog/ImageDialog';
+import {useMutation} from '@apollo/react-hooks';
+import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import {APARTMENT_COMPLEX_INFO} from '../../../../../graphql/queries/apartmentComplexQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,6 +47,17 @@ function PreviewComponent(props: PreviewComponentProps) {
         downloadUrl: apartmentComplexDefaultImage
     }) as SingleImage;
 
+    const mutation = useMutation(UPLOAD_FILE, {
+        refetchQueries: [
+            {
+                query: APARTMENT_COMPLEX_INFO,
+                variables: {
+                    uuid: props.uuid
+                }
+            }
+        ]
+    });
+
     return (
         <Card className={classes.card}>
             <CardHeader
@@ -64,7 +78,12 @@ function PreviewComponent(props: PreviewComponentProps) {
                     <Typography variant="body2" color="textSecondary" component="p" />
                 </CardContent>
             </CardActionArea>
-            <ImageDialog setOpen={setOpen} open={open} params={{uuid: props.uuid, mode: props.mode.value}} />
+            <ImageDialog
+                mutation={mutation}
+                setOpen={setOpen}
+                open={open}
+                params={{uuid: props.uuid, mode: props.mode.value}}
+            />
         </Card>
     );
 }

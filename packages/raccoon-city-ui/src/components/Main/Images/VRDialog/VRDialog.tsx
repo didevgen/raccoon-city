@@ -1,4 +1,3 @@
-import {useMutation} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,12 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 // @ts-ignore
+import {Pannellum} from 'pannellum-react';
 import React, {Fragment, useState} from 'react';
 import styled from 'styled-components';
-import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
-import {APARTMENT_COMPLEX_IMAGES} from '../../../../../graphql/queries/apartmentComplexQuery';
-import {StyledDropzone} from '../../../../shared/components/dropzone/Dropzone';
-import {ImageType} from '../../../../shared/types/apartmentComplex.types';
+import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
+import {MutationTuple} from '@apollo/react-hooks/lib/types';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -28,36 +27,25 @@ export interface ImageDialogProps {
         uuid: string;
         mode: ImageType;
     };
+    mutation: MutationTuple<any, any>;
 }
 
-const ImageContainer = styled.div`
-    max-width: 720px;
-    align-self: center;
-`;
-const StyledImage = styled.img`
-    max-width: 100%;
-`;
+const panoramaProps = {
+    haov: 180,
+    minYaw: -90,
+    maxYaw: 90
+};
 
-export function PhotoDialog({setOpen, open, params, downloadLink}: ImageDialogProps) {
+export function VRDialog({setOpen, open, params, downloadLink, mutation}: ImageDialogProps) {
     const [image, setImage] = useState();
     const [name, setName] = useState();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid, mode} = params;
 
-    const [uploadFile, {loading}] = useMutation(UPLOAD_FILE, {
-        refetchQueries: [
-            {
-                query: APARTMENT_COMPLEX_IMAGES,
-                variables: {
-                    uuid
-                }
-            }
-        ]
-    });
+    const [uploadFile, {loading}] = mutation;
 
     const handleClose = () => {
         setImage(undefined);
-        setPreviewUrl(undefined);
         setOpen(false);
     };
 
@@ -82,6 +70,7 @@ export function PhotoDialog({setOpen, open, params, downloadLink}: ImageDialogPr
         });
         handleClose();
     };
+    const additionalProps = mode === ImageType.HALF_VR ? panoramaProps : {};
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
@@ -90,9 +79,18 @@ export function PhotoDialog({setOpen, open, params, downloadLink}: ImageDialogPr
                 {previewUrl && (
                     <Fragment>
                         <EditorContainer>
-                            <ImageContainer>
-                                <StyledImage src={previewUrl} />
-                            </ImageContainer>
+                            <div>
+                                <Pannellum
+                                    width="100%"
+                                    height="500px"
+                                    image={previewUrl}
+                                    pitch={10}
+                                    yaw={180}
+                                    hfov={110}
+                                    autoLoad={true}
+                                    {...additionalProps}
+                                />
+                            </div>
                             <div>
                                 <TextField
                                     label="Название"
