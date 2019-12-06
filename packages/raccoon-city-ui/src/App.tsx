@@ -8,7 +8,7 @@ import {client} from './core/apollo/client';
 const App: React.FC = () => {
     return (
         <ApolloProvider client={client}>
-            <Router basename={'/raccoon-city'}>
+            <Router basename={process.env.PUBLIC_URL}>
                 <Switch>
                     <Route path="/">
                         <Main />

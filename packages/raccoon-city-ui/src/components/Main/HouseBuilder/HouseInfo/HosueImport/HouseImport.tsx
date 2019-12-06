@@ -1,10 +1,10 @@
 import React from 'react';
 import {useDropzone} from 'react-dropzone';
-import {DropzoneContainer} from '../styled';
+import {DropzoneContainer} from '../../../../shared/components/styled';
 
-export function StyledDropzone(props: any) {
+function CsvDropzone(props: any) {
     const {getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({
-        accept: 'image/*',
+        accept: 'text/csv',
         onDrop: (acceptedFiles) => {
             props.onDrop(acceptedFiles[0]);
         }
@@ -18,4 +18,9 @@ export function StyledDropzone(props: any) {
             </DropzoneContainer>
         </div>
     );
+}
+export function HouseImport() {
+    const handleDrop = (file: any) => {};
+
+    return <CsvDropzone onDrop={handleDrop} />;
 }

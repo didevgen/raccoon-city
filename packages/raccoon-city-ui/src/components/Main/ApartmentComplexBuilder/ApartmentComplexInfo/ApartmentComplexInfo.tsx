@@ -21,6 +21,7 @@ import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApart
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import {HouseList} from '../../HouseList/HouseList';
+import {HouseImport} from '../../HouseBuilder/HouseInfo/HosueImport/HouseImport';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -64,6 +65,7 @@ export function ApartmentComplexInfo() {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(APARTMENT_COMPLEX_INFO, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             uuid
         }
@@ -106,6 +108,11 @@ export function ApartmentComplexInfo() {
                                         <ListItemText primary="Дома" />
                                     </ListItem>
                                 </StyledLink>
+                                <StyledLink to={`${url}/import`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Импорт помещений" />
+                                    </ListItem>
+                                </StyledLink>
                             </List>
                         </Paper>
                     </Grid>
@@ -140,6 +147,9 @@ export function ApartmentComplexInfo() {
                                 </Route>
                                 <Route path={`${path}/houses`}>
                                     <HouseList />
+                                </Route>
+                                <Route path={`${path}/import`}>
+                                    <HouseImport />
                                 </Route>
                             </Switch>
                         </div>
