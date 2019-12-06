@@ -29,7 +29,7 @@ export function AddHouseButton() {
     const {uuid} = useParams();
     return (
         <FabButtonContainer>
-            <StyledLink to={`/apartmentComplex/${uuid}/house/new`}>
+            <StyledLink to={`/apartmentComplex/${uuid}/create/house`}>
                 <StyledFab color="secondary" aria-label="add">
                     <AddIcon />
                 </StyledFab>
@@ -46,7 +46,7 @@ function EmptyHouseList() {
                 У этого жилищного комлпекса еще нет домов. Желаете создать?
             </Typography>
             <div>
-                <StyledLink to={`/apartmentComplex/${uuid}/house/new`}>
+                <StyledLink to={`/apartmentComplex/${uuid}/create/house`}>
                     <Fab variant="extended" size="medium" color="primary" aria-label="add">
                         <StyledAddIcon />
                         Создать

@@ -46,7 +46,7 @@ export function Main() {
                     <Route path="/apartmentComplex/:uuid/house/:houseUuid">
                         <HouseInfo />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:uuid/house/new">
+                    <Route exact={true} path="/apartmentComplex/:uuid/create/house">
                         <HouseBuilder />
                     </Route>
                     <Route path="*">
