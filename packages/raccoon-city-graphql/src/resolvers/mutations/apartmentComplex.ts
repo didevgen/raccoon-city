@@ -1,7 +1,7 @@
 import {Context} from '../../utils';
 import {ApartmentComplexInputArgs} from 'apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
-import {ApartmentComplexImageServiceFactory} from '../../services/image';
+import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
 
 function getFileExtension(fileName: string): string {
     return fileName.split('.').pop();

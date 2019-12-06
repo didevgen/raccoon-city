@@ -15,11 +15,11 @@ import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import {StyledLink} from '../../../shared/components/styled';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
-import {Photos} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/Photos/Photos';
-import {VRImages} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/VRImages/VRImages';
-import {MainApartmentComplexImages} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/MainApartmentComplexImages/MainApartmentComplexImages';
 import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
 import {House} from '../../../shared/types/house.types';
+import {MainHouseImages} from './MainHouseImages/MainHouseImages';
+import {VRImages} from './VRImages/VRImages';
+import {Photos} from './Photos/Photos';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -121,7 +121,7 @@ export function HouseInfo() {
                                         {/*<ApartmentComplexData apartmentComplex={data.getApartmentComplex}/>*/}
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
-                                        <MainApartmentComplexImages images={images} />
+                                        <MainHouseImages images={images} />
                                     </TabPanel>
                                     <TabPanel value={value} index={2}>
                                         <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />

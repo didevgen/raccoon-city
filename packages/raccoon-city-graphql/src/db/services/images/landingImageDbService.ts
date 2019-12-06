@@ -1,12 +1,12 @@
-import ApartmentComplexModel from '../../models/apartmentComplex';
 import {DataImageService} from '../dataImageService';
 import {ImageType} from '../../../services/image/imageService';
+import {Document, Model} from 'mongoose';
 
-export class ApartmentComplexLandingImageService implements DataImageService {
-    constructor(protected apartmentComplexId: string, private mode: ImageType) {}
+export class LandingImageDbService<T extends Document & {images: any}> implements DataImageService {
+    constructor(protected apartmentComplexId: string, private mode: ImageType, private dbModel: Model<T>) {}
 
     public async uploadImage(imageUuid: string, downloadUrl: string, previewUrl?: string): Promise<void> {
-        await ApartmentComplexModel.findById(this.apartmentComplexId, (err, apartmentComplex) => {
+        await this.dbModel.findById(this.apartmentComplexId, (err, apartmentComplex) => {
             const images = apartmentComplex.images ? apartmentComplex.images : {};
             // @ts-ignore
             images[this.mode] = {

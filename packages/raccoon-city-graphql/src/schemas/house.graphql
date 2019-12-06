@@ -33,6 +33,8 @@ type HouseImages {
 
 type Mutation {
     createHouse(apartmentComplexId: String!, houseData: HouseInput!): ApartmentComplex
+    addHouseImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
+    deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String
 }
 
 extend type Query {
