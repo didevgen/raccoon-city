@@ -21,3 +21,9 @@ export const DELETE_IMAGE = gql`
         deleteImage(mode: $mode, uuid: $uuid, imageId: $imageId)
     }
 `;
+
+export const UPLOAD_SPREADSHEET = gql`
+    mutation uploadApartmentComplexFile($file: Upload!, $uuid: String!) {
+        uploadApartmentComplexFile(file: $file, uuid: $uuid)
+    }
+`;

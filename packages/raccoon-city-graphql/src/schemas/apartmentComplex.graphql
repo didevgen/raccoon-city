@@ -63,6 +63,7 @@ type ImageType {
 type Mutation {
     createApartmentComplex(apartmentComplex: ApartmentComplexInput!): ApartmentComplex
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
+    uploadApartmentComplexFile(file: Upload!, uuid: String!): String
     deleteImage(mode: String!, uuid: String!, imageId: String!): String
 }
 

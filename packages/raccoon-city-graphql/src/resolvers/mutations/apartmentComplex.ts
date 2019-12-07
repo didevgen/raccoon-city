@@ -2,6 +2,7 @@ import {Context} from '../../utils';
 import {ApartmentComplexInputArgs} from 'apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
+import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
 
 function getFileExtension(fileName: string): string {
     return fileName.split('.').pop();
@@ -21,5 +22,9 @@ export const apartmentComplex = {
             .getImageService(ctx.Firebase, args.uuid)
             .removeImage(args.imageId);
         return 'Success';
+    },
+    async uploadApartmentComplexFile(parent, args, ctx: Context) {
+        const service = new ApartmentComplexSpreadsheetService(await args.file, args.uuid);
+        return JSON.stringify(await service.parse());
     }
 };

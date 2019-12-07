@@ -1,0 +1,8 @@
+export enum FlatStatus {
+    SOLD_OUT = 'SOLD_OUT',
+    FREE = 'FREE',
+    RESERVED = 'RESERVED',
+    BOOKED = 'BOOKED',
+    UNAVAILABLE = 'UNAVAILABLE',
+    DOCUMENTS_IN_PROGRESS = 'DOCUMENTS_IN_PROGRESS'
+}
