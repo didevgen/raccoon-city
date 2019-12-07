@@ -1,7 +1,7 @@
 import {Document, Model} from 'mongoose';
-import {PreviewImage} from 'shared';
 import {ImageType} from '../../../services/image/imageService';
 import {DataImageService} from '../dataImageService';
+import {PreviewImage} from '../../../types/shared';
 
 export class VRImageDbService<T extends Document & {images: any}> implements DataImageService {
     constructor(

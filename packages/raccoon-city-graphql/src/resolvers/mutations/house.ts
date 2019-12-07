@@ -1,8 +1,8 @@
-import {HouseDataInputArgs} from 'house';
-import HouseModel, {House} from '../../db/models/house';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
-import {Context} from '../../utils';
+import HouseModel, {House} from '../../db/models/house';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
+import {HouseDataInputArgs} from '../../types/house';
+import {Context} from '../../utils';
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {

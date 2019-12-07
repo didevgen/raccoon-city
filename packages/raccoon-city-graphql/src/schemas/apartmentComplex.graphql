@@ -60,10 +60,25 @@ type ImageType {
     value: String
 }
 
+type ParsedFlat {
+    house: String
+    flatNumber: String
+    price: String
+    level: String
+    dormitory: String
+    area: String
+    status: String
+    roomAmount: String
+}
+type ParsedApartmentComplex {
+    house: String!
+    flats: [ParsedFlat]
+}
+
 type Mutation {
     createApartmentComplex(apartmentComplex: ApartmentComplexInput!): ApartmentComplex
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
-    uploadApartmentComplexFile(file: Upload!, uuid: String!): String
+    uploadApartmentComplexFile(file: Upload!): [ParsedApartmentComplex]
     deleteImage(mode: String!, uuid: String!, imageId: String!): String
 }
 

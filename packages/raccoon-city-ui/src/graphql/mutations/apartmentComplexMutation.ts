@@ -23,7 +23,18 @@ export const DELETE_IMAGE = gql`
 `;
 
 export const UPLOAD_SPREADSHEET = gql`
-    mutation uploadApartmentComplexFile($file: Upload!, $uuid: String!) {
-        uploadApartmentComplexFile(file: $file, uuid: $uuid)
+    mutation uploadApartmentComplexFile($file: Upload!) {
+        uploadApartmentComplexFile(file: $file) {
+            house
+            flats {
+                flatNumber
+                price
+                level
+                dormitory
+                area
+                status
+                roomAmount
+            }
+        }
     }
 `;

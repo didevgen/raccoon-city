@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {NamedImage, PreviewImage, SingleImage} from 'shared';
+import {NamedImage, PreviewImage, SingleImage} from '../../types/shared';
 
 export const KeyDisplayNameSchema = new Schema({
     key: {type: Schema.Types.String, required: true},

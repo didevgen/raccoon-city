@@ -1,12 +1,10 @@
 import {Context} from '../../utils';
-import {ApartmentComplexInputArgs} from 'apartment_complex';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
+import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
+import {SpreadsheetFlat} from '../../types/flat/flat';
 
-function getFileExtension(fileName: string): string {
-    return fileName.split('.').pop();
-}
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
         const apartmentComplexArg: ApartmentComplexInputArgs = args.apartmentComplex;
@@ -24,7 +22,6 @@ export const apartmentComplex = {
         return 'Success';
     },
     async uploadApartmentComplexFile(parent, args, ctx: Context) {
-        const service = new ApartmentComplexSpreadsheetService(await args.file, args.uuid);
-        return JSON.stringify(await service.parse());
+        return new ApartmentComplexSpreadsheetService(await args.file).parse();
     }
 };
