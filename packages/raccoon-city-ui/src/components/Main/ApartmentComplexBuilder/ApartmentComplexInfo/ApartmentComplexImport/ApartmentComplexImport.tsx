@@ -1,13 +1,14 @@
+import {useMutation} from '@apollo/react-hooks';
 import React from 'react';
 import {useDropzone} from 'react-dropzone';
-import {DropzoneContainer} from '../../../../shared/components/styled';
-import {useMutation} from '@apollo/react-hooks';
-import {UPLOAD_SPREADSHEET} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {useParams} from 'react-router-dom';
+import {UPLOAD_SPREADSHEET} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import {DropzoneContainer} from '../../../../shared/components/styled';
+import {HouseMatch} from '../HouseMatch/HouseMatch';
 
 function CsvDropzone(props: any) {
     const {getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({
-        accept: 'text/csv',
+        accept: '.csv',
         onDrop: (acceptedFiles) => {
             props.onDrop(acceptedFiles[0]);
         }
@@ -23,9 +24,9 @@ function CsvDropzone(props: any) {
     );
 }
 
-export function HouseImport() {
+export function ApartmentComplexImport() {
     const {uuid} = useParams();
-    const [uploadFile] = useMutation(UPLOAD_SPREADSHEET);
+    const [uploadFile, {data}] = useMutation(UPLOAD_SPREADSHEET);
     const handleDrop = async (file: any) => {
         await uploadFile({
             variables: {
@@ -34,6 +35,10 @@ export function HouseImport() {
             }
         });
     };
+
+    if (data) {
+        return <HouseMatch data={data.uploadApartmentComplexFile} apartmentComplexUuid={uuid || ''} />;
+    }
 
     return <CsvDropzone onDrop={handleDrop} />;
 }

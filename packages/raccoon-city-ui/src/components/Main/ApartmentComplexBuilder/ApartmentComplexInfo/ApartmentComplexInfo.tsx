@@ -21,7 +21,7 @@ import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApart
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import {HouseList} from '../../HouseList/HouseList';
-import {HouseImport} from '../../HouseBuilder/HouseInfo/HosueImport/HouseImport';
+import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexImport';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -149,7 +149,7 @@ export function ApartmentComplexInfo() {
                                     <HouseList />
                                 </Route>
                                 <Route path={`${path}/import`}>
-                                    <HouseImport />
+                                    <ApartmentComplexImport />
                                 </Route>
                             </Switch>
                         </div>
