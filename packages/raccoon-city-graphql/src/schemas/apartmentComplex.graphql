@@ -27,6 +27,7 @@ input ApartmentComplexInput {
     endDate: String
 }
 
+
 type SingleImage {
     uuid: String
     downloadUrl: String
@@ -60,6 +61,21 @@ type ImageType {
     value: String
 }
 
+input ParsedFlatInput {
+    house: String
+    flatNumber: String
+    price: String
+    level: String
+    dormitory: String
+    area: String
+    status: String
+    roomAmount: String
+}
+
+input HosueWithFlats {
+    houseId: String
+    flats: [ParsedFlatInput]
+}
 type ParsedFlat {
     house: String
     flatNumber: String
@@ -80,6 +96,7 @@ type Mutation {
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
     uploadApartmentComplexFile(file: Upload!): [ParsedApartmentComplex]
     deleteImage(mode: String!, uuid: String!, imageId: String!): String
+    assignFlats(data: [HosueWithFlats]): String
 }
 
 extend type Query {

@@ -3,7 +3,6 @@ import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartment
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
 import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
-import {SpreadsheetFlat} from '../../types/flat/flat';
 
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
@@ -23,5 +22,9 @@ export const apartmentComplex = {
     },
     async uploadApartmentComplexFile(parent, args, ctx: Context) {
         return new ApartmentComplexSpreadsheetService(await args.file).parse();
+    },
+    async assignFlats(parent, args, ctx: Context) {
+        console.log(args);
+        return 'Success';
     }
 };

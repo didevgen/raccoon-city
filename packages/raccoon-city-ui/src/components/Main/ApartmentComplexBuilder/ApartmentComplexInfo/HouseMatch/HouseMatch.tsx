@@ -1,16 +1,21 @@
-import {useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import {Button} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import omit from 'ramda/src/omit';
+import {useState} from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
-import {HOUSE_LIST} from '../../../../../graphql/queries/houseQuery';
-import {ParsedFlat} from '../../../../shared/types/flat.types';
+import {HOUSE_INFO, HOUSE_LIST} from '../../../../../graphql/queries/houseQuery';
+import {Flat, ParsedFlat} from '../../../../shared/types/flat.types';
 import {House} from '../../../../shared/types/house.types';
 import {HouseSelect} from './HouseSelect';
+import {UPLOAD_FILE} from '../../../../../graphql/mutations/houseMutation';
+import {ASSIGN_FLATS} from '../../../../../graphql/mutations/apartmentComplexMutation';
 
 interface ParsedHouse {
     house: string;
@@ -20,12 +25,21 @@ interface ParsedHouse {
 interface HouseMatchProps {
     data: ParsedHouse[];
     apartmentComplexUuid: string;
+    onCancel: () => void;
 }
 
 interface HouseMatchRowProps {
-    houseToMatch: string;
+    houseToMatch: ParsedHouse;
     houses: House[];
+    onCombine: (house: House) => void;
 }
+
+const ButtonContainer = styled.div`
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    justify-content: flex-end;
+`;
 
 const StyledCell = styled(TableCell)`
     width: 50%;
@@ -35,21 +49,43 @@ function HouseMatchRow(props: HouseMatchRowProps) {
     return (
         <TableRow>
             <TableCell component="th" scope="row">
-                {props.houseToMatch}
+                {props.houseToMatch.house}
             </TableCell>
             <StyledCell align="right">
-                <HouseSelect houses={props.houses} />
+                <HouseSelect houses={props.houses} onSelect={props.onCombine} />
             </StyledCell>
         </TableRow>
     );
 }
 
+interface HouseMapInterface {
+    [key: string]: {
+        selectedHouse: House;
+        flats: Flat[];
+    };
+}
+
+function mapState(data: HouseMapInterface) {
+    return Object.keys(data).map((key) => {
+        const {selectedHouse, flats} = data[key];
+        return {
+            houseId: selectedHouse.id,
+            flats: flats.map((flat) => {
+                return omit(['__typename'], flat);
+            })
+        };
+    });
+}
+
 export function HouseMatch(props: HouseMatchProps) {
+    const [matchMap, setValue] = useState<any>({});
     const {loading, error, data} = useQuery<{getHouses: House[]}>(HOUSE_LIST, {
         variables: {
             apartmentComplexId: props.apartmentComplexUuid
         }
     });
+
+    const [assignFlats] = useMutation(ASSIGN_FLATS);
 
     if (error || loading || !data) {
         return null;
@@ -70,13 +106,44 @@ export function HouseMatch(props: HouseMatchProps) {
                         return (
                             <HouseMatchRow
                                 key={parsedDataItem.house}
-                                houseToMatch={parsedDataItem.house}
+                                houseToMatch={parsedDataItem}
                                 houses={houses}
+                                onCombine={(selectedHouse: House) => {
+                                    const prevStateCopy = {...matchMap};
+
+                                    if (selectedHouse === null) {
+                                        delete prevStateCopy[parsedDataItem.house];
+                                    } else {
+                                        prevStateCopy[parsedDataItem.house] = {
+                                            selectedHouse,
+                                            flats: parsedDataItem.flats
+                                        };
+                                    }
+                                    setValue(prevStateCopy);
+                                }}
                             />
                         );
                     })}
                 </TableBody>
             </Table>
+            <ButtonContainer>
+                <Button variant="contained" onClick={props.onCancel}>
+                    Отмена
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={async () => {
+                        await assignFlats({
+                            variables: {
+                                data: mapState(matchMap)
+                            }
+                        });
+                    }}
+                >
+                    Импорт
+                </Button>
+            </ButtonContainer>
         </Paper>
     );
 }

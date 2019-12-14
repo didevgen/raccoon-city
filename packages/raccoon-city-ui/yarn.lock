@@ -1598,6 +1598,13 @@
   resolved "https://registry.npmjs.org/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
+"@types/ramda@^0.26.38":
+  version "0.26.38"
+  resolved "https://registry.npmjs.org/@types/ramda/-/ramda-0.26.38.tgz#9d19bb910bb15fc9a213402092e160cbbb5acc9b"
+  integrity sha512-legQx15y72vedr5fkVTb5xZaI/OXMzJgZYbMxVL5r269sOg7fZIeitEOumcevMPOMZdqH4cMoL35VuU13TLvVA==
+  dependencies:
+    ts-toolbelt "^4.12.0"
+
 "@types/react-dom@^16.9.4":
   version "16.9.4"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.4.tgz#0b58df09a60961dcb77f62d4f1832427513420df"
@@ -9652,6 +9659,11 @@ raf@3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
+ramda@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.npmjs.org/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -11527,6 +11539,11 @@ ts-pnp@^1.1.2:
   version "1.1.5"
   resolved "https://registry.npmjs.org/ts-pnp/-/ts-pnp-1.1.5.tgz#840e0739c89fce5f3abd9037bb091dbff16d9dec"
   integrity sha512-ti7OGMOUOzo66wLF3liskw6YQIaSsBgc4GOAlWRnIEj8htCxJUxskanMUoJOD6MDCRAXo36goXJZch+nOS0VMA==
+
+ts-toolbelt@^4.12.0:
+  version "4.13.5"
+  resolved "https://registry.npmjs.org/ts-toolbelt/-/ts-toolbelt-4.13.5.tgz#0d05d77a37a53d871502a44967e472ba1550a9c3"
+  integrity sha512-qe2/3hXY+wyKTt4Pge/YKkoOED2UiKbHgZgEb3jkS3KBJVyVWMNyb90Kzp7C3KFWcc+QkeifNO7MRwXWhNW+Mw==
 
 tslib@^1.10.0, tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"

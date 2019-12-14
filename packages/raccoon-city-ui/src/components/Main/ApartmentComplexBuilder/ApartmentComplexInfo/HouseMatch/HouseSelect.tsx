@@ -64,19 +64,22 @@ function SingleValue({data}: any) {
 
 interface HouseSelectProps {
     houses: House[];
+    onSelect: (house: House) => void;
 }
 
 export function HouseSelect(props: HouseSelectProps) {
-    const [house, setHouse] = useState(null);
+    const [house, setHouse] = useState<House>();
 
-    // @ts-ignore
     return (
         <Select
             id="place"
             label="Выберете дом"
             options={props.houses}
             value={house}
-            onChange={setHouse}
+            onChange={(selectedValue: House) => {
+                setHouse(selectedValue);
+                props.onSelect(selectedValue);
+            }}
             isClearable={true}
             components={{
                 Option: CustomOption,

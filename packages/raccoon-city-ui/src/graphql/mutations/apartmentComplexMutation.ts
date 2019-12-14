@@ -38,3 +38,9 @@ export const UPLOAD_SPREADSHEET = gql`
         }
     }
 `;
+
+export const ASSIGN_FLATS = gql`
+    mutation assignFlats($data: [HosueWithFlats]) {
+        assignFlats(data: $data)
+    }
+`;

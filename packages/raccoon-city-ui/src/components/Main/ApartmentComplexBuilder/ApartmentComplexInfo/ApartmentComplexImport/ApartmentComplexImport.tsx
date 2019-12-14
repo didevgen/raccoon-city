@@ -1,5 +1,5 @@
 import {useMutation} from '@apollo/react-hooks';
-import React from 'react';
+import React, {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {useParams} from 'react-router-dom';
 import {UPLOAD_SPREADSHEET} from '../../../../../graphql/mutations/apartmentComplexMutation';
@@ -26,18 +26,29 @@ function CsvDropzone(props: any) {
 
 export function ApartmentComplexImport() {
     const {uuid} = useParams();
+    const [matching, setMatching] = useState(false);
     const [uploadFile, {data}] = useMutation(UPLOAD_SPREADSHEET);
     const handleDrop = async (file: any) => {
-        await uploadFile({
+        const result = await uploadFile({
             variables: {
                 file,
                 uuid
             }
         });
+
+        setMatching(true);
     };
 
-    if (data) {
-        return <HouseMatch data={data.uploadApartmentComplexFile} apartmentComplexUuid={uuid || ''} />;
+    if (matching) {
+        return (
+            <HouseMatch
+                data={data.uploadApartmentComplexFile}
+                apartmentComplexUuid={uuid || ''}
+                onCancel={() => {
+                    setMatching(false);
+                }}
+            />
+        );
     }
 
     return <CsvDropzone onDrop={handleDrop} />;
