@@ -42,7 +42,9 @@ export class FlatService {
             bulk.find({flatNumber: num}).updateOne({$set: {...newFlatsMap.get(num)}});
         });
 
-        await bulk.execute();
+        if (flatNumbersToUpdate.length > 0) {
+            await bulk.execute();
+        }
 
         const newFlats: Flat[] = flatNumbersToCreate.map((num) => {
             return newFlatsMap.get(num);
