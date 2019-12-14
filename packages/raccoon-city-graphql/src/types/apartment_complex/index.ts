@@ -1,4 +1,5 @@
 import {KeyDisplayName} from '../shared';
+import {SpreadsheetFlat} from '../flat/flat';
 
 export interface ApartmentComplexInputArgs {
     type: KeyDisplayName;
@@ -11,4 +12,9 @@ export interface ApartmentComplexInputArgs {
     price: number;
     beginDate: string;
     endDate: string;
+}
+
+export interface AssignFlatInputArgs {
+    houseId: string;
+    flats: SpreadsheetFlat[];
 }

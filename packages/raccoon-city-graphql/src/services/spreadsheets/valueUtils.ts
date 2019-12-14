@@ -13,5 +13,10 @@ export function transofrmValue(value: string, field: string | number): any {
         return statusMap.get(value) || value;
     }
 
+    if (field === 'price') {
+        const result = Number(value.replace(/\s/g, ''));
+        return isNaN(result) ? 0 : result;
+    }
+
     return value;
 }

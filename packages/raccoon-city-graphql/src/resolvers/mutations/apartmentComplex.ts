@@ -1,8 +1,9 @@
-import {Context} from '../../utils';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
+import {FlatService} from '../../db/services/flat.service';
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
-import {ApartmentComplexInputArgs} from '../../types/apartment_complex';
+import {ApartmentComplexInputArgs, AssignFlatInputArgs} from '../../types/apartment_complex';
+import {Context} from '../../utils';
 
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
@@ -24,7 +25,12 @@ export const apartmentComplex = {
         return new ApartmentComplexSpreadsheetService(await args.file).parse();
     },
     async assignFlats(parent, args, ctx: Context) {
-        console.log(args);
+        const data: AssignFlatInputArgs[] = args.data;
+        await Promise.all(
+            data.map(async (house) => {
+                return await new FlatService().assignFlatsToHouse(house.houseId, house.flats);
+            })
+        );
         return 'Success';
     }
 };

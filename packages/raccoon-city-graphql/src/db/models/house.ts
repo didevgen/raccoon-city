@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {KeyDisplayName} from '../../types/shared';
+import {Flat} from './flat';
 import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
 
 export interface House extends Document {
@@ -11,6 +12,7 @@ export interface House extends Document {
     beginDate: string;
     endDate: string;
     apartmentComplex: string;
+    flats: Flat[];
     images: ApartmentComplexImages;
 }
 
@@ -32,7 +34,16 @@ const HouseSchema: Schema = new Schema({
         default: () => {
             return {};
         }
-    }
+    },
+    flats: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Flat',
+            default: () => {
+                return [];
+            }
+        }
+    ]
 });
 
 export default mongoose.model<House>('House', HouseSchema);

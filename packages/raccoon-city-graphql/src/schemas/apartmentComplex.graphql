@@ -27,7 +27,6 @@ input ApartmentComplexInput {
     endDate: String
 }
 
-
 type SingleImage {
     uuid: String
     downloadUrl: String
