@@ -101,6 +101,11 @@ export function HouseInfo() {
                                         <ListItemText primary="Информация" />
                                     </ListItem>
                                 </StyledLink>
+                                <StyledLink to={`/houseGrid/${uuid}`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Просмотр шахматки" />
+                                    </ListItem>
+                                </StyledLink>
                             </List>
                         </Paper>
                     </Grid>

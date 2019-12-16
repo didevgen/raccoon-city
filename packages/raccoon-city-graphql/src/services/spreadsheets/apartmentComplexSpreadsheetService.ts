@@ -26,9 +26,9 @@ export class ApartmentComplexSpreadsheetService {
             );
 
             writableStream.on('data', (resultItem) => {
-                const {house, flatNumber, price, level, dormitory, area, status, roomAmount} = resultItem;
+                const {house, flatNumber, price, level, entrance, area, status, roomAmount} = resultItem;
                 if (house) {
-                    result.push({house, flatNumber, price, level, dormitory, area, status, roomAmount});
+                    result.push({house, flatNumber, price, level, entrance, area, status, roomAmount});
                 }
             });
 

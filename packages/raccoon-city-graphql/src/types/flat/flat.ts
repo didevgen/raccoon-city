@@ -12,7 +12,7 @@ export interface SpreadsheetFlat {
     flatNumber: string;
     price: string;
     level: string;
-    dormitory: string;
+    entrance: string;
     area: string;
     status: FlatStatus;
     roomAmount: string;
@@ -26,7 +26,7 @@ export interface Flat {
     flatNumber: number;
     price: number;
     level: number;
-    dormitory: number;
+    entrance: number;
     area: number;
     status: FlatStatus;
     roomAmount: number;

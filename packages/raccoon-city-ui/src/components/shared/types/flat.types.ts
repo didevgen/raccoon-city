@@ -12,17 +12,18 @@ export interface ParsedFlat {
     flatNumber: string;
     price: string;
     level: string;
-    dormitory: string;
+    entrance: string;
     area: string;
     status: FlatStatus;
     roomAmount: string;
 }
 
 export interface Flat {
+    id: string;
     flatNumber: number;
     price: number;
     level: number;
-    dormitory: number;
+    entrance: number;
     area: number;
     status: FlatStatus;
     roomAmount: number;

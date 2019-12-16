@@ -56,3 +56,24 @@ export const HOUSE_INFO = gql`
         }
     }
 `;
+
+export const GET_GROUPED_FLATS = gql`
+    query getGroupedFlatsByEntrance($uuid: String!) {
+        getGroupedFlatsByEntrance(uuid: $uuid) {
+            entrance
+            level {
+                level
+                flats {
+                    id
+                    flatNumber
+                    price
+                    level
+                    entrance
+                    area
+                    status
+                    roomAmount
+                }
+            }
+        }
+    }
+`;

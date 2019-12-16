@@ -29,7 +29,7 @@ export function ApartmentComplexImport() {
     const [matching, setMatching] = useState(false);
     const [uploadFile, {data}] = useMutation(UPLOAD_SPREADSHEET);
     const handleDrop = async (file: any) => {
-        const result = await uploadFile({
+        await uploadFile({
             variables: {
                 file,
                 uuid

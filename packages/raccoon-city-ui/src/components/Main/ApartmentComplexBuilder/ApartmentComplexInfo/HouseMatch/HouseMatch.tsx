@@ -7,14 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import omit from 'ramda/src/omit';
-import {useState} from 'react';
 import * as React from 'react';
+import {useState} from 'react';
 import styled from 'styled-components';
-import {HOUSE_INFO, HOUSE_LIST} from '../../../../../graphql/queries/houseQuery';
+import {HOUSE_LIST} from '../../../../../graphql/queries/houseQuery';
 import {Flat, ParsedFlat} from '../../../../shared/types/flat.types';
 import {House} from '../../../../shared/types/house.types';
 import {HouseSelect} from './HouseSelect';
-import {UPLOAD_FILE} from '../../../../../graphql/mutations/houseMutation';
 import {ASSIGN_FLATS} from '../../../../../graphql/mutations/apartmentComplexMutation';
 
 interface ParsedHouse {

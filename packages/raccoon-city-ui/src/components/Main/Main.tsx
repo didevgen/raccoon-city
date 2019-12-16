@@ -9,6 +9,7 @@ import {Sidebar} from './Sidebar/Sidebar';
 import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {HouseBuilder} from './HouseBuilder/HouseBuilder';
 import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
+import {ChessGrid} from './ChessGrid/ChessGrid';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -45,6 +46,9 @@ export function Main() {
                     </Route>
                     <Route path="/apartmentComplex/:uuid/house/:houseUuid">
                         <HouseInfo />
+                    </Route>
+                    <Route path="/houseGrid/:houseUuid">
+                        <ChessGrid />
                     </Route>
                     <Route exact={true} path="/apartmentComplex/:uuid/create/house">
                         <HouseBuilder />

@@ -17,7 +17,7 @@ export const headerKeys = [
     },
     {
         csvKeys: ['Подъезд'],
-        headerValue: 'dormitory'
+        headerValue: 'entrance'
     },
     {
         csvKeys: ['Общая площадь, м2'],
