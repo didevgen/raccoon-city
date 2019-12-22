@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, {Fragment, memo} from 'react';
 import {GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {FlatCard} from '../FlatCard/FlatCard';
+import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
 
 interface LevelRepresentationProps {
     entrance: GroupedFlats;
@@ -28,6 +29,9 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
+                                <Grid container={true} spacing={3} item={true} xs={3}>
+                                    <AddFlatCard />
+                                </Grid>
                                 {level.flats.map((flat) => {
                                     return (
                                         <Grid key={flat.id} container={true} item={true} xs={3} spacing={3}>
