@@ -1,8 +1,21 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {Fab} from '@material-ui/core';
 
 export const StyledLink = styled(Link)`
+    text-decoration: none;
+
+    &:focus,
+    &:hover,
+    &:visited,
+    &:link,
+    &:active {
+        text-decoration: none;
+        color: inherit;
+    }
+`;
+
+export const StyledNavLink = styled(NavLink)`
     text-decoration: none;
 
     &:focus,

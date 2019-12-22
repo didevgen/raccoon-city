@@ -1,4 +1,5 @@
 import {gql} from 'apollo-boost';
+import {Flat} from '../../components/shared/types/flat.types';
 
 export const HOUSE_LIST = gql`
     query getHouses($apartmentComplexId: String!) {
@@ -56,6 +57,18 @@ export const HOUSE_INFO = gql`
         }
     }
 `;
+
+export interface GroupedFlats {
+    entrance: string;
+    level: Array<{
+        level: number;
+        flats: Flat[];
+    }>;
+}
+
+export interface GetGroupedFlatsByEntranceQuery {
+    getGroupedFlatsByEntrance: GroupedFlats[];
+}
 
 export const GET_GROUPED_FLATS = gql`
     query getGroupedFlatsByEntrance($uuid: String!) {

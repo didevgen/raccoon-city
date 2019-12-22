@@ -2,8 +2,7 @@ import {useQuery} from '@apollo/react-hooks';
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {GET_GROUPED_FLATS} from '../../../graphql/queries/houseQuery';
-import {Flat} from '../../shared/types/flat.types';
+import {GET_GROUPED_FLATS, GetGroupedFlatsByEntranceQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 
 const ChessGridWrapper = styled.div`
@@ -13,18 +12,9 @@ const ChessGridWrapper = styled.div`
     display: flex;
     flex-direction: row;
 `;
-
-interface GroupedFlats {
-    entrance: string;
-    level: Array<{
-        level: number;
-        flats: Flat[];
-    }>;
-}
-
 export function ChessGrid() {
     const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery(GET_GROUPED_FLATS, {
+    const {loading, error, data} = useQuery<GetGroupedFlatsByEntranceQuery>(GET_GROUPED_FLATS, {
         variables: {
             uuid
         },

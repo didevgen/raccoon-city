@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import {AppBar, Box, Grid, Theme} from '@material-ui/core';
+import {AppBar, Grid, Theme} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,19 +13,16 @@ import * as React from 'react';
 import {Fragment, useState} from 'react';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
-import {StyledLink} from '../../../shared/components/styled';
-import {ImageType} from '../../../shared/types/apartmentComplex.types';
+import styled from 'styled-components';
 import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
+import {StyledNavLink} from '../../../shared/components/styled';
+import {TabPanel} from '../../../shared/components/tabs/TabPanel';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {House} from '../../../shared/types/house.types';
+import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
-import {VRImages} from './VRImages/VRImages';
 import {Photos} from './Photos/Photos';
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: any;
-    value: any;
-}
+import {VRImages} from './VRImages/VRImages';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -35,22 +32,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-function TabPanel(props: TabPanelProps) {
-    const {children, value, index, ...other} = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            <Box p={3}>{children}</Box>
-        </Typography>
-    );
-}
+const StyledLink = styled(StyledNavLink)`
+    &.Mui-selected > div {
+        color: white;
+        background-color: #3f51b5;
+        &:hover {
+            background-color: #7986cb;
+        }
+    }
+`;
 
 export function HouseInfo() {
     const classes = useStyles();
@@ -96,14 +86,29 @@ export function HouseInfo() {
                     <Grid item={true} xs={3}>
                         <Paper>
                             <List component="nav" aria-label="main mailbox folders">
-                                <StyledLink to={`${url}`}>
+                                <StyledLink activeClassName="Mui-selected" to={`${url}/info`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Информация" />
                                     </ListItem>
                                 </StyledLink>
-                                <StyledLink to={`/houseGrid/${uuid}`}>
+                                <StyledLink activeClassName="Mui-selected" to={`/houseGrid/${uuid}`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Просмотр шахматки" />
+                                    </ListItem>
+                                </StyledLink>
+                                <StyledLink activeClassName="Mui-selected" to={`${url}/editor`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Редактор помещений" />
+                                    </ListItem>
+                                </StyledLink>
+                                <StyledLink activeClassName="Mui-selected" to={`${url}/levels`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Планировка этажей" />
+                                    </ListItem>
+                                </StyledLink>
+                                <StyledLink activeClassName="Mui-selected" to={`${url}/flats`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Планировка квартир" />
                                     </ListItem>
                                 </StyledLink>
                             </List>
@@ -112,7 +117,7 @@ export function HouseInfo() {
                     <Grid item={true} xs={9}>
                         <div className={classes.root}>
                             <Switch>
-                                <Route exact={true} path={path}>
+                                <Route exact={true} path={`${path}/info`}>
                                     <AppBar position="static" color="default">
                                         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                                             <Tab label="Информация" />
@@ -137,6 +142,15 @@ export function HouseInfo() {
                                     <TabPanel value={value} index={4}>
                                         <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
                                     </TabPanel>
+                                </Route>
+                                <Route exact path={`${path}/editor`}>
+                                    <HouseEditor />
+                                </Route>
+                                <Route exact path={`${path}/levels`}>
+                                    <h1>Levels</h1>
+                                </Route>
+                                <Route exact path={`${path}/flats`}>
+                                    <h1>Flats</h1>
                                 </Route>
                             </Switch>
                         </div>
