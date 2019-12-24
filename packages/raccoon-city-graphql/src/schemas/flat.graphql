@@ -1,0 +1,41 @@
+type HouseFlat {
+    id: String
+    flatNumber: Int
+    price: Float
+    level: Int
+    entrance: Int
+    area: Float
+    status: String
+    roomAmount: Int
+}
+
+input HouseFlatInput {
+    id: String
+    flatNumber: Int
+    price: Float
+    level: Int
+    entrance: Int
+    area: Float
+    status: String
+    roomAmount: Int
+}
+
+type GroupedByLevelFlat {
+    level: Int
+    flats: [HouseFlat]
+}
+
+type GroupedByEntranceFlat {
+    entrance: Int
+    level: [GroupedByLevelFlat]
+}
+
+type Mutation {
+    deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String
+    updateFlat(flat: HouseFlatInput): HouseFlat
+}
+
+extend type Query {
+    getFlats(uuid: String!): [HouseFlat]
+    getGroupedFlatsByEntrance(uuid: String!): [GroupedByEntranceFlat]
+}

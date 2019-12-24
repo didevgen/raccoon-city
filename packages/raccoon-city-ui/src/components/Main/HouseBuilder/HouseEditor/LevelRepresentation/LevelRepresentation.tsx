@@ -27,7 +27,10 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
             </StyledButton>
             {entrance.level.map((level) => {
                 return (
-                    <ExpansionPanel key={`level${level.level}`}>
+                    <ExpansionPanel
+                        key={`level${level.level}+${entrance.entrance}`}
+                        TransitionProps={{unmountOnExit: true}}
+                    >
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"

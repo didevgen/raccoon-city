@@ -31,27 +31,6 @@ type HouseImages {
     PHOTO: [NamedImage]
 }
 
-type HouseFlat {
-    id: String
-    flatNumber: Int
-    price: Float
-    level: Int
-    entrance: Int
-    area: Float
-    status: String
-    roomAmount: Int
-}
-
-type GroupedByLevelFlat {
-    level: Int
-    flats: [HouseFlat]
-}
-
-type GroupedByEntranceFlat {
-    entrance: Int
-    level: [GroupedByLevelFlat]
-}
-
 type Mutation {
     createHouse(apartmentComplexId: String!, houseData: HouseInput!): ApartmentComplex
     addHouseImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
@@ -61,6 +40,4 @@ type Mutation {
 extend type Query {
     getHouses(apartmentComplexId: String!): [House]
     getHouse(uuid: String!): House
-    getFlats(uuid: String!): [HouseFlat]
-    getGroupedFlatsByEntrance(uuid: String!): [GroupedByEntranceFlat]
 }

@@ -40,7 +40,8 @@
         "sass-loader": "^8.0.0",
         "styled-components": "^4.4.1",
         "tslint": "^5.20.1",
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.2",
+        "validate.js": "^0.13.1"
     },
     "scripts": {
         "start": "react-scripts start",
