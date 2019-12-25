@@ -14,3 +14,18 @@ export const UPDATE_FLAT = gql`
         }
     }
 `;
+
+export const CREATE_FLAT = gql`
+    mutation createFlat($houseGuid: String, $flat: HouseFlatInput) {
+        createFlat(houseGuid: $houseGuid, flat: $flat) {
+            id
+            flatNumber
+            price
+            level
+            entrance
+            area
+            status
+            roomAmount
+        }
+    }
+`;

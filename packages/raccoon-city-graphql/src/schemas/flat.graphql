@@ -33,6 +33,7 @@ type GroupedByEntranceFlat {
 type Mutation {
     deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String
     updateFlat(flat: HouseFlatInput): HouseFlat
+    createFlat(houseGuid: String, flat: HouseFlatInput): HouseFlat
 }
 
 extend type Query {

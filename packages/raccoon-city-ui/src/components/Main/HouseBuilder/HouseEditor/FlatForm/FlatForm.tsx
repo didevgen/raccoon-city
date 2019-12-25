@@ -1,3 +1,5 @@
+import {useMutation} from '@apollo/react-hooks';
+import {MenuItem} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -5,20 +7,26 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import omit from 'ramda/src/omit';
 import React, {Fragment} from 'react';
 import {Field, Form} from 'react-final-form';
-import {isRequired, isRequiredAndIsInteger, isRequiredAndIsNumber} from '../../../../../core/validators/validators';
-import {Flat} from '../../../../shared/types/flat.types';
-import {MenuItem} from '@material-ui/core';
+import {useParams} from 'react-router-dom';
 import {FLAT_STATUSES} from '../../../../../core/constants';
-import {useMutation} from '@apollo/react-hooks';
-import {UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
-import omit from 'ramda/src/omit';
+import {
+    getError,
+    isRequired,
+    isRequiredAndIsInteger,
+    isRequiredAndIsNumber
+} from '../../../../../core/validators/validators';
+import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
+import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
+import {Flat} from '../../../../shared/types/flat.types';
 
 interface FlatFormDialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
     flat: Flat;
+    isNew?: boolean;
 }
 
 function toGraphqlFlat(flat: Flat): Flat {
@@ -33,18 +41,45 @@ function toGraphqlFlat(flat: Flat): Flat {
     });
 }
 
-export function FlatFormDialog({open, setOpen, flat}: FlatFormDialogProps) {
+export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps) {
+    const {houseUuid: uuid} = useParams();
     const [updateFlat] = useMutation(UPDATE_FLAT);
+    const [createFlat] = useMutation(CREATE_FLAT);
     const handleClose = () => {
         setOpen(false);
     };
 
     const handleSave = (values: Flat) => {
         return async () => {
+            if (isNew) {
+                await createFlat({
+                    variables: {
+                        flat: toGraphqlFlat(values),
+                        houseGuid: uuid
+                    },
+                    refetchQueries: [
+                        {
+                            query: GET_GROUPED_FLATS,
+                            variables: {
+                                uuid
+                            }
+                        }
+                    ]
+                });
+                return;
+            }
             await updateFlat({
                 variables: {
                     flat: toGraphqlFlat(values)
-                }
+                },
+                refetchQueries: [
+                    {
+                        query: GET_GROUPED_FLATS,
+                        variables: {
+                            uuid
+                        }
+                    }
+                ]
             });
         };
     };
@@ -58,106 +93,98 @@ export function FlatFormDialog({open, setOpen, flat}: FlatFormDialogProps) {
                             <DialogTitle id="form-dialog-title">Редактировать квартиру</DialogTitle>
                             <DialogContent>
                                 <Grid container={true} spacing={1}>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="flatNumber" validate={isRequiredAndIsInteger}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Номер квартиры"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
                                                     variant="outlined"
                                                 />
                                             )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="price" validate={isRequiredAndIsNumber}>
-                                            {(props) => {
-                                                return (
-                                                    <TextField
-                                                        label="Цена"
-                                                        margin="normal"
-                                                        name={props.input.name}
-                                                        value={props.input.value}
-                                                        onChange={props.input.onChange}
-                                                        fullWidth={true}
-                                                        error={!!props.meta.error}
-                                                        helperText={props.meta.error}
-                                                        variant="outlined"
-                                                    />
-                                                );
-                                            }}
+                                            {({input, meta, ...rest}) => (
+                                                <TextField
+                                                    label="Цена"
+                                                    margin="normal"
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
+                                                    fullWidth={true}
+                                                    variant="outlined"
+                                                />
+                                            )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="level" validate={isRequiredAndIsInteger}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Этаж"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
                                                     variant="outlined"
                                                 />
                                             )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="entrance" validate={isRequiredAndIsInteger}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Подъезд"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
                                                     variant="outlined"
                                                 />
                                             )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="area" validate={isRequiredAndIsNumber}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Площадь"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
                                                     variant="outlined"
                                                 />
                                             )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="status" validate={isRequired}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     select={true}
                                                     label="Статус"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
                                                     variant="outlined"
                                                 >
                                                     {FLAT_STATUSES.map((item: any) => {
@@ -171,18 +198,17 @@ export function FlatFormDialog({open, setOpen, flat}: FlatFormDialogProps) {
                                             )}
                                         </Field>
                                     </Grid>
-                                    <Grid item={true} xs={12}>
+                                    <Grid item={true} xs={6}>
                                         <Field name="roomAmount" validate={isRequiredAndIsInteger}>
-                                            {(props) => (
+                                            {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Количество комнат"
                                                     margin="normal"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
                                                     fullWidth={true}
-                                                    error={!!props.meta.error}
-                                                    helperText={props.meta.error}
                                                     variant="outlined"
                                                 />
                                             )}
@@ -194,7 +220,7 @@ export function FlatFormDialog({open, setOpen, flat}: FlatFormDialogProps) {
                                 <Button onClick={handleClose} color="primary">
                                     Отмена
                                 </Button>
-                                <Button disabled={invalid} onClick={handleSave(values)} color="primary">
+                                <Button disabled={invalid} onClick={handleSave(values as Flat)} color="primary">
                                     Сохранить
                                 </Button>
                             </DialogActions>

@@ -41,7 +41,7 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
                                 <Grid container={true} spacing={3} item={true} xs={3}>
-                                    <AddFlatCard />
+                                    <AddFlatCard level={level.level} entrance={props.entrance.entrance} />
                                 </Grid>
                                 {level.flats.map((flat) => {
                                     return (

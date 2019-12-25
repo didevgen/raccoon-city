@@ -32,6 +32,6 @@ export interface Flat {
     roomAmount: number;
 }
 
-export interface IdFlat extends Flat{
+export interface IdFlat extends Flat {
     id: string;
 }
