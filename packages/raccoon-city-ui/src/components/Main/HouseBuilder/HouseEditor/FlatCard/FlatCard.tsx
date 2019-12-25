@@ -12,6 +12,10 @@ import {CardHeaderWithMenu} from '../../../../shared/components/menus/CardHeader
 import {Flat} from '../../../../shared/types/flat.types';
 import {FlatFormDialog} from '../FlatForm/FlatForm';
 import {flatDefaultImage} from '../../../../../core/constants';
+import {useMutation} from '@apollo/react-hooks';
+import {DELETE_FLAT} from '../../../../../graphql/mutations/flatMutation';
+import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
+import {useParams} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,7 +35,9 @@ interface FlatCardProps {
 
 export const FlatCard = memo((props: FlatCardProps) => {
     const classes = useStyles();
+    const {houseUuid} = useParams();
     const {flat} = props;
+    const [deleteFlat] = useMutation(DELETE_FLAT);
     const [open, setOpen] = React.useState(false);
     return (
         <Fragment>
@@ -53,8 +59,21 @@ export const FlatCard = memo((props: FlatCardProps) => {
                         Редактировать
                     </MenuItem>
                     <MenuItem
-                        onClick={(event) => {
+                        onClick={async (event) => {
                             event.preventDefault();
+                            await deleteFlat({
+                                variables: {
+                                    uuid: flat.id
+                                },
+                                refetchQueries: [
+                                    {
+                                        query: GET_GROUPED_FLATS,
+                                        variables: {
+                                            uuid: houseUuid
+                                        }
+                                    }
+                                ]
+                            });
                         }}
                     >
                         Удалить

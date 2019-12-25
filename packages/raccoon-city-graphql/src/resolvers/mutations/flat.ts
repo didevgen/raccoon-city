@@ -21,5 +21,9 @@ export const flatMutation = {
             return newFlat;
         }
         return null;
+    },
+    async deleteFlat(parent, {uuid}, ctx: Context) {
+        await FlatModel.deleteOne({_id: uuid}).exec();
+        return true;
     }
 };

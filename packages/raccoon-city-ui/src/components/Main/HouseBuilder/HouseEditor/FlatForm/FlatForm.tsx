@@ -66,6 +66,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                         }
                     ]
                 });
+                setOpen(false);
                 return;
             }
             await updateFlat({
@@ -81,6 +82,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                     }
                 ]
             });
+            setOpen(false);
         };
     };
 

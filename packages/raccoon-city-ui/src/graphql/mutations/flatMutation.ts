@@ -29,3 +29,9 @@ export const CREATE_FLAT = gql`
         }
     }
 `;
+
+export const DELETE_FLAT = gql`
+    mutation deleteFlat($uuid: String) {
+        deleteFlat(uuid: $uuid)
+    }
+`;
