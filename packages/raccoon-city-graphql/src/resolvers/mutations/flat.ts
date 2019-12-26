@@ -1,7 +1,7 @@
-import {Context} from '../../utils';
-import {IdFlat} from '../../types/flat/flat';
 import {FlatModel} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
+import {IdFlat} from '../../types/flat/flat';
+import {Context} from '../../utils';
 
 export const flatMutation = {
     async updateFlat(parent, args, ctx: Context) {
@@ -25,5 +25,22 @@ export const flatMutation = {
     async deleteFlat(parent, {uuid}, ctx: Context) {
         await FlatModel.deleteOne({_id: uuid}).exec();
         return true;
+    },
+    async addLevel(parent, {uuid, entrance}, ctx: Context) {
+        const house = await HouseModel.findById(uuid)
+            .populate('flats', null, {entrance: 1})
+            .sort('-level')
+            .exec();
+        /*if (house) {
+            const newFlat = await FlatModel.create({
+                entrance,
+                level: 1
+            });
+            house.flats.push(newFlat);
+            await house.save();
+            return true;
+        }*/
+
+        return false;
     }
 };

@@ -9,7 +9,7 @@ function spreadsheetFlatToFlat(flat: SpreadsheetFlat): Flat {
         flatNumber: Number(flat.flatNumber),
         price: Number(flat.price),
         level: Number(flat.level),
-        entrance: Number(flat.entrance),
+        entrance: flat.entrance,
         area: Number(flat.area),
         status: flat.status,
         roomAmount: Number(flat.roomAmount)

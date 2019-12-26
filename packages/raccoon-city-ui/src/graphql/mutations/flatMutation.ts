@@ -35,3 +35,9 @@ export const DELETE_FLAT = gql`
         deleteFlat(uuid: $uuid)
     }
 `;
+
+export const ADD_LEVEL = gql`
+    mutation addLevel($uuid: String, $entrance: String) {
+        addLevel(uuid: $uuid, entrance: $entrance)
+    }
+`;

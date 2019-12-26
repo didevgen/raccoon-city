@@ -26,7 +26,7 @@ export interface Flat {
     flatNumber: number;
     price: number;
     level: number;
-    entrance: number;
+    entrance: string;
     area: number;
     status: FlatStatus;
     roomAmount: number;

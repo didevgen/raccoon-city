@@ -34,7 +34,7 @@ function toGraphqlFlat(flat: Flat): Flat {
         ...flat,
         flatNumber: Number(flat.flatNumber),
         area: Number(flat.area),
-        entrance: Number(flat.entrance),
+        entrance: flat.entrance,
         level: Number(flat.level),
         price: Number(flat.price),
         roomAmount: Number(flat.roomAmount)

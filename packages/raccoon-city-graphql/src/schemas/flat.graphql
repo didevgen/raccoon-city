@@ -3,7 +3,7 @@ type HouseFlat {
     flatNumber: Int
     price: Float
     level: Int
-    entrance: Int
+    entrance: String
     area: Float
     status: String
     roomAmount: Int
@@ -14,7 +14,7 @@ input HouseFlatInput {
     flatNumber: Int
     price: Float
     level: Int
-    entrance: Int
+    entrance: String
     area: Float
     status: String
     roomAmount: Int
@@ -26,7 +26,7 @@ type GroupedByLevelFlat {
 }
 
 type GroupedByEntranceFlat {
-    entrance: Int
+    entrance: String
     level: [GroupedByLevelFlat]
 }
 
@@ -34,6 +34,7 @@ type Mutation {
     updateFlat(flat: HouseFlatInput): HouseFlat
     createFlat(houseGuid: String, flat: HouseFlatInput): HouseFlat
     deleteFlat(uuid: String): Boolean
+    addLevel(uuid: String, entrance: String): Boolean
 }
 
 extend type Query {
