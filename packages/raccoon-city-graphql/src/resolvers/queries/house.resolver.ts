@@ -2,8 +2,8 @@ import groupBy from 'ramda/src/groupBy';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {Flat} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
-import {Section} from '../../db/models/section';
 import {Level} from '../../db/models/level';
+import {Section} from '../../db/models/section';
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -51,10 +51,20 @@ export const hosueQuery = {
                     id: section.id,
                     section: section.sectionName,
                     levels: section.levels.map((level: Level) => {
+                        const newFlat = {
+                            level: level.levelNumber,
+                            section: section.sectionName
+                        };
+                        const flats = level.flats.map((flat) => {
+                            return {
+                                ...flat.toObject(),
+                                ...newFlat
+                            };
+                        });
                         return {
                             id: level.id,
                             level: level.levelNumber,
-                            flats: level.flats
+                            flats
                         };
                     })
                 };

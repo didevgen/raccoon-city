@@ -84,6 +84,8 @@ export const GET_GROUPED_FLATS = gql`
                     id
                     flatNumber
                     price
+                    level
+                    section
                     area
                     status
                     roomAmount
