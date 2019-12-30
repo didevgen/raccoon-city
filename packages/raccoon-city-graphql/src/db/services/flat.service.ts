@@ -82,24 +82,24 @@ export class FlatService {
         sectionMap: Map<string, {section: Section; levels: Level[]}>,
         newFlatsMap: Map<number, Flat>
     ) {
-        const bulk = FlatModel.collection.initializeUnorderedBulkOp();
-
         for (const num of flatNumbersToUpdate) {
             const updateFlatValues = newFlatsMap.get(num);
             const sectionEntry = sectionMap.get(updateFlatValues.section);
             const section = sectionEntry.section;
             const level = await this.handleLevel(sectionEntry, updateFlatValues);
-            bulk.find({flatNumber: num, house: this.houseId}).updateOne({
-                $set: {
-                    ...updateFlatValues,
-                    section,
-                    level
+            const result = {
+                ...updateFlatValues,
+                section: section._id,
+                level: level._id
+            };
+            await FlatModel.updateOne(
+                {flatNumber: num, house: this.houseId},
+                {
+                    $set: {
+                        ...result
+                    }
                 }
-            });
-        }
-
-        if (flatNumbersToUpdate.length > 0) {
-            await bulk.execute();
+            );
         }
     }
 
