@@ -3,6 +3,7 @@ import {Document, Schema} from 'mongoose';
 import {KeyDisplayName} from '../../types/shared';
 import {Flat} from './flat';
 import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
+import {Section} from './section';
 
 export interface House extends Document {
     name: string;
@@ -13,6 +14,7 @@ export interface House extends Document {
     endDate: string;
     apartmentComplex: string;
     flats: Flat[];
+    sections: Section[];
     images: ApartmentComplexImages;
 }
 
@@ -34,16 +36,19 @@ const HouseSchema: Schema = new Schema({
         default: () => {
             return {};
         }
-    },
-    flats: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Flat',
-            default: () => {
-                return [];
-            }
-        }
-    ]
+    }
+});
+
+HouseSchema.virtual('sections', {
+    ref: 'Section',
+    localField: '_id',
+    foreignField: 'house'
+});
+
+HouseSchema.virtual('flats', {
+    ref: 'Flat',
+    localField: '_id',
+    foreignField: 'house'
 });
 
 export default mongoose.model<House>('House', HouseSchema);

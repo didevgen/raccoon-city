@@ -59,29 +59,31 @@ export const HOUSE_INFO = gql`
 `;
 
 export interface GroupedFlats {
-    entrance: string;
-    level: Array<{
+    id: string;
+    section: string;
+    levels: Array<{
+        id: string;
         level: number;
         flats: Flat[];
     }>;
 }
 
-export interface GetGroupedFlatsByEntranceQuery {
-    getGroupedFlatsByEntrance: GroupedFlats[];
+export interface GetGroupedFlatsBySectionQuery {
+    getGroupedFlatsBySection: GroupedFlats[];
 }
 
 export const GET_GROUPED_FLATS = gql`
-    query getGroupedFlatsByEntrance($uuid: String!) {
-        getGroupedFlatsByEntrance(uuid: $uuid) {
-            entrance
-            level {
+    query getGroupedFlatsBySection($uuid: String!) {
+        getGroupedFlatsBySection(uuid: $uuid) {
+            id
+            section
+            levels {
+                id
                 level
                 flats {
                     id
                     flatNumber
                     price
-                    level
-                    entrance
                     area
                     status
                     roomAmount

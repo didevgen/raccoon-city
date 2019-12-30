@@ -24,7 +24,8 @@ const CellContainer = styled.div`
 
 interface ChessGridColumnProps {
     columnName: string;
-    level: Array<{
+    levels: Array<{
+        id: string;
         level: number;
         flats: Flat[];
     }>;
@@ -34,10 +35,8 @@ export function ChessGridColumn(props: ChessGridColumnProps) {
     return (
         <ColumnWrapper>
             <CellContainer>
-                {props.level.map((level) => {
-                    return (
-                        <ChessGridRow key={`level${level.level}`} rowName={String(level.level)} flats={level.flats} />
-                    );
+                {props.levels.map((level) => {
+                    return <ChessGridRow key={level.id} rowName={String(level.level)} flats={level.flats} />;
                 })}
             </CellContainer>
             <ColumnTitle>

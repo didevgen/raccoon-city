@@ -28,7 +28,7 @@ export const apartmentComplex = {
         const data: AssignFlatInputArgs[] = args.data;
         await Promise.all(
             data.map(async (house) => {
-                return await new FlatService().assignFlatsToHouse(house.houseId, house.flats);
+                return await new FlatService(house.houseId).assignFlatsToHouse(house.flats);
             })
         );
         return 'Success';

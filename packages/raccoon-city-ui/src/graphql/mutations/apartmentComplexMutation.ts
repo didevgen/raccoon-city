@@ -30,7 +30,7 @@ export const UPLOAD_SPREADSHEET = gql`
                 flatNumber
                 price
                 level
-                entrance
+                section
                 area
                 status
                 roomAmount

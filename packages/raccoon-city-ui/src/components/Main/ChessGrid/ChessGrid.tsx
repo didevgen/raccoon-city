@@ -2,7 +2,7 @@ import {useQuery} from '@apollo/react-hooks';
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {GET_GROUPED_FLATS, GetGroupedFlatsByEntranceQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
+import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 
 const ChessGridWrapper = styled.div`
@@ -14,7 +14,7 @@ const ChessGridWrapper = styled.div`
 `;
 export function ChessGrid() {
     const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery<GetGroupedFlatsByEntranceQuery>(GET_GROUPED_FLATS, {
+    const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS, {
         variables: {
             uuid
         },
@@ -29,11 +29,11 @@ export function ChessGrid() {
         return <span>error...</span>;
     }
 
-    if (!data || !data.getGroupedFlatsByEntrance) {
+    if (!data || !data.getGroupedFlatsBySection) {
         return <span>no data...</span>;
     }
 
-    const {getGroupedFlatsByEntrance: groupedFlats} = data;
+    const {getGroupedFlatsBySection: groupedFlats} = data;
 
     if (groupedFlats && groupedFlats.length === 0) {
         return <span>В данном доме еще нет квартир</span>;
@@ -42,9 +42,7 @@ export function ChessGrid() {
     return (
         <ChessGridWrapper>
             {groupedFlats.map((item: GroupedFlats) => {
-                return (
-                    <ChessGridColumn key={`entrance${item.entrance}`} columnName={item.entrance} level={item.level} />
-                );
+                return <ChessGridColumn key={item.id} columnName={item.section} levels={item.levels} />;
             })}
         </ChessGridWrapper>
     );

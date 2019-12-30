@@ -14,7 +14,7 @@ import {FlatCard} from '../FlatCard/FlatCard';
 import {useParams} from 'react-router-dom';
 
 interface LevelRepresentationProps {
-    entrance: GroupedFlats;
+    section: GroupedFlats;
 }
 
 const StyledButton = styled(Button)`
@@ -22,9 +22,9 @@ const StyledButton = styled(Button)`
 `;
 
 interface AddLevelButtonProps {
-    entrance: string;
+    section: string;
 }
-function AddLevelButton({entrance}: AddLevelButtonProps) {
+function AddLevelButton({section}: AddLevelButtonProps) {
     const [addLevel] = useMutation(ADD_LEVEL);
     const {houseUuid: uuid} = useParams();
     return (
@@ -35,7 +35,7 @@ function AddLevelButton({entrance}: AddLevelButtonProps) {
                 await addLevel({
                     variables: {
                         uuid,
-                        entrance
+                        section
                     }
                 });
             }}
@@ -46,16 +46,13 @@ function AddLevelButton({entrance}: AddLevelButtonProps) {
 }
 
 export const LevelRepresentation = memo(function LevelRepresentationFn(props: LevelRepresentationProps) {
-    const {entrance} = props;
+    const {section} = props;
     return (
         <Fragment>
-            <AddLevelButton entrance={entrance.entrance} />
-            {entrance.level.map((level) => {
+            <AddLevelButton section={section.section} />
+            {section.levels.map((level) => {
                 return (
-                    <ExpansionPanel
-                        key={`level${level.level}+${entrance.entrance}`}
-                        TransitionProps={{unmountOnExit: true}}
-                    >
+                    <ExpansionPanel key={level.id} TransitionProps={{unmountOnExit: true}}>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -66,7 +63,7 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
                                 <Grid container={true} spacing={3} item={true} xs={3}>
-                                    <AddFlatCard level={level.level} entrance={props.entrance.entrance} />
+                                    <AddFlatCard level={level.level} section={props.section.section} />
                                 </Grid>
                                 {level.flats.map((flat) => {
                                     return (

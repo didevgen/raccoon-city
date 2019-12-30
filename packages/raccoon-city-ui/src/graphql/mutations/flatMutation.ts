@@ -7,7 +7,7 @@ export const UPDATE_FLAT = gql`
             flatNumber
             price
             level
-            entrance
+            section
             area
             status
             roomAmount
@@ -22,7 +22,7 @@ export const CREATE_FLAT = gql`
             flatNumber
             price
             level
-            entrance
+            section
             area
             status
             roomAmount
@@ -37,7 +37,7 @@ export const DELETE_FLAT = gql`
 `;
 
 export const ADD_LEVEL = gql`
-    mutation addLevel($uuid: String, $entrance: String) {
-        addLevel(uuid: $uuid, entrance: $entrance)
+    mutation addLevel($uuid: String, $section: String) {
+        addLevel(uuid: $uuid, section: $section)
     }
 `;

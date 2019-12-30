@@ -1,10 +1,12 @@
-import ApartmentComplexModel from '../../db/models/apartmentComplex';
-import HouseModel from '../../db/models/house';
 import groupBy from 'ramda/src/groupBy';
+import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {Flat} from '../../db/models/flat';
+import HouseModel from '../../db/models/house';
+import {Section} from '../../db/models/section';
+import {Level} from '../../db/models/level';
 
-const groupByEntrance = groupBy((flat: Flat) => {
-    return flat.entrance;
+const groupBySection = groupBy((flat: Flat) => {
+    return flat.section;
 });
 
 const groupByLevel = groupBy((flat: Flat) => {
@@ -31,18 +33,28 @@ export const hosueQuery = {
             return [];
         }
     },
-    getGroupedFlatsByEntrance: async (parent, {uuid}) => {
-        const data = await HouseModel.findById(uuid).populate('flats');
-        if (data && data.flats) {
-            const flatsByEntrance = groupByEntrance(data.flats);
-            return Object.entries(flatsByEntrance).map(([key, value]) => {
-                const flatsByLevel = groupByLevel(value);
+    getGroupedFlatsBySection: async (parent, {uuid}) => {
+        const data = await HouseModel.findById(uuid)
+            .populate({
+                path: 'sections',
+                populate: {
+                    path: 'levels',
+                    populate: {
+                        path: 'flats'
+                    }
+                }
+            })
+            .exec();
+        if (data && data.sections) {
+            return data.sections.map((section: Section) => {
                 return {
-                    entrance: key,
-                    level: Object.entries(flatsByLevel).map(([level, flats]) => {
+                    id: section.id,
+                    section: section.sectionName,
+                    levels: section.levels.map((level: Level) => {
                         return {
-                            level,
-                            flats
+                            id: level.id,
+                            level: level.levelNumber,
+                            flats: level.flats
                         };
                     })
                 };

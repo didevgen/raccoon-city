@@ -4,21 +4,21 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React, {Fragment, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {GET_GROUPED_FLATS, GetGroupedFlatsByEntranceQuery, GroupedFlats} from '../../../../graphql/queries/houseQuery';
+import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../../graphql/queries/houseQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {LevelRepresentation} from './LevelRepresentation/LevelRepresentation';
 
 function renderTabs(flats: GroupedFlats[]) {
-    return flats.map((entrance) => {
-        return <Tab key={`section${entrance.entrance}`} label={`Секция ${entrance.entrance}`} />;
+    return flats.map((section) => {
+        return <Tab key={section.id} label={`Секция ${section.section}`} />;
     });
 }
 
 function renderLevels(flats: GroupedFlats[], value: number) {
-    return flats.map((entrance, i) => {
+    return flats.map((section, i) => {
         return (
-            <TabPanel value={value} key={`section${entrance.entrance}`} index={i}>
-                <LevelRepresentation entrance={entrance} />
+            <TabPanel value={value} key={section.id} index={i}>
+                <LevelRepresentation section={section} />
             </TabPanel>
         );
     });
@@ -32,26 +32,26 @@ export function HouseEditor() {
     };
 
     const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery<GetGroupedFlatsByEntranceQuery>(GET_GROUPED_FLATS, {
+    const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS, {
         variables: {
             uuid
         },
         fetchPolicy: 'cache-and-network'
     });
 
-    if (loading || error || !data || !data.getGroupedFlatsByEntrance) {
+    if (loading || error || !data || !data.getGroupedFlatsBySection) {
         return null;
     }
 
-    const entrances = data.getGroupedFlatsByEntrance;
+    const sections = data.getGroupedFlatsBySection;
     return (
         <Fragment>
             <AppBar position="static" color="default">
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    {renderTabs(entrances)}
+                    {renderTabs(sections)}
                 </Tabs>
             </AppBar>
-            {renderLevels(entrances, value)}
+            {renderLevels(sections, value)}
         </Fragment>
     );
 }

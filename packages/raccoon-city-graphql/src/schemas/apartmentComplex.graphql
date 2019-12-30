@@ -65,7 +65,7 @@ input ParsedFlatInput {
     flatNumber: String
     price: String
     level: String
-    entrance: String
+    section: String
     area: String
     status: String
     roomAmount: String
@@ -80,7 +80,7 @@ type ParsedFlat {
     flatNumber: String
     price: String
     level: String
-    entrance: String
+    section: String
     area: String
     status: String
     roomAmount: String

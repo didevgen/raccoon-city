@@ -34,7 +34,7 @@ function toGraphqlFlat(flat: Flat): Flat {
         ...flat,
         flatNumber: Number(flat.flatNumber),
         area: Number(flat.area),
-        entrance: flat.entrance,
+        section: flat.section,
         level: Number(flat.level),
         price: Number(flat.price),
         roomAmount: Number(flat.roomAmount)
@@ -144,7 +144,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                                         </Field>
                                     </Grid>
                                     <Grid item={true} xs={6}>
-                                        <Field name="entrance" validate={isRequiredAndIsInteger}>
+                                        <Field name="section" validate={isRequiredAndIsInteger}>
                                             {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Подъезд"

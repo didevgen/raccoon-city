@@ -12,7 +12,7 @@ export interface ParsedFlat {
     flatNumber: string;
     price: string;
     level: string;
-    entrance: string;
+    section: string;
     area: string;
     status: FlatStatus;
     roomAmount: string;
@@ -23,7 +23,7 @@ export interface Flat {
     flatNumber: number;
     price: number;
     level: number;
-    entrance: string;
+    section: string;
     area: number;
     status: FlatStatus;
     roomAmount: number;

@@ -6,7 +6,7 @@ import {FlatFormDialog} from '../FlatForm/FlatForm';
 
 interface AddFlatCardProps {
     level: number;
-    entrance: string;
+    section: string;
 }
 export function AddFlatCard(props: AddFlatCardProps) {
     const [open, setOpen] = React.useState(false);
@@ -27,7 +27,7 @@ export function AddFlatCard(props: AddFlatCardProps) {
                 open={open}
                 setOpen={setOpen}
                 isNew={true}
-                flat={{level: props.level, entrance: props.entrance} as any}
+                flat={{level: props.level, section: props.section} as any}
             />
         </Fragment>
     );
