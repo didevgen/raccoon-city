@@ -47,7 +47,7 @@ export function HouseEditor() {
     return (
         <Fragment>
             <AppBar position="static" color="default">
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" variant="scrollable">
                     {renderTabs(sections)}
                 </Tabs>
             </AppBar>

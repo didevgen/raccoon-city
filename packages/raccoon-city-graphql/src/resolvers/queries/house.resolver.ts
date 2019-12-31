@@ -37,10 +37,13 @@ export const hosueQuery = {
         const data = await HouseModel.findById(uuid)
             .populate({
                 path: 'sections',
+                options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
+                    options: {sort: {levelNumber: -1}},
                     populate: {
-                        path: 'flats'
+                        path: 'flats',
+                        options: {sort: {flatNumber: 1}}
                     }
                 }
             })

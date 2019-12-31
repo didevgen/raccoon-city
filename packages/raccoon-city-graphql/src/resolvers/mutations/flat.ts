@@ -1,26 +1,101 @@
-import {FlatModel} from '../../db/models/flat';
+import {Flat, FlatModel} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
+import {LevelModel} from '../../db/models/level';
+import {SectionModel} from '../../db/models/section';
 import {IdFlat} from '../../types/flat/flat';
 import {Context} from '../../utils';
+
+async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId: string): Promise<Flat> {
+    const prevFlat = previousFlat ? previousFlat.toObject() : {};
+    let section = await SectionModel.findOne({house: houseId, sectionName: newFlat.section});
+    let level;
+    if (!section) {
+        section = await SectionModel.create({
+            house: houseId,
+            sectionName: newFlat.section
+        });
+
+        level = await LevelModel.create({
+            section: section.id,
+            levelNumber: newFlat.level
+        });
+    } else {
+        level = await LevelModel.findOne({
+            section: section.id,
+            levelNumber: newFlat.level
+        });
+
+        if (!level) {
+            level = await LevelModel.create({
+                section: section.id,
+                levelNumber: newFlat.level
+            });
+        }
+    }
+
+    return {
+        ...prevFlat,
+        ...newFlat,
+        section: section.id,
+        level: level.id,
+        house: houseId
+    };
+}
+
+async function handleLevelMismatch(newFlat: IdFlat, previousFlat: Flat): Promise<Flat> {
+    let level = await LevelModel.findOne({
+        section: previousFlat.section.id,
+        levelNumber: newFlat.level
+    });
+
+    if (!level) {
+        level = await LevelModel.create({
+            section: previousFlat.section.id,
+            levelNumber: newFlat.level
+        });
+    }
+
+    return {
+        ...previousFlat.toObject(),
+        ...newFlat,
+        section: previousFlat.section,
+        level,
+        house: previousFlat.house
+    };
+}
 
 export const flatMutation = {
     async updateFlat(parent, args, ctx: Context) {
         const flat: IdFlat = args.flat;
-        return FlatModel.findOneAndUpdate({_id: flat.id}, {...flat}, {new: true});
+
+        const previousFlat = await FlatModel.findById(flat.id)
+            .populate('section')
+            .populate('level')
+            .exec();
+
+        if (flat.section !== previousFlat.section.sectionName) {
+            const updatedFlat = await handleSection(flat, previousFlat, flat.house);
+            return FlatModel.findOneAndUpdate({_id: previousFlat.id}, updatedFlat);
+        }
+
+        if (flat.level !== previousFlat.level.levelNumber) {
+            const updatedFlat = await handleLevelMismatch(flat, previousFlat);
+            return FlatModel.findOneAndUpdate({_id: previousFlat.id}, updatedFlat);
+        }
+
+        const result = {
+            ...previousFlat.toObject(),
+            ...flat,
+            section: previousFlat.section.id,
+            level: previousFlat.level.id,
+            house: previousFlat.house
+        };
+        return FlatModel.findOneAndUpdate({_id: previousFlat.id}, result);
     },
     async createFlat(parent, args, ctx: Context) {
         const flat = args.flat;
-        const house = await HouseModel.findById(args.houseGuid)
-            .populate('flats')
-            .exec();
-        if (house) {
-            flat.house = args.houseGuid;
-            const newFlat = await FlatModel.create(flat);
-            house.flats.push(newFlat);
-            await house.save();
-            return newFlat;
-        }
-        return null;
+        const newFlat = await handleSection(flat, null, args.houseGuid);
+        return FlatModel.create(newFlat);
     },
     async deleteFlat(parent, {uuid}, ctx: Context) {
         await FlatModel.deleteOne({_id: uuid}).exec();

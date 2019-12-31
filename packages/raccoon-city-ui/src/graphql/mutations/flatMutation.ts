@@ -6,8 +6,6 @@ export const UPDATE_FLAT = gql`
             id
             flatNumber
             price
-            level
-            section
             area
             status
             roomAmount
@@ -21,8 +19,6 @@ export const CREATE_FLAT = gql`
             id
             flatNumber
             price
-            level
-            section
             area
             status
             roomAmount
