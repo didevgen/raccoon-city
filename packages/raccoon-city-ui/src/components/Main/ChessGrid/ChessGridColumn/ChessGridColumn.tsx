@@ -19,7 +19,7 @@ const ColumnTitle = styled.div`
 
 const CellContainer = styled.div`
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 `;
 
 interface ChessGridColumnProps {
