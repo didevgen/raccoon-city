@@ -5,6 +5,7 @@ import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
+import {FlatModel} from '../../db/models/flat';
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
@@ -45,6 +46,11 @@ export const house = {
             section: sectionId,
             levelNumber
         });
+        return true;
+    },
+    async deleteLevel(parent, {levelId}, ctx: Context) {
+        await FlatModel.deleteMany({level: levelId}).exec();
+        await LevelModel.findByIdAndRemove(levelId).exec();
         return true;
     }
 };

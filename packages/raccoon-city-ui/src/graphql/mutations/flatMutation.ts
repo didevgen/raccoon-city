@@ -33,7 +33,13 @@ export const DELETE_FLAT = gql`
 `;
 
 export const ADD_LEVEL = gql`
-    mutation addLevel($sectionId: String) {
+    mutation addLevel($sectionId: String!) {
         addLevel(sectionId: $sectionId)
+    }
+`;
+
+export const DELETE_LEVEL = gql`
+    mutation deleteLevel($levelId: String!) {
+        deleteLevel(levelId: $levelId)
     }
 `;

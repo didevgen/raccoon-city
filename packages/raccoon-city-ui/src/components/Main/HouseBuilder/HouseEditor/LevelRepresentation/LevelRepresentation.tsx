@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, {Fragment, memo} from 'react';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
-import {ADD_LEVEL} from '../../../../../graphql/mutations/flatMutation';
+import {ADD_LEVEL, DELETE_LEVEL} from '../../../../../graphql/mutations/flatMutation';
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
@@ -67,6 +67,39 @@ function AddLevelButton({section}: AddLevelButtonProps) {
     );
 }
 
+interface DeleteLevelButtonProps {
+    levelId: string;
+    sectionId: string;
+}
+
+function DeleteLevelButton(props: DeleteLevelButtonProps) {
+    const [deleteLevel] = useMutation(DELETE_LEVEL);
+    return (
+        <StyledIconButton
+            color="secondary"
+            onClick={async (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                await deleteLevel({
+                    variables: {
+                        levelId: props.levelId
+                    },
+                    refetchQueries: [
+                        {
+                            query: GET_SECTION,
+                            variables: {
+                                sectionId: props.sectionId
+                            }
+                        }
+                    ]
+                });
+            }}
+        >
+            <DeleteOutline />
+        </StyledIconButton>
+    );
+}
+
 const SortableItem = SortableElement(ExpansionPanel);
 const SortableList = SortableContainer(({section}: LevelRepresentationProps) => {
     return (
@@ -81,9 +114,7 @@ const SortableList = SortableContainer(({section}: LevelRepresentationProps) => 
                         >
                             <FormControlLabel label="" control={<DragHandle />} />
                             <StyledInfo>Этаж {level.level}</StyledInfo>
-                            <StyledIconButton color="secondary">
-                                <DeleteOutline />
-                            </StyledIconButton>
+                            <DeleteLevelButton sectionId={section.id} levelId={level.id} />
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
