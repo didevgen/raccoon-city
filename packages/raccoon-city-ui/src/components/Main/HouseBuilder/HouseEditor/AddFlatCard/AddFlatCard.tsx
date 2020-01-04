@@ -7,6 +7,7 @@ import {FlatFormDialog} from '../FlatForm/FlatForm';
 interface AddFlatCardProps {
     level: number;
     section: string;
+    maxLevel: number;
 }
 export function AddFlatCard(props: AddFlatCardProps) {
     const [open, setOpen] = React.useState(false);
@@ -27,6 +28,7 @@ export function AddFlatCard(props: AddFlatCardProps) {
                 open={open}
                 setOpen={setOpen}
                 isNew={true}
+                maxLevel={props.maxLevel}
                 flat={{level: props.level, section: props.section} as any}
             />
         </Fragment>

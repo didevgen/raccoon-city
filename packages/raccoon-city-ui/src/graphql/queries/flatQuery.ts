@@ -22,3 +22,9 @@ export const GET_SECTION = gql`
         }
     }
 `;
+
+export const GET_MAX_LEVEL = gql`
+    query getMaxLevelInSection($sectionId: String!) {
+        getMaxLevelInSection(sectionId: $sectionId)
+    }
+`;

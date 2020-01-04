@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface FlatCardProps {
     flat: Flat;
+    maxLevel: number;
 }
 
 export const FlatCard = memo((props: FlatCardProps) => {
@@ -86,7 +87,7 @@ export const FlatCard = memo((props: FlatCardProps) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
-            <FlatFormDialog open={open} setOpen={setOpen} flat={flat} />
+            <FlatFormDialog open={open} setOpen={setOpen} flat={flat} maxLevel={props.maxLevel} />
         </Fragment>
     );
 });

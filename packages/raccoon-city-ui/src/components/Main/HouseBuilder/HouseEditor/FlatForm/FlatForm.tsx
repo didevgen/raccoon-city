@@ -27,6 +27,7 @@ interface FlatFormDialogProps {
     setOpen: (value: boolean) => void;
     flat: Flat;
     isNew?: boolean;
+    maxLevel: number;
 }
 
 function toGraphqlFlat(flat: Flat): Flat {

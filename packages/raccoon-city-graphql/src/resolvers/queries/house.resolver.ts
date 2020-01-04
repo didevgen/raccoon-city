@@ -2,7 +2,7 @@ import groupBy from 'ramda/src/groupBy';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {Flat} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
-import {Level} from '../../db/models/level';
+import {Level, LevelModel} from '../../db/models/level';
 import {Section, SectionModel} from '../../db/models/section';
 
 const groupBySection = groupBy((flat: Flat) => {
@@ -112,5 +112,12 @@ export const hosueQuery = {
         } else {
             return null;
         }
+    },
+    getMaxLevelInSection: async (_, {sectionId}) => {
+        const [result] = await LevelModel.find({section: sectionId}, 'levelNumber')
+            .sort({levelNumber: -1})
+            .limit(1)
+            .exec();
+        return result ? result.levelNumber : 0;
     }
 };

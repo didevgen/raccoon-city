@@ -1,4 +1,4 @@
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import {Button, ExpansionPanelSummary, FormControlLabel} from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -14,7 +14,7 @@ import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
 import {ADD_LEVEL, DELETE_LEVEL, DELETE_SECTION} from '../../../../../graphql/mutations/flatMutation';
-import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
+import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
 import {Flat} from '../../../../shared/types/flat.types';
@@ -163,6 +163,12 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
 
 const SortableItem = SortableElement(ExpansionPanel);
 const SortableList = SortableContainer(({section, levels}: SortableListRepresentation) => {
+    const {data} = useQuery(GET_MAX_LEVEL, {
+        variables: {
+            sectionId: section.id
+        }
+    });
+    console.log(data);
     return (
         <div>
             {levels.map((level, i) => {
@@ -180,12 +186,12 @@ const SortableList = SortableContainer(({section, levels}: SortableListRepresent
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
                                 <Grid container={true} spacing={3} item={true} xs={3}>
-                                    <AddFlatCard level={level.level} section={section.section} />
+                                    <AddFlatCard level={level.level} section={section.section} maxLevel={0} />
                                 </Grid>
                                 {level.flats.map((flat) => {
                                     return (
                                         <Grid key={flat.id} container={true} item={true} xs={3} spacing={3}>
-                                            <FlatCard flat={flat} />
+                                            <FlatCard flat={flat} maxLevel={0} />
                                         </Grid>
                                     );
                                 })}
