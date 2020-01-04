@@ -45,10 +45,26 @@ function ConfirmDialog({open, cancel, accept}: any) {
                 <DialogContentText>Данная операция не сможет быть отменена</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus={true} onClick={cancel} color="primary">
+                <Button
+                    autoFocus={true}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        cancel();
+                    }}
+                    color="primary"
+                >
                     Отмена
                 </Button>
-                <Button onClick={accept} color="primary" autoFocus={true}>
+                <Button
+                    onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        accept();
+                    }}
+                    color="primary"
+                    autoFocus={true}
+                >
                     Да
                 </Button>
             </DialogActions>
