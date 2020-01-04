@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import DehazeIcon from '@material-ui/icons/Dehaze';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, {Fragment, memo} from 'react';
+import arrayMove from 'array-move';
+import React, {Fragment, memo, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
@@ -16,11 +17,21 @@ import {ADD_LEVEL, DELETE_LEVEL, DELETE_SECTION} from '../../../../../graphql/mu
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
+import {Flat} from '../../../../shared/types/flat.types';
 import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
 import {FlatCard} from '../FlatCard/FlatCard';
 
 interface LevelRepresentationProps {
     section: GroupedFlats;
+}
+
+interface SortableListRepresentation {
+    section: GroupedFlats;
+    levels: Array<{
+        id: string;
+        level: number;
+        flats: Flat[];
+    }>;
 }
 
 const StyledButton = styled(Button)`
@@ -151,10 +162,10 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
 }
 
 const SortableItem = SortableElement(ExpansionPanel);
-const SortableList = SortableContainer(({section}: LevelRepresentationProps) => {
+const SortableList = SortableContainer(({section, levels}: SortableListRepresentation) => {
     return (
         <div>
-            {section.levels.map((level, i) => {
+            {levels.map((level, i) => {
                 return (
                     <SortableItem key={level.id} index={i} TransitionProps={{unmountOnExit: true}}>
                         <ExpansionPanelSummary
@@ -188,6 +199,7 @@ const SortableList = SortableContainer(({section}: LevelRepresentationProps) => 
 });
 
 export const LevelRepresentation = memo(function LevelRepresentationFn(props: LevelRepresentationProps) {
+    const [levels, setLevels] = useState(props.section.levels);
     const {section} = props;
     const {houseUuid} = useParams();
 
@@ -199,7 +211,14 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
         <Fragment>
             <DeleteSectionButton sectionId={section.id} houseId={houseUuid} />
             <AddLevelButton section={section.id} />
-            <SortableList useDragHandle={true} section={section} />
+            <SortableList
+                useDragHandle={true}
+                section={section}
+                levels={levels}
+                onSortEnd={({oldIndex, newIndex, collection, isKeySorting}, e) => {
+                    setLevels(arrayMove(levels, oldIndex, newIndex));
+                }}
+            />
         </Fragment>
     );
 });
