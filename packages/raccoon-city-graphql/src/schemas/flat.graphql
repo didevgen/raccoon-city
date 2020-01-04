@@ -36,10 +36,10 @@ type Mutation {
     updateFlat(flat: HouseFlatInput): HouseFlat
     createFlat(houseGuid: String, flat: HouseFlatInput): HouseFlat
     deleteFlat(uuid: String): Boolean
-    addLevel(uuid: String, section: String): Boolean
 }
 
 extend type Query {
     getFlats(uuid: String!): [HouseFlat]
     getGroupedFlatsBySection(uuid: String!): [GroupedBySectionFlat]
+    getSectionData(sectionId: String!): GroupedBySectionFlat
 }

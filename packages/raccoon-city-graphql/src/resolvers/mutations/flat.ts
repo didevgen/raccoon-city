@@ -100,22 +100,5 @@ export const flatMutation = {
     async deleteFlat(parent, {uuid}, ctx: Context) {
         await FlatModel.deleteOne({_id: uuid}).exec();
         return true;
-    },
-    async addLevel(parent, {uuid, section}, ctx: Context) {
-        const house = await HouseModel.findById(uuid)
-            .populate('flats', null, {section: 1})
-            .sort('-levels')
-            .exec();
-        /*if (house) {
-            const newFlat = await FlatModel.create({
-                section,
-                levels: 1
-            });
-            house.flats.push(newFlat);
-            await house.save();
-            return true;
-        }*/
-
-        return false;
     }
 };

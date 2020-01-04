@@ -3,7 +3,7 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {Flat} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
 import {Level} from '../../db/models/level';
-import {Section} from '../../db/models/section';
+import {Section, SectionModel} from '../../db/models/section';
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -74,6 +74,43 @@ export const hosueQuery = {
             });
         } else {
             return [];
+        }
+    },
+    getSectionData: async (parent, {sectionId}) => {
+        const section = await SectionModel.findById(sectionId)
+            .populate({
+                path: 'levels',
+                options: {sort: {levelNumber: -1}},
+                populate: {
+                    path: 'flats',
+                    options: {sort: {flatNumber: 1}}
+                }
+            })
+            .exec();
+        if (section) {
+            return {
+                id: section.id,
+                section: section.sectionName,
+                levels: section.levels.map((level: Level) => {
+                    const newFlat = {
+                        level: level.levelNumber,
+                        section: section.sectionName
+                    };
+                    const flats = level.flats.map((flat) => {
+                        return {
+                            ...flat.toObject(),
+                            ...newFlat
+                        };
+                    });
+                    return {
+                        id: level.id,
+                        level: level.levelNumber,
+                        flats
+                    };
+                })
+            };
+        } else {
+            return null;
         }
     }
 };

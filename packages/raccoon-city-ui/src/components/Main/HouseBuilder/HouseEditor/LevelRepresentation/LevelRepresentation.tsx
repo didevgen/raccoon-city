@@ -9,11 +9,10 @@ import DehazeIcon from '@material-ui/icons/Dehaze';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, {Fragment, memo} from 'react';
-import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
-import {Section} from '../../../../../../../raccoon-city-graphql/src/db/models/section';
 import {ADD_LEVEL} from '../../../../../graphql/mutations/flatMutation';
+import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
 import {FlatCard} from '../FlatCard/FlatCard';
@@ -26,7 +25,7 @@ const StyledButton = styled(Button)`
     margin-bottom: 16px !important;
 `;
 
-const StyledLabel = styled(FormControlLabel)`
+const StyledIconButton = styled(IconButton)`
     margin-left: auto !important;
     margin-right: 0 !important;
 `;
@@ -43,7 +42,6 @@ const DragHandle = SortableHandle(() => <DehazeIcon />);
 
 function AddLevelButton({section}: AddLevelButtonProps) {
     const [addLevel] = useMutation(ADD_LEVEL);
-    const {houseUuid: uuid} = useParams();
     return (
         <StyledButton
             variant="contained"
@@ -51,9 +49,16 @@ function AddLevelButton({section}: AddLevelButtonProps) {
             onClick={async () => {
                 await addLevel({
                     variables: {
-                        uuid,
-                        section
-                    }
+                        sectionId: section
+                    },
+                    refetchQueries: [
+                        {
+                            query: GET_SECTION,
+                            variables: {
+                                sectionId: section
+                            }
+                        }
+                    ]
                 });
             }}
         >
@@ -76,14 +81,9 @@ const SortableList = SortableContainer(({section}: LevelRepresentationProps) => 
                         >
                             <FormControlLabel label="" control={<DragHandle />} />
                             <StyledInfo>Этаж {level.level}</StyledInfo>
-                            <StyledLabel
-                                label=""
-                                control={
-                                    <IconButton color="secondary">
-                                        <DeleteOutline />
-                                    </IconButton>
-                                }
-                            />
+                            <StyledIconButton color="secondary">
+                                <DeleteOutline />
+                            </StyledIconButton>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
@@ -110,7 +110,7 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
     const {section} = props;
     return (
         <Fragment>
-            <AddLevelButton section={section.section} />
+            <AddLevelButton section={section.id} />
             <SortableList useDragHandle={true} section={section} />
         </Fragment>
     );

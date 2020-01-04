@@ -1,5 +1,7 @@
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import HouseModel, {House} from '../../db/models/house';
+import {LevelModel} from '../../db/models/level';
+import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
@@ -29,5 +31,20 @@ export const house = {
             .getImageService(ctx.Firebase, args.uuid)
             .removeImage(args.imageId);
         return 'Success';
+    },
+    async addLevel(parent, {sectionId}, ctx: Context) {
+        const section = await SectionModel.findById(sectionId)
+            .populate({
+                path: 'levels',
+                options: {sort: {levelNumber: -1}}
+            })
+            .exec();
+        const topLevel = section.levels[0];
+        const levelNumber = topLevel ? topLevel.levelNumber + 1 : 1;
+        await LevelModel.create({
+            section: sectionId,
+            levelNumber
+        });
+        return true;
     }
 };
