@@ -9,11 +9,13 @@ import DehazeIcon from '@material-ui/icons/Dehaze';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, {Fragment, memo} from 'react';
+import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
-import {ADD_LEVEL, DELETE_LEVEL} from '../../../../../graphql/mutations/flatMutation';
+import {ADD_LEVEL, DELETE_LEVEL, DELETE_SECTION} from '../../../../../graphql/mutations/flatMutation';
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
-import {GroupedFlats} from '../../../../../graphql/queries/houseQuery';
+import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../../graphql/queries/houseQuery';
+import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
 import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
 import {FlatCard} from '../FlatCard/FlatCard';
 
@@ -67,6 +69,46 @@ function AddLevelButton({section}: AddLevelButtonProps) {
     );
 }
 
+interface DeleteSectionButtonProps {
+    houseId: string;
+    sectionId: string;
+}
+
+function DeleteSectionButton({sectionId, houseId}: DeleteSectionButtonProps) {
+    const [deleteSection] = useMutation(DELETE_SECTION);
+    return (
+        <Confirmation>
+            {(confirmFn: (cb: () => void) => void) => {
+                return (
+                    <StyledButton
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            confirmFn(() => async () => {
+                                await deleteSection({
+                                    variables: {
+                                        sectionId
+                                    },
+                                    refetchQueries: [
+                                        {
+                                            query: GET_GROUPED_FLATS,
+                                            variables: {
+                                                uuid: houseId
+                                            }
+                                        }
+                                    ]
+                                });
+                            });
+                        }}
+                    >
+                        Удалить секцию
+                    </StyledButton>
+                );
+            }}
+        </Confirmation>
+    );
+}
+
 interface DeleteLevelButtonProps {
     levelId: string;
     sectionId: string;
@@ -75,28 +117,36 @@ interface DeleteLevelButtonProps {
 function DeleteLevelButton(props: DeleteLevelButtonProps) {
     const [deleteLevel] = useMutation(DELETE_LEVEL);
     return (
-        <StyledIconButton
-            color="secondary"
-            onClick={async (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                await deleteLevel({
-                    variables: {
-                        levelId: props.levelId
-                    },
-                    refetchQueries: [
-                        {
-                            query: GET_SECTION,
-                            variables: {
-                                sectionId: props.sectionId
-                            }
-                        }
-                    ]
-                });
+        <Confirmation>
+            {(confirmFn: (cb: () => void) => void) => {
+                return (
+                    <StyledIconButton
+                        color="secondary"
+                        onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            confirmFn(() => async () => {
+                                await deleteLevel({
+                                    variables: {
+                                        levelId: props.levelId
+                                    },
+                                    refetchQueries: [
+                                        {
+                                            query: GET_SECTION,
+                                            variables: {
+                                                sectionId: props.sectionId
+                                            }
+                                        }
+                                    ]
+                                });
+                            });
+                        }}
+                    >
+                        <DeleteOutline />
+                    </StyledIconButton>
+                );
             }}
-        >
-            <DeleteOutline />
-        </StyledIconButton>
+        </Confirmation>
     );
 }
 
@@ -139,8 +189,15 @@ const SortableList = SortableContainer(({section}: LevelRepresentationProps) => 
 
 export const LevelRepresentation = memo(function LevelRepresentationFn(props: LevelRepresentationProps) {
     const {section} = props;
+    const {houseUuid} = useParams();
+
+    if (!houseUuid) {
+        return null;
+    }
+
     return (
         <Fragment>
+            <DeleteSectionButton sectionId={section.id} houseId={houseUuid} />
             <AddLevelButton section={section.id} />
             <SortableList useDragHandle={true} section={section} />
         </Fragment>

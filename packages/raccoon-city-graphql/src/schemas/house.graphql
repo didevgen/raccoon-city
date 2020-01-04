@@ -37,6 +37,7 @@ type Mutation {
     deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String
     addLevel(sectionId: String!): Boolean
     deleteLevel(levelId: String!): Boolean
+    deleteSection(sectionId: String!): Boolean
 }
 
 extend type Query {

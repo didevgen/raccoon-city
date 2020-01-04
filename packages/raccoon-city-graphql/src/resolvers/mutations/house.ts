@@ -48,9 +48,15 @@ export const house = {
         });
         return true;
     },
-    async deleteLevel(parent, {levelId}, ctx: Context) {
+    async deleteLevel(parent, {levelId}) {
         await FlatModel.deleteMany({level: levelId}).exec();
         await LevelModel.findByIdAndRemove(levelId).exec();
+        return true;
+    },
+    async deleteSection(parent, {sectionId}) {
+        await FlatModel.deleteMany({section: sectionId}).exec();
+        await LevelModel.deleteMany({section: sectionId}).exec();
+        await SectionModel.findByIdAndRemove(sectionId).exec();
         return true;
     }
 };

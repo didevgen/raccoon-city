@@ -43,3 +43,9 @@ export const DELETE_LEVEL = gql`
         deleteLevel(levelId: $levelId)
     }
 `;
+
+export const DELETE_SECTION = gql`
+    mutation deleteSection($sectionId: String!) {
+        deleteSection(sectionId: $sectionId)
+    }
+`;
