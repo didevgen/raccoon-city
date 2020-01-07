@@ -14,7 +14,6 @@ import {FlatFormDialog} from '../FlatForm/FlatForm';
 import {flatDefaultImage} from '../../../../../core/constants';
 import {useMutation} from '@apollo/react-hooks';
 import {DELETE_FLAT} from '../../../../../graphql/mutations/flatMutation';
-import {useParams} from 'react-router-dom';
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,7 +36,6 @@ interface FlatCardProps {
 
 export const FlatCard = memo((props: FlatCardProps) => {
     const classes = useStyles();
-    const {houseUuid} = useParams();
     const {flat} = props;
     const [deleteFlat] = useMutation(DELETE_FLAT);
     const [open, setOpen] = React.useState(false);

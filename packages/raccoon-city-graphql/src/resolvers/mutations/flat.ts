@@ -26,7 +26,7 @@ async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId
         });
 
         if (!level) {
-            level = await handleLevelAbscense(previousFlat.section.id, newFlat.level);
+            level = await handleLevelAbscense(section.id, newFlat.level);
         }
     }
 

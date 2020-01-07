@@ -21,3 +21,9 @@ export const DELETE_IMAGE = gql`
         deleteHouseImage(mode: $mode, uuid: $uuid, imageId: $imageId)
     }
 `;
+
+export const REORDER_LEVELS = gql`
+    mutation reorderLevels($sectionId: String!, $oldIndex: Int!, $newIndex: Int!) {
+        reorderLevels(sectionId: $sectionId, oldIndex: $oldIndex, newIndex: $newIndex)
+    }
+`;

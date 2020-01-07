@@ -38,6 +38,7 @@ type Mutation {
     addLevel(sectionId: String!): Boolean
     deleteLevel(levelId: String!): Boolean
     deleteSection(sectionId: String!): Boolean
+    reorderLevels(sectionId: String!, oldIndex: Int!, newIndex: Int!): Boolean
 }
 
 extend type Query {

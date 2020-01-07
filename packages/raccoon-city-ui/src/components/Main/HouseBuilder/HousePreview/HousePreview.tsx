@@ -45,7 +45,7 @@ export function HousePreview(props: HousePreviewProps) {
                 title={house.name}
             />
             <CardActionArea>
-                <Link to={`/apartmentComplex/${uuid}/house/${house.id}`}>
+                <Link to={`/apartmentComplex/${uuid}/house/${house.id}/info`}>
                     <CardMedia className={classes.media} image={image} title={house.name} />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />

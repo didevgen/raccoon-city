@@ -14,6 +14,7 @@ import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
 import {ADD_LEVEL, DELETE_LEVEL, DELETE_SECTION} from '../../../../../graphql/mutations/flatMutation';
+import {REORDER_LEVELS} from '../../../../../graphql/mutations/houseMutation';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../../graphql/queries/houseQuery';
 import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
@@ -32,6 +33,7 @@ interface SortableListRepresentation {
         level: number;
         flats: Flat[];
     }>;
+    maxLevel: number;
 }
 
 const StyledButton = styled(Button)`
@@ -174,19 +176,7 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
 }
 
 const SortableItem = SortableElement(ExpansionPanel);
-const SortableList = SortableContainer(({section, levels}: SortableListRepresentation) => {
-    const {data, error, loading} = useQuery(GET_MAX_LEVEL, {
-        variables: {
-            sectionId: section.id
-        }
-    });
-
-    if (error || loading) {
-        return null;
-    }
-
-    const maxLevel = data.getMaxLevelInSection || 0;
-
+const SortableList = SortableContainer(({section, levels, maxLevel}: SortableListRepresentation) => {
     return (
         <div>
             {levels.map((level, i) => {
@@ -228,12 +218,26 @@ const SortableList = SortableContainer(({section, levels}: SortableListRepresent
 });
 
 export const LevelRepresentation = memo(function LevelRepresentationFn(props: LevelRepresentationProps) {
+    const {section} = props;
+
     const [levels, setLevels] = useState(props.section.levels);
+    const [reorderFlats] = useMutation(REORDER_LEVELS);
+    const {data, error, loading} = useQuery(GET_MAX_LEVEL, {
+        variables: {
+            sectionId: section.id
+        }
+    });
+
     useEffect(() => {
         setLevels(props.section.levels);
     }, [props.section]);
-    const {section} = props;
     const {houseUuid} = useParams();
+
+    if (error || loading) {
+        return null;
+    }
+
+    const maxLevel = data.getMaxLevelInSection || 0;
 
     if (!houseUuid) {
         return null;
@@ -244,11 +248,26 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
             <DeleteSectionButton sectionId={section.id} houseId={houseUuid} />
             <AddLevelButton section={section.id} />
             <SortableList
+                maxLevel={maxLevel}
                 useDragHandle={true}
                 section={section}
                 levels={levels}
-                onSortEnd={({oldIndex, newIndex, collection, isKeySorting}, e) => {
-                    setLevels(arrayMove(levels, oldIndex, newIndex));
+                onSortEnd={async ({oldIndex, newIndex, collection, isKeySorting}, e) => {
+                    setLevels(
+                        arrayMove(levels, oldIndex, newIndex).map((level, index) => {
+                            return {
+                                ...level,
+                                level: levels.length - index
+                            };
+                        })
+                    );
+                    await reorderFlats({
+                        variables: {
+                            sectionId: section.id,
+                            oldIndex,
+                            newIndex
+                        }
+                    });
                 }}
             />
         </Fragment>

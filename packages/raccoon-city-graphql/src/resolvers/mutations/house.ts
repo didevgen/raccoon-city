@@ -1,3 +1,4 @@
+import arrayMove from 'array-move';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {FlatModel} from '../../db/models/flat';
 import HouseModel, {House} from '../../db/models/house';
@@ -67,6 +68,25 @@ export const house = {
             });
             await bulk.execute();
         }
+        return true;
+    },
+    async reorderLevels(_, {sectionId, newIndex, oldIndex}) {
+        const existingLevels = await LevelModel.find({section: sectionId})
+            .sort({levelNumber: -1})
+            .exec();
+        const movedLevels = arrayMove(existingLevels, oldIndex, newIndex);
+        if (movedLevels.length > 0) {
+            const bulk = LevelModel.collection.initializeUnorderedBulkOp();
+            movedLevels.forEach((level, i) => {
+                bulk.find({_id: level._id}).update({
+                    $set: {
+                        levelNumber: movedLevels.length - i
+                    }
+                });
+            });
+            await bulk.execute();
+        }
+
         return true;
     },
     async deleteSection(parent, {sectionId}) {
