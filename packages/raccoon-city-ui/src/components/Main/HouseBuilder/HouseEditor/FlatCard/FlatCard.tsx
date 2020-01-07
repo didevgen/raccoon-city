@@ -14,7 +14,6 @@ import {FlatFormDialog} from '../FlatForm/FlatForm';
 import {flatDefaultImage} from '../../../../../core/constants';
 import {useMutation} from '@apollo/react-hooks';
 import {DELETE_FLAT} from '../../../../../graphql/mutations/flatMutation';
-import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
 import {useParams} from 'react-router-dom';
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 

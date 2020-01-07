@@ -1,11 +1,11 @@
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
+import {FlatModel} from '../../db/models/flat';
 import HouseModel, {House} from '../../db/models/house';
 import {LevelModel} from '../../db/models/level';
 import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
-import {FlatModel} from '../../db/models/flat';
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
@@ -50,7 +50,23 @@ export const house = {
     },
     async deleteLevel(parent, {levelId}) {
         await FlatModel.deleteMany({level: levelId}).exec();
+        const {section} = await LevelModel.findById(levelId).exec();
         await LevelModel.findByIdAndRemove(levelId).exec();
+        const existingLevels = await LevelModel.find({section})
+            .sort({levelNumber: 1})
+            .exec();
+
+        if (existingLevels.length > 0) {
+            const bulk = LevelModel.collection.initializeUnorderedBulkOp();
+            existingLevels.forEach((level, i) => {
+                bulk.find({_id: level._id}).update({
+                    $set: {
+                        levelNumber: i + 1
+                    }
+                });
+            });
+            await bulk.execute();
+        }
         return true;
     },
     async deleteSection(parent, {sectionId}) {

@@ -26,10 +26,7 @@ async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId
         });
 
         if (!level) {
-            level = await LevelModel.create({
-                section: section.id,
-                levelNumber: newFlat.level
-            });
+            level = await handleLevelAbscense(previousFlat.section.id, newFlat.level);
         }
     }
 
@@ -49,10 +46,7 @@ async function handleLevelMismatch(newFlat: IdFlat, previousFlat: Flat): Promise
     });
 
     if (!level) {
-        level = await LevelModel.create({
-            section: previousFlat.section.id,
-            levelNumber: newFlat.level
-        });
+        level = await handleLevelAbscense(previousFlat.section.id, newFlat.level);
     }
 
     return {
@@ -62,6 +56,40 @@ async function handleLevelMismatch(newFlat: IdFlat, previousFlat: Flat): Promise
         level,
         house: previousFlat.house
     };
+}
+
+async function handleLevelAbscense(section: string, levelNumber: number) {
+    let level = await LevelModel.findOne({
+        section,
+        levelNumber
+    });
+
+    if (!level) {
+        const [maxLevelNumber] = await LevelModel.find({section})
+            .sort({levelNumber: -1})
+            .limit(1)
+            .exec();
+        if (maxLevelNumber.levelNumber < levelNumber) {
+            const emptyLevels = [];
+            let i = maxLevelNumber.levelNumber + 1;
+            while (i <= levelNumber) {
+                emptyLevels.push({
+                    section,
+                    levelNumber: i
+                });
+                i++;
+            }
+            const results = await LevelModel.insertMany(emptyLevels);
+            return results[results.length - 1];
+        } else {
+            level = await LevelModel.create({
+                section,
+                levelNumber
+            });
+        }
+    }
+
+    return level;
 }
 
 export const flatMutation = {

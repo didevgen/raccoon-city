@@ -19,7 +19,6 @@ import {
     isRequiredAndIsNumber
 } from '../../../../../core/validators/validators';
 import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
-import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
 import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
 import {Flat} from '../../../../shared/types/flat.types';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
