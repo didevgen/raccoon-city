@@ -27,6 +27,8 @@ export function Confirmation(props: any) {
             {props.children(confirmFn)}
             <ConfirmDialog
                 open={open}
+                title={props.title}
+                text={props.text}
                 cancel={handleClose}
                 accept={() => {
                     callbackFn();
@@ -37,12 +39,14 @@ export function Confirmation(props: any) {
     );
 }
 
-function ConfirmDialog({open, cancel, accept}: any) {
+function ConfirmDialog({open, cancel, accept, text, title}: any) {
+    const heading = title ? title : 'Вы уверены?';
+    const mainText = text ? text : 'Данная операция не сможет быть отменена';
     return (
         <Dialog open={open} onClose={cancel} aria-labelledby="responsive-dialog-title">
-            <DialogTitle id="responsive-dialog-title">{'Вы уверены?'}</DialogTitle>
+            <DialogTitle id="responsive-dialog-title">{heading}</DialogTitle>
             <DialogContent>
-                <DialogContentText>Данная операция не сможет быть отменена</DialogContentText>
+                <DialogContentText>{mainText}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button

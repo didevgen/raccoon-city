@@ -9,7 +9,7 @@ import DehazeIcon from '@material-ui/icons/Dehaze';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import arrayMove from 'array-move';
-import React, {Fragment, memo, useState} from 'react';
+import React, {Fragment, memo, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import styled from 'styled-components';
@@ -67,6 +67,12 @@ function AddLevelButton({section}: AddLevelButtonProps) {
                     refetchQueries: [
                         {
                             query: GET_SECTION,
+                            variables: {
+                                sectionId: section
+                            }
+                        },
+                        {
+                            query: GET_MAX_LEVEL,
                             variables: {
                                 sectionId: section
                             }
@@ -147,6 +153,12 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
                                             variables: {
                                                 sectionId: props.sectionId
                                             }
+                                        },
+                                        {
+                                            query: GET_MAX_LEVEL,
+                                            variables: {
+                                                sectionId: props.sectionId
+                                            }
                                         }
                                     ]
                                 });
@@ -163,12 +175,18 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
 
 const SortableItem = SortableElement(ExpansionPanel);
 const SortableList = SortableContainer(({section, levels}: SortableListRepresentation) => {
-    const {data} = useQuery(GET_MAX_LEVEL, {
+    const {data, error, loading} = useQuery(GET_MAX_LEVEL, {
         variables: {
             sectionId: section.id
         }
     });
-    console.log(data);
+
+    if (error || loading) {
+        return null;
+    }
+
+    const maxLevel = data.getMaxLevelInSection || 0;
+
     return (
         <div>
             {levels.map((level, i) => {
@@ -186,12 +204,17 @@ const SortableList = SortableContainer(({section, levels}: SortableListRepresent
                         <ExpansionPanelDetails>
                             <Grid container={true} spacing={3}>
                                 <Grid container={true} spacing={3} item={true} xs={3}>
-                                    <AddFlatCard level={level.level} section={section.section} maxLevel={0} />
+                                    <AddFlatCard
+                                        level={level.level}
+                                        sectionId={section.id}
+                                        section={section.section}
+                                        maxLevel={maxLevel}
+                                    />
                                 </Grid>
                                 {level.flats.map((flat) => {
                                     return (
                                         <Grid key={flat.id} container={true} item={true} xs={3} spacing={3}>
-                                            <FlatCard flat={flat} maxLevel={0} />
+                                            <FlatCard flat={flat} sectionId={section.id} maxLevel={maxLevel} />
                                         </Grid>
                                     );
                                 })}
@@ -206,6 +229,9 @@ const SortableList = SortableContainer(({section, levels}: SortableListRepresent
 
 export const LevelRepresentation = memo(function LevelRepresentationFn(props: LevelRepresentationProps) {
     const [levels, setLevels] = useState(props.section.levels);
+    useEffect(() => {
+        setLevels(props.section.levels);
+    }, [props.section]);
     const {section} = props;
     const {houseUuid} = useParams();
 

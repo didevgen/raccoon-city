@@ -6,6 +6,7 @@ import {FlatFormDialog} from '../FlatForm/FlatForm';
 
 interface AddFlatCardProps {
     level: number;
+    sectionId: string;
     section: string;
     maxLevel: number;
 }
@@ -28,6 +29,7 @@ export function AddFlatCard(props: AddFlatCardProps) {
                 open={open}
                 setOpen={setOpen}
                 isNew={true}
+                sectionId={props.sectionId}
                 maxLevel={props.maxLevel}
                 flat={{level: props.level, section: props.section} as any}
             />

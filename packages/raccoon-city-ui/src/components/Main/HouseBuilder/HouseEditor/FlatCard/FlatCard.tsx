@@ -16,6 +16,7 @@ import {useMutation} from '@apollo/react-hooks';
 import {DELETE_FLAT} from '../../../../../graphql/mutations/flatMutation';
 import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
 import {useParams} from 'react-router-dom';
+import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface FlatCardProps {
     flat: Flat;
+    sectionId: string;
     maxLevel: number;
 }
 
@@ -68,9 +70,9 @@ export const FlatCard = memo((props: FlatCardProps) => {
                                 },
                                 refetchQueries: [
                                     {
-                                        query: GET_GROUPED_FLATS,
+                                        query: GET_SECTION,
                                         variables: {
-                                            uuid: houseUuid
+                                            sectionId: props.sectionId
                                         }
                                     }
                                 ]
@@ -87,7 +89,13 @@ export const FlatCard = memo((props: FlatCardProps) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
-            <FlatFormDialog open={open} setOpen={setOpen} flat={flat} maxLevel={props.maxLevel} />
+            <FlatFormDialog
+                open={open}
+                setOpen={setOpen}
+                flat={flat}
+                maxLevel={props.maxLevel}
+                sectionId={props.sectionId}
+            />
         </Fragment>
     );
 });

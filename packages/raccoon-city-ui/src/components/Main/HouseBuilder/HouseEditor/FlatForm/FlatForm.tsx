@@ -20,10 +20,13 @@ import {
 } from '../../../../../core/validators/validators';
 import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
 import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
+import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
 import {Flat} from '../../../../shared/types/flat.types';
+import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 
 interface FlatFormDialogProps {
     open: boolean;
+    sectionId: string;
     setOpen: (value: boolean) => void;
     flat: Flat;
     isNew?: boolean;
@@ -42,7 +45,11 @@ function toGraphqlFlat(flat: Flat): Flat {
     });
 }
 
-export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps) {
+function shouldShowDialog(levelNumber: number, maxLevelNumber: number) {
+    return levelNumber > maxLevelNumber + 1;
+}
+
+export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}: FlatFormDialogProps) {
     const {houseUuid: uuid} = useParams();
     const [updateFlat] = useMutation(UPDATE_FLAT);
     const [createFlat] = useMutation(CREATE_FLAT);
@@ -60,9 +67,15 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                     },
                     refetchQueries: [
                         {
-                            query: GET_GROUPED_FLATS,
+                            query: GET_SECTION,
                             variables: {
-                                uuid
+                                sectionId
+                            }
+                        },
+                        {
+                            query: GET_MAX_LEVEL,
+                            variables: {
+                                sectionId
                             }
                         }
                     ]
@@ -76,9 +89,15 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                 },
                 refetchQueries: [
                     {
-                        query: GET_GROUPED_FLATS,
+                        query: GET_SECTION,
                         variables: {
-                            uuid
+                            sectionId
+                        }
+                    },
+                    {
+                        query: GET_MAX_LEVEL,
+                        variables: {
+                            sectionId
                         }
                     }
                 ]
@@ -155,6 +174,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                                                     error={!!getError(meta)}
                                                     helperText={getError(meta)}
                                                     fullWidth={true}
+                                                    disabled={true}
                                                     variant="outlined"
                                                 />
                                             )}
@@ -223,9 +243,31 @@ export function FlatFormDialog({open, setOpen, flat, isNew}: FlatFormDialogProps
                                 <Button onClick={handleClose} color="primary">
                                     Отмена
                                 </Button>
-                                <Button disabled={invalid} onClick={handleSave(values as Flat)} color="primary">
-                                    Сохранить
-                                </Button>
+                                {shouldShowDialog(values.level, maxLevel) ? (
+                                    <Confirmation
+                                        text={
+                                            'Вы указали большое значение для этажа. Недостающие этажи будут созданы. Продолжить?'
+                                        }
+                                    >
+                                        {(confirmFn: (cb: () => void) => void) => {
+                                            return (
+                                                <Button
+                                                    disabled={invalid}
+                                                    onClick={() => {
+                                                        confirmFn(() => handleSave(values as Flat));
+                                                    }}
+                                                    color="primary"
+                                                >
+                                                    Сохранить
+                                                </Button>
+                                            );
+                                        }}
+                                    </Confirmation>
+                                ) : (
+                                    <Button disabled={invalid} onClick={handleSave(values as Flat)} color="primary">
+                                        Сохранить
+                                    </Button>
+                                )}
                             </DialogActions>
                         </Fragment>
                     );
