@@ -23,6 +23,7 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
+import {LevelEditor} from '../LevelEditor/LevelEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -147,7 +148,7 @@ export function HouseInfo() {
                                     <HouseEditor />
                                 </Route>
                                 <Route exact path={`${path}/levels`}>
-                                    <h1>Levels</h1>
+                                    <LevelEditor />
                                 </Route>
                                 <Route exact path={`${path}/flats`}>
                                     <h1>Flats</h1>

@@ -9,3 +9,17 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.SVG--highlighted {
+    &:hover {
+        fill: #73859f;
+        cursor: pointer;
+    }
+}
+
+.SVG__circle--highlighted {
+    &:hover {
+        fill: #ef9a9a;
+        cursor: pointer;
+    }
+}
