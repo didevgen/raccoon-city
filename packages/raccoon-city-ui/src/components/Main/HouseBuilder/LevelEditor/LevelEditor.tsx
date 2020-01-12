@@ -53,7 +53,6 @@ function drawCircle(circle: Circle) {
 function handleClickOnCircle(draw: Svg, mouseEvent: MouseEvent) {
     const tagName = (mouseEvent.target as any).tagName;
     let circle;
-
     if (tagName === 'circle') {
         circle = new Circle(mouseEvent.target as SVGCircleElement);
     } else {
@@ -97,7 +96,11 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
             path = draw
                 .path(['M', x || 0, y || 0, ...newCoordinate])
                 .fill({color: '#000', opacity: 0.5})
-                .stroke({color: '#3f51b5', width: 3});
+                .stroke({color: '#3f51b5', width: 3})
+                .on('click', (event: MouseEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                });
         }
     });
 }
