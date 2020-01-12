@@ -66,10 +66,31 @@ function handleClickOnCircle(draw: Svg, mouseEvent: MouseEvent) {
 
 function initDrawing(draw: Svg, options: DrawingOptions) {
     let path: Path;
+    let circles: Circle[] = [];
+    let paths: Path[] = [];
+
     let coordinates: PathArray = new PathArray();
     let initialCircle: Circle | null = null;
+    draw.on('contextmenu', (event: Event) => {
+        event.preventDefault();
+        const circleToRemove = circles.pop();
+        const pathToRemove = paths.pop();
+        coordinates.pop();
+        if (pathToRemove) {
+            pathToRemove.remove();
+        }
+
+        if (circleToRemove) {
+            circleToRemove.remove();
+            if (circles.length === 0) {
+                initialCircle = null;
+            }
+        }
+    });
+
     draw.on('click', (mouseEvent: MouseEvent) => {
         const circle = handleClickOnCircle(draw, mouseEvent);
+        circles.push(circle);
         if (!initialCircle) {
             initialCircle = drawInitialCircle(circle, () => {
                 path.plot(coordinates)
@@ -77,10 +98,11 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
                     .on('click', (event: Event) => {
                         event.preventDefault();
                         event.stopPropagation();
-                        event.stopImmediatePropagation();
                     });
                 options.onSelected(path);
                 coordinates = new PathArray();
+                circles = [];
+                paths = [];
                 initialCircle = null;
             });
             coordinates.push(['M', mouseEvent.offsetX, mouseEvent.offsetY]);
@@ -88,6 +110,7 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
                 .path(['M', mouseEvent.offsetX, mouseEvent.offsetY])
                 .fill({color: '#000', opacity: 0.5})
                 .stroke({color: '#3f51b5', width: 3});
+            paths.push(path);
         } else {
             const newCircle = drawCircle(circle);
             const [, x, y] = coordinates[coordinates.length - 1];
@@ -101,6 +124,7 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
+            paths.push(path);
         }
     });
 }
