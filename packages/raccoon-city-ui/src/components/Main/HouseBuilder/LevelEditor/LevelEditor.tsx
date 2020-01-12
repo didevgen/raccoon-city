@@ -1,18 +1,16 @@
-import {Circle, Path, PathArray, Svg, SVG} from '@svgdotjs/svg.js';
-import React, {useEffect, useRef} from 'react';
+import {Circle, Path, PathArray, PathCommand, Svg, SVG} from '@svgdotjs/svg.js';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 
-const ImageContainer = styled.div`
-    width: 3000px;
-    height: 100vh;
-    background: url(https://pb8920.profitbase.ru/uploads/layout/8920/8caceb62651d0efa08c2050dda8f14a7.png);
+const ImageContainer = styled.div<any>`
+    width: ${(props: any) => props.width}px;
+    height: ${(props: any) => props.height}px;
+    background: url(${(props: any) => props.url});
 `;
 
 const MainContainer = styled.div`
     display: inline-block;
     max-width: 100%;
-    border: 3px dashed #eaeaea;
-    padding: 15px;
     overflow-x: auto;
     overflow-y: scroll;
 `;
@@ -29,12 +27,8 @@ interface DrawingOptions {
     onSelected: (path: Path) => void;
 }
 
-function drawInitialCircle(draw: Svg, mouseEvent: MouseEvent, closePath: () => void) {
-    const circle = draw
-        .circle(POINT_RADIUS)
-        .addClass('SVG__circle--highlighted')
-        .fill('#f44336')
-        .move(mouseEvent.offsetX - POINT_RADIUS / 2, mouseEvent.offsetY - POINT_RADIUS / 2);
+function drawInitialCircle(circle: Circle, closePath: () => void) {
+    circle.addClass('SVG__circle--highlighted').fill('#f44336');
 
     const circleClick = (event: Event) => {
         event.preventDefault();
@@ -49,12 +43,26 @@ function drawInitialCircle(draw: Svg, mouseEvent: MouseEvent, closePath: () => v
     return circle.on('click', circleClick);
 }
 
-function drawCircle(draw: Svg, mouseEvent: MouseEvent) {
-    return draw
-        .circle(POINT_RADIUS)
+function drawCircle(circle: Circle) {
+    return circle
         .stroke({color: '#3f51b5', width: 3})
         .fill('transparent')
-        .move(mouseEvent.offsetX - POINT_RADIUS / 2, mouseEvent.offsetY - POINT_RADIUS / 2);
+        .addClass('SVG__circle-general--highlighted');
+}
+
+function handleClickOnCircle(draw: Svg, mouseEvent: MouseEvent) {
+    const tagName = (mouseEvent.target as any).tagName;
+    let circle;
+
+    if (tagName === 'circle') {
+        circle = new Circle(mouseEvent.target as SVGCircleElement);
+    } else {
+        circle = draw
+            .circle(POINT_RADIUS)
+            .move(mouseEvent.offsetX - POINT_RADIUS / 2, mouseEvent.offsetY - POINT_RADIUS / 2);
+    }
+
+    return circle;
 }
 
 function initDrawing(draw: Svg, options: DrawingOptions) {
@@ -62,8 +70,9 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
     let coordinates: PathArray = new PathArray();
     let initialCircle: Circle | null = null;
     draw.on('click', (mouseEvent: MouseEvent) => {
+        const circle = handleClickOnCircle(draw, mouseEvent);
         if (!initialCircle) {
-            initialCircle = drawInitialCircle(draw, mouseEvent, () => {
+            initialCircle = drawInitialCircle(circle, () => {
                 path.plot(coordinates)
                     .addClass('SVG--highlighted')
                     .on('click', (event: Event) => {
@@ -81,10 +90,12 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
                 .fill({color: '#000', opacity: 0.5})
                 .stroke({color: '#3f51b5', width: 3});
         } else {
-            drawCircle(draw, mouseEvent);
-            coordinates.push(['L', mouseEvent.offsetX, mouseEvent.offsetY]);
+            const newCircle = drawCircle(circle);
+            const [, x, y] = coordinates[coordinates.length - 1];
+            const newCoordinate: PathCommand = ['L', newCircle.cx(), newCircle.cy()];
+            coordinates.push(newCoordinate);
             path = draw
-                .path(['M', mouseEvent.offsetX, mouseEvent.offsetY])
+                .path(['M', x || 0, y || 0, ...newCoordinate])
                 .fill({color: '#000', opacity: 0.5})
                 .stroke({color: '#3f51b5', width: 3});
         }
@@ -93,6 +104,8 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
 
 export function LevelEditor() {
     const svgRef = useRef<Svg>();
+    const imageUrl = 'https://pb8920.profitbase.ru/uploads/layout/8920/8caceb62651d0efa08c2050dda8f14a7.png';
+    const [imageSize, setImageSize] = useState({width: 0, height: 0});
     useEffect(() => {
         svgRef.current = attachSvg('#img-container');
         initDrawing(svgRef.current, {
@@ -100,11 +113,20 @@ export function LevelEditor() {
                 console.log('selected');
             }
         });
+
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = () => {
+            setImageSize({
+                width: img.naturalWidth,
+                height: img.naturalHeight
+            });
+        };
     }, []);
 
     return (
         <MainContainer>
-            <ImageContainer id="img-container" />
+            <ImageContainer id="img-container" width={imageSize.width} height={imageSize.height} url={imageUrl} />
         </MainContainer>
     );
 }

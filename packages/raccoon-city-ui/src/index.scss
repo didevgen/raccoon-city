@@ -23,3 +23,10 @@ code {
         cursor: pointer;
     }
 }
+
+.SVG__circle-general--highlighted {
+    &:hover {
+        fill: #3f51b5;
+        cursor: pointer;
+    }
+}
