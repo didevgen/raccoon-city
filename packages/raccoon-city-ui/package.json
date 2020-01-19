@@ -2,7 +2,7 @@
     "name": "my-app",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://didevgen.github.io/raccoon-city/",
+    "homepage": "https://d349l1ba9cby1j.cloudfront.net",
     "publishConfig": {
         "registry": "https://registry.npmjs.org"
     },
