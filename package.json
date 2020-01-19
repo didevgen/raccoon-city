@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
+    "awss3-deploy": "^1.0.1",
     "ts-node": "^8.5.2"
   }
 }
