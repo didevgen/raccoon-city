@@ -21,6 +21,7 @@ deploy:
     bucket: raccoon-city-bucket
     upload-dir: raccoon-city-ui-dev
     local_dir: packages/raccoon-city-ui/build
+    region: eu-central-1
     acl: public_read
     on:
       branch: master
