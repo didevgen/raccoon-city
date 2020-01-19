@@ -14,6 +14,7 @@ script:
   - cd ../raccoon-city-graphql
   - yarn
   - yarn run build
+  - cd ../../
 before_deploy:
   - ls
   - pwd
