@@ -8,6 +8,8 @@ cache:
     - packages/raccoon-city-ui/node_modules
     - packages/raccoon-city-graphql/node_modules
 before_script: cd packages/raccoon-city-ui
+env:
+  - REACT_APP_GRAPHQL_URL=$GRAPHQL_URL
 script:
   - yarn
   - yarn run build
