@@ -1,9 +1,9 @@
+import {ApolloServer, gql} from 'apollo-server';
+import connect from './db/mongoose.client';
+import {initFirebase} from './firebase';
 import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
-import connect from './db/mongoose.client';
-import {ApolloServer, gql} from 'apollo-server';
-import {initFirebase} from './firebase';
 
 try {
     const Firebase: any = initFirebase();
