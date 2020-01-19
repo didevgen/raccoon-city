@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+  - stable
+cache:
+  directories:
+    - packages/raccoon-city-ui/node_modules
+    - packages/raccoon-city-graphql/node_modules
+before_script: cd packages/raccoon-city-ui
+script:
+  - yarn
+  - yarn run build
+  - cd ../raccoon-city-graphql
+  - yarn
+  - yarn run build
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: packages/raccoon-city-ui/build
+    env:
+      - REACT_APP_GRAPHQL_URL=https://raccoon-city-test.herokuapp.com/
+    on:
+      branch: master
+  - provider: heroku
+    on:
+      branch: master
+    app: raccoon-city-test
+    api_key:
+      secure: xPXL3GvZcpzib9q9sJaMyNz9E4oMrGTk1xbfqO8WZkiwCvsd2987biVt0r0eD31Idtp+QbOC8P2fogzo3m6GN7SJO6m+SBJm3eqSjgzyDTx4fqgCXaWBFNRfv9VcoB7RfwDjiNlz9LI+7NCeN+Yv0b1gTbt9aXoGDI3B8dWbSsv2ZOrwA46Bi9css8iKzC5L7MnDiRteJnUBQq7AVIKwQf3CFdq4OaCZX63bx1NT9UNqcxaYvM/75N8H+l2rczNyVbwxLTqj0VfUnCfnu4+IvwQFUBWsxydWtiUJlwUcSEr6K5W8qcw1SU0p5BSdvGJNlsu2G+wC82csOEeyrzDcLZL31mbUC8r2umDatiYyLeHu0+T6JP/S+wfe2VK7vLQUIdL5F784i9XJKiUlzrA8tw7Mo8Bo1SbsmshH0LO4NEHHOFtRaP5ZHFzNsUN+4ORG+koN2+CNnvXuxw+O/E+adg3EeGPmqHMlms5n16/S07sQ02T37xaAeaC/NVe3cvEa7dCbWa5t/VZtp6XKyI3z5IADGNm/CnoHfrnAqf6uLFTmncR8G/wERiOEX3uhbMrEqi61yUH+yRS7XRYwzTK6U81S+sRKFKqeORFFS4FwMZ/rt99zWax/Wpt7MVVS8y2J3SM0Aa8OUfIQnmqP+PDGer/O8It0Edg3GfcMGRc0PCQ=
+
