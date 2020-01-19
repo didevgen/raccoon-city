@@ -1,8 +1,6 @@
 language: node_js
 node_js:
   - stable
-before_cache:
-  - pip install --user awscli
 cache:
   directories:
     - packages/raccoon-city-ui/node_modules
@@ -15,15 +13,12 @@ script:
   - yarn
   - yarn run build
   - cd ../../
-before_deploy:
-  - ls
-  - pwd
 deploy:
   - provider: s3
     skip_cleanup: true
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
-    bucket: raccon-city-bucket
+    bucket: raccoon-city-bucket
     upload-dir: raccoon-city-ui-dev
     local_dir: packages/raccoon-city-ui/build
     acl: public_read
