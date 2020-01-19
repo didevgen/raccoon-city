@@ -18,7 +18,7 @@ jobs:
         - yarn run build
       deploy:
         - provider: script
-          script: ~/.local/bin/aws s3 sync packages/raccoon-city-ui/build s3://raccoon-city-bucket/raccoon-city-ui-dev --region=eu-central-1 --delete
+          script: ~/.local/bin/aws s3 sync build s3://raccoon-city-bucket/raccoon-city-ui-dev --region=eu-central-1 --delete
           skip_cleanup: true
           on:
             branch: master
