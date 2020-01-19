@@ -20,7 +20,9 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
     bucket: raccon-city-bucket
+    upload-dir: raccoon-city-ui-dev
     local_dir: packages/raccoon-city-ui/build
+    acl: public_read
     on:
       branch: master
 
