@@ -1,3 +1,4 @@
+import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
 import connect from './db/mongoose.client';
@@ -11,9 +12,9 @@ try {
             ${typeDefs}
         `,
         resolvers,
-        cors: false,
         context: (request) => ({
             ...request,
+            prisma,
             Firebase
         })
     });

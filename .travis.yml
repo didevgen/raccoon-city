@@ -19,7 +19,7 @@ script:
   - cd ../../
 deploy:
   - provider: s3
-    skip_cleanup: true
+    skip_cleanup: false
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
     bucket: raccoon-city-bucket
