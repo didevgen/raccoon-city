@@ -15,25 +15,16 @@ script:
   - yarn
   - yarn run build
   - cd ../../
-#deploy:
-#  - provider: s3
-#    skip_cleanup: true
-#    access_key_id: $AWS_ACCESS_KEY_ID
-#    secret_access_key: $AWS_SECRET_ACCESS_KEY
-#    bucket: raccoon-city-bucket
-#    upload-dir: raccoon-city-ui-dev
-#    local_dir: packages/raccoon-city-ui/build
-#    region: eu-central-1
-#    on:
-#      branch: master
 deploy:
-  - provider: script
+  - provider: s3
     skip_cleanup: true
-    script:
-      - export BUCKET=raccoon-city-bucket LOCAL_DIR=packages/raccoon-city-ui/build
-      - export UPLOAD_DIR=development
-      - export REGION=eu-central-1
-      - awss3-deploy
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: raccoon-city-bucket
+    upload-dir: raccoon-city-ui-dev
+    local_dir: packages/raccoon-city-ui/build
+    region: eu-central-1
     on:
       branch: master
+
 
