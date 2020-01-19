@@ -15,14 +15,12 @@ script:
   - yarn
   - yarn run build
 deploy:
-  - provider: script
+  - provider: s3
     skip_cleanup: true
-    local_dir: packages/raccoon-city-ui
-    script:
-      - export BUCKET=raccon-city-bucket LOCAL_DIR=build
-      - export PATH=./node_modules/.bin:$PATH
-      - export UPLOAD_DIR=development
-      - awss3-deploy
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: raccon-city-bucket
+    local_dir: packages/raccoon-city-ui/build
     on:
       branch: master
 
