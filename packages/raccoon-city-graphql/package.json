@@ -7,8 +7,9 @@
         "start": "node dist/index.js",
         "start:dev": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
         "copy-to-dist": "copyfiles --up 1 src/schemas/* dist",
+        "copyspec": "copyfiles appspec.yml dist",
         "debug": "dotenv -- nodemon -e ts,graphql -x node --inspect=9200 -r ts-node/register src/index.ts",
-        "build": "rimraf dist && tsc && yarn copy-to-dist",
+        "build": "rimraf dist && tsc && yarn copy-to-dist && yarn copyspec",
         "precommit": "lint-staged",
         "prettier": "pretty-quick"
     },
