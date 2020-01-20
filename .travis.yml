@@ -37,10 +37,35 @@ jobs:
         - cd packages/raccoon-city-graphql
         - yarn
         - yarn run build
+        - cd dist
+        - zip -r latest *
+        - mkdir -p dpl_cd_upload
+        - mv latest.zip dpl_cd_upload/latest.zip
       deploy:
-        - provider: heroku
+        - provider: s3
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          local_dir: dpl_cd_upload
+          skip_cleanup: true
           on:
             branch: master
+          region: eu-central-1
+          bucket: raccoon-city-bucket
+          upload-dir: raccoon-city-ui-gql
+        - provider: codedeploy
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          bucket: raccoon-city-bucket
+          key: latest.zip
+          bundle_type: zip
+          application: raccooncity
+          deployment_group: raccooncity-deployment-group
+          region: eu-central-1
+          on:
+            branch: master
+        - provider: heroku
+          on:
+            branch: develop
           app: raccoon-city-test
           local_dir: build
           api_key:
