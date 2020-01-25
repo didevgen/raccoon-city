@@ -1,7 +1,6 @@
 #!/bin/bash
 DEPLOY_INSTRUCTIONS=/opt/codedeploy-agent/deployment-root/deployment-instructions/
 DEPLOY_ROOT=/opt/codedeploy-agent/deployment-root/
-
 for d in ${DEPLOY_ROOT}*; do
 [[ -d $d && "${d##*/}" != "deployment-instructions" ]] || continue
     for f in $d/*; do
@@ -12,3 +11,4 @@ for d in ${DEPLOY_ROOT}*; do
     fi
     done
 done
+rm -rf /home/ubuntu/raccoon-city-graphql
