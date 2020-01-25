@@ -1,9 +1,12 @@
 import {ApolloServer, gql} from 'apollo-server';
+import {config} from 'dotenv';
 import connect from './db/mongoose.client';
 import {initFirebase} from './firebase';
 import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
+
+config();
 
 try {
     const Firebase: any = initFirebase();

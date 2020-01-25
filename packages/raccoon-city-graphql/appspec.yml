@@ -14,7 +14,7 @@ hooks:
       runas: root
   ApplicationStart:
     - location: bin/start_nodeserver.sh
-      timeout: 600
+      timeout: 300
       runas: root
   ValidateService:
     - location: bin/MonitorService.sh

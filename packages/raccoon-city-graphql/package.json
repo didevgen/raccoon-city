@@ -20,6 +20,7 @@
         "array-move": "^2.2.1",
         "bcryptjs": "^2.4.3",
         "copyfiles": "^2.1.1",
+        "dotenv": "^8.2.0",
         "firebase": "^7.5.0",
         "firebase-admin": "^8.8.0",
         "forever": "^2.0.0",
