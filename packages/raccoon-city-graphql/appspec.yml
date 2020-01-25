@@ -8,6 +8,10 @@ hooks:
     - location: bin/remove_archives.sh
       timeout: 300
       runas: root
+  BeforeInstall:
+    - location: bin/remove_project.sh
+      timeout: 300
+      runas: root
   ApplicationStart:
     - location: bin/start_nodeserver.sh
       timeout: 600
