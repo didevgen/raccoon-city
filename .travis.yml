@@ -35,6 +35,7 @@ jobs:
           key: raccoon-city-ui-gql/latest.zip
           bundle_type: zip
           application: raccooncity
+          file_exists_behavior: overwrite
           deployment_group: raccooncity-deployment-group
           region: eu-central-1
           on:
