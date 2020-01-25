@@ -1,4 +1,4 @@
 #!/bin/bash
 #node /home/ubuntu/raccoon-city-graphql/dist/index.js
-cd ../
+cd /home/ubuntu/raccoon-city-graphql
 yarn start:dev
