@@ -3,13 +3,7 @@ os: linux
 files:
   - source: ./
     destination: /home/ubuntu/raccoon-city-graphql
-permissions:
-  - object: /
-      pattern: "**"
-      owner: ec2-user
-      group: ec2-user
 hooks:
 ApplicationStart:
   - location: bin/app-start.sh
-    timeout: 60
-    runas: ec2-user
+    timeout: 600
