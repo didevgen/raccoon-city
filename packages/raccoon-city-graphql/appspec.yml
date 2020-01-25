@@ -4,10 +4,6 @@ files:
   - source: ./
     destination: /home/ubuntu/raccoon-city-graphql
 hooks:
-  ApplicationStop:
-    - location: bin/stopnode.sh
-      timeout: 300
-      runas: root
   ApplicationStart:
     - location: bin/start_nodeserver.sh
       timeout: 300
