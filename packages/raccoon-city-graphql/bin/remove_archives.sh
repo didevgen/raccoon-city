@@ -1,6 +1,9 @@
 #!/bin/bash
 DEPLOY_INSTRUCTIONS=/opt/codedeploy-agent/deployment-root/deployment-instructions/
 DEPLOY_ROOT=/opt/codedeploy-agent/deployment-root/
+cd /home/ubuntu/raccoon-city-graphql
+yarn run stop:forever
+cd /home/ubuntu
 rm -rf /home/ubuntu/raccoon-city-graphql
 
 for d in ${DEPLOY_ROOT}*; do
