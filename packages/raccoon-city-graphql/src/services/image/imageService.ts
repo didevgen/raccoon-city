@@ -1,4 +1,4 @@
-import {Uploadable} from './imageUploader';
+import {Uploadable} from '../../firebase/fbImageUploader';
 import {DataImageService} from '../../db/services/dataImageService';
 import {uuid} from 'uuidv4';
 import * as fs from 'fs';
