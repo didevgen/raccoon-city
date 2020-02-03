@@ -1,0 +1,3 @@
+type Mutation {
+    createLayout(houseId: String!, file: Upload!): FlatLayout
+}

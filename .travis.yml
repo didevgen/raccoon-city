@@ -32,6 +32,14 @@ jobs:
           region: eu-central-1
           on:
             branch: master
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN
+          local_dir: packages/raccoon-city-ui/build
+          env:
+            - REACT_APP_GRAPHQL_URL=https://raccoon-city-test.herokuapp.com/
+          on:
+            branch: develop
     - stage: backend
       script:
         - cd packages/raccoon-city-graphql

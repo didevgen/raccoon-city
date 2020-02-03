@@ -3,6 +3,7 @@ import {apartmentComplex as apartmentComplexQuery} from './queries/apartmentComp
 import {apartmentComplex as apartmentComplexMutation} from './mutations/apartmentComplex';
 import {house as houseMutation} from './mutations/house';
 import {flatMutation} from './mutations/flat';
+import {layoutMutation} from './mutations/layout';
 import {hosueQuery} from './queries/house.resolver';
 
 export default {
@@ -14,6 +15,7 @@ export default {
     Mutation: {
         ...apartmentComplexMutation,
         ...houseMutation,
-        ...flatMutation
+        ...flatMutation,
+        ...layoutMutation
     }
 };

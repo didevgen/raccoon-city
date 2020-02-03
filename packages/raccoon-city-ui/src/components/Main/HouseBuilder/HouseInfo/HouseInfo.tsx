@@ -24,6 +24,7 @@ import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import {LevelEditor} from '../LevelEditor/LevelEditor';
+import {LayoutEditor} from '../LayoutEditor/LayoutEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -107,7 +108,7 @@ export function HouseInfo() {
                                         <ListItemText primary="Планировка этажей" />
                                     </ListItem>
                                 </StyledLink>
-                                <StyledLink activeClassName="Mui-selected" to={`${url}/flats`}>
+                                <StyledLink activeClassName="Mui-selected" to={`${url}/layout`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Планировка квартир" />
                                     </ListItem>
@@ -150,8 +151,8 @@ export function HouseInfo() {
                                 <Route exact path={`${path}/levels`}>
                                     <LevelEditor />
                                 </Route>
-                                <Route exact path={`${path}/flats`}>
-                                    <h1>Flats</h1>
+                                <Route exact path={`${path}/layout`}>
+                                    <LayoutEditor />
                                 </Route>
                             </Switch>
                         </div>
