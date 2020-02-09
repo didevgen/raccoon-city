@@ -48,6 +48,7 @@
         "@types/bcryptjs": "^2.4.2",
         "@types/node": "10.17.5",
         "@types/papaparse": "^5.0.2",
+        "@types/sharp": "^0.24.0",
         "dotenv-cli": "1.4.0",
         "lint-staged": "^9.4.3",
         "nodemon": "^2.0.1",

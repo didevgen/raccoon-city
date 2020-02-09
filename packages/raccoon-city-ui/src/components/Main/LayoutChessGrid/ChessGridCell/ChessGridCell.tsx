@@ -1,6 +1,7 @@
 import {Theme, withStyles} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
+import {createSelectable, TSelectableItemProps} from 'react-selectable-fast/lib';
 import styled from 'styled-components';
 import {Flat} from '../../../shared/types/flat.types';
 
@@ -12,13 +13,18 @@ const HtmlTooltip = withStyles((theme: Theme) => ({
     }
 }))(Tooltip);
 
-const Cell = styled.div`
+interface Props {
+    isSelected?: boolean;
+    isSelecting?: boolean;
+}
+
+const Cell = styled.div<Props>`
     color: #fff;
     background-color: #4caf50;
     border-radius: 0;
-    margin: 8px;
-    width: 30px;
-    height: 30px;
+    margin: ${(p) => (p.isSelected || p.isSelecting ? '1px' : '8px')};
+    width: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
+    height: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,7 +102,7 @@ const DataContainer = styled.div`
     font-size: 12px;
 `;
 
-export function ChessGridCell({flat}: {flat: Flat}) {
+export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}: {flat: Flat} & TSelectableItemProps) {
     return (
         <HtmlTooltip
             title={
@@ -115,7 +121,11 @@ export function ChessGridCell({flat}: {flat: Flat}) {
                 </TooltipContainer>
             }
         >
-            <Cell className={flat.status}>{flat.roomAmount}</Cell>
+            <Cell ref={selectableRef} isSelected={isSelected} isSelecting={isSelecting} className={flat.status}>
+                {flat.roomAmount}
+            </Cell>
         </HtmlTooltip>
     );
 }
+
+export const ChessGridCell = createSelectable(ChessGridCellItem);

@@ -27,7 +27,7 @@ export class LayoutImageService extends ImageService {
         await sharp(fileUrl)
             .jpeg({
                 quality: 30
-    })
+            })
             .toFile(newFileName);
         return [newFileName, originalName, `${originalName}-light.jpg`];
     }

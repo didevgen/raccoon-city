@@ -1668,13 +1668,6 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/sharp@^0.24.0":
-  version "0.24.0"
-  resolved "https://registry.npmjs.org/@types/sharp/-/sharp-0.24.0.tgz#28abfeac45b4dcb472305503105322e97a6c2672"
-  integrity sha512-+0WeyJajTSoIacBzonsq856whNJC+cN9FNEs0yZ6hFq/V1CZmlqM8vBRy7TKZunH+gIO7SwDCzgXYWRRbzqfDA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -9809,6 +9802,11 @@ react-dropzone@^10.2.0:
     file-selector "^0.1.12"
     prop-types "^15.7.2"
 
+react-ds@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.npmjs.org/react-ds/-/react-ds-1.13.0.tgz#5af92d2ebf4f2b8878039d4d716c15e4f736cf5e"
+  integrity sha512-LLqx0oITKDLkkvXhxJEDL1Ixh9HW05e6EB12T5DUn/TmiAwujIjgc5qDxuAwO5gCmbQc/hVx0sXJkLYFm5SFVg==
+
 react-error-overlay@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.3.tgz#c378c4b0a21e88b2e159a3e62b2f531fd63bf60d"
@@ -9952,6 +9950,11 @@ react-select@^3.0.8:
     prop-types "^15.6.0"
     react-input-autosize "^2.2.2"
     react-transition-group "^2.2.1"
+
+react-selectable-fast@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/react-selectable-fast/-/react-selectable-fast-3.1.1.tgz#8f6abc8e9ddaf8d169b869f7526a69f60642e58d"
+  integrity sha512-w4f/Qf4zvswdQ7+O93vHNo/kyTzw6Q5/ssYAm4p9rYaTCa7zm8+8pnqzBfSkIVsZGlpEPic2iI+sStaV97oVwA==
 
 react-sortable-hoc@^1.10.1:
   version "1.10.1"

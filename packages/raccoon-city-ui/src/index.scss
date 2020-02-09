@@ -30,3 +30,11 @@ code {
         cursor: pointer;
     }
 }
+
+.selectable-selectbox {
+    z-index: 9000;
+    position: absolute;
+    cursor: default;
+    background: none;
+    border: 1px dashed grey;
+}
