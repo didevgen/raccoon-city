@@ -15,7 +15,7 @@ export class S3ImageUploader implements Uploadable {
         const Key = `images/${this.prefix}/${fileName}`;
         const params = {
             Bucket: process.env.AWS_S3_BUCKET,
-            Key,
+            Key: `raccoon-city-ui-dev/${Key}`,
             Body: fileContent
         };
 
@@ -38,7 +38,7 @@ export class S3ImageUploader implements Uploadable {
     public async remove(imageUuid: string): Promise<void> {
         const listParams = {
             Bucket: process.env.AWS_S3_BUCKET,
-            Prefix: `images/${this.prefix}/${imageUuid}`
+            Prefix: `raccoon-city-ui-dev/images/${this.prefix}/${imageUuid}`
         };
 
         const listedObjects = await s3.listObjectsV2(listParams).promise();

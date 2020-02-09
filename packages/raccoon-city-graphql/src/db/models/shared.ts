@@ -11,6 +11,12 @@ export const SingleImageSchema = new Schema({
     downloadUrl: {type: Schema.Types.String, required: true}
 });
 
+export const SinglePreviewImageSchema = new Schema({
+    uuid: {type: Schema.Types.String, required: true},
+    downloadUrl: {type: Schema.Types.String, required: true},
+    previewImageUrl: {type: Schema.Types.String, required: true}
+});
+
 export const NamedImageSchema = new Schema({
     uuid: {type: Schema.Types.String, required: true},
     name: {type: Schema.Types.String, required: true},

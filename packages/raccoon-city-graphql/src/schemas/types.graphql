@@ -1,4 +1,30 @@
+type SingleImage {
+    uuid: String
+    downloadUrl: String
+}
+
+type SinglePreviewImage {
+    uuid: String
+    downloadUrl: String
+    previewImageUrl: String
+}
+
+type NamedImage {
+    uuid: String
+    downloadUrl: String
+    name: String
+}
+
+type PreviewImage {
+    uuid: String
+    downloadUrl: String
+    name: String
+    previewImageUrl: String
+}
+
 type FlatLayout {
     id: String
     name: String
+    flats: [HouseFlat]
+    image: SinglePreviewImage
 }

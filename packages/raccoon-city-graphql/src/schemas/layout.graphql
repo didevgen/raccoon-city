@@ -1,3 +1,7 @@
 type Mutation {
-    createLayout(houseId: String!, file: Upload!): FlatLayout
+    createLayout(houseId: String!, file: Upload!, name: String!): FlatLayout
+}
+
+type Query {
+    getLayouts(houseId: String!): [FlatLayout]
 }

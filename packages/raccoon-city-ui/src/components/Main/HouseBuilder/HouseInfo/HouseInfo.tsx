@@ -23,8 +23,8 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import {LevelEditor} from '../LevelEditor/LevelEditor';
-import {LayoutEditor} from '../LayoutEditor/LayoutEditor';
+import {LevelEditor} from '../../LevelEditor/LevelEditor';
+import {LayoutEditor} from '../../LayoutEditor/LayoutEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

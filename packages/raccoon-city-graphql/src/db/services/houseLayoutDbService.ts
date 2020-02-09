@@ -1,11 +1,19 @@
 import {Document, Model} from 'mongoose';
-import {ImageType} from '../../services/image/imageService';
 import {DataImageService} from './dataImageService';
+import {HouseLayout} from '../models/houseLayout';
 
-export class HouseLayoutDbService<T extends Document & {images: any}> implements DataImageService {
-    constructor(protected houseId: string, private mode: ImageType, private dbModel: Model<T>) {}
+export class HouseLayoutDbService<T extends Document> implements DataImageService {
+    constructor(protected layout: HouseLayout, private dbModel: Model<T>) {}
 
-    public async uploadImage(imageUuid: string, downloadUrl: string, previewUrl?: string): Promise<void> {}
+    public async uploadImage(imageUuid: string, downloadUrl: string, previewUrl?: string): Promise<void> {
+        this.layout.image = {
+            uuid: imageUuid,
+            downloadUrl,
+            previewImageUrl: previewUrl
+        };
+
+        await this.layout.save();
+    }
 
     public async removeImage(imageUuid: string): Promise<void> {}
 }

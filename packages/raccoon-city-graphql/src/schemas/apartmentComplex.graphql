@@ -27,23 +27,6 @@ input ApartmentComplexInput {
     endDate: String
 }
 
-type SingleImage {
-    uuid: String
-    downloadUrl: String
-}
-
-type NamedImage {
-    uuid: String
-    downloadUrl: String
-    name: String
-}
-
-type PreviewImage {
-    uuid: String
-    downloadUrl: String
-    name: String
-    previewImageUrl: String
-}
 type ApartmentComplexImage {
     CHESS_GRID: SingleImage
     SITE: SingleImage

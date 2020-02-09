@@ -5,12 +5,14 @@ import {house as houseMutation} from './mutations/house';
 import {flatMutation} from './mutations/flat';
 import {layoutMutation} from './mutations/layout';
 import {hosueQuery} from './queries/house.resolver';
+import {layoutQuery} from './queries/layout';
 
 export default {
     Query: {
         ...constants,
         ...apartmentComplexQuery,
-        ...hosueQuery
+        ...hosueQuery,
+        ...layoutQuery
     },
     Mutation: {
         ...apartmentComplexMutation,
