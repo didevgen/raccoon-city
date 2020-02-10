@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {SelectableGroup} from 'react-selectable-fast';
+import {Flat} from '../../shared/types/flat.types';
 
 const ChessGridWrapper = styled.div`
     width: 100%;
@@ -18,7 +19,10 @@ const getSelectableGroupRef = (ref: SelectableGroup | null) => {
     (window as any).selectableGroup = ref;
 };
 
-export function LayoutChessGrid() {
+interface LayoutChessGridProps {
+    onSelect: (selection: Flat[]) => void;
+}
+export const LayoutChessGrid = React.memo((props: LayoutChessGridProps) => {
     const {houseUuid: uuid} = useParams();
     const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS, {
         variables: {
@@ -56,6 +60,9 @@ export function LayoutChessGrid() {
                 deselectOnEsc={true}
                 allowClickWithoutSelected={false}
                 ignoreList={['.not-selectable']}
+                onSelectionFinish={(selection: any[]) => {
+                    props.onSelect(selection.map((item) => item.props.flat));
+                }}
             >
                 <ChessGridWrapper>
                     {groupedFlats.map((item: GroupedFlats) => {
@@ -65,4 +72,4 @@ export function LayoutChessGrid() {
             </SelectableGroup>
         </div>
     );
-}
+});

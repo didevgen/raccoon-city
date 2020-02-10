@@ -22,9 +22,10 @@ const Cell = styled.div<Props>`
     color: #fff;
     background-color: #4caf50;
     border-radius: 0;
-    margin: ${(p) => (p.isSelected || p.isSelecting ? '1px' : '8px')};
+    margin: ${(p) => (p.isSelected || p.isSelecting ? '4px' : '10px')};
     width: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
     height: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
+    transition: all 100ms linear;
     display: flex;
     align-items: center;
     justify-content: center;

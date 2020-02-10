@@ -1,5 +1,6 @@
 type Mutation {
     createLayout(houseId: String!, file: Upload!, name: String!): FlatLayout
+    assignFlatsToLayout(layoutId: String!, flats: [String!]): FlatLayout
 }
 
 type Query {

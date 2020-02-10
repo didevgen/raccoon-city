@@ -10,6 +10,7 @@ import React from 'react';
 import Link from '@material-ui/core/Link';
 import {Slide} from '@material-ui/core';
 import {LayoutChessGrid} from '../../LayoutChessGrid/LayoutChessGrid';
+import {Flat} from '../../../shared/types/flat.types';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -28,12 +29,14 @@ const Transition = React.forwardRef(function(props, ref) {
 export function ChessGridDialog() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [selection, setSelection] = React.useState<Flat[]>([]);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
+        console.log(selection);
         setOpen(false);
     };
 
@@ -56,7 +59,7 @@ export function ChessGridDialog() {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <LayoutChessGrid />
+                <LayoutChessGrid onSelect={setSelection} />
             </Dialog>
         </div>
     );
