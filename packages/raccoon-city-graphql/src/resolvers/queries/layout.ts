@@ -50,5 +50,5 @@ export const layoutQuery = {
         } else {
             return [];
         }
-    },
+    }
 };

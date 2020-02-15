@@ -1,6 +1,5 @@
 import {MutationTuple, useMutation, useQuery} from '@apollo/react-hooks';
 import {createStyles, Fab, makeStyles, TableBody, Theme} from '@material-ui/core';
-import Link from '@material-ui/core/Link';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -56,18 +55,6 @@ function CreateLayout({uuid, mutation}: NewLayoutProps) {
         </ButtonContainer>
     );
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        card: {
-            maxWidth: 345
-        },
-        media: {
-            height: 0,
-            paddingTop: '56.25%' // 16:9
-        }
-    })
-);
 
 const LayoutImage = styled.img`
     max-height: 120px;
