@@ -1,12 +1,12 @@
 import {useQuery} from '@apollo/react-hooks';
 import React from 'react';
 import {useParams} from 'react-router-dom';
+import {SelectableGroup} from 'react-selectable-fast';
 import styled from 'styled-components';
 import {GroupedFlats} from '../../../graphql/queries/houseQuery';
-import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
-import {SelectableGroup} from 'react-selectable-fast';
-import {Flat} from '../../shared/types/flat.types';
 import {GET_GROUPED_FLATS_WITH_LAYOUT, GetGroupedFlatsWithLayoutQuery} from '../../../graphql/queries/layoutQuery';
+import {Flat} from '../../shared/types/flat.types';
+import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 
 const ChessGridWrapper = styled.div`
     width: 100%;

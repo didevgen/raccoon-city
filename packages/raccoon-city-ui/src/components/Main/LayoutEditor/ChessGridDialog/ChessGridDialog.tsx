@@ -31,9 +31,11 @@ const Transition = React.forwardRef(function(props, ref) {
 interface ChessGridDialogProps {
     layoutId: string;
 }
+
 export function ChessGridDialog(props: ChessGridDialogProps) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [dirty, setDirty] = React.useState(false);
     const [selection, setSelection] = React.useState<Flat[]>([]);
     const [assignFlats] = useMutation(ASSIGN_FLATS_TO_LAYOUT);
     const {layoutId} = props;
@@ -70,12 +72,18 @@ export function ChessGridDialog(props: ChessGridDialogProps) {
                         <Typography variant="h6" className={classes.title}>
                             Отметить помещения
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleSave}>
+                        <Button disabled={!dirty} autoFocus color="inherit" onClick={handleSave}>
                             Сохранить
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <LayoutChessGrid onSelect={setSelection} layoutId={layoutId} />
+                <LayoutChessGrid
+                    onSelect={(flats) => {
+                        setSelection(flats);
+                        setDirty(true);
+                    }}
+                    layoutId={layoutId}
+                />
             </Dialog>
         </div>
     );
