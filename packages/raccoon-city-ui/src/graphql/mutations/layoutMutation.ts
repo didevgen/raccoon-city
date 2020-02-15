@@ -8,3 +8,11 @@ export const CREATE_LAYOUT = gql`
         }
     }
 `;
+
+export const ASSIGN_FLATS_TO_LAYOUT = gql`
+    mutation assignFlatsToLayout($layoutId: String!, $flats: [String]) {
+        assignFlatsToLayout(layoutId: $layoutId, flats: $flats) {
+            id
+        }
+    }
+`;

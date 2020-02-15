@@ -1,4 +1,5 @@
 import {gql} from 'apollo-boost';
+import {GroupedFlats} from './houseQuery';
 
 export const GET_LAYOUTS = gql`
     query getLayouts($houseId: String!) {
@@ -8,6 +9,32 @@ export const GET_LAYOUTS = gql`
             image {
                 downloadUrl
                 previewImageUrl
+            }
+        }
+    }
+`;
+export interface GetGroupedFlatsWithLayoutQuery {
+    getChessGridLayout: GroupedFlats[];
+}
+export const GET_GROUPED_FLATS_WITH_LAYOUT = gql`
+    query getChessGridLayout($houseId: String!, $layoutId: String!) {
+        getChessGridLayout(houseId: $houseId, layoutId: $layoutId) {
+            id
+            section
+            levels {
+                id
+                level
+                flats {
+                    id
+                    flatNumber
+                    price
+                    level
+                    section
+                    area
+                    status
+                    roomAmount
+                    belongsToLayout
+                }
             }
         }
     }

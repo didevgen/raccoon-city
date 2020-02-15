@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
+import {SinglePreviewImage} from '../../types/shared';
 import {Flat} from './flat';
 import {House} from './house';
 import {SinglePreviewImageSchema} from './shared';
-import {SinglePreviewImage} from '../../types/shared';
 
 export interface HouseLayout extends Document {
     house: House;

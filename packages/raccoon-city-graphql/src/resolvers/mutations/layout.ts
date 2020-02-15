@@ -1,4 +1,5 @@
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
+import {FlatModel} from '../../db/models/flat';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {HouseLayoutDbService} from '../../db/services/houseLayoutDbService';
 import {LayoutImageService} from '../../services/image/layout';
@@ -23,7 +24,30 @@ export const layoutMutation = {
     },
     async assignFlatsToLayout(parent, {flats, layoutId}) {
         if (layoutId) {
-            return await HouseLayoutModel.findOneAndUpdate(
+            await FlatModel.update(
+                {
+                    _id: {$nin: flats},
+                    layout: layoutId
+                },
+                {
+                    $unset: {
+                        layout: layoutId
+                    }
+                },
+                {multi: true}
+            );
+            const updateFlats = FlatModel.update(
+                {
+                    _id: {$in: flats}
+                },
+                {
+                    $set: {
+                        layout: layoutId
+                    }
+                },
+                {multi: true}
+            );
+            const updateLayout = HouseLayoutModel.findOneAndUpdate(
                 {
                     _id: layoutId
                 },
@@ -33,6 +57,8 @@ export const layoutMutation = {
                     }
                 }
             ).exec();
+            const [updatedLayout] = await Promise.all([updateLayout, updateFlats]);
+            return updatedLayout;
         }
 
         return null;

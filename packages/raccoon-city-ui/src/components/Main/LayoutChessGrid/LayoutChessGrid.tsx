@@ -2,10 +2,11 @@ import {useQuery} from '@apollo/react-hooks';
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
+import {GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {SelectableGroup} from 'react-selectable-fast';
 import {Flat} from '../../shared/types/flat.types';
+import {GET_GROUPED_FLATS_WITH_LAYOUT, GetGroupedFlatsWithLayoutQuery} from '../../../graphql/queries/layoutQuery';
 
 const ChessGridWrapper = styled.div`
     width: 100%;
@@ -21,12 +22,14 @@ const getSelectableGroupRef = (ref: SelectableGroup | null) => {
 
 interface LayoutChessGridProps {
     onSelect: (selection: Flat[]) => void;
+    layoutId: string;
 }
 export const LayoutChessGrid = React.memo((props: LayoutChessGridProps) => {
-    const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS, {
+    const {houseUuid: houseId} = useParams();
+    const {loading, error, data} = useQuery<GetGroupedFlatsWithLayoutQuery>(GET_GROUPED_FLATS_WITH_LAYOUT, {
         variables: {
-            uuid
+            houseId,
+            layoutId: props.layoutId
         },
         fetchPolicy: 'cache-and-network'
     });
@@ -39,11 +42,11 @@ export const LayoutChessGrid = React.memo((props: LayoutChessGridProps) => {
         return <span>error...</span>;
     }
 
-    if (!data || !data.getGroupedFlatsBySection) {
+    if (!data || !data.getChessGridLayout) {
         return <span>no data...</span>;
     }
 
-    const {getGroupedFlatsBySection: groupedFlats} = data;
+    const {getChessGridLayout: groupedFlats} = data;
 
     if (groupedFlats && groupedFlats.length === 0) {
         return <span>В данном доме еще нет квартир</span>;

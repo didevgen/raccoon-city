@@ -14,6 +14,7 @@ export interface Flat extends Document {
     status: FlatStatus;
     roomAmount: number;
     house: House;
+    layout: string;
 }
 
 const FlatSchema: Schema = new Schema(
@@ -34,6 +35,10 @@ const FlatSchema: Schema = new Schema(
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'
+        },
+        layout: {
+            type: Schema.Types.ObjectId,
+            ref: 'HouseLayout'
         }
     },
     {

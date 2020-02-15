@@ -27,4 +27,5 @@ export interface Flat {
     area: number;
     status: FlatStatus;
     roomAmount: number;
+    belongsToLayout?: boolean;
 }

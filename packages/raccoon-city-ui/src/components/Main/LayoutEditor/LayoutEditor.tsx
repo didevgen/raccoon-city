@@ -105,7 +105,7 @@ function HouseLayouts() {
                                 <TableCell>{layout.name}</TableCell>
                                 <TableCell>
                                     <span>Flats</span>
-                                    <ChessGridDialog />
+                                    <ChessGridDialog layoutId={layout.id} />
                                 </TableCell>
                             </TableRow>
                         );

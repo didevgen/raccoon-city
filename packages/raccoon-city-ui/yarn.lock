@@ -9802,11 +9802,6 @@ react-dropzone@^10.2.0:
     file-selector "^0.1.12"
     prop-types "^15.7.2"
 
-react-ds@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.npmjs.org/react-ds/-/react-ds-1.13.0.tgz#5af92d2ebf4f2b8878039d4d716c15e4f736cf5e"
-  integrity sha512-LLqx0oITKDLkkvXhxJEDL1Ixh9HW05e6EB12T5DUn/TmiAwujIjgc5qDxuAwO5gCmbQc/hVx0sXJkLYFm5SFVg==
-
 react-error-overlay@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.3.tgz#c378c4b0a21e88b2e159a3e62b2f531fd63bf60d"
