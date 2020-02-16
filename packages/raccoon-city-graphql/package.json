@@ -5,13 +5,13 @@
     },
     "scripts": {
         "start": "node dist/index.js",
-        "start:forever": "forever start dist/index.js &",
-        "stop:forever": "forever stop dist/index.js &",
+        "start:forever": "NODE_ENV=production forever start dist/index.js &",
+        "stop:forever": "NODE_ENV=production forever stop dist/index.js &",
         "start:dev": "ts-node src/index.ts",
         "copy-to-dist": "copyfiles --up 1 src/schemas/* dist",
         "copyspec": "copyfiles appspec.yml dist",
         "debug": "dotenv -- nodemon -e ts,graphql -x node --inspect=9200 -r ts-node/register src/index.ts",
-        "build": "rimraf dist && tsc && yarn copy-to-dist && yarn copyspec",
+        "build": "NODE_ENV=production rimraf dist && tsc && yarn copy-to-dist && yarn copyspec",
         "precommit": "lint-staged",
         "prettier": "pretty-quick"
     },
@@ -42,7 +42,9 @@
         "set-value": "^3.0.1",
         "sharp": "^0.23.3",
         "sync-exec": "^0.6.2",
-        "uuidv4": "^6.0.0"
+        "uuidv4": "^6.0.0",
+        "winston": "^3.2.1",
+        "winston-cloudwatch": "^2.3.0"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",
