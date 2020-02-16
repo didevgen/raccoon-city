@@ -43,3 +43,16 @@ export const GET_GROUPED_FLATS_WITH_LAYOUT = gql`
         }
     }
 `;
+
+export const GET_LEVEL_LAYOUTS = gql`
+    query getLevelLayouts($houseId: String!) {
+        getLevelLayouts(houseId: $houseId) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
+        }
+    }
+`;

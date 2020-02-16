@@ -28,3 +28,14 @@ type FlatLayout {
     flats: [HouseFlat]
     image: SinglePreviewImage
 }
+
+type BaseLayout {
+    id: String
+    name: String
+    image: SinglePreviewImage
+}
+type LevelLayout {
+    id: String
+    name: String
+    image: SinglePreviewImage
+}

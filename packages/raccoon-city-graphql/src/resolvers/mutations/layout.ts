@@ -1,8 +1,9 @@
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {FlatModel} from '../../db/models/flat';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
-import {HouseLayoutDbService} from '../../db/services/houseLayoutDbService';
+import {LayoutDbService} from '../../db/services/layoutDbService';
 import {LayoutImageService} from '../../services/image/layout';
+import {LevelLayoutModel} from '../../db/models/levelLayout';
 
 export const layoutMutation = {
     async createLayout(parent, args) {
@@ -14,7 +15,7 @@ export const layoutMutation = {
             });
             await new LayoutImageService(
                 new S3ImageUploader(houseId),
-                new HouseLayoutDbService(layout, HouseLayoutModel)
+                new LayoutDbService(layout, HouseLayoutModel)
             ).addImage(await file);
 
             return layout;
@@ -62,5 +63,22 @@ export const layoutMutation = {
         }
 
         return null;
-    }
+    },
+    async createLevelLayout(parent, args) {
+        const {houseId, name, file} = args;
+        if (houseId) {
+            const layout = await LevelLayoutModel.create({
+                name,
+                house: houseId
+            });
+            await new LayoutImageService(
+                new S3ImageUploader(houseId),
+                new LayoutDbService(layout, LevelLayoutModel)
+            ).addImage(await file);
+
+            return layout;
+        }
+
+        return null;
+    },
 };

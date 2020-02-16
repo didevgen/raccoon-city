@@ -3,11 +3,13 @@ extend type HouseFlat {
 }
 
 type Mutation {
-    createLayout(houseId: String!, file: Upload!, name: String!): FlatLayout
+    createLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     assignFlatsToLayout(layoutId: String!, flats: [String]): FlatLayout
+    createLevelLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
 }
 
 type Query {
     getLayouts(houseId: String!): [FlatLayout]
+    getLevelLayouts(houseId: String!): [LevelLayout]
     getChessGridLayout(houseId: String!, layoutId: String!): [GroupedBySectionFlat]
 }
