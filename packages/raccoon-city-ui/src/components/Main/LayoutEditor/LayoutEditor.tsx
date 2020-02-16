@@ -11,6 +11,7 @@ import {useParams} from 'react-router';
 import styled from 'styled-components';
 import {CREATE_LAYOUT} from '../../../graphql/mutations/layoutMutation';
 import {GET_LAYOUTS} from '../../../graphql/queries/layoutQuery';
+import {Flat} from '../../shared/types/flat.types';
 import {HouseLayout} from '../../shared/types/layout.types';
 import {LayoutDialog} from '../Images/LayoutDialog/LayoutDialog';
 import {ChessGridDialog} from './ChessGridDialog/ChessGridDialog';
@@ -60,9 +61,16 @@ const LayoutImage = styled.img`
     max-height: 120px;
 `;
 
+function getFlatNumbers(flats: Flat[]) {
+    return flats
+        .map((flat) => {
+            return `№${flat.flatNumber}`;
+        })
+        .join(', ');
+}
 function HouseLayouts() {
     const {houseUuid} = useParams();
-    const {loading, error, data} = useQuery(GET_LAYOUTS, {
+    const {loading, error, data, refetch} = useQuery(GET_LAYOUTS, {
         variables: {
             houseId: houseUuid
         }
@@ -91,8 +99,8 @@ function HouseLayouts() {
                                 </TableCell>
                                 <TableCell>{layout.name}</TableCell>
                                 <TableCell>
-                                    <span>Flats</span>
-                                    <ChessGridDialog layoutId={layout.id} />
+                                    <span>{getFlatNumbers(layout.flats)}</span>
+                                    <ChessGridDialog layoutId={layout.id} refetch={refetch} />
                                 </TableCell>
                             </TableRow>
                         );

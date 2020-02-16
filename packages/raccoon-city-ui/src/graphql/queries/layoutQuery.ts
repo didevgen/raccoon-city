@@ -10,6 +10,10 @@ export const GET_LAYOUTS = gql`
                 downloadUrl
                 previewImageUrl
             }
+            flats {
+                id
+                flatNumber
+            }
         }
     }
 `;

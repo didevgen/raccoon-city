@@ -30,6 +30,7 @@ const Transition = React.forwardRef(function(props, ref) {
 
 interface ChessGridDialogProps {
     layoutId: string;
+    refetch: (params?: any) => any;
 }
 
 export function ChessGridDialog(props: ChessGridDialogProps) {
@@ -55,6 +56,7 @@ export function ChessGridDialog(props: ChessGridDialogProps) {
                 flats: selection.map((flat) => flat.id)
             }
         });
+        props.refetch();
         setOpen(false);
     };
 
