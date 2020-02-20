@@ -2,14 +2,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {ApartmentComplexBuilder} from './ApartmentComplexBuilder/ApartmentComplexBuilder';
+import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
+import {ChessGrid} from './ChessGrid/ChessGrid';
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
-import {Sidebar} from './Sidebar/Sidebar';
-import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {HouseBuilder} from './HouseBuilder/HouseBuilder';
 import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
-import {ChessGrid} from './ChessGrid/ChessGrid';
+import {Sidebar} from './Sidebar/Sidebar';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);

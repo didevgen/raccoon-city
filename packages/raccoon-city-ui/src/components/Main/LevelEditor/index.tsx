@@ -13,6 +13,7 @@ import {CREATE_LEVEL_LAYOUT} from '../../../graphql/mutations/layoutMutation';
 import {GET_LEVEL_LAYOUTS} from '../../../graphql/queries/layoutQuery';
 import {HouseLayout} from '../../shared/types/layout.types';
 import {LayoutDialog} from '../Images/LayoutDialog/LayoutDialog';
+import {LevelEditorDialog} from './LevelEditorDialog/LevelEditorDialog';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -61,7 +62,7 @@ const LayoutImage = styled.img`
 
 function LevelLayouts() {
     const {houseUuid} = useParams();
-    const {loading, error, data} = useQuery(GET_LEVEL_LAYOUTS, {
+    const {loading, error, data, refetch} = useQuery(GET_LEVEL_LAYOUTS, {
         variables: {
             houseId: houseUuid
         }
@@ -89,7 +90,10 @@ function LevelLayouts() {
                                     <LayoutImage src={layout.image.previewImageUrl} />
                                 </TableCell>
                                 <TableCell>{layout.name}</TableCell>
-                                <TableCell>Этажи</TableCell>
+                                <TableCell>
+                                    Этажи
+                                    <LevelEditorDialog refetch={refetch} layoutId={layout.id} />
+                                </TableCell>
                             </TableRow>
                         );
                     })}

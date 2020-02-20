@@ -2,10 +2,12 @@ import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {Flat} from './flat';
 import {Section} from './section';
+import {LevelLayout} from './levelLayout';
 
 export interface Level extends Document {
     levelNumber: number;
     flats: Flat[];
+    layouts: LevelLayout[];
     section: Section;
 }
 
@@ -27,6 +29,12 @@ LevelSchema.virtual('flats', {
     ref: 'Flat',
     localField: '_id',
     foreignField: 'level'
+});
+
+LevelSchema.virtual('layouts', {
+    ref: 'LevelLayout',
+    localField: '_id',
+    foreignField: 'levels'
 });
 
 export const LevelModel = mongoose.model<Level>('Level', LevelSchema);

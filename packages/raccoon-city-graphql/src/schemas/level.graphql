@@ -1,0 +1,19 @@
+type GroupedBySectionLevels {
+    id: String
+    section: String
+    levels: [GroupedLevel]
+}
+
+type GroupedLevel {
+    id: String
+    level: Int
+    isSelected: Boolean
+}
+
+type Query {
+    getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
+}
+
+type Mutation {
+    assignLevelsToLayout(levelLayoutId: String, levels: [String]): Boolean
+}

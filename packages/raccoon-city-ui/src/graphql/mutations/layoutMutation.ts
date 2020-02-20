@@ -25,3 +25,9 @@ export const ASSIGN_FLATS_TO_LAYOUT = gql`
         }
     }
 `;
+
+export const ASSIGN_LEVELS_TO_LAYOUT = gql`
+    mutation assignLevelsToLayout($levelLayoutId: String!, $levels: [String]) {
+        assignLevelsToLayout(levelLayoutId: $levelLayoutId, levels: $levels)
+    }
+`;

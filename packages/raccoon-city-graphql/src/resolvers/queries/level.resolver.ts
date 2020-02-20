@@ -1,14 +1,13 @@
 import HouseModel from '../../db/models/house';
-import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {Level} from '../../db/models/level';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
 
-export const layoutQuery = {
-    async getLayouts(_, {houseId}) {
-        return HouseLayoutModel.find({house: houseId}).populate('flats');
+export const levelQuery = {
+    async getLevelLayouts(_, {houseId}) {
+        return LevelLayoutModel.find({house: houseId}).populate('levels');
     },
-    getChessGridLayout: async (parent, {houseId, layoutId}) => {
+    async getSelectedLevelLayouts(_, {levelLayoutId, houseId}) {
         const data = await HouseModel.findById(houseId)
             .populate({
                 path: 'sections',
@@ -17,8 +16,10 @@ export const layoutQuery = {
                     path: 'levels',
                     options: {sort: {levelNumber: -1}},
                     populate: {
-                        path: 'flats',
-                        options: {sort: {flatNumber: 1}}
+                        path: 'layouts',
+                        match: {
+                            _id: levelLayoutId
+                        }
                     }
                 }
             })
@@ -29,21 +30,10 @@ export const layoutQuery = {
                     id: section.id,
                     section: section.sectionName,
                     levels: section.levels.map((level: Level) => {
-                        const newFlat = {
-                            level: level.levelNumber,
-                            section: section.sectionName
-                        };
-                        const flats = level.flats.map((flat) => {
-                            return {
-                                ...flat.toObject(),
-                                ...newFlat,
-                                belongsToLayout: flat.layout && flat.layout.toString() === layoutId
-                            };
-                        });
                         return {
                             id: level.id,
                             level: level.levelNumber,
-                            flats
+                            isSelected: level.layouts.length > 0
                         };
                     })
                 };

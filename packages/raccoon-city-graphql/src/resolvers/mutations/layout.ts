@@ -63,22 +63,5 @@ export const layoutMutation = {
         }
 
         return null;
-    },
-    async createLevelLayout(parent, args) {
-        const {houseId, name, file} = args;
-        if (houseId) {
-            const layout = await LevelLayoutModel.create({
-                name,
-                house: houseId
-            });
-            await new LayoutImageService(
-                new S3ImageUploader(houseId),
-                new LayoutDbService(layout, LevelLayoutModel)
-            ).addImage(await file);
-
-            return layout;
-        }
-
-        return null;
-    },
+    }
 };
