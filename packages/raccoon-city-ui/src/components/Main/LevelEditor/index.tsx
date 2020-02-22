@@ -14,6 +14,7 @@ import {GET_LEVEL_LAYOUTS} from '../../../graphql/queries/layoutQuery';
 import {HouseLayout} from '../../shared/types/layout.types';
 import {LayoutDialog} from '../Images/LayoutDialog/LayoutDialog';
 import {LevelEditorDialog} from './LevelEditorDialog/LevelEditorDialog';
+import {LevelLayoutSelectionDialog} from './LevelLayoutSelectionDialog/LevelLayoutSelectionDialog';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -91,8 +92,8 @@ function LevelLayouts() {
                                 </TableCell>
                                 <TableCell>{layout.name}</TableCell>
                                 <TableCell>
-                                    Этажи
                                     <LevelEditorDialog refetch={refetch} layoutId={layout.id} />
+                                    <LevelLayoutSelectionDialog layout={layout} />
                                 </TableCell>
                             </TableRow>
                         );

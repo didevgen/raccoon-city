@@ -1,6 +1,7 @@
 import {Circle, Path, PathArray, PathCommand, Svg, SVG} from '@svgdotjs/svg.js';
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
+import {FlatLayoutSelectionDialog} from '../FlatLayoutSelectionDialog/FlatLayoutSelectionDialog';
 
 const ImageContainer = styled.div<any>`
     width: ${(props: any) => props.width}px;
@@ -129,15 +130,19 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
     });
 }
 
-export function LevelEditor() {
+interface LevelLayoutSelectionProps {
+    imageUrl: string;
+}
+export function LevelLayoutSelection({imageUrl}: LevelLayoutSelectionProps) {
     const svgRef = useRef<Svg>();
-    const imageUrl = 'https://pb8920.profitbase.ru/uploads/layout/8920/8caceb62651d0efa08c2050dda8f14a7.png';
+    const [isHouseLayoutsOpen, setHouseLayoutsDialogState] = useState(false);
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
     useEffect(() => {
         svgRef.current = attachSvg('#img-container');
         initDrawing(svgRef.current, {
             onSelected: (path) => {
-                console.log('selected');
+                setHouseLayoutsDialogState(true);
+                console.log(path);
             }
         });
 
@@ -149,11 +154,13 @@ export function LevelEditor() {
                 height: img.naturalHeight
             });
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <MainContainer>
             <ImageContainer id="img-container" width={imageSize.width} height={imageSize.height} url={imageUrl} />
+            <FlatLayoutSelectionDialog open={isHouseLayoutsOpen} setOpen={setHouseLayoutsDialogState} />
         </MainContainer>
     );
 }
