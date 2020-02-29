@@ -177,8 +177,14 @@ interface LevelLayoutSelectionProps {
     imageUrl: string;
     levelLayoutId: string;
     flatLayouts: any;
+    refetchLayouts: () => void;
 }
-export function LevelLayoutSelection({imageUrl, levelLayoutId, flatLayouts}: LevelLayoutSelectionProps) {
+export function LevelLayoutSelection({
+    imageUrl,
+    levelLayoutId,
+    flatLayouts,
+    refetchLayouts
+}: LevelLayoutSelectionProps) {
     const svgRef = useRef<Svg>();
     const [isHouseLayoutsOpen, setHouseLayoutsDialogState] = useState(false);
     const [selectionPath, setSelectionPath] = useState<Path>();
@@ -208,6 +214,7 @@ export function LevelLayoutSelection({imageUrl, levelLayoutId, flatLayouts}: Lev
 
     useEffect(() => {
         if (svgRef && svgRef.current) {
+            svgRef.current.clear();
             fillExistingLayouts(svgRef.current, flatLayouts);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -227,6 +234,7 @@ export function LevelLayoutSelection({imageUrl, levelLayoutId, flatLayouts}: Lev
                             path: JSON.stringify(selectionPath?.array().flat())
                         }
                     });
+                    refetchLayouts();
                 }}
             />
         </MainContainer>

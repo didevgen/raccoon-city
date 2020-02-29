@@ -35,7 +35,7 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
-    const {data, loading, error} = useQuery(GET_LEVEL_LAYOUT_FLAT_LAYOUTS, {
+    const {data, loading, error, refetch} = useQuery(GET_LEVEL_LAYOUT_FLAT_LAYOUTS, {
         variables: {
             levelLayoutId: props.layout.id
         }
@@ -75,6 +75,7 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
                     imageUrl={props.layout.image.downloadUrl}
                     levelLayoutId={props.layout.id}
                     flatLayouts={data.getLevelLayoutFlatLayouts}
+                    refetchLayouts={refetch}
                 />
             </Dialog>
         </div>
