@@ -32,7 +32,7 @@ export interface ImageDialogProps {
 }
 
 export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps) {
-    const [image, setImage] = useState();
+    const [image, setImage] = useState<any>();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
 
@@ -53,7 +53,7 @@ export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps)
         if (editor) {
             const canvasScaled = editor.current.getImageScaledToCanvas();
             const blob = await fetch(canvasScaled.toDataURL()).then((res) => res.blob());
-            const file = blobToFile(blob, image.name);
+            const file = blobToFile(blob, image?.name);
             await uploadFile({
                 variables: {
                     file,

@@ -91,7 +91,7 @@ function HouseLayouts() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.getLayouts.map((layout: HouseLayout) => {
+                    {data.getFlatLayouts.map((layout: HouseLayout) => {
                         return (
                             <TableRow hover tabIndex={-1} key={layout.id}>
                                 <TableCell>

@@ -1,3 +1,4 @@
+import {useQuery} from '@apollo/react-hooks';
 import {Slide} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -9,7 +10,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
-import {HouseLayout} from '../../../shared/types/layout.types';
+import {GET_LEVEL_LAYOUT_FLAT_LAYOUTS} from '../../../../graphql/queries/levelQuery';
+import {LevelLayout} from '../../../shared/types/layout.types';
 import {LevelLayoutSelection} from './LevelLayoutSelection';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,11 +29,17 @@ const Transition = React.forwardRef(function(props, ref) {
 });
 
 interface LevelLayoutSelectionDialogProps {
-    layout: HouseLayout;
+    layout: LevelLayout;
 }
 export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProps) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+
+    const {data, loading, error} = useQuery(GET_LEVEL_LAYOUT_FLAT_LAYOUTS, {
+        variables: {
+            levelLayoutId: props.layout.id
+        }
+    });
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -39,6 +47,10 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
     const handleClose = () => {
         setOpen(false);
     };
+
+    if (loading || error) {
+        return null;
+    }
 
     return (
         <div>
@@ -59,7 +71,11 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <LevelLayoutSelection imageUrl={props.layout.image.downloadUrl} />
+                <LevelLayoutSelection
+                    imageUrl={props.layout.image.downloadUrl}
+                    levelLayoutId={props.layout.id}
+                    flatLayouts={data.getLevelLayoutFlatLayouts}
+                />
             </Dialog>
         </div>
     );

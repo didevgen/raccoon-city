@@ -2,6 +2,7 @@ import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {LayoutImageService} from '../../services/image/layout';
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {LayoutDbService} from '../../db/services/layoutDbService';
+import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 
 export const levelMutation = {
     async assignLevelsToLayout(parent, {levelLayoutId, levels}) {
@@ -33,5 +34,13 @@ export const levelMutation = {
         }
 
         return null;
+    },
+    async assignFlatLayoutsToLevel(_, {levelLayoutId, flatLayoutId, path}) {
+        await LevelFlatLayoutModel.create({
+            levelLayout: levelLayoutId,
+            flatLayout: flatLayoutId,
+            path
+        });
+        return true;
     }
 };

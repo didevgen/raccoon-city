@@ -2,8 +2,8 @@ import {gql} from 'apollo-boost';
 import {GroupedFlats} from './houseQuery';
 
 export const GET_LAYOUTS = gql`
-    query getLayouts($houseId: String!) {
-        getLayouts(houseId: $houseId) {
+    query getFlatLayouts($houseId: String!) {
+        getFlatLayouts(houseId: $houseId) {
             id
             name
             image {

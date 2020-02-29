@@ -31,3 +31,9 @@ export const ASSIGN_LEVELS_TO_LAYOUT = gql`
         assignLevelsToLayout(levelLayoutId: $levelLayoutId, levels: $levels)
     }
 `;
+
+export const ASSIGN_FLAT_LAYOUT_TO_LEVEL = gql`
+    mutation assignFlatLayoutsToLevel($levelLayoutId: String!, $flatLayoutId: String!, $path: [String]) {
+        assignFlatLayoutsToLevel(levelLayoutId: $levelLayoutId, flatLayoutId: $flatLayoutId, path: $path)
+    }
+`;

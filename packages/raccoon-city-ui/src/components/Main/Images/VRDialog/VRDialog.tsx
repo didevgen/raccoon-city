@@ -37,8 +37,8 @@ const panoramaProps = {
 };
 
 export function VRDialog({setOpen, open, params, downloadLink, mutation}: ImageDialogProps) {
-    const [image, setImage] = useState();
-    const [name, setName] = useState();
+    const [image, setImage] = useState<any>();
+    const [name, setName] = useState<any>();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid, mode} = params;
 

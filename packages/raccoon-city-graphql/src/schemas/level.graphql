@@ -10,10 +10,18 @@ type GroupedLevel {
     isSelected: Boolean
 }
 
+type LevelLayoutFlatLayout {
+    id: String
+    flatLayout: FlatLayout
+    path: [String]
+}
+
 type Query {
     getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
+    getLevelLayoutFlatLayouts(levelLayoutId: String): [LevelLayoutFlatLayout]
 }
 
 type Mutation {
     assignLevelsToLayout(levelLayoutId: String, levels: [String]): Boolean
+    assignFlatLayoutsToLevel(levelLayoutId: String, flatLayoutId: String, path: [String]): Boolean
 }

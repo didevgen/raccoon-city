@@ -1,6 +1,9 @@
+import {useMutation} from '@apollo/react-hooks';
 import {Circle, Path, PathArray, PathCommand, Svg, SVG} from '@svgdotjs/svg.js';
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
+import {ASSIGN_FLAT_LAYOUT_TO_LEVEL} from '../../../../graphql/mutations/layoutMutation';
+import {HouseLayout} from '../../../shared/types/layout.types';
 import {FlatLayoutSelectionDialog} from '../FlatLayoutSelectionDialog/FlatLayoutSelectionDialog';
 
 const ImageContainer = styled.div<any>`
@@ -28,7 +31,7 @@ interface DrawingOptions {
     onSelected: (path: Path) => void;
 }
 
-function drawInitialCircle(circle: Circle, closePath: () => void) {
+function drawInitialCircle(circle: Circle, closePath: (circle: Circle) => void) {
     circle.addClass('SVG__circle--highlighted').fill('#f44336');
 
     const circleClick = (event: Event) => {
@@ -38,7 +41,7 @@ function drawInitialCircle(circle: Circle, closePath: () => void) {
         circle.stroke({color: '#3f51b5', width: 3}).fill('transparent');
         circle.off('click', circleClick);
         circle.removeClass('SVG__circle--highlighted');
-        closePath();
+        closePath(circle);
     };
 
     return circle.on('click', circleClick);
@@ -93,24 +96,30 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
         const circle = handleClickOnCircle(draw, mouseEvent);
         circles.push(circle);
         if (!initialCircle) {
-            initialCircle = drawInitialCircle(circle, () => {
+            initialCircle = drawInitialCircle(circle, (initCircle) => {
+                const newCoordinate: PathCommand = ['L', initCircle.cx(), initCircle.cy()];
+                coordinates.push(newCoordinate);
+                const [, x, y] = coordinates[coordinates.length - 1];
+
+                path = draw.path(['M', x || 0, y || 0, ...newCoordinate]).stroke({color: '#3f51b5', width: 3});
+
                 path.plot(coordinates)
+                    .fill({color: '#000', opacity: 0.5})
                     .addClass('SVG--highlighted')
                     .on('click', (event: Event) => {
                         event.preventDefault();
                         event.stopPropagation();
                     });
+
                 options.onSelected(path);
                 coordinates = new PathArray();
                 circles = [];
                 paths = [];
                 initialCircle = null;
             });
+
             coordinates.push(['M', mouseEvent.offsetX, mouseEvent.offsetY]);
-            path = draw
-                .path(['M', mouseEvent.offsetX, mouseEvent.offsetY])
-                .fill({color: '#000', opacity: 0.5})
-                .stroke({color: '#3f51b5', width: 3});
+            path = draw.path(['M', mouseEvent.offsetX, mouseEvent.offsetY]).stroke({color: '#3f51b5', width: 3});
             paths.push(path);
         } else {
             const newCircle = drawCircle(circle);
@@ -119,7 +128,6 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
             coordinates.push(newCoordinate);
             path = draw
                 .path(['M', x || 0, y || 0, ...newCoordinate])
-                .fill({color: '#000', opacity: 0.5})
                 .stroke({color: '#3f51b5', width: 3})
                 .on('click', (event: MouseEvent) => {
                     event.preventDefault();
@@ -130,19 +138,60 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
     });
 }
 
+interface LevelFlatLayout {
+    path: string;
+}
+
+export function addCircles(path: Path, draw: Svg) {
+    const pathArray = path.array();
+    const startIndex = pathArray[1][0] === 'M' ? 1 : 0;
+    const circles = [];
+    for (let i = startIndex; i < pathArray.length; i++) {
+        const item = pathArray[i];
+        const x = item[1] || 0;
+        const y = item[2] || 0;
+        const circle = draw.circle(POINT_RADIUS).move(x - POINT_RADIUS / 2, y - POINT_RADIUS / 2);
+        drawCircle(circle);
+        circles.push(circle);
+    }
+    return circles;
+}
+
+function fillExistingLayouts(svgItem: Svg, flatLayouts: LevelFlatLayout[]) {
+    const pathArray: Path[] = [];
+    flatLayouts.forEach((flatLayout) => {
+        const path = svgItem
+            .path(JSON.parse(flatLayout.path))
+            .fill({color: '#000', opacity: 0.5})
+            .stroke({color: '#3f51b5', width: 3})
+            .addClass('SVG--highlighted')
+            .on('click', (event: Event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        pathArray.push(path);
+    });
+}
+
 interface LevelLayoutSelectionProps {
     imageUrl: string;
+    levelLayoutId: string;
+    flatLayouts: any;
 }
-export function LevelLayoutSelection({imageUrl}: LevelLayoutSelectionProps) {
+export function LevelLayoutSelection({imageUrl, levelLayoutId, flatLayouts}: LevelLayoutSelectionProps) {
     const svgRef = useRef<Svg>();
     const [isHouseLayoutsOpen, setHouseLayoutsDialogState] = useState(false);
+    const [selectionPath, setSelectionPath] = useState<Path>();
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
+
+    const [assignFlatLayouts] = useMutation(ASSIGN_FLAT_LAYOUT_TO_LEVEL);
+
     useEffect(() => {
         svgRef.current = attachSvg('#img-container');
         initDrawing(svgRef.current, {
             onSelected: (path) => {
                 setHouseLayoutsDialogState(true);
-                console.log(path);
+                setSelectionPath(path);
             }
         });
 
@@ -157,10 +206,29 @@ export function LevelLayoutSelection({imageUrl}: LevelLayoutSelectionProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (svgRef && svgRef.current) {
+            fillExistingLayouts(svgRef.current, flatLayouts);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [flatLayouts.length]);
+
     return (
         <MainContainer>
             <ImageContainer id="img-container" width={imageSize.width} height={imageSize.height} url={imageUrl} />
-            <FlatLayoutSelectionDialog open={isHouseLayoutsOpen} setOpen={setHouseLayoutsDialogState} />
+            <FlatLayoutSelectionDialog
+                open={isHouseLayoutsOpen}
+                setOpen={setHouseLayoutsDialogState}
+                onLayoutSelected={async (layout: HouseLayout) => {
+                    await assignFlatLayouts({
+                        variables: {
+                            levelLayoutId,
+                            flatLayoutId: layout.id,
+                            path: JSON.stringify(selectionPath?.array().flat())
+                        }
+                    });
+                }}
+            />
         </MainContainer>
     );
 }

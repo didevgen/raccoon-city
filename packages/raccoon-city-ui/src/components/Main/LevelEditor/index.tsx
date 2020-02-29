@@ -11,7 +11,7 @@ import {useParams} from 'react-router';
 import styled from 'styled-components';
 import {CREATE_LEVEL_LAYOUT} from '../../../graphql/mutations/layoutMutation';
 import {GET_LEVEL_LAYOUTS} from '../../../graphql/queries/layoutQuery';
-import {HouseLayout} from '../../shared/types/layout.types';
+import {LevelLayout} from '../../shared/types/layout.types';
 import {LayoutDialog} from '../Images/LayoutDialog/LayoutDialog';
 import {LevelEditorDialog} from './LevelEditorDialog/LevelEditorDialog';
 import {LevelLayoutSelectionDialog} from './LevelLayoutSelectionDialog/LevelLayoutSelectionDialog';
@@ -84,7 +84,7 @@ function LevelLayouts() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.getLevelLayouts.map((layout: HouseLayout) => {
+                    {data.getLevelLayouts.map((layout: LevelLayout) => {
                         return (
                             <TableRow hover tabIndex={-1} key={layout.id}>
                                 <TableCell>

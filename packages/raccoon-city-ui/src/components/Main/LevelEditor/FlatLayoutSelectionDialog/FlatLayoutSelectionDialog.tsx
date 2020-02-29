@@ -1,6 +1,5 @@
 import {Slide} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import {makeStyles} from '@material-ui/core/styles';
@@ -8,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
+import {HouseLayout} from '../../../shared/types/layout.types';
 import {FlatLayoutSelectionList} from './FlatLayoutSelectionList/FlatLayoutSelectionList';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,17 +27,21 @@ const Transition = React.forwardRef(function(props, ref) {
 interface HouseLayoutSelectionDialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
+    onLayoutSelected: (layout: HouseLayout) => void;
 }
 
 export function FlatLayoutSelectionDialog(props: HouseLayoutSelectionDialogProps) {
     const classes = useStyles();
-    const {open, setOpen} = props;
+    const {open, setOpen, onLayoutSelected} = props;
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    const handleSave = async () => {};
+    const handleSave = async (layout: HouseLayout) => {
+        onLayoutSelected(layout);
+        setOpen(false);
+    };
 
     return (
         <div>
@@ -50,12 +54,9 @@ export function FlatLayoutSelectionDialog(props: HouseLayoutSelectionDialogProps
                         <Typography variant="h6" className={classes.title}>
                             Выбор этажей
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleSave}>
-                            Сохранить
-                        </Button>
                     </Toolbar>
                 </AppBar>
-                <FlatLayoutSelectionList />
+                <FlatLayoutSelectionList onSelect={handleSave} />
             </Dialog>
         </div>
     );

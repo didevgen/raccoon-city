@@ -8,7 +8,7 @@ import React, {Fragment} from 'react';
 
 export function Confirmation(props: any) {
     const [open, setOpen] = React.useState(false);
-    const [callbackFn, setCallbackFn] = React.useState();
+    const [callbackFn, setCallbackFn] = React.useState<any>();
 
     const handleClickOpen = () => {
         setOpen(true);

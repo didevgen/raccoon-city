@@ -2,6 +2,7 @@ import HouseModel from '../../db/models/house';
 import {Level} from '../../db/models/level';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
+import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 
 export const levelQuery = {
     async getLevelLayouts(_, {houseId}) {
@@ -41,5 +42,10 @@ export const levelQuery = {
         } else {
             return [];
         }
+    },
+    async getLevelLayoutFlatLayouts(_, {levelLayoutId}) {
+        return LevelFlatLayoutModel.find({
+            levelLayout: levelLayoutId
+        }).exec();
     }
 };

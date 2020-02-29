@@ -1,11 +1,10 @@
 import HouseModel from '../../db/models/house';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {Level} from '../../db/models/level';
-import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
 
 export const layoutQuery = {
-    async getLayouts(_, {houseId}) {
+    async getFlatLayouts(_, {houseId}) {
         return HouseLayoutModel.find({house: houseId}).populate('flats');
     },
     getChessGridLayout: async (parent, {houseId, layoutId}) => {

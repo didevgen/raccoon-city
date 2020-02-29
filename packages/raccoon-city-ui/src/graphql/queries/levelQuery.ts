@@ -13,3 +13,12 @@ export const GET_GROUPED_LEVELS = gql`
         }
     }
 `;
+
+export const GET_LEVEL_LAYOUT_FLAT_LAYOUTS = gql`
+    query getLevelLayoutFlatLayouts($levelLayoutId: String) {
+        getLevelLayoutFlatLayouts(levelLayoutId: $levelLayoutId) {
+            id
+            path
+        }
+    }
+`;

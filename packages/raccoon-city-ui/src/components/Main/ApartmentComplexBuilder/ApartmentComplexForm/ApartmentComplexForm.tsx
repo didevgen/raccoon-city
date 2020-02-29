@@ -39,7 +39,7 @@ const StyledLink = styled(Link)`
 const required = (value: any) => (value ? undefined : 'Required');
 
 export function ApartmentComplexForm() {
-    const [selectedCity, setCity] = useState();
+    const [selectedCity, setCity] = useState<any>();
     const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
