@@ -3,7 +3,6 @@ node_js:
   - stable
 cache:
   directories:
-    - packages/raccoon-city-ui/node_modules
     - packages/raccoon-city-graphql/node_modules
 before_cache:
   - pip install --user awscli
