@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function(props, ref) {
 interface HouseLayoutSelectionDialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
-    onLayoutSelected: (layout: HouseLayout) => void;
+    onLayoutSelected: (layout?: HouseLayout) => void;
 }
 
 export function FlatLayoutSelectionDialog(props: HouseLayoutSelectionDialogProps) {
@@ -35,6 +35,7 @@ export function FlatLayoutSelectionDialog(props: HouseLayoutSelectionDialogProps
     const {open, setOpen, onLayoutSelected} = props;
 
     const handleClose = () => {
+        onLayoutSelected();
         setOpen(false);
     };
 

@@ -1,5 +1,11 @@
 import {Flat} from './flat.types';
-import {LevelLayout} from './layout.types';
+import {HouseLayout, LevelLayout} from './layout.types';
+
+export interface LevelFlatLayout {
+    id: string;
+    path: string;
+    flatLayout: HouseLayout;
+}
 
 export interface Section {
     id: string;

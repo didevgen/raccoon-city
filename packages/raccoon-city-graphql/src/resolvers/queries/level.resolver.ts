@@ -1,8 +1,8 @@
 import HouseModel from '../../db/models/house';
 import {Level} from '../../db/models/level';
+import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
-import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 
 export const levelQuery = {
     async getLevelLayouts(_, {houseId}) {
@@ -46,6 +46,10 @@ export const levelQuery = {
     async getLevelLayoutFlatLayouts(_, {levelLayoutId}) {
         return LevelFlatLayoutModel.find({
             levelLayout: levelLayoutId
-        }).exec();
+        })
+            .populate({
+                path: 'flatLayout'
+            })
+            .exec();
     }
 };

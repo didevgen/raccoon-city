@@ -4,6 +4,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {ASSIGN_FLAT_LAYOUT_TO_LEVEL} from '../../../../graphql/mutations/layoutMutation';
 import {HouseLayout} from '../../../shared/types/layout.types';
+import {LevelFlatLayout} from '../../../shared/types/level.types';
+import {FlatLayoutPreviewDialog} from '../FlatLayoutPreviewDialog/FlatLayoutPreviewDialog';
 import {FlatLayoutSelectionDialog} from '../FlatLayoutSelectionDialog/FlatLayoutSelectionDialog';
 
 const ImageContainer = styled.div<any>`
@@ -138,10 +140,6 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
     });
 }
 
-interface LevelFlatLayout {
-    path: string;
-}
-
 export function addCircles(path: Path, draw: Svg) {
     const pathArray = path.array();
     const startIndex = pathArray[1][0] === 'M' ? 1 : 0;
@@ -157,7 +155,11 @@ export function addCircles(path: Path, draw: Svg) {
     return circles;
 }
 
-function fillExistingLayouts(svgItem: Svg, flatLayouts: LevelFlatLayout[]) {
+function fillExistingLayouts(
+    svgItem: Svg,
+    flatLayouts: LevelFlatLayout[],
+    onClickFn: (flatLayout: LevelFlatLayout) => void
+) {
     const pathArray: Path[] = [];
     flatLayouts.forEach((flatLayout) => {
         const path = svgItem
@@ -168,6 +170,7 @@ function fillExistingLayouts(svgItem: Svg, flatLayouts: LevelFlatLayout[]) {
             .on('click', (event: Event) => {
                 event.preventDefault();
                 event.stopPropagation();
+                onClickFn(flatLayout);
             });
         pathArray.push(path);
     });
@@ -187,6 +190,8 @@ export function LevelLayoutSelection({
 }: LevelLayoutSelectionProps) {
     const svgRef = useRef<Svg>();
     const [isHouseLayoutsOpen, setHouseLayoutsDialogState] = useState(false);
+    const [isFlatLayoutOpen, setFlatLayoutDialogState] = useState(false);
+    const [selectedFlatLayout, setSelectedFlatLayout] = useState<LevelFlatLayout>();
     const [selectionPath, setSelectionPath] = useState<Path>();
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
 
@@ -215,7 +220,10 @@ export function LevelLayoutSelection({
     useEffect(() => {
         if (svgRef && svgRef.current) {
             svgRef.current.clear();
-            fillExistingLayouts(svgRef.current, flatLayouts);
+            fillExistingLayouts(svgRef.current, flatLayouts, (flatLayout) => {
+                setSelectedFlatLayout(flatLayout);
+                setFlatLayoutDialogState(true);
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [flatLayouts.length]);
@@ -226,17 +234,24 @@ export function LevelLayoutSelection({
             <FlatLayoutSelectionDialog
                 open={isHouseLayoutsOpen}
                 setOpen={setHouseLayoutsDialogState}
-                onLayoutSelected={async (layout: HouseLayout) => {
+                onLayoutSelected={async (layout?: HouseLayout) => {
                     await assignFlatLayouts({
                         variables: {
                             levelLayoutId,
-                            flatLayoutId: layout.id,
+                            flatLayoutId: layout?.id,
                             path: JSON.stringify(selectionPath?.array().flat())
                         }
                     });
                     refetchLayouts();
                 }}
             />
+            {selectedFlatLayout && (
+                <FlatLayoutPreviewDialog
+                    open={isFlatLayoutOpen}
+                    setOpen={setFlatLayoutDialogState}
+                    flatLayout={selectedFlatLayout}
+                />
+            )}
         </MainContainer>
     );
 }

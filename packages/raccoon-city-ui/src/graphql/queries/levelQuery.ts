@@ -19,6 +19,15 @@ export const GET_LEVEL_LAYOUT_FLAT_LAYOUTS = gql`
         getLevelLayoutFlatLayouts(levelLayoutId: $levelLayoutId) {
             id
             path
+            flatLayout {
+                id
+                name
+                image {
+                    uuid
+                    downloadUrl
+                    previewImageUrl
+                }
+            }
         }
     }
 `;
