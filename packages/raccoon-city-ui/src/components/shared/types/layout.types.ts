@@ -1,5 +1,5 @@
 import {Flat} from './flat.types';
-import {Level} from '../../../../../raccoon-city-graphql/src/db/models/level';
+import {Level} from './level.types';
 
 export interface SinglePreviewImage {
     uuid: string;

@@ -9,10 +9,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
-import {Level} from '../../../../../../raccoon-city-graphql/src/db/models/level';
 import {LevelChessGrid} from '../../LevelChessGrid/LevelChessGrid';
 import {useMutation} from '@apollo/react-hooks';
 import {ASSIGN_LEVELS_TO_LAYOUT} from '../../../../graphql/mutations/layoutMutation';
+import {Level} from '../../../shared/types/level.types';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {

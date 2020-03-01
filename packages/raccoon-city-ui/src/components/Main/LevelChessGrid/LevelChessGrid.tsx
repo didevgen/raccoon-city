@@ -3,9 +3,9 @@ import React from 'react';
 import {useParams} from 'react-router';
 import {SelectableGroup} from 'react-selectable-fast/lib';
 import styled from 'styled-components';
-import {Level} from '../../../../../raccoon-city-graphql/src/db/models/level';
 import {GET_GROUPED_LEVELS} from '../../../graphql/queries/levelQuery';
 import {LevelChessGridColumn} from './LevelChessGridColumn/LevelChessGridColumn';
+import {Level} from '../../shared/types/level.types';
 
 const ChessGridWrapper = styled.div`
     width: 100%;

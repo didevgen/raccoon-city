@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React from 'react';
 import {createSelectable, TSelectableItemProps} from 'react-selectable-fast/lib';
 import styled from 'styled-components';
-import {Level} from '../../../../../../raccoon-city-graphql/src/db/models/level';
+import {Level} from '../../../shared/types/level.types';
 
 const Background = styled.div`
     position: absolute;
