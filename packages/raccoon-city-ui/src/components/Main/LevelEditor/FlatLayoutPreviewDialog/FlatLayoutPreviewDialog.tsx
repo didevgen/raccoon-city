@@ -1,3 +1,4 @@
+import {useMutation} from '@apollo/react-hooks';
 import {DialogContentText} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,6 +7,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React, {Fragment, useState} from 'react';
 import styled from 'styled-components';
+import {
+    DELETE_FLAT_LAYOUT_TO_LEVEL_LAYOUT,
+    UNASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT
+} from '../../../../graphql/mutations/layoutMutation';
 import {HouseLayout} from '../../../shared/types/layout.types';
 import {LevelFlatLayout} from '../../../shared/types/level.types';
 import {FlatLayoutSelectionDialog} from '../FlatLayoutSelectionDialog/FlatLayoutSelectionDialog';
@@ -18,6 +23,8 @@ interface FlatLayoutPreviewDialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
     flatLayout: LevelFlatLayout;
+    refetchLayouts: () => void;
+    layoutAssigned: (layout: HouseLayout) => void;
 }
 
 interface AssignedLayoutContentProps {
@@ -36,7 +43,10 @@ function AssignedLayoutContent(props: AssignedLayoutContentProps) {
     );
 }
 
-function NotAssignedLayoutContent() {
+interface NotAssignedLayoutContentProps {
+    layoutAssigned: (layout: HouseLayout) => void;
+}
+function NotAssignedLayoutContent(props: NotAssignedLayoutContentProps) {
     const [isHouseLayoutsOpen, setHouseLayoutsDialogState] = useState(false);
     return (
         <Fragment>
@@ -58,14 +68,18 @@ function NotAssignedLayoutContent() {
             <FlatLayoutSelectionDialog
                 open={isHouseLayoutsOpen}
                 setOpen={setHouseLayoutsDialogState}
-                onLayoutSelected={async (layout?: HouseLayout) => {
-                    console.log(layout);
+                onLayoutSelected={(layout?: HouseLayout) => {
+                    if (layout) {
+                        props.layoutAssigned(layout);
+                    }
                 }}
             />
         </Fragment>
     );
 }
 export function FlatLayoutPreviewDialog(props: FlatLayoutPreviewDialogProps) {
+    const [deleteArea] = useMutation(DELETE_FLAT_LAYOUT_TO_LEVEL_LAYOUT);
+    const [unassignFlatLayout] = useMutation(UNASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT);
     const {open, setOpen, flatLayout} = props;
     const hasLayout = !!flatLayout.flatLayout;
     return (
@@ -79,7 +93,7 @@ export function FlatLayoutPreviewDialog(props: FlatLayoutPreviewDialogProps) {
                 aria-describedby="alert-dialog-description"
             >
                 {hasLayout && <AssignedLayoutContent flatLayout={flatLayout} />}
-                {!hasLayout && <NotAssignedLayoutContent />}
+                {!hasLayout && <NotAssignedLayoutContent layoutAssigned={props.layoutAssigned} />}
                 <DialogActions>
                     <Button
                         variant="outlined"
@@ -92,7 +106,13 @@ export function FlatLayoutPreviewDialog(props: FlatLayoutPreviewDialogProps) {
                     </Button>
                     <Button
                         variant="outlined"
-                        onClick={() => {
+                        onClick={async () => {
+                            await deleteArea({
+                                variables: {
+                                    layoutAssignmentId: props.flatLayout.id
+                                }
+                            });
+                            props.refetchLayouts();
                             setOpen(false);
                         }}
                         color="secondary"
@@ -102,7 +122,13 @@ export function FlatLayoutPreviewDialog(props: FlatLayoutPreviewDialogProps) {
                     {hasLayout && (
                         <Button
                             variant="outlined"
-                            onClick={() => {
+                            onClick={async () => {
+                                await unassignFlatLayout({
+                                    variables: {
+                                        layoutAssignmentId: props.flatLayout.id
+                                    }
+                                });
+                                props.refetchLayouts();
                                 setOpen(false);
                             }}
                             color="secondary"

@@ -37,3 +37,21 @@ export const ASSIGN_FLAT_LAYOUT_TO_LEVEL = gql`
         assignFlatLayoutsToLevel(levelLayoutId: $levelLayoutId, flatLayoutId: $flatLayoutId, path: $path)
     }
 `;
+
+export const ASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
+    mutation assignFlatLayoutsToLevelLayout($layoutAssignmentId: String!, $flatLayoutId: String) {
+        assignFlatLayoutsToLevelLayout(layoutAssignmentId: $layoutAssignmentId, flatLayoutId: $flatLayoutId)
+    }
+`;
+
+export const UNASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
+    mutation unassignFlatLayoutsToLevelLayout($layoutAssignmentId: String!) {
+        unassignFlatLayoutsToLevelLayout(layoutAssignmentId: $layoutAssignmentId)
+    }
+`;
+
+export const DELETE_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
+    mutation deleteFlatLayoutsToLevelLayout($layoutAssignmentId: String!) {
+        deleteFlatLayoutsToLevelLayout(layoutAssignmentId: $layoutAssignmentId)
+    }
+`;

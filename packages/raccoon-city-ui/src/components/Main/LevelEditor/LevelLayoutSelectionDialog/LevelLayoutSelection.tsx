@@ -247,9 +247,20 @@ export function LevelLayoutSelection({
             />
             {selectedFlatLayout && (
                 <FlatLayoutPreviewDialog
+                    refetchLayouts={refetchLayouts}
                     open={isFlatLayoutOpen}
                     setOpen={setFlatLayoutDialogState}
                     flatLayout={selectedFlatLayout}
+                    layoutAssigned={async (layout: HouseLayout) => {
+                        /*await assignFlatLayouts({
+                            variables: {
+                                levelLayoutId,
+                                flatLayoutId: layout.id,
+                                path: JSON.stringify(selectionPath?.array().flat())
+                            }
+                        });*/
+                        refetchLayouts();
+                    }}
                 />
             )}
         </MainContainer>

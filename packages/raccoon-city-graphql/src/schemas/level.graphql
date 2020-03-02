@@ -24,4 +24,7 @@ type Query {
 type Mutation {
     assignLevelsToLayout(levelLayoutId: String, levels: [String]): Boolean
     assignFlatLayoutsToLevel(levelLayoutId: String, flatLayoutId: String, path: [String]): Boolean
+    assignFlatLayoutsToLevelLayout(layoutAssignmentId: String, flatLayoutId: String): Boolean
+    unassignFlatLayoutsToLevelLayout(layoutAssignmentId: String): Boolean
+    deleteFlatLayoutsToLevelLayout(layoutAssignmentId: String): Boolean
 }
