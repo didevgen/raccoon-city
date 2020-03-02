@@ -2,7 +2,10 @@ import {useMutation} from '@apollo/react-hooks';
 import {Circle, Path, PathArray, PathCommand, Svg, SVG} from '@svgdotjs/svg.js';
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import {ASSIGN_FLAT_LAYOUT_TO_LEVEL} from '../../../../graphql/mutations/layoutMutation';
+import {
+    ASSIGN_FLAT_LAYOUT_TO_LEVEL,
+    ASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT
+} from '../../../../graphql/mutations/layoutMutation';
 import {HouseLayout} from '../../../shared/types/layout.types';
 import {LevelFlatLayout} from '../../../shared/types/level.types';
 import {FlatLayoutPreviewDialog} from '../FlatLayoutPreviewDialog/FlatLayoutPreviewDialog';
@@ -196,6 +199,7 @@ export function LevelLayoutSelection({
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
 
     const [assignFlatLayouts] = useMutation(ASSIGN_FLAT_LAYOUT_TO_LEVEL);
+    const [assignFlatLayoutsToLevelLayout] = useMutation(ASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT);
 
     useEffect(() => {
         svgRef.current = attachSvg('#img-container');
@@ -252,13 +256,12 @@ export function LevelLayoutSelection({
                     setOpen={setFlatLayoutDialogState}
                     flatLayout={selectedFlatLayout}
                     layoutAssigned={async (layout: HouseLayout) => {
-                        /*await assignFlatLayouts({
+                        await assignFlatLayoutsToLevelLayout({
                             variables: {
-                                levelLayoutId,
-                                flatLayoutId: layout.id,
-                                path: JSON.stringify(selectionPath?.array().flat())
+                                layoutAssignmentId: selectedFlatLayout.id,
+                                flatLayoutId: layout.id
                             }
-                        });*/
+                        });
                         refetchLayouts();
                     }}
                 />

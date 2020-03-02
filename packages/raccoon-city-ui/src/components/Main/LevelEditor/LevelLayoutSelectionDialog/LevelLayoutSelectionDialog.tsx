@@ -38,7 +38,8 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
     const {data, loading, error, refetch} = useQuery(GET_LEVEL_LAYOUT_FLAT_LAYOUTS, {
         variables: {
             levelLayoutId: props.layout.id
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
     const handleClickOpen = () => {
         setOpen(true);
@@ -48,10 +49,7 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
         setOpen(false);
     };
 
-    if (loading || error) {
-        return null;
-    }
-
+    const isLoading = loading || error;
     return (
         <div>
             <Link href="#" onClick={handleClickOpen}>
@@ -71,12 +69,14 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <LevelLayoutSelection
-                    imageUrl={props.layout.image.downloadUrl}
-                    levelLayoutId={props.layout.id}
-                    flatLayouts={data.getLevelLayoutFlatLayouts}
-                    refetchLayouts={refetch}
-                />
+                {!isLoading && (
+                    <LevelLayoutSelection
+                        imageUrl={props.layout.image.downloadUrl}
+                        levelLayoutId={props.layout.id}
+                        flatLayouts={data.getLevelLayoutFlatLayouts}
+                        refetchLayouts={refetch}
+                    />
+                )}
             </Dialog>
         </div>
     );

@@ -93,7 +93,14 @@ export function FlatLayoutPreviewDialog(props: FlatLayoutPreviewDialogProps) {
                 aria-describedby="alert-dialog-description"
             >
                 {hasLayout && <AssignedLayoutContent flatLayout={flatLayout} />}
-                {!hasLayout && <NotAssignedLayoutContent layoutAssigned={props.layoutAssigned} />}
+                {!hasLayout && (
+                    <NotAssignedLayoutContent
+                        layoutAssigned={(layout: HouseLayout) => {
+                            props.layoutAssigned(layout);
+                            setOpen(false);
+                        }}
+                    />
+                )}
                 <DialogActions>
                     <Button
                         variant="outlined"
