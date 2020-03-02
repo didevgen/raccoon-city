@@ -230,7 +230,7 @@ export function LevelLayoutSelection({
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [flatLayouts.length]);
+    }, [flatLayouts]);
 
     return (
         <MainContainer>

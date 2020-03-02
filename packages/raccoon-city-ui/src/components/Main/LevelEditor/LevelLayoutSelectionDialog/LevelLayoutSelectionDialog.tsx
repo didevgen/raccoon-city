@@ -31,6 +31,7 @@ const Transition = React.forwardRef(function(props, ref) {
 interface LevelLayoutSelectionDialogProps {
     layout: LevelLayout;
 }
+
 export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProps) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -49,7 +50,8 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
         setOpen(false);
     };
 
-    const isLoading = loading || error;
+    const isLoading = error || loading;
+
     return (
         <div>
             <Link href="#" onClick={handleClickOpen}>
