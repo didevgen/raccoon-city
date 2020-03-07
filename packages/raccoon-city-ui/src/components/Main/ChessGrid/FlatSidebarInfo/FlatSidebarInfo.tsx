@@ -5,6 +5,7 @@ import {Flat} from '../../../shared/types/flat.types';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
+    width: 420px;
 `;
 
 const ImageContainer = styled.div`
