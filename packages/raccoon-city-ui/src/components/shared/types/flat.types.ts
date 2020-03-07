@@ -1,3 +1,5 @@
+import {HouseLayout} from './layout.types';
+
 export enum FlatStatus {
     SOLD_OUT = 'SOLD_OUT',
     FREE = 'FREE',
@@ -28,4 +30,5 @@ export interface Flat {
     status: FlatStatus;
     roomAmount: number;
     belongsToLayout?: boolean;
+    layout?: HouseLayout;
 }

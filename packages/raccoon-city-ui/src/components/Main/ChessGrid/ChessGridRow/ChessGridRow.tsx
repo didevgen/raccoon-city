@@ -26,6 +26,7 @@ const StyledEmptyLevel = styled.div`
 interface ChessGridItem {
     rowName: string;
     flats: Flat[];
+    onSelect: (flat: Flat) => void;
 }
 
 function EmplyLevel() {
@@ -38,7 +39,7 @@ export function ChessGridRow(props: ChessGridItem) {
             {props.flats.length === 0 && <EmplyLevel />}
             {props.flats.length !== 0 &&
                 props.flats.map((flat: Flat) => {
-                    return <ChessGridCell key={flat.id} flat={flat} />;
+                    return <ChessGridCell key={flat.id} flat={flat} onSelect={props.onSelect} />;
                 })}
         </RowWrapper>
     );

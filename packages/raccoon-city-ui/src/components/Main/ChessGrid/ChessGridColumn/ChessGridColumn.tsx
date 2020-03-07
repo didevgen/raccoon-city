@@ -29,6 +29,7 @@ interface ChessGridColumnProps {
         level: number;
         flats: Flat[];
     }>;
+    onSelect: (flat: Flat) => void;
 }
 
 export function ChessGridColumn(props: ChessGridColumnProps) {
@@ -36,7 +37,14 @@ export function ChessGridColumn(props: ChessGridColumnProps) {
         <ColumnWrapper>
             <CellContainer>
                 {props.levels.map((level) => {
-                    return <ChessGridRow key={level.id} rowName={String(level.level)} flats={level.flats} />;
+                    return (
+                        <ChessGridRow
+                            key={level.id}
+                            rowName={String(level.level)}
+                            flats={level.flats}
+                            onSelect={props.onSelect}
+                        />
+                    );
                 })}
             </CellContainer>
             <ColumnTitle>

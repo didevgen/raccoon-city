@@ -43,7 +43,10 @@ export const hosueQuery = {
                     options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'flats',
-                        options: {sort: {flatNumber: 1}}
+                        options: {sort: {flatNumber: 1}},
+                        populate: {
+                            path: 'layout'
+                        }
                     }
                 }
             })

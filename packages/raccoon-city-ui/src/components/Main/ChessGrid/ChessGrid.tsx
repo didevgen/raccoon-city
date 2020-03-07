@@ -1,9 +1,12 @@
 import {useQuery} from '@apollo/react-hooks';
-import React from 'react';
+import {Drawer} from '@material-ui/core';
+import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../graphql/queries/houseQuery';
+import {Flat} from '../../shared/types/flat.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
+import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 
 const ChessGridWrapper = styled.div`
     width: 100%;
@@ -20,6 +23,8 @@ export function ChessGrid() {
         },
         fetchPolicy: 'cache-and-network'
     });
+    const [flatCardOpen, setFlatCardOpen] = useState(false);
+    const [selectedFlat, setSelectedFlat] = useState<Flat>();
 
     if (loading) {
         return <span>loading...</span>;
@@ -42,8 +47,28 @@ export function ChessGrid() {
     return (
         <ChessGridWrapper>
             {groupedFlats.map((item: GroupedFlats) => {
-                return <ChessGridColumn key={item.id} columnName={item.section} levels={item.levels} />;
+                return (
+                    <ChessGridColumn
+                        key={item.id}
+                        columnName={item.section}
+                        levels={item.levels}
+                        onSelect={(flat: Flat) => {
+                            setSelectedFlat(flat);
+                            setFlatCardOpen(true);
+                        }}
+                    />
+                );
             })}
+            <Drawer
+                anchor="right"
+                open={flatCardOpen}
+                onClose={() => {
+                    setFlatCardOpen(false);
+                    setSelectedFlat(undefined);
+                }}
+            >
+                {selectedFlat && <FlatSidebarInfo flat={selectedFlat} />}
+            </Drawer>
         </ChessGridWrapper>
     );
 }

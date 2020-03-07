@@ -96,7 +96,7 @@ const DataContainer = styled.div`
     font-size: 12px;
 `;
 
-export function ChessGridCell({flat}: {flat: Flat}) {
+export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Flat) => void}) {
     return (
         <HtmlTooltip
             title={
@@ -115,7 +115,14 @@ export function ChessGridCell({flat}: {flat: Flat}) {
                 </TooltipContainer>
             }
         >
-            <Cell className={flat.status}>{flat.roomAmount}</Cell>
+            <Cell
+                className={flat.status}
+                onClick={() => {
+                    onSelect(flat);
+                }}
+            >
+                {flat.roomAmount}
+            </Cell>
         </HtmlTooltip>
     );
 }

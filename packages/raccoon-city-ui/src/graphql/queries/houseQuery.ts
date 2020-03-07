@@ -89,6 +89,14 @@ export const GET_GROUPED_FLATS = gql`
                     area
                     status
                     roomAmount
+                    layout {
+                        id
+                        image {
+                            uuid
+                            downloadUrl
+                            previewImageUrl
+                        }
+                    }
                 }
             }
         }

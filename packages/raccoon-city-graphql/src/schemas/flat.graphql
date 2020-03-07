@@ -7,6 +7,7 @@ type HouseFlat {
     area: Float
     status: String
     roomAmount: Int
+    layout: BaseLayout
 }
 
 input HouseFlatInput {
