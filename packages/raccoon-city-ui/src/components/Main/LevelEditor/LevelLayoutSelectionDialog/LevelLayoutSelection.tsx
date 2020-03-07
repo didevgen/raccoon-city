@@ -222,7 +222,7 @@ export function LevelLayoutSelection({
     }, []);
 
     useEffect(() => {
-        if (svgRef && svgRef.current) {
+        if (svgRef && svgRef.current && flatLayouts) {
             svgRef.current.clear();
             fillExistingLayouts(svgRef.current, flatLayouts, (flatLayout) => {
                 setSelectedFlatLayout(flatLayout);
