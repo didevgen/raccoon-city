@@ -4,6 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
+import styled from 'styled-components';
 import {ApartmentComplexType} from '../../../../shared/types/apartmentComplex.types';
 
 interface ApartmentComplexDataProps {
@@ -64,7 +65,6 @@ function getTableRows(props: ApartmentComplexType) {
         }
     ];
 }
-
 export function ApartmentComplexData(props: ApartmentComplexDataProps) {
     const rows = getTableRows(props.apartmentComplex);
     return (
