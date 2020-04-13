@@ -5,3 +5,4 @@ packages/raccoon-city-graphql/dist
 packages/raccoon-city-ui/dist
 packages/raccoon-city-ui/.env*
 .idea
+/data/
