@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import {Context} from '../../utils';
+import {authTokenGenerate, Context} from '../../utils';
+import {prisma} from "../../generated/prisma-client";
+import {UserModel} from "../../db/models/user";
 
 export const auth = {
     async signup(parent, args, ctx: Context) {
@@ -13,9 +15,10 @@ export const auth = {
         };
     },
 
-    async login(parent, {email, password}, ctx: Context) {
-        const user = await ctx.prisma.user({email});
-        if (!user) {
+    async login(parent, {email, password}) {
+        const user = await UserModel.findOne({email});
+        if (!user)
+        {
             throw new Error(`No such user found for email: ${email}`);
         }
 
@@ -24,9 +27,6 @@ export const auth = {
             throw new Error('Invalid password');
         }
 
-        return {
-            token: jwt.sign({userId: user.id}, process.env.APP_SECRET),
-            user
-        };
+        return authTokenGenerate(user);
     }
 };
