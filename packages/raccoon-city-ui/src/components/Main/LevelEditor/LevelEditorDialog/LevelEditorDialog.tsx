@@ -1,3 +1,4 @@
+import {useMutation} from '@apollo/react-hooks';
 import {Slide} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -9,10 +10,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
-import {LevelChessGrid} from '../../LevelChessGrid/LevelChessGrid';
-import {useMutation} from '@apollo/react-hooks';
 import {ASSIGN_LEVELS_TO_LAYOUT} from '../../../../graphql/mutations/layoutMutation';
 import {Level} from '../../../shared/types/level.types';
+import {LevelChessGrid} from '../../LevelChessGrid/LevelChessGrid';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Transition = React.forwardRef(function(props, ref) {
+const Transition = React.forwardRef(function(props: any, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 

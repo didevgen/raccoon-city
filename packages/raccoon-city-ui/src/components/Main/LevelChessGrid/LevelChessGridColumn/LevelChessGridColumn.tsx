@@ -38,7 +38,7 @@ export function LevelChessGridColumn(props: ChessGridColumnProps) {
                     return (
                         <LevelChessGridRow
                             isSelected={level.isSelected}
-                            level={level}
+                            level={level as any}
                             key={level.id}
                             rowName={String(level.level)}
                         />
