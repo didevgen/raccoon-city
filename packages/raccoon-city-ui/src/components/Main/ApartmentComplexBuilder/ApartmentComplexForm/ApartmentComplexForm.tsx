@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import {DatePicker} from '@material-ui/pickers';
 import React, {ChangeEvent, Fragment, useState} from 'react';
 import {Field, Form} from 'react-final-form';
 import {Link, Redirect, useParams} from 'react-router-dom';
@@ -329,17 +330,15 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="beginDate" validate={required}>
                                                     {(props) => (
-                                                        <TextField
+                                                        <DatePicker
+                                                            views={['year', 'month']}
+                                                            name={props.input.name}
                                                             label="Начало строительства"
-                                                            inputProps={{min: '0', step: '1'}}
-                                                            type="number"
-                                                            placeholder="Placeholder"
+                                                            value={props.input.value ? props.input.value : null}
                                                             margin="normal"
                                                             fullWidth={true}
-                                                            name={props.input.name}
-                                                            value={props.input.value}
+                                                            inputVariant="outlined"
                                                             onChange={props.input.onChange}
-                                                            variant="outlined"
                                                         />
                                                     )}
                                                 </Field>
@@ -347,16 +346,14 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="endDate" validate={required}>
                                                     {(props) => (
-                                                        <TextField
+                                                        <DatePicker
+                                                            views={['year', 'month']}
+                                                            name={props.input.name}
                                                             label="Конец строительства"
-                                                            inputProps={{min: '0', step: '1'}}
-                                                            type="number"
-                                                            placeholder="Placeholder"
+                                                            value={props.input.value ? props.input.value : null}
                                                             margin="normal"
                                                             fullWidth={true}
-                                                            variant="outlined"
-                                                            name={props.input.name}
-                                                            value={props.input.value}
+                                                            inputVariant="outlined"
                                                             onChange={props.input.onChange}
                                                         />
                                                     )}

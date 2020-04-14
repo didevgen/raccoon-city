@@ -1,5 +1,6 @@
 import * as React from 'react';
-
+import ruLocale from 'date-fns/locale/ru';
+import {format, parseISO} from 'date-fns';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -56,15 +57,20 @@ function getTableRows(props: ApartmentComplexType) {
         {
             key: 'beginDate',
             label: 'Начало строительства',
-            value: props.beginDate
+            value: format(parseISO(props.beginDate), 'MM yyyy', {
+                locale: ruLocale
+            })
         },
         {
             key: 'endDate',
             label: 'Конец строительства',
-            value: props.endDate
+            value: format(parseISO(props.endDate), 'MM yyyy', {
+                locale: ruLocale
+            })
         }
     ];
 }
+
 export function ApartmentComplexData(props: ApartmentComplexDataProps) {
     const rows = getTableRows(props.apartmentComplex);
     return (
