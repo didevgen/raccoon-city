@@ -1,17 +1,16 @@
-import * as React from 'react';
-import clsx from 'clsx';
-import IconButton from '@material-ui/core/IconButton';
+import {useTheme} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Drawer from '@material-ui/core/Drawer';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import {useTheme} from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MailIcon from '@material-ui/icons/Mail';
+import clsx from 'clsx';
+import * as React from 'react';
 import {StyledLink} from '../../shared/components/styled';
 
 interface SidebarProps {
@@ -53,14 +52,6 @@ export function Sidebar({open, handleDrawerClose, drawerStyles}: SidebarProps) {
                 </StyledLink>
             </List>
             <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
         </Drawer>
     );
 }

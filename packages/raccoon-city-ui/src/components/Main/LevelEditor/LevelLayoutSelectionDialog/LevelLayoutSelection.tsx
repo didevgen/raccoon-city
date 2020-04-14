@@ -153,6 +153,7 @@ export function addCircles(path: Path, draw: Svg) {
         const y = item[2] || 0;
         const circle = draw.circle(POINT_RADIUS).move(x - POINT_RADIUS / 2, y - POINT_RADIUS / 2);
         drawCircle(circle);
+        // @ts-ignore
         circles.push(circle);
     }
     return circles;

@@ -92,3 +92,33 @@ export const APARTMENT_COMPLEX_INFO = gql`
         }
     }
 `;
+
+export const GET_EDIT_APARTMENT_COMPLEX_INFO = gql`
+    query getApartmentComplex($uuid: String!) {
+        getApartmentComplex(uuid: $uuid) {
+            id
+            type {
+                key
+                displayName
+            }
+            name
+            city {
+                key
+                displayName
+            }
+            district {
+                key
+                displayName
+            }
+            class {
+                key
+                displayName
+            }
+            levels
+            sections
+            price
+            beginDate
+            endDate
+        }
+    }
+`;

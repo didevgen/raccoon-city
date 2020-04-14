@@ -15,11 +15,12 @@ type ApartmentComplex {
 }
 
 input ApartmentComplexInput {
-    type: KeyDisplayNameInput
+    id: String
+    type: String
     name: String
-    city: KeyDisplayNameInput
-    district: KeyDisplayNameInput
-    class: KeyDisplayNameInput
+    city: String
+    district: String
+    class: String
     levels: Int
     sections: Int
     price: Float
@@ -75,6 +76,8 @@ type ParsedApartmentComplex {
 
 type Mutation {
     createApartmentComplex(apartmentComplex: ApartmentComplexInput!): ApartmentComplex
+    updateApartmentComplex(uuid: String!, apartmentComplex: ApartmentComplexInput!): ApartmentComplex
+    deleteApartmentComplex(uuid: String!): Boolean
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
     uploadApartmentComplexFile(file: Upload!): [ParsedApartmentComplex]
     deleteImage(mode: String!, uuid: String!, imageId: String!): String

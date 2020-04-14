@@ -7,11 +7,14 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, {ChangeEvent, Fragment, useState} from 'react';
 import {Field, Form} from 'react-final-form';
-import {Link, Redirect} from 'react-router-dom';
+import {Link, Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {CREATE_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
-import {APARTMENT_COMPLEX_DROPDOWNS} from '../../../../graphql/queries/apartmentComplexQuery';
-import {ApartmentComplexFormValues} from '../../../shared/types/apartmentComplex.types';
+import {CREATE_APARTMENT_COMPLEX, EDIT_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
+import {
+    APARTMENT_COMPLEX_DROPDOWNS,
+    GET_EDIT_APARTMENT_COMPLEX_INFO
+} from '../../../../graphql/queries/apartmentComplexQuery';
+import {ApartmentComplexFormValues, ApartmentComplexType} from '../../../shared/types/apartmentComplex.types';
 import {getApartmentComplexVariables} from './utils';
 
 const FormContainer = styled.div`
@@ -38,14 +41,85 @@ const StyledLink = styled(Link)`
 
 const required = (value: any) => (value ? undefined : 'Required');
 
-export function ApartmentComplexForm() {
-    const [selectedCity, setCity] = useState<any>();
-    const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
+export function ApartmentComplexCreateForm() {
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
     if (apartmentComplex && apartmentComplex.createApartmentComplex) {
         return <Redirect to={`/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview`} />;
     }
+
+    return (
+        <ApartmentComplexForm
+            onSubmit={async (values) => {
+                await createApartmentComplex({
+                    variables: {
+                        apartmentComplex: getApartmentComplexVariables(values as ApartmentComplexFormValues)
+                    }
+                });
+            }}
+        />
+    );
+}
+
+export function ApartmentComplexEditForm() {
+    const {uuid} = useParams();
+
+    const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(
+        GET_EDIT_APARTMENT_COMPLEX_INFO,
+        {
+            fetchPolicy: 'cache-and-network',
+            variables: {
+                uuid
+            }
+        }
+    );
+
+    const [updateApartmentComplex, {data: apartmentComplex}] = useMutation(EDIT_APARTMENT_COMPLEX);
+
+    if (apartmentComplex && apartmentComplex.updateApartmentComplex) {
+        return <Redirect to={`/apartmentComplex/${apartmentComplex.updateApartmentComplex.id}/overview`} />;
+    }
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    if (error || !data) {
+        return <p>Error :(</p>;
+    }
+
+    const values: any = data?.getApartmentComplex;
+    values.city = values.city.key;
+    values.type = values.type.key;
+    values.class = values.class.key;
+    values.district = values.district.key;
+    return (
+        <ApartmentComplexForm
+            onSubmit={async (updatedValues) => {
+                await updateApartmentComplex({
+                    variables: {
+                        uuid,
+                        apartmentComplex: getApartmentComplexVariables(updatedValues as ApartmentComplexFormValues)
+                    }
+                });
+            }}
+            values={values}
+        />
+    );
+}
+
+interface ApartmentComplexForm {
+    onSubmit: (values: any) => void;
+    values?: any;
+}
+
+function getDistricts(cities, selectedCity) {
+    return cities.find((city) => city.key === selectedCity).districts || [];
+}
+
+export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
+    const [selectedCity, setCity] = useState<any>(outerProps.values?.city);
+
+    const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
 
     if (loading || error) {
         return null;
@@ -55,8 +129,8 @@ export function ApartmentComplexForm() {
 
     return (
         <Fragment>
-            <Form onSubmit={(e) => {}}>
-                {({values, invalid}) => {
+            <Form initialValues={outerProps.values} onSubmit={(e) => {}}>
+                {({values, invalid, form}) => {
                     return (
                         <Fragment>
                             <Container maxWidth="md">
@@ -68,26 +142,28 @@ export function ApartmentComplexForm() {
                                         <Grid container={true} spacing={3}>
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="type" validate={required}>
-                                                    {(props) => (
-                                                        <TextField
-                                                            select={true}
-                                                            name={props.input.name}
-                                                            value={props.input.value}
-                                                            onChange={props.input.onChange}
-                                                            label="Тип объекта"
-                                                            margin="normal"
-                                                            fullWidth={true}
-                                                            variant="outlined"
-                                                        >
-                                                            {apartmentComplexTypes.map((item: any) => {
-                                                                return (
-                                                                    <MenuItem key={item.key} value={item}>
-                                                                        {item.displayName}
-                                                                    </MenuItem>
-                                                                );
-                                                            })}
-                                                        </TextField>
-                                                    )}
+                                                    {(props) => {
+                                                        return (
+                                                            <TextField
+                                                                select
+                                                                name={props.input.name}
+                                                                value={props.input.value}
+                                                                onChange={props.input.onChange}
+                                                                label="Тип объекта"
+                                                                margin="normal"
+                                                                fullWidth={true}
+                                                                variant="outlined"
+                                                            >
+                                                                {apartmentComplexTypes.map((item: any) => {
+                                                                    return (
+                                                                        <MenuItem key={item.key} value={item.key}>
+                                                                            {item.displayName}
+                                                                        </MenuItem>
+                                                                    );
+                                                                })}
+                                                            </TextField>
+                                                        );
+                                                    }}
                                                 </Field>
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
@@ -120,12 +196,13 @@ export function ApartmentComplexForm() {
                                                             ) => {
                                                                 props.input.onChange(e.target.value);
                                                                 setCity(e.target.value);
+                                                                form.change('district', '');
                                                             }}
                                                             variant="outlined"
                                                         >
                                                             {cities.map((item: any) => {
                                                                 return (
-                                                                    <MenuItem key={item.key} value={item}>
+                                                                    <MenuItem key={item.key} value={item.key}>
                                                                         {item.displayName}
                                                                     </MenuItem>
                                                                 );
@@ -136,28 +213,41 @@ export function ApartmentComplexForm() {
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="district" validate={required}>
-                                                    {(props) => (
-                                                        <TextField
-                                                            select={true}
-                                                            disabled={!selectedCity}
-                                                            label="Район"
-                                                            margin="normal"
-                                                            fullWidth={true}
-                                                            variant="outlined"
-                                                            name={props.input.name}
-                                                            value={props.input.value}
-                                                            onChange={props.input.onChange}
-                                                        >
-                                                            {selectedCity &&
-                                                                selectedCity.districts.map((item: any) => {
-                                                                    return (
-                                                                        <MenuItem key={item.key} value={item}>
-                                                                            {item.displayName}
-                                                                        </MenuItem>
-                                                                    );
-                                                                })}
-                                                        </TextField>
-                                                    )}
+                                                    {(props) => {
+                                                        return (
+                                                            <TextField
+                                                                select={true}
+                                                                disabled={!selectedCity}
+                                                                label="Район"
+                                                                margin="normal"
+                                                                fullWidth={true}
+                                                                variant="outlined"
+                                                                name={props.input.name}
+                                                                value={props.input.value}
+                                                                onChange={(
+                                                                    e: ChangeEvent<
+                                                                        HTMLInputElement | HTMLTextAreaElement
+                                                                    >
+                                                                ) => {
+                                                                    props.input.onChange(e.target.value);
+                                                                }}
+                                                            >
+                                                                {selectedCity &&
+                                                                    getDistricts(cities, selectedCity).map(
+                                                                        (item: any) => {
+                                                                            return (
+                                                                                <MenuItem
+                                                                                    key={item.key}
+                                                                                    value={item.key}
+                                                                                >
+                                                                                    {item.displayName}
+                                                                                </MenuItem>
+                                                                            );
+                                                                        }
+                                                                    )}
+                                                            </TextField>
+                                                        );
+                                                    }}
                                                 </Field>
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
@@ -175,7 +265,7 @@ export function ApartmentComplexForm() {
                                                         >
                                                             {apartmentComplexClasses.map((item: any) => {
                                                                 return (
-                                                                    <MenuItem key={item.key} value={item}>
+                                                                    <MenuItem key={item.key} value={item.key}>
                                                                         {item.displayName}
                                                                     </MenuItem>
                                                                 );
@@ -293,13 +383,7 @@ export function ApartmentComplexForm() {
                                         <StyledButton
                                             disabled={invalid}
                                             onClick={() => {
-                                                createApartmentComplex({
-                                                    variables: {
-                                                        apartmentComplex: getApartmentComplexVariables(
-                                                            values as ApartmentComplexFormValues
-                                                        )
-                                                    }
-                                                });
+                                                outerProps.onSubmit(values);
                                             }}
                                             variant="outlined"
                                             color="primary"

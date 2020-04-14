@@ -8,6 +8,20 @@ export const CREATE_APARTMENT_COMPLEX = gql`
     }
 `;
 
+export const DELETE_APARTMENT_COMPLEX = gql`
+    mutation deleteApartmentComplex($uuid: String!) {
+        deleteApartmentComplex(uuid: $uuid)
+    }
+`;
+
+export const EDIT_APARTMENT_COMPLEX = gql`
+    mutation updateApartmentComplex($uuid: String!, $apartmentComplex: ApartmentComplexInput!) {
+        updateApartmentComplex(uuid: $uuid, apartmentComplex: $apartmentComplex) {
+            id
+        }
+    }
+`;
+
 export const UPLOAD_FILE = gql`
     mutation addImage($file: Upload!, $mode: String!, $uuid: String!, $name: String) {
         addImage(file: $file, mode: $mode, uuid: $uuid, name: $name) {
