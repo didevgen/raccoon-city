@@ -23,6 +23,7 @@ export const HOUSE_INFO = gql`
             name
             address
             parking
+            price
             images {
                 CHESS_GRID {
                     uuid

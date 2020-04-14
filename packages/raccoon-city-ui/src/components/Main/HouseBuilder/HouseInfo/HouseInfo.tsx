@@ -7,10 +7,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
-import * as React from 'react';
 import {Fragment, useState} from 'react';
+import * as React from 'react';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,12 +23,12 @@ import {StyledNavLink} from '../../../shared/components/styled';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {House} from '../../../shared/types/house.types';
+import {LayoutEditor} from '../../LayoutEditor/LayoutEditor';
+import {LevelLayoutEditor} from '../../LevelEditor';
 import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import {LayoutEditor} from '../../LayoutEditor/LayoutEditor';
-import {LevelLayoutEditor} from '../../LevelEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -72,7 +76,7 @@ export function HouseInfo() {
         return <Redirect to="/" />;
     }
 
-    const {name, images} = data.getHouse;
+    const {name, images, address, parking, price} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -130,7 +134,58 @@ export function HouseInfo() {
                                         </Tabs>
                                     </AppBar>
                                     <TabPanel value={value} index={0}>
-                                        {/*<ApartmentComplexData apartmentComplex={data.getApartmentComplex}/>*/}
+                                        <Table aria-label="simple table">
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Название дома
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {name}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Строительный адрес
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {address}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Стоимость квартир в доме
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {price}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Парковка
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {parking ? 'Есть' : 'Нет'}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
                                         <MainHouseImages images={images} />
