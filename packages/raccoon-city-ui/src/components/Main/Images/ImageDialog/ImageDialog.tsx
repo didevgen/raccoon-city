@@ -1,17 +1,18 @@
+import {MutationTuple} from '@apollo/react-hooks/lib/types';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
-import React, {Fragment, useState} from 'react';
-import AvatarEditor from 'react-avatar-editor';
+import 'cropperjs/dist/cropper.css';
+import React, {Fragment, useEffect, useState} from 'react';
+import Cropper from 'react-cropper';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {MutationTuple} from '@apollo/react-hooks/lib/types';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -33,25 +34,28 @@ export interface ImageDialogProps {
 
 export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps) {
     const [image, setImage] = useState<any>();
-    const [scale, setScale] = useState(1);
-    const [rotate, setRotate] = useState(0);
 
     const {uuid, mode} = params;
 
     const [uploadFile, {loading}] = mutation;
     const editor = React.createRef<any>();
+
     const handleClose = () => {
         setImage(undefined);
         setOpen(false);
     };
 
     const handleDrop = (dropped: any) => {
-        setImage(dropped);
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImage(reader.result);
+        };
+        reader.readAsDataURL(dropped);
     };
 
     const onSave = async () => {
         if (editor) {
-            const canvasScaled = editor.current.getImageScaledToCanvas();
+            const canvasScaled = editor.current.getCroppedCanvas();
             const blob = await fetch(canvasScaled.toDataURL()).then((res) => res.blob());
             const file = blobToFile(blob, image?.name);
             await uploadFile({
@@ -72,14 +76,16 @@ export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps)
                 {image && (
                     <Fragment>
                         <EditorContainer>
-                            <AvatarEditor
+                            <Cropper
+                                dragMode={'move'}
+                                src={image}
+                                ready={() => {
+                                    editor.current.zoomTo(1);
+                                }}
+                                style={{height: 400, width: '100%'}}
+                                aspectRatio={16 / 9}
+                                preview=".img-preview"
                                 ref={editor}
-                                image={image}
-                                width={400}
-                                height={200}
-                                border={50}
-                                scale={scale}
-                                rotate={rotate}
                             />
                         </EditorContainer>
                         <div>
@@ -89,7 +95,7 @@ export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps)
                             <Slider
                                 defaultValue={1}
                                 onChange={(e, value: any) => {
-                                    setScale(value);
+                                    editor.current.zoomTo(value);
                                 }}
                                 aria-labelledby="discrete-slider"
                                 valueLabelDisplay="auto"
@@ -106,7 +112,7 @@ export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps)
                             <Slider
                                 defaultValue={1}
                                 onChange={(e, value: any) => {
-                                    setRotate(value);
+                                    editor.current.rotateTo(value);
                                 }}
                                 aria-labelledby="discrete-slider"
                                 valueLabelDisplay="auto"
