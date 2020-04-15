@@ -23,6 +23,24 @@ export const house = {
             });
         });
     },
+    async deleteHouse(parent, {uuid}, ctx: Context) {
+        await HouseModel.deleteOne({_id: uuid}).exec();
+        return true;
+    },
+    async updateHouse(parent, args, ctx: Context) {
+        const houseData: HouseDataInputArgs = args.houseData;
+        const uuid = args.uuid;
+        return await HouseModel.findOneAndUpdate(
+            {
+                _id: uuid
+            },
+            {
+                $set: {
+                    ...houseData
+                }
+            }
+        ).exec();
+    },
     async addHouseImage(parent, args, ctx: Context) {
         return new HouseImageServiceFactory(args.mode)
             .getImageService(ctx.Firebase, args.uuid, args.name)

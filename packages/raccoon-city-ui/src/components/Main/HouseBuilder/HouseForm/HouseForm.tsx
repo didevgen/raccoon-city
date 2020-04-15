@@ -1,6 +1,7 @@
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -14,8 +15,10 @@ import {Fragment} from 'react';
 import {Field, Form} from 'react-final-form';
 import {Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {CREATE_HOUSE} from '../../../../graphql/mutations/houseMutation';
+import {CREATE_HOUSE, UPDATE_HOUSE} from '../../../../graphql/mutations/houseMutation';
+import {HOUSE_DATA} from '../../../../graphql/queries/houseQuery';
 import {StyledLink} from '../../../shared/components/styled';
+import {House} from '../../../shared/types/house.types';
 import {getHouseDataVariables, HouseFormValues} from './utils';
 
 const required = (value: any) => (value ? undefined : 'Required');
@@ -26,7 +29,15 @@ const StyledButton = styled(Button)`
     }
 `;
 
-export function HouseForm() {
+const FormContainer = styled.div`
+    border: 1px solid #aaa;
+`;
+
+const FormBlock = styled.div`
+    padding: 16px;
+`;
+
+export function HouseCreateForm() {
     const [createHouse, {data, loading}] = useMutation(CREATE_HOUSE);
     const {uuid} = useParams();
 
@@ -35,12 +46,88 @@ export function HouseForm() {
     }
 
     return (
+        <Container maxWidth="md">
+            <FormContainer>
+                <FormBlock>
+                    <HouseForm
+                        loading={loading}
+                        onSubmit={async (values) => {
+                            await createHouse({
+                                variables: {
+                                    apartmentComplexId: uuid,
+                                    houseData: getHouseDataVariables(values as HouseFormValues)
+                                }
+                            });
+                        }}
+                    />
+                </FormBlock>
+            </FormContainer>
+        </Container>
+    );
+}
+
+export function HouseEditForm() {
+    const [updateHouse, {data: result, loading: updating}] = useMutation(UPDATE_HOUSE);
+    const {uuid, houseUuid} = useParams();
+
+    const {loading, error, data} = useQuery<{getHouse: House}>(HOUSE_DATA, {
+        fetchPolicy: 'network-only',
+        variables: {
+            uuid: houseUuid
+        }
+    });
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    if (error || !data) {
+        return <p>Error :(</p>;
+    }
+
+    if (result) {
+        return <Redirect to={`/apartmentComplex/${uuid}/overview/houses`} />;
+    }
+
+    return (
+        <Container maxWidth="md">
+            <FormContainer>
+                <FormBlock>
+                    <HouseForm
+                        values={data?.getHouse}
+                        loading={updating}
+                        onSubmit={async (values) => {
+                            await updateHouse({
+                                variables: {
+                                    uuid: houseUuid,
+                                    houseData: getHouseDataVariables(values as HouseFormValues)
+                                }
+                            });
+                        }}
+                    />
+                </FormBlock>
+            </FormContainer>
+        </Container>
+    );
+}
+
+interface HouseFormProps {
+    onSubmit: (values: any) => void;
+    loading: boolean;
+    values?: any;
+}
+
+export function HouseForm(outerProps: HouseFormProps) {
+    const {uuid} = useParams();
+    return (
         <Fragment>
             <Typography variant="h5" gutterBottom={true}>
                 Создание дома
             </Typography>
-            <Form onSubmit={(e) => {}}>
-                {({values, invalid}) => {
+            <Form
+                onSubmit={(e) => {}}
+                initialValues={{...outerProps.values, parking: outerProps?.values?.parking ? 'true' : 'false'}}
+            >
+                {({values, invalid, form}) => {
                     return (
                         <Fragment>
                             <Field name="name" validate={required}>
@@ -85,22 +172,24 @@ export function HouseForm() {
                                 )}
                             </Field>
                             <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
-                                {(props) => (
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Паркова</FormLabel>
-                                        <RadioGroup
-                                            defaultValue="false"
-                                            aria-label="gender"
-                                            row={true}
-                                            name={props.input.name}
-                                            value={props.input.value}
-                                            onChange={props.input.onChange}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Есть" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Нет" />
-                                        </RadioGroup>
-                                    </FormControl>
-                                )}
+                                {(props) => {
+                                    return (
+                                        <FormControl component="fieldset">
+                                            <FormLabel component="legend">Паркова</FormLabel>
+                                            <RadioGroup
+                                                defaultValue="false"
+                                                aria-label="parking"
+                                                row={true}
+                                                name={props.input.name}
+                                                value={values?.parking}
+                                                onChange={props.input.onChange}
+                                            >
+                                                <FormControlLabel value="true" control={<Radio />} label="Есть" />
+                                                <FormControlLabel value="false" control={<Radio />} label="Нет" />
+                                            </RadioGroup>
+                                        </FormControl>
+                                    );
+                                }}
                             </Field>
                             <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
                                 <Grid justify="flex-end" container={true} item={true} xs={6}>
@@ -111,19 +200,14 @@ export function HouseForm() {
                                     </StyledLink>
                                     <StyledButton
                                         disabled={invalid}
-                                        onClick={async () => {
-                                            await createHouse({
-                                                variables: {
-                                                    apartmentComplexId: uuid,
-                                                    houseData: getHouseDataVariables(values as HouseFormValues)
-                                                }
-                                            });
+                                        onClick={() => {
+                                            outerProps.onSubmit(values);
                                         }}
                                         variant="outlined"
                                         color="primary"
                                         size="large"
                                     >
-                                        {loading && <CircularProgress size={30} thickness={5} />}
+                                        {outerProps.loading && <CircularProgress size={30} thickness={5} />}
                                         Далее
                                     </StyledButton>
                                 </Grid>

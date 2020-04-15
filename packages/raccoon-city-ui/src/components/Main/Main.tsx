@@ -6,13 +6,13 @@ import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList'
 import {ChessGrid} from './ChessGrid/ChessGrid';
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
-import {HouseBuilder} from './HouseBuilder/HouseBuilder';
 import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
 import {Sidebar} from './Sidebar/Sidebar';
 import {
     ApartmentComplexCreateForm,
     ApartmentComplexEditForm
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
+import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -57,7 +57,10 @@ export function Main() {
                         <ChessGrid />
                     </Route>
                     <Route exact={true} path="/apartmentComplex/:uuid/create/house">
-                        <HouseBuilder />
+                        <HouseCreateForm />
+                    </Route>
+                    <Route exact={true} path="/apartmentComplex/:uuid/houseEdit/:houseUuid">
+                        <HouseEditForm />
                     </Route>
                     <Route path="*">
                         <ApartmentComplexList />

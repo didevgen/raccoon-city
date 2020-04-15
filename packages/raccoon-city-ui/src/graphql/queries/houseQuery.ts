@@ -59,6 +59,18 @@ export const HOUSE_INFO = gql`
     }
 `;
 
+export const HOUSE_DATA = gql`
+    query getHouse($uuid: String!) {
+        getHouse(uuid: $uuid) {
+            id
+            name
+            address
+            parking
+            price
+        }
+    }
+`;
+
 export interface GroupedFlats {
     id: string;
     section: string;

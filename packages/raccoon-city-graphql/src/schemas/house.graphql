@@ -1,25 +1,19 @@
 type House {
     id: String
     name: String
-    class: KeyDisplayName
     levels: Int
     price: Float
     parking: Boolean
     address: String
-    beginDate: String
-    endDate: String
     images: HouseImages
 }
 
 input HouseInput {
     name: String
-    class: KeyDisplayNameInput
     levels: Int
     price: Float
     parking: Boolean
     address: String
-    beginDate: String
-    endDate: String
 }
 
 type HouseImages {
@@ -32,7 +26,9 @@ type HouseImages {
 }
 
 type Mutation {
-    createHouse(apartmentComplexId: String!, houseData: HouseInput!): ApartmentComplex
+    createHouse(apartmentComplexId: String!, houseData: HouseInput!): House
+    updateHouse(uuid: String!, houseData: HouseInput!): House
+    deleteHouse(uuid: String!): Boolean
     addHouseImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
     deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String
     addLevel(sectionId: String!): Boolean

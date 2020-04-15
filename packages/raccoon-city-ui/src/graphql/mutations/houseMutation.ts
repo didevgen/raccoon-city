@@ -16,6 +16,20 @@ export const UPLOAD_FILE = gql`
     }
 `;
 
+export const DELETE_HOUSE = gql`
+    mutation deleteHouse($uuid: String!) {
+        deleteHouse(uuid: $uuid)
+    }
+`;
+
+export const UPDATE_HOUSE = gql`
+    mutation updateHouse($uuid: String!, $houseData: HouseInput!) {
+        updateHouse(uuid: $uuid, houseData: $houseData) {
+            name
+        }
+    }
+`;
+
 export const DELETE_IMAGE = gql`
     mutation deleteHouseImage($mode: String!, $uuid: String!, $imageId: String!) {
         deleteHouseImage(mode: $mode, uuid: $uuid, imageId: $imageId)
