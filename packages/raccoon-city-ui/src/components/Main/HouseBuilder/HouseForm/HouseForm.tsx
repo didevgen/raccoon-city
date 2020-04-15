@@ -49,6 +49,9 @@ export function HouseCreateForm() {
         <Container maxWidth="md">
             <FormContainer>
                 <FormBlock>
+                    <Typography variant="h5" gutterBottom={true}>
+                        Создание дома
+                    </Typography>
                     <HouseForm
                         loading={loading}
                         onSubmit={async (values) => {
@@ -92,6 +95,9 @@ export function HouseEditForm() {
         <Container maxWidth="md">
             <FormContainer>
                 <FormBlock>
+                    <Typography variant="h5" gutterBottom={true}>
+                        Редактирование дома
+                    </Typography>
                     <HouseForm
                         values={data?.getHouse}
                         loading={updating}
@@ -120,9 +126,6 @@ export function HouseForm(outerProps: HouseFormProps) {
     const {uuid} = useParams();
     return (
         <Fragment>
-            <Typography variant="h5" gutterBottom={true}>
-                Создание дома
-            </Typography>
             <Form
                 onSubmit={(e) => {}}
                 initialValues={{...outerProps.values, parking: outerProps?.values?.parking ? 'true' : 'false'}}

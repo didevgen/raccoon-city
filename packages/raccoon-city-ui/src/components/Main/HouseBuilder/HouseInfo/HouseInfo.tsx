@@ -29,6 +29,7 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
+import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -52,7 +53,7 @@ export function HouseInfo() {
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
-    const {houseUuid: uuid} = useParams();
+    const {houseUuid: uuid, uuid: apartmentComplexId} = useParams();
     if (!uuid) {
         return <Redirect to="/" />;
     }
@@ -85,9 +86,7 @@ export function HouseInfo() {
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <Typography variant="h5" gutterBottom={true}>
-                    {name}
-                </Typography>
+                <TitleWithEditIcon title={name} editUrl={`/apartmentComplex/${apartmentComplexId}/houseEdit/${uuid}`} />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <Paper>

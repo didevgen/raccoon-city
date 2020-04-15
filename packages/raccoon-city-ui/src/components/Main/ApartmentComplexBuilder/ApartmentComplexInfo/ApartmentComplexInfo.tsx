@@ -22,6 +22,7 @@ import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import {HouseList} from '../../HouseList/HouseList';
 import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexImport';
+import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -91,9 +92,7 @@ export function ApartmentComplexInfo() {
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <Typography variant="h5" gutterBottom={true}>
-                    {name}
-                </Typography>
+                <TitleWithEditIcon title={name} editUrl={`/apartmentComplex/${uuid}/edit`} />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <Paper>

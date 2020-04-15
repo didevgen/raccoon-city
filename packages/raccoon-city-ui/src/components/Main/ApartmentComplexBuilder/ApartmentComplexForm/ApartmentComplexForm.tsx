@@ -50,15 +50,20 @@ export function ApartmentComplexCreateForm() {
     }
 
     return (
-        <ApartmentComplexForm
-            onSubmit={async (values) => {
-                await createApartmentComplex({
-                    variables: {
-                        apartmentComplex: getApartmentComplexVariables(values as ApartmentComplexFormValues)
-                    }
-                });
-            }}
-        />
+        <Fragment>
+            <Typography variant="h5" gutterBottom={true}>
+                Создание комплекса
+            </Typography>
+            <ApartmentComplexForm
+                onSubmit={async (values) => {
+                    await createApartmentComplex({
+                        variables: {
+                            apartmentComplex: getApartmentComplexVariables(values as ApartmentComplexFormValues)
+                        }
+                    });
+                }}
+            />
+        </Fragment>
     );
 }
 
@@ -89,22 +94,27 @@ export function ApartmentComplexEditForm() {
     }
 
     const values: any = data?.getApartmentComplex;
-    values.city = values.city.key;
-    values.type = values.type.key;
-    values.class = values.class.key;
-    values.district = values.district.key;
+    values.city = values?.city?.key;
+    values.type = values?.type?.key;
+    values.class = values?.class?.key;
+    values.district = values?.district?.key;
     return (
-        <ApartmentComplexForm
-            onSubmit={async (updatedValues) => {
-                await updateApartmentComplex({
-                    variables: {
-                        uuid,
-                        apartmentComplex: getApartmentComplexVariables(updatedValues as ApartmentComplexFormValues)
-                    }
-                });
-            }}
-            values={values}
-        />
+        <Fragment>
+            <Typography variant="h5" gutterBottom={true}>
+                Редактирование комплекса
+            </Typography>
+            <ApartmentComplexForm
+                onSubmit={async (updatedValues) => {
+                    await updateApartmentComplex({
+                        variables: {
+                            uuid,
+                            apartmentComplex: getApartmentComplexVariables(updatedValues as ApartmentComplexFormValues)
+                        }
+                    });
+                }}
+                values={values}
+            />
+        </Fragment>
     );
 }
 
@@ -137,9 +147,6 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                             <Container maxWidth="md">
                                 <FormContainer>
                                     <FormBlock>
-                                        <Typography variant="h5" gutterBottom={true}>
-                                            Создание комплекса
-                                        </Typography>
                                         <Grid container={true} spacing={3}>
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="type" validate={required}>
