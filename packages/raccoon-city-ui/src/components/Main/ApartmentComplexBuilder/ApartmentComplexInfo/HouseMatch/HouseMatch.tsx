@@ -15,6 +15,9 @@ import {Flat, ParsedFlat} from '../../../../shared/types/flat.types';
 import {House} from '../../../../shared/types/house.types';
 import {HouseSelect} from './HouseSelect';
 import {ASSIGN_FLATS} from '../../../../../graphql/mutations/apartmentComplexMutation';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {Redirect} from 'react-router';
+import {useParams} from 'react-router-dom';
 
 interface ParsedHouse {
     house: string;
@@ -78,16 +81,21 @@ function mapState(data: HouseMapInterface) {
 
 export function HouseMatch(props: HouseMatchProps) {
     const [matchMap, setValue] = useState<any>({});
+    const {uuid} = useParams();
     const {loading, error, data} = useQuery<{getHouses: House[]}>(HOUSE_LIST, {
         variables: {
             apartmentComplexId: props.apartmentComplexUuid
         }
     });
 
-    const [assignFlats] = useMutation(ASSIGN_FLATS);
+    const [assignFlats, {loading: loadingImport, data: result, error: importError}] = useMutation(ASSIGN_FLATS);
 
     if (error || loading || !data) {
         return null;
+    }
+
+    if (result) {
+        return <Redirect to={`/apartmentComplex/${uuid}/overview/houses`} />;
     }
 
     const houses = data.getHouses;
@@ -130,6 +138,7 @@ export function HouseMatch(props: HouseMatchProps) {
                     Отмена
                 </Button>
                 <Button
+                    disabled={loadingImport}
                     variant="contained"
                     color="primary"
                     onClick={async () => {
@@ -140,6 +149,7 @@ export function HouseMatch(props: HouseMatchProps) {
                         });
                     }}
                 >
+                    {loadingImport && <CircularProgress size={30} thickness={5} />}
                     Импорт
                 </Button>
             </ButtonContainer>

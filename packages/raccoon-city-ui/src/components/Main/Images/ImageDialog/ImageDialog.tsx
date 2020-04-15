@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import 'cropperjs/dist/cropper.css';
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import Cropper from 'react-cropper';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
