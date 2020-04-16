@@ -8,17 +8,19 @@ const HtmlTooltip = withStyles((theme: Theme) => ({
     tooltip: {
         backgroundColor: '#fff',
         color: '#000',
-        padding: '8px'
+        padding: '8px',
+        boxShadow: theme.shadows[3]
     }
 }))(Tooltip);
 
 const Cell = styled.div`
     color: #fff;
     background-color: #4caf50;
+    font-weight: 500;
     border-radius: 0;
     margin: 8px;
-    width: 40px;
-    height: 40px;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,7 +123,7 @@ export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Fl
                     onSelect(flat);
                 }}
             >
-                {flat.roomAmount}
+                {flat.area}
             </Cell>
         </HtmlTooltip>
     );
