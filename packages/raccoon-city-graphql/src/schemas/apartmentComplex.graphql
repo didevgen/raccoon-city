@@ -53,6 +53,7 @@ input ParsedFlatInput {
     area: String
     status: String
     roomAmount: String
+    squarePrice: String
 }
 
 input HosueWithFlats {
@@ -67,6 +68,7 @@ type ParsedFlat {
     section: String
     area: String
     status: String
+    squarePrice: String
     roomAmount: String
 }
 type ParsedApartmentComplex {

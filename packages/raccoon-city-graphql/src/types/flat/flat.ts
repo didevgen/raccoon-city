@@ -16,6 +16,7 @@ export interface SpreadsheetFlat {
     area: string;
     status: FlatStatus;
     roomAmount: string;
+    squarePrice: string;
 }
 
 export interface GroupedFlatsByHouse {

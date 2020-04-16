@@ -48,6 +48,7 @@ export const UPLOAD_SPREADSHEET = gql`
                 area
                 status
                 roomAmount
+                squarePrice
             }
         }
     }

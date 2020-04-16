@@ -1,4 +1,3 @@
-import {DataImageService} from './dataImageService';
 import {ImageType} from '../../services/image/imageService';
 
 export interface AppendImageParams {

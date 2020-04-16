@@ -24,6 +24,10 @@ export const headerKeys = [
         headerValue: 'area'
     },
     {
+        csvKeys: ['Цена, м2'],
+        headerValue: 'squarePrice'
+    },
+    {
         csvKeys: ['Статус'],
         headerValue: 'status'
     },

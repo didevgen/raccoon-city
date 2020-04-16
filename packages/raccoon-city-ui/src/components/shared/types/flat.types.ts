@@ -16,6 +16,7 @@ export interface ParsedFlat {
     level: string;
     section: string;
     area: string;
+    squarePrice: string;
     status: FlatStatus;
     roomAmount: string;
 }
@@ -27,6 +28,7 @@ export interface Flat {
     level: number;
     section: string;
     area: number;
+    squarePrice: number;
     status: FlatStatus;
     roomAmount: number;
     belongsToLayout?: boolean;

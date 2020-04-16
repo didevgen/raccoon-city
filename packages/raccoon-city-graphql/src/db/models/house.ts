@@ -10,6 +10,7 @@ export interface House extends Document {
     class: KeyDisplayName;
     levels: number;
     price: number;
+    squarePrice: number;
     beginDate: string;
     endDate: string;
     apartmentComplex: string;
@@ -24,6 +25,7 @@ const HouseSchema: Schema = new Schema({
     levels: {type: Schema.Types.Number},
     price: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String},
+    squarePrice: {type: Schema.Types.Number},
     address: {type: Schema.Types.String},
     parking: {type: Schema.Types.Boolean},
     endDate: {type: Schema.Types.String},
