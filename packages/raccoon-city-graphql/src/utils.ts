@@ -24,7 +24,7 @@ export function authTokenGenerate(user: User) {
     const token = jwt.sign({userId: user._id}, process.env.APP_SECRET, {
         expiresIn: process.env.JWT_LIFETIME
     });
-    return { user, token };
+    return token;
 }
 
 export class AuthError extends Error {

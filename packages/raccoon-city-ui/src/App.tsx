@@ -10,7 +10,7 @@ const App: React.FC = () => {
         <ApolloProvider client={client}>
             <Router basename={process.env.PUBLIC_URL}>
                 <Switch>
-                    <Route path="/">
+                    <Route exact path="/">
                         <Main />
                     </Route>
                     <Route path="/login">
