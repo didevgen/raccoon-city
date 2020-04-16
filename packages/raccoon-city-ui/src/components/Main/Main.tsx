@@ -13,6 +13,7 @@ import {
     ApartmentComplexEditForm
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
+import {MainChessGrid} from './MainChessGrid/MainChessGrid';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -40,6 +41,9 @@ export function Main() {
                 <Switch>
                     <Route exact={true} path="/">
                         <ApartmentComplexList />
+                    </Route>
+                    <Route exact={true} path="/chessgrid">
+                        <MainChessGrid />
                     </Route>
                     <Route exact={true} path="/apartmentComplex/new">
                         <ApartmentComplexCreateForm />

@@ -88,7 +88,7 @@ export function HouseMatch(props: HouseMatchProps) {
         }
     });
 
-    const [assignFlats, {loading: loadingImport, data: result, error: importError}] = useMutation(ASSIGN_FLATS);
+    const [assignFlats, {loading: loadingImport, data: result}] = useMutation(ASSIGN_FLATS);
 
     if (error || loading || !data) {
         return null;
