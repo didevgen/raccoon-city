@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import {authTokenGenerate, Context} from '../../utils';
-import {UserModel} from "../../db/models/user";
+import {UserModel} from '../../db/models/user';
 
 export const auth = {
     async signup(parent, args, ctx: Context) {
@@ -31,11 +31,11 @@ export const auth = {
     },
 
     async logout(parent, {key}, {redis}){
-    try {
-        await redis.del(key);
-        return true;
-    } catch (e) {
-        return false;
+        try {
+            await redis.del(key);
+            return true;
+        } catch (e) {
+            return false;
         }
     }
 };

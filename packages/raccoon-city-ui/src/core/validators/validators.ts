@@ -40,7 +40,7 @@ export const validateLoginForm = (form: LoginFormInterface) => {
         errors.email = 'Invalid email!';
     }
     if (!validatePassword(form.password)) {
-        errors.password = Number(form.password) < 6 ? 'Must contain at least 6 characters' : 'Must contain number';
+        errors.password = 'Must contain at least 6 characters and one number';
     }
     return errors;
 };

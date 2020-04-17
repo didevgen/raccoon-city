@@ -11,9 +11,7 @@ import Redis from 'ioredis';
 config();
 
 async function tradeTokenForUser(token: string) {
-    console.log("TOKEN", token);
     const userObj = JSON.parse(await redis.get(token));
-    console.log("USER", userObj);
     return userObj ? userObj : null;
 }
 

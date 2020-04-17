@@ -20,7 +20,7 @@ const Input = styled.div`
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiFormControl-root': {
-            width: '140%'
+            width: '25ch'
         }
     }
 }));
