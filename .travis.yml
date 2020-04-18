@@ -20,7 +20,7 @@ jobs:
           script: ~/.local/bin/aws s3 sync build s3://raccoon-city-bucket/raccoon-city-ui-dev --region=eu-central-1 --delete
           skip_cleanup: true
           on:
-            branch: production
+            branch: master
         - provider: s3
           skip_cleanup: true
           access_key_id: $AWS_ACCESS_KEY_ID
@@ -30,7 +30,7 @@ jobs:
           local_dir: build
           region: eu-central-1
           on:
-            branch: production
+            branch: master
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
