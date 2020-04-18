@@ -1,10 +1,19 @@
 import {useMutation} from '@apollo/react-hooks';
+import {Button} from '@material-ui/core';
 import React, {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {useParams} from 'react-router-dom';
+import styled from 'styled-components';
 import {UPLOAD_SPREADSHEET} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {DropzoneContainer} from '../../../../shared/components/styled';
 import {HouseMatch} from '../HouseMatch/HouseMatch';
+
+const StyledLink = styled.a`
+    text-decoration: none;
+    button {
+        margin-bottom: 8px;
+    }
+`;
 
 function CsvDropzone(props: any) {
     const {getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({
@@ -16,6 +25,11 @@ function CsvDropzone(props: any) {
 
     return (
         <div className="container">
+            <StyledLink href={'http://d2wn3f22rkbhe4.cloudfront.net/Template.csv'}>
+                <Button variant="outlined" color="primary">
+                    Скачать пример
+                </Button>
+            </StyledLink>
             <DropzoneContainer {...getRootProps({isDragActive, isDragAccept, isDragReject})}>
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop some files here, or click to select files</p>

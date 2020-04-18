@@ -6,7 +6,8 @@ type HouseFlat {
     section: String
     area: Float
     status: String
-    roomAmount: Int
+    roomAmount: String
+    squarePrice: String
     layout: BaseLayout
 }
 
@@ -18,7 +19,8 @@ input HouseFlatInput {
     section: String
     area: Float
     status: String
-    roomAmount: Int
+    squarePrice: String
+    roomAmount: String
 }
 
 type GroupedByLevelFlat {
@@ -33,6 +35,13 @@ type GroupedBySectionFlat {
     levels: [GroupedByLevelFlat]
 }
 
+type GroupedBySectionResult {
+    maxPrice: Float
+    minPrice: Float
+    maxArea: Float
+    minArea: Float
+    groupedFlats: [GroupedBySectionFlat]
+}
 type Mutation {
     updateFlat(flat: HouseFlatInput): HouseFlat
     createFlat(houseGuid: String, flat: HouseFlatInput): HouseFlat
@@ -41,6 +50,6 @@ type Mutation {
 
 extend type Query {
     getFlats(uuid: String!): [HouseFlat]
-    getGroupedFlatsBySection(uuid: String!): [GroupedBySectionFlat]
+    getGroupedFlatsBySection(uuid: String!): GroupedBySectionResult
     getSectionData(sectionId: String!): GroupedBySectionFlat
 }

@@ -30,7 +30,8 @@ export interface Flat {
     section: string;
     area: number;
     status: FlatStatus;
-    roomAmount: number;
+    roomAmount: string;
+    squarePrice: string;
     house: string;
 }
 

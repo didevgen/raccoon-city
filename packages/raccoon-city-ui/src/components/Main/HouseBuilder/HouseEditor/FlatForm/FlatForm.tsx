@@ -40,7 +40,7 @@ function toGraphqlFlat(flat: Flat): Flat {
         section: flat.section,
         level: Number(flat.level),
         price: Number(flat.price),
-        roomAmount: Number(flat.roomAmount)
+        roomAmount: flat.roomAmount
     });
 }
 
@@ -221,7 +221,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                         </Field>
                                     </Grid>
                                     <Grid item={true} xs={6}>
-                                        <Field name="roomAmount" validate={isRequiredAndIsInteger}>
+                                        <Field name="roomAmount" validate={isRequired}>
                                             {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Количество комнат"

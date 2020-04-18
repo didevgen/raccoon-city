@@ -82,33 +82,71 @@ export interface GroupedFlats {
 }
 
 export interface GetGroupedFlatsBySectionQuery {
-    getGroupedFlatsBySection: GroupedFlats[];
+    getGroupedFlatsBySection: {
+        maxPrice: number;
+        minPrice: number;
+        maxArea: number;
+        minArea: number;
+        groupedFlats: GroupedFlats[];
+    };
 }
 
+export const GET_GROUPED_FLATS_CHESSGRID = gql`
+    query getGroupedFlatsBySection($uuid: String!) {
+        getGroupedFlatsBySection(uuid: $uuid) {
+            maxPrice
+            minPrice
+            maxArea
+            minArea
+            groupedFlats {
+                id
+                section
+                levels {
+                    id
+                    level
+                    flats {
+                        id
+                        flatNumber
+                        price
+                        level
+                        section
+                        area
+                        status
+                        squarePrice
+                        roomAmount
+                        layout {
+                            id
+                            image {
+                                uuid
+                                downloadUrl
+                                previewImageUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 export const GET_GROUPED_FLATS = gql`
     query getGroupedFlatsBySection($uuid: String!) {
         getGroupedFlatsBySection(uuid: $uuid) {
-            id
-            section
-            levels {
+            groupedFlats {
                 id
-                level
-                flats {
+                section
+                levels {
                     id
-                    flatNumber
-                    price
                     level
-                    section
-                    area
-                    status
-                    roomAmount
-                    layout {
+                    flats {
                         id
-                        image {
-                            uuid
-                            downloadUrl
-                            previewImageUrl
-                        }
+                        flatNumber
+                        price
+                        level
+                        section
+                        area
+                        status
+                        squarePrice
+                        roomAmount
                     }
                 }
             }

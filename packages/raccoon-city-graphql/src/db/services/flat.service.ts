@@ -15,8 +15,9 @@ function spreadsheetFlatToFlat(flat: SpreadsheetFlat, houseId: string): Flat {
         section: flat.section,
         area: Number(flat.area),
         status: flat.status,
-        roomAmount: Number(flat.roomAmount),
-        house: houseId
+        roomAmount: flat.roomAmount,
+        house: houseId,
+        squarePrice: flat.squarePrice
     };
 }
 

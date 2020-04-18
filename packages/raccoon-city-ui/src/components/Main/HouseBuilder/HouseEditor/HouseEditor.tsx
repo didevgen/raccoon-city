@@ -39,11 +39,11 @@ export function HouseEditor() {
         fetchPolicy: 'cache-and-network'
     });
 
-    if (loading || error || !data || !data.getGroupedFlatsBySection) {
+    if (loading || error || !data?.getGroupedFlatsBySection?.groupedFlats) {
         return null;
     }
 
-    const sections = data.getGroupedFlatsBySection;
+    const sections = data.getGroupedFlatsBySection.groupedFlats;
     return (
         <Fragment>
             <AppBar position="static" color="default">

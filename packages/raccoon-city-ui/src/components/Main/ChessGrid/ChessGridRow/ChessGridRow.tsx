@@ -16,8 +16,8 @@ const RowTitle = styled.div`
 
 const StyledEmptyLevel = styled.div`
     width: 100%;
-    min-width: 40px;
-    height: 40px;
+    min-width: 56px;
+    height: 56px;
     margin: 8px;
     background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px),
         linear-gradient(to bottom, #eee, #999);

@@ -30,7 +30,8 @@ export interface Flat {
     area: number;
     squarePrice: number;
     status: FlatStatus;
-    roomAmount: number;
+    roomAmount: string;
     belongsToLayout?: boolean;
     layout?: HouseLayout;
+    isActive?: boolean;
 }
