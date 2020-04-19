@@ -30,6 +30,7 @@ import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
+import {FlatLayouInfo} from '../../LayoutEditor/FlatLayoutInfo/FlatLayoutInfo';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -207,6 +208,9 @@ export function HouseInfo() {
                                 </Route>
                                 <Route exact path={`${path}/layout`}>
                                     <LayoutEditor />
+                                </Route>
+                                <Route exact path={`${path}/layout/:layoutId/info`}>
+                                    <FlatLayouInfo />
                                 </Route>
                             </Switch>
                         </div>

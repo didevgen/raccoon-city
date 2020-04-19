@@ -7,6 +7,9 @@ export const layoutQuery = {
     async getFlatLayouts(_, {houseId}) {
         return HouseLayoutModel.find({house: houseId}).populate('flats');
     },
+    async getFlatLayout(_, {layoutId}) {
+        return HouseLayoutModel.findById(layoutId).populate('flats');
+    },
     getChessGridLayout: async (parent, {houseId, layoutId}) => {
         const data = await HouseModel.findById(houseId)
             .populate({

@@ -63,7 +63,9 @@ export function ChessGridDialog(props: ChessGridDialogProps) {
     return (
         <div>
             <Link href="#" onClick={handleClickOpen}>
-                Отметить на шахматке
+                <Button variant="outlined" color="primary">
+                    Отметить квартиры
+                </Button>
             </Link>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition as any}>
                 <AppBar className={classes.appBar}>

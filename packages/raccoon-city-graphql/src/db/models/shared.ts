@@ -39,10 +39,22 @@ export const imagesSchema: Schema = new Schema({
     HALF_VR: {type: [PreviewImageSchema]}
 });
 
+export const simpleImageSchema: Schema = new Schema({
+    PHOTO: {type: [NamedImageSchema]},
+    VR: {type: [PreviewImageSchema]},
+    HALF_VR: {type: [PreviewImageSchema]}
+});
+
 export interface ApartmentComplexImages {
     CHESS_GRID?: SingleImage;
     SITE?: SingleImage;
     MOBILE?: SingleImage;
+    PHOTO?: NamedImage[];
+    VR?: PreviewImage[];
+    HALF_VR?: PreviewImage[];
+}
+
+export interface SimpleImages {
     PHOTO?: NamedImage[];
     VR?: PreviewImage[];
     HALF_VR?: PreviewImage[];

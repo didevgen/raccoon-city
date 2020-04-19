@@ -55,3 +55,17 @@ export const DELETE_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
         deleteFlatLayoutsToLevelLayout(layoutAssignmentId: $layoutAssignmentId)
     }
 `;
+
+export const UPLOAD_IMAGE = gql`
+    mutation addFlatLayoutImage($file: Upload!, $mode: String!, $uuid: String!, $name: String) {
+        addFlatLayoutImage(file: $file, mode: $mode, uuid: $uuid, name: $name) {
+            downloadUrl
+        }
+    }
+`;
+
+export const DELETE_IMAGE = gql`
+    mutation deleteFlatLayoutImage($mode: String!, $uuid: String!, $imageId: String!) {
+        deleteFlatLayoutImage(mode: $mode, uuid: $uuid, imageId: $imageId)
+    }
+`;

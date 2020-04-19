@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 // @ts-ignore
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
@@ -41,13 +41,21 @@ export function PhotoDialog({setOpen, open, params, downloadLink, mutation}: Ima
     const [image, setImage] = useState<any>();
     const [name, setName] = useState<any>();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
+
+    useEffect(() => {
+        if (open) {
+            setPreviewUrl(downloadLink);
+        }
+    }, [open]);
     const {uuid, mode} = params;
 
     const [uploadFile, {loading}] = mutation;
 
     const handleClose = () => {
-        setImage(undefined);
-        setPreviewUrl(undefined);
+        setTimeout(() => {
+            setImage(undefined);
+            setPreviewUrl(undefined);
+        }, 200);
         setOpen(false);
     };
 

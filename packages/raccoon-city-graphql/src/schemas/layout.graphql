@@ -2,14 +2,32 @@ extend type HouseFlat {
     belongsToLayout: Boolean
 }
 
+type FlatLauoutImages {
+    VR: [PreviewImage]
+    HALF_VR: [PreviewImage]
+    PHOTO: [NamedImage]
+}
+
+type FlatLayout {
+    id: String
+    name: String
+    flats: [HouseFlat]
+    image: SinglePreviewImage
+    images: FlatLauoutImages
+}
+
+
 type Mutation {
     createLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     assignFlatsToLayout(layoutId: String!, flats: [String]): FlatLayout
     createLevelLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
+    addFlatLayoutImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
+    deleteFlatLayoutImage(mode: String!, uuid: String!, imageId: String!): String
 }
 
 type Query {
     getFlatLayouts(houseId: String!): [FlatLayout]
+    getFlatLayout(layoutId: String!): FlatLayout
     getLevelLayouts(houseId: String!): [LevelLayout]
     getChessGridLayout(houseId: String!, layoutId: String!): [GroupedBySectionFlat]
 }

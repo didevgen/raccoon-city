@@ -3,7 +3,9 @@ import {FlatModel} from '../../db/models/flat';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {LayoutDbService} from '../../db/services/layoutDbService';
 import {LayoutImageService} from '../../services/image/layout';
-import {LevelLayoutModel} from '../../db/models/levelLayout';
+import {Context} from '../../utils';
+import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
+import {FlatLayoutImageServiceFactory} from '../../services/image/flatLayoutImageServiceFactory';
 
 export const layoutMutation = {
     async createLayout(parent, args) {
@@ -22,6 +24,17 @@ export const layoutMutation = {
         }
 
         return null;
+    },
+    async addFlatLayoutImage(parent, args, ctx: Context) {
+        return new FlatLayoutImageServiceFactory(args.mode)
+            .getImageService(args.uuid, args.name)
+            .addImage(await args.file);
+    },
+    async deleteFlatLayoutImage(parent, args, ctx: Context) {
+        await new FlatLayoutImageServiceFactory(args.mode)
+            .getImageService(args.uuid)
+            .removeImage(args.imageId);
+        return 'Success';
     },
     async assignFlatsToLayout(parent, {flats, layoutId}) {
         if (layoutId) {

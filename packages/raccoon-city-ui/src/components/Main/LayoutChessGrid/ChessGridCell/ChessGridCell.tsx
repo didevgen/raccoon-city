@@ -129,4 +129,4 @@ export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}
     );
 }
 
-export const ChessGridCell = createSelectable(ChessGridCellItem);
+export const ChessGridCell = createSelectable(React.memo(ChessGridCellItem));

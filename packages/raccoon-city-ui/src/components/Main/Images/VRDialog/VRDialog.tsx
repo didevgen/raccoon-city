@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 // @ts-ignore
 import {Pannellum} from 'pannellum-react';
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
@@ -42,10 +42,20 @@ export function VRDialog({setOpen, open, params, downloadLink, mutation}: ImageD
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid, mode} = params;
 
+    useEffect(() => {
+        if (open) {
+            setPreviewUrl(downloadLink);
+        }
+    }, [open]);
+
     const [uploadFile, {loading}] = mutation;
 
     const handleClose = () => {
-        setImage(undefined);
+        setTimeout(() => {
+            setImage(undefined);
+            setPreviewUrl(undefined);
+            setName(undefined);
+        }, 200);
         setOpen(false);
     };
 

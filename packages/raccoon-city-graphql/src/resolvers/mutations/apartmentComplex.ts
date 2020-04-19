@@ -52,12 +52,12 @@ export const apartmentComplex = {
     },
     async addImage(parent, args, ctx: Context) {
         return new ApartmentComplexImageServiceFactory(args.mode)
-            .getImageService(ctx.Firebase, args.uuid, args.name)
+            .getImageService(args.uuid, args.name)
             .addImage(await args.file);
     },
     async deleteImage(parent, args, ctx: Context) {
         await new ApartmentComplexImageServiceFactory(args.mode)
-            .getImageService(ctx.Firebase, args.uuid)
+            .getImageService(args.uuid)
             .removeImage(args.imageId);
         return 'Success';
     },

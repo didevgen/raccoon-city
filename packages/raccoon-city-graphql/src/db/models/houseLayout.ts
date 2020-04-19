@@ -3,13 +3,14 @@ import {Document, Schema} from 'mongoose';
 import {SinglePreviewImage} from '../../types/shared';
 import {Flat} from './flat';
 import {House} from './house';
-import {SinglePreviewImageSchema} from './shared';
+import {SimpleImages, simpleImageSchema, SinglePreviewImageSchema} from './shared';
 
 export interface HouseLayout extends Document {
     house: House;
     name: string;
     image: SinglePreviewImage;
     flats: Flat[];
+    images: SimpleImages;
 }
 
 const HouseLayoutSchema: Schema = new Schema(
@@ -19,6 +20,12 @@ const HouseLayoutSchema: Schema = new Schema(
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'
+        },
+        images: {
+            type: simpleImageSchema,
+            default: () => {
+                return {};
+            }
         },
         flats: [
             {

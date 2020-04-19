@@ -1,5 +1,6 @@
 import {gql} from 'apollo-boost';
 import {GroupedFlats} from './houseQuery';
+import {HouseLayout} from '../../components/shared/types/layout.types';
 
 export const GET_LAYOUTS = gql`
     query getFlatLayouts($houseId: String!) {
@@ -10,9 +11,44 @@ export const GET_LAYOUTS = gql`
                 downloadUrl
                 previewImageUrl
             }
+        }
+    }
+`;
+
+export interface GetLayoutQuery {
+    getFlatLayout: HouseLayout;
+}
+export const GET_LAYOUT = gql`
+    query getFlatLayout($layoutId: String!) {
+        getFlatLayout(layoutId: $layoutId) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
             flats {
                 id
                 flatNumber
+            }
+            images {
+                PHOTO {
+                    uuid
+                    downloadUrl
+                    name
+                }
+                VR {
+                    uuid
+                    downloadUrl
+                    name
+                    previewImageUrl
+                }
+                HALF_VR {
+                    uuid
+                    downloadUrl
+                    name
+                    previewImageUrl
+                }
             }
         }
     }

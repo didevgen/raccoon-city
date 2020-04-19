@@ -22,17 +22,11 @@ type PreviewImage {
     previewImageUrl: String
 }
 
-type FlatLayout {
-    id: String
-    name: String
-    flats: [HouseFlat]
-    image: SinglePreviewImage
-}
-
 type BaseLayout {
     id: String
     name: String
     image: SinglePreviewImage
+    images: FlatLauoutImages
 }
 type LevelLayout {
     id: String

@@ -24,7 +24,7 @@ interface LayoutChessGridProps {
     onSelect: (selection: Flat[]) => void;
     layoutId: string;
 }
-export const LayoutChessGrid = React.memo((props: LayoutChessGridProps) => {
+export const LayoutChessGrid = (props: LayoutChessGridProps) => {
     const {houseUuid: houseId} = useParams();
     const {loading, error, data} = useQuery<GetGroupedFlatsWithLayoutQuery>(GET_GROUPED_FLATS_WITH_LAYOUT, {
         variables: {
@@ -75,4 +75,4 @@ export const LayoutChessGrid = React.memo((props: LayoutChessGridProps) => {
             </SelectableGroup>
         </div>
     );
-});
+};

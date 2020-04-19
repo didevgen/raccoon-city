@@ -43,12 +43,12 @@ export const house = {
     },
     async addHouseImage(parent, args, ctx: Context) {
         return new HouseImageServiceFactory(args.mode)
-            .getImageService(ctx.Firebase, args.uuid, args.name)
+            .getImageService(args.uuid, args.name)
             .addImage(await args.file);
     },
     async deleteHouseImage(parent, args, ctx: Context) {
         await new HouseImageServiceFactory(args.mode)
-            .getImageService(ctx.Firebase, args.uuid)
+            .getImageService(args.uuid)
             .removeImage(args.imageId);
         return 'Success';
     },

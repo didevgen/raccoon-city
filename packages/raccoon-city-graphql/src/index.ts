@@ -2,14 +2,12 @@ import {ApolloServer, gql} from 'apollo-server';
 import {config} from 'dotenv';
 import {logger} from './aws/logger';
 import connect from './db/mongoose.client';
-import {initFirebase} from './firebase';
 import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
 
 config();
 
-const Firebase: any = initFirebase();
 const server = new ApolloServer({
     typeDefs: gql`
         ${typeDefs}
@@ -17,8 +15,7 @@ const server = new ApolloServer({
     resolvers,
     context: (request) => ({
         ...request,
-        prisma,
-        Firebase
+        prisma
     }),
     formatError: (error) => {
         logger.error(error);

@@ -1,4 +1,3 @@
-import * as admin from 'firebase-admin';
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {LandingImageDbService} from '../../db/services/images/landingImageDbService';
@@ -11,7 +10,7 @@ import {VRImageService} from './vrImage';
 export class ApartmentComplexImageServiceFactory {
     constructor(private mode: ImageType) {}
 
-    public getImageService(firebase: admin.app.App, apartmentComplexId: string, name?: string): ImageOperations {
+    public getImageService(apartmentComplexId: string, name?: string): ImageOperations {
         if ([ImageType.CHESS_GRID, ImageType.MOBILE, ImageType.SITE].includes(this.mode)) {
             return new LandingImageService(
                 new S3ImageUploader(apartmentComplexId),
