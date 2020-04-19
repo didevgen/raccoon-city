@@ -31,9 +31,7 @@ export const layoutMutation = {
             .addImage(await args.file);
     },
     async deleteFlatLayoutImage(parent, args, ctx: Context) {
-        await new FlatLayoutImageServiceFactory(args.mode)
-            .getImageService(args.uuid)
-            .removeImage(args.imageId);
+        await new FlatLayoutImageServiceFactory(args.mode).getImageService(args.uuid).removeImage(args.imageId);
         return 'Success';
     },
     async assignFlatsToLayout(parent, {flats, layoutId}) {

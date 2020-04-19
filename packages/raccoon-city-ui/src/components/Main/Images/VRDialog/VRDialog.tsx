@@ -1,3 +1,4 @@
+import {MutationTuple} from '@apollo/react-hooks/lib/types';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,7 +12,6 @@ import React, {Fragment, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
-import {MutationTuple} from '@apollo/react-hooks/lib/types';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -46,6 +46,7 @@ export function VRDialog({setOpen, open, params, downloadLink, mutation}: ImageD
         if (open) {
             setPreviewUrl(downloadLink);
         }
+        // eslint-disable-next-line
     }, [open]);
 
     const [uploadFile, {loading}] = mutation;

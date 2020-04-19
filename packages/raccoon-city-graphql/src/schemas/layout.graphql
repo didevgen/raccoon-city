@@ -16,7 +16,6 @@ type FlatLayout {
     images: FlatLauoutImages
 }
 
-
 type Mutation {
     createLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     assignFlatsToLayout(layoutId: String!, flats: [String]): FlatLayout

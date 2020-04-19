@@ -56,9 +56,7 @@ export const apartmentComplex = {
             .addImage(await args.file);
     },
     async deleteImage(parent, args, ctx: Context) {
-        await new ApartmentComplexImageServiceFactory(args.mode)
-            .getImageService(args.uuid)
-            .removeImage(args.imageId);
+        await new ApartmentComplexImageServiceFactory(args.mode).getImageService(args.uuid).removeImage(args.imageId);
         return 'Success';
     },
     async uploadApartmentComplexFile(parent, args, ctx: Context) {

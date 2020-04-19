@@ -1,18 +1,18 @@
 import {AppBar, Tab, Tabs} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import InfoIcon from '@material-ui/icons/Info';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+import PrintIcon from '@material-ui/icons/Print';
 import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
+import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
+import ViewCompactIcon from '@material-ui/icons/ViewCompact';
 import React from 'react';
 import styled from 'styled-components';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
-import ViewCompactIcon from '@material-ui/icons/ViewCompact';
-import PrintIcon from '@material-ui/icons/Print';
 import {Flat} from '../../../shared/types/flat.types';
 import {FlatSidebarData} from './FlatSidebarData';
-import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
-import {ImageViewVR} from './ImageViewVR';
 import {ImageViewPhotos} from './ImageViewPhotos';
+import {ImageViewVR} from './ImageViewVR';
+
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
     width: 420px;
@@ -23,17 +23,6 @@ const ImageContainer = styled.div`
     .FlatSidebarInfo__image {
         width: 100%;
     }
-`;
-
-const FlatInfoLine = styled.div`
-    display: flex;
-    justify-content: space-between;
-    .FlatInfoItem__label {
-        font-weight: 500;
-    }
-    padding-bottom: 8px;
-    padding-top: 8px;
-    border-bottom: 1px solid #000;
 `;
 
 interface FlatSidebarInfoProps {

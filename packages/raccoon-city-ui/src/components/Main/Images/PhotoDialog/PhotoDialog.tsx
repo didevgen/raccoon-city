@@ -46,6 +46,7 @@ export function PhotoDialog({setOpen, open, params, downloadLink, mutation}: Ima
         if (open) {
             setPreviewUrl(downloadLink);
         }
+        // eslint-disable-next-line
     }, [open]);
     const {uuid, mode} = params;
 

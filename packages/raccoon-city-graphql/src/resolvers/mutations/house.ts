@@ -42,14 +42,10 @@ export const house = {
         ).exec();
     },
     async addHouseImage(parent, args, ctx: Context) {
-        return new HouseImageServiceFactory(args.mode)
-            .getImageService(args.uuid, args.name)
-            .addImage(await args.file);
+        return new HouseImageServiceFactory(args.mode).getImageService(args.uuid, args.name).addImage(await args.file);
     },
     async deleteHouseImage(parent, args, ctx: Context) {
-        await new HouseImageServiceFactory(args.mode)
-            .getImageService(args.uuid)
-            .removeImage(args.imageId);
+        await new HouseImageServiceFactory(args.mode).getImageService(args.uuid).removeImage(args.imageId);
         return 'Success';
     },
     async addLevel(parent, {sectionId}, ctx: Context) {

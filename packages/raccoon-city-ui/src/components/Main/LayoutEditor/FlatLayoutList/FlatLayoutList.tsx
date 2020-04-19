@@ -8,7 +8,7 @@ import {FlatLayoutCard} from '../FlatLayoutCard/FlatLayoutCard';
 
 export function FlatLayoutList() {
     const {houseUuid} = useParams();
-    const {loading, error, data, refetch} = useQuery(GET_LAYOUTS, {
+    const {loading, error, data} = useQuery(GET_LAYOUTS, {
         variables: {
             houseId: houseUuid
         }
