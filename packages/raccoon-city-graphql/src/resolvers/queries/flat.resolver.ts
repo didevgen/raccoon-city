@@ -18,7 +18,7 @@ export interface FlatLevelLayouts {
     viewBox: {
         width: number;
         height: number;
-    },
+    };
     paths: string[];
 }
 

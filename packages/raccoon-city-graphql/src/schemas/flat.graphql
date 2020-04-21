@@ -14,7 +14,7 @@ type HouseFlat {
 type HouseSidebarFlatLevelLayouts {
     id: String
     image: SinglePreviewImage
-    paths: [String],
+    paths: [String]
     viewBox: ViewBox
 }
 
