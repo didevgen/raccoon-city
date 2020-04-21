@@ -11,6 +11,27 @@ type HouseFlat {
     layout: BaseLayout
 }
 
+type HouseSidebarFlatLevelLayouts {
+    id: String
+    image: SinglePreviewImage
+    paths: [String],
+    viewBox: ViewBox
+}
+
+type HouseSidebarFlat {
+    id: String
+    flatNumber: Int
+    price: Float
+    level: Int
+    section: String
+    area: Float
+    status: String
+    roomAmount: String
+    squarePrice: String
+    layout: BaseLayout
+    levelLayouts: [HouseSidebarFlatLevelLayouts]
+}
+
 input HouseFlatInput {
     id: String
     flatNumber: Int
@@ -52,4 +73,5 @@ extend type Query {
     getFlats(uuid: String!): [HouseFlat]
     getGroupedFlatsBySection(uuid: String!): GroupedBySectionResult
     getSectionData(sectionId: String!): GroupedBySectionFlat
+    getFlatSidebarInfo(flatId: String!): HouseSidebarFlat
 }

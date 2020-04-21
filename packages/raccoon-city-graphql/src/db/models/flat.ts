@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {FlatStatus} from '../../types/flat/flat';
 import {House} from './house';
+import {HouseLayout} from './houseLayout';
 import {Level} from './level';
 import {Section} from './section';
 
@@ -15,7 +16,7 @@ export interface Flat extends Document {
     roomAmount: string;
     squarePrice: string;
     house: House;
-    layout: string;
+    layout: HouseLayout;
 }
 
 const FlatSchema: Schema = new Schema(

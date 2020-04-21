@@ -9,6 +9,10 @@ export interface LevelFlatLayout extends Document {
     flatLayout: HouseLayout;
 }
 
+const ViewBoxSchema = new Schema({
+    width: {type: Schema.Types.Number},
+    height: {type: Schema.Types.Number}
+});
 const LevelFlatLayoutSchema: Schema = new Schema(
     {
         path: [
@@ -16,6 +20,7 @@ const LevelFlatLayoutSchema: Schema = new Schema(
                 type: Schema.Types.String
             }
         ],
+        viewBox: {type: ViewBoxSchema},
         levelLayout: {
             type: Schema.Types.ObjectId,
             ref: 'LevelLayout'
@@ -31,4 +36,4 @@ const LevelFlatLayoutSchema: Schema = new Schema(
     }
 );
 
-export const LevelFlatLayoutModel = mongoose.model<LevelLayout>('LevelFlatLayout', LevelFlatLayoutSchema);
+export const LevelFlatLayoutModel = mongoose.model<LevelFlatLayout>('LevelFlatLayout', LevelFlatLayoutSchema);

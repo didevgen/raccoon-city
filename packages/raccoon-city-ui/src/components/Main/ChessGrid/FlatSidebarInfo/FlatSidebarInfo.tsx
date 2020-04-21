@@ -1,3 +1,4 @@
+import {useQuery} from '@apollo/react-hooks';
 import {AppBar, Tab, Tabs} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import InfoIcon from '@material-ui/icons/Info';
@@ -7,11 +8,13 @@ import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import ViewCompactIcon from '@material-ui/icons/ViewCompact';
 import React from 'react';
 import styled from 'styled-components';
+import {GET_FLAT_SIDEBAR_DATA, GetFlatSidebarDataQuery} from '../../../../graphql/queries/flatQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {Flat} from '../../../shared/types/flat.types';
 import {FlatSidebarData} from './FlatSidebarData';
 import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
+import {LayoutView} from './LayoutView';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -33,13 +36,26 @@ const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
 export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
+    const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(GET_FLAT_SIDEBAR_DATA, {
+        variables: {
+            flatId: props.flat.id
+        }
+    });
     const [value, setValue] = React.useState(0);
+
+    if (loading || !data) {
+        return <span>loading</span>;
+    }
+
+    if (error) {
+        return <span>error</span>;
+    }
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
 
-    const {flat} = props;
+    const flat = data.getFlatSidebarInfo;
     return (
         <FlatSidebarWrapper>
             {flat.layout && (
@@ -57,7 +73,6 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     onChange={handleChange}
                     variant="scrollable"
                     scrollButtons="auto"
-                    centered
                     aria-label="scrollable prevent tabs example"
                 >
                     <StyledTab icon={<InfoIcon />} aria-label="phone" />
@@ -79,6 +94,9 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             </TabPanel>
             <TabPanel value={value} index={3}>
                 <ImageViewPhotos images={flat.layout?.images?.PHOTO} />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+                <LayoutView levelLayouts={flat.levelLayouts} />
             </TabPanel>
         </FlatSidebarWrapper>
     );

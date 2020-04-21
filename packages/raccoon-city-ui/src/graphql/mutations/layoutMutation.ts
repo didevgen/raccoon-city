@@ -33,8 +33,18 @@ export const ASSIGN_LEVELS_TO_LAYOUT = gql`
 `;
 
 export const ASSIGN_FLAT_LAYOUT_TO_LEVEL = gql`
-    mutation assignFlatLayoutsToLevel($levelLayoutId: String!, $flatLayoutId: String, $path: [String]) {
-        assignFlatLayoutsToLevel(levelLayoutId: $levelLayoutId, flatLayoutId: $flatLayoutId, path: $path)
+    mutation assignFlatLayoutsToLevel(
+        $levelLayoutId: String!
+        $flatLayoutId: String
+        $path: [String]
+        $viewBox: ViewBoxInput
+    ) {
+        assignFlatLayoutsToLevel(
+            levelLayoutId: $levelLayoutId
+            flatLayoutId: $flatLayoutId
+            path: $path
+            viewBox: $viewBox
+        )
     }
 `;
 

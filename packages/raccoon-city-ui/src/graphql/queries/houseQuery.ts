@@ -114,33 +114,6 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
                         status
                         squarePrice
                         roomAmount
-                        layout {
-                            id
-                            image {
-                                uuid
-                                downloadUrl
-                                previewImageUrl
-                            }
-                            images {
-                                PHOTO {
-                                    uuid
-                                    downloadUrl
-                                    name
-                                }
-                                VR {
-                                    uuid
-                                    downloadUrl
-                                    name
-                                    previewImageUrl
-                                }
-                                HALF_VR {
-                                    uuid
-                                    downloadUrl
-                                    name
-                                    previewImageUrl
-                                }
-                            }
-                        }
                     }
                 }
             }

@@ -8,6 +8,7 @@ import {constants} from './queries/constants.resolver';
 import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
+import {flatQuery} from './queries/flat.resolver';
 
 export default {
     Query: {
@@ -15,7 +16,8 @@ export default {
         ...apartmentComplexQuery,
         ...hosueQuery,
         ...layoutQuery,
-        ...levelQuery
+        ...levelQuery,
+        ...flatQuery
     },
     Mutation: {
         ...apartmentComplexMutation,

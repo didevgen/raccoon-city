@@ -14,6 +14,17 @@ type LevelLayoutFlatLayout {
     id: String
     flatLayout: FlatLayout
     path: [String]
+    viewBox: ViewBox
+}
+
+type ViewBox {
+    width: Int
+    height: Int
+}
+
+input ViewBoxInput {
+    width: Int
+    height: Int
 }
 
 type Query {
@@ -23,7 +34,7 @@ type Query {
 
 type Mutation {
     assignLevelsToLayout(levelLayoutId: String, levels: [String]): Boolean
-    assignFlatLayoutsToLevel(levelLayoutId: String, flatLayoutId: String, path: [String]): Boolean
+    assignFlatLayoutsToLevel(levelLayoutId: String, flatLayoutId: String, path: [String], viewBox: ViewBoxInput): Boolean
     assignFlatLayoutsToLevelLayout(layoutAssignmentId: String, flatLayoutId: String): Boolean
     unassignFlatLayoutsToLevelLayout(layoutAssignmentId: String): Boolean
     deleteFlatLayoutsToLevelLayout(layoutAssignmentId: String): Boolean

@@ -218,6 +218,9 @@ export function LevelLayoutSelection({
                 width: img.naturalWidth,
                 height: img.naturalHeight
             });
+            if (svgRef.current) {
+                svgRef.current.viewbox(0, 0, img.naturalWidth, img.naturalHeight);
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -244,6 +247,10 @@ export function LevelLayoutSelection({
                         variables: {
                             levelLayoutId,
                             flatLayoutId: layout?.id,
+                            viewBox: {
+                                width: imageSize.width,
+                                height: imageSize.height
+                            },
                             path: JSON.stringify(selectionPath?.array().flat())
                         }
                     });

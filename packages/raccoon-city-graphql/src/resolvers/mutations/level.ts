@@ -35,11 +35,12 @@ export const levelMutation = {
 
         return null;
     },
-    async assignFlatLayoutsToLevel(_, {levelLayoutId, flatLayoutId, path}) {
+    async assignFlatLayoutsToLevel(_, {levelLayoutId, flatLayoutId, path, viewBox}) {
         await LevelFlatLayoutModel.create({
             levelLayout: levelLayoutId,
             flatLayout: flatLayoutId,
-            path
+            path,
+            viewBox
         });
         return true;
     },
