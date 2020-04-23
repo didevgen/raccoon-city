@@ -34,6 +34,12 @@ export const flatQuery = {
             .populate({
                 path: 'level'
             })
+            .populate({
+                path: 'house',
+                populate: {
+                    path: 'apartmentComplex'
+                }
+            })
             .exec();
         if (!flat) {
             return null;
@@ -41,6 +47,7 @@ export const flatQuery = {
         const flatObj = flat.toObject();
         flatObj.section = flatObj.section.sectionName as any;
         flatObj.level = flatObj.level.levelNumber as any;
+        flatObj.apartmentComplex = flat.house.apartmentComplex;
         const layout = flat.layout;
 
         if (!layout) {

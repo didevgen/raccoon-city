@@ -29,6 +29,8 @@ type HouseSidebarFlat {
     roomAmount: String
     squarePrice: String
     layout: BaseLayout
+    house: House
+    apartmentComplex: ApartmentComplex
     levelLayouts: [HouseSidebarFlatLevelLayouts]
 }
 

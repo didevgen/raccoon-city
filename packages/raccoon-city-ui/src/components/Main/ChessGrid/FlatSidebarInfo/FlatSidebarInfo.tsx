@@ -15,6 +15,7 @@ import {FlatSidebarData} from './FlatSidebarData';
 import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
+import {SidebarPdfInfo} from './SidebarPdfInfo';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -97,6 +98,9 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             </TabPanel>
             <TabPanel value={value} index={4}>
                 <LayoutView levelLayouts={flat.levelLayouts} />
+            </TabPanel>
+            <TabPanel value={value} index={5}>
+                {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
         </FlatSidebarWrapper>
     );
