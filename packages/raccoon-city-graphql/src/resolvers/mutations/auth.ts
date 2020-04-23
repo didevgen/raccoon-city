@@ -16,8 +16,7 @@ export const auth = {
 
     async login(parent, {email, password}, {redis}) {
         const user = await UserModel.findOne({email});
-        if (!user)
-        {
+        if (!user) {
             throw new Error(`No such user found for email: ${email}`);
         }
         const valid = await bcrypt.compare(password, user.password);
@@ -25,12 +24,11 @@ export const auth = {
             throw new Error('Invalid password');
         }
         const token = authTokenGenerate(user);
-        console.log(token);
         await redis.set(token, JSON.stringify({id: user._id, features: user.features}));
         return {token};
     },
 
-    async logout(parent, {key}, {redis}){
+    async logout(parent, {key}, {redis}) {
         try {
             await redis.del(key);
             return true;

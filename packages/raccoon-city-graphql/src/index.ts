@@ -26,10 +26,8 @@ const server = new ApolloServer({
         let authToken = null;
         let currentUser = null;
         try {
-            authToken = req.headers.authorization;
-            if (authToken) {
-                currentUser = await tradeTokenForUser(authToken);
-            }
+            authToken = req.headers.authorization || '';
+            currentUser = await tradeTokenForUser(authToken);
         } catch (e) {
             console.warn(`Unable to authenticate using auth token: ${authToken}`);
         }

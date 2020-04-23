@@ -8,7 +8,7 @@ import {constants} from './queries/constants.resolver';
 import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
-import {auth} from "./mutations/auth";
+import {auth} from './mutations/auth';
 
 export default {
     Query: {
