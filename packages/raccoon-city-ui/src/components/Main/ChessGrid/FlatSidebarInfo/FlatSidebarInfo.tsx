@@ -16,6 +16,7 @@ import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -85,19 +86,19 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <FlatSidebarData flat={flat} />
+                {value === 0 && <FlatSidebarData flat={flat} />}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <ImageViewVR images={flat.layout?.images?.VR} />
+                {value === 1 && <ImageViewVR images={flat.layout?.images?.VR} mode={ImageType.VR} />}
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <ImageViewVR images={flat.layout?.images?.HALF_VR} />
+                {value === 2 && <ImageViewVR images={flat.layout?.images?.HALF_VR} mode={ImageType.HALF_VR} />}
             </TabPanel>
             <TabPanel value={value} index={3}>
-                <ImageViewPhotos images={flat.layout?.images?.PHOTO} />
+                {value === 3 && <ImageViewPhotos images={flat.layout?.images?.PHOTO} />}
             </TabPanel>
             <TabPanel value={value} index={4}>
-                <LayoutView levelLayouts={flat.levelLayouts} />
+                {value === 4 && <LayoutView levelLayouts={flat.levelLayouts} />}
             </TabPanel>
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}

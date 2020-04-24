@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'react-photoswipe/lib/photoswipe.css';
 import App from './App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
