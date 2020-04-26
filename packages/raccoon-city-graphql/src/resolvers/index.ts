@@ -9,6 +9,7 @@ import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
 import {auth} from './mutations/auth';
+import {user} from "./queries/user";
 
 export default {
     Query: {
@@ -16,7 +17,8 @@ export default {
         ...apartmentComplexQuery,
         ...hosueQuery,
         ...layoutQuery,
-        ...levelQuery
+        ...levelQuery,
+        ...user
     },
     Mutation: {
         ...apartmentComplexMutation,

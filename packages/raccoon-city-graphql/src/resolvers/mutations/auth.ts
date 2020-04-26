@@ -2,6 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import {authTokenGenerate, Context} from '../../utils';
 import {UserModel} from '../../db/models/user';
+import { ApolloError } from 'apollo-server';
 
 export const auth = {
     async signup(parent, args, ctx: Context) {
@@ -21,10 +22,10 @@ export const auth = {
         }
         const valid = await bcrypt.compare(password, user.password);
         if (!valid) {
-            throw new Error('Invalid password');
+            throw new ApolloError("Unauthorized", "401");
         }
         const token = authTokenGenerate(user);
-        await redis.set(token, JSON.stringify({id: user._id, features: user.features}));
+        await redis.set(token, JSON.stringify({id: user._id, features: user.features}), 'ex', process.env.REDIS_KEY_TTL);
         return {token};
     },
 

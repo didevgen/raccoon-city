@@ -28,7 +28,7 @@ export const isRequiredAndIsInteger = (value: any) => {
     return isRequired(value) || isInteger(value);
 };
 export const validateEmail = (email: string) => {
-    return !isRequired(email) || !validate({email}, constraints);
+    return !isRequired(email) && !validate({email}, constraints);
 };
 export const validatePassword = (password: string) => {
     const regex = /(?=.*\d)(?=.*[a-z]).{6,}/;
@@ -37,10 +37,10 @@ export const validatePassword = (password: string) => {
 export const validateLoginForm = (form: LoginFormInterface) => {
     const errors: any = {};
     if (!validateEmail(form.email)) {
-        errors.email = 'Invalid email!';
+        errors.email = 'Неверно указана почта';
     }
     if (!validatePassword(form.password)) {
-        errors.password = 'Must contain at least 6 characters and one number';
+        errors.password = 'Пароль должен содержать минимум 6 символов, заглавную букву и цифру';
     }
     return errors;
 };

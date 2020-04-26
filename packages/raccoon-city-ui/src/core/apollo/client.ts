@@ -3,13 +3,14 @@ import {ApolloClient} from 'apollo-client';
 import {setContext} from 'apollo-link-context';
 import {createHttpLink} from 'apollo-link-http';
 import Cookies from 'js-cookie';
+import {TOKEN} from '../constants';
 
 const httpLink = createHttpLink({
     uri: process.env.REACT_APP_GRAPHQL_URL
 });
 
 const authLink = setContext((_, {headers}) => {
-    const token = Cookies.get('token');
+    const token = Cookies.get(TOKEN);
     return {
         headers: {
             ...headers,

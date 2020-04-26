@@ -3,11 +3,12 @@ import Button from '@material-ui/core/Button';
 import Cookies from 'js-cookie';
 import * as React from 'react';
 import {Form} from 'react-final-form';
-import styled from 'styled-components';
+import {Redirect} from 'react-router-dom';
+import {TOKEN} from '../../../core/constants';
 import {validateLoginForm} from '../../../core/validators/validators';
 import {LOGIN} from '../../../graphql/mutations/authMutation';
 import InputValidate from '../../InputValidate';
-import {LoginForm} from './Login.styles';
+import {LoginForm, StyleForm} from './Login.styles';
 
 export interface LoginFormInterface {
     email: string;
@@ -19,23 +20,19 @@ const initialValues: LoginFormInterface = {
     password: ''
 };
 
-const StyleForm = styled.form`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-`;
 export function Login() {
-    const [login, {data}] = useMutation(LOGIN);
-
+    const [login, {data, error}] = useMutation(LOGIN);
     const handleFormSubmit = (formObj: any) => {
         login({
             variables: {email: formObj.email, password: formObj.password}
         });
     };
+    if (error) {
+        return <span>Not authorized</span>;
+    }
     if (data) {
-        Cookies.set('token', data.login.token, {expires: 1 / 24});
-        return <h1>You are successfully login!</h1>;
+        Cookies.set(TOKEN, data.login.token, {expires: 1 / 24});
+        return <Redirect to="/" />;
     }
     return (
         <LoginForm>

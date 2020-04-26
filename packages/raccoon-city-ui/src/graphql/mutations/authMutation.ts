@@ -7,3 +7,9 @@ export const LOGIN = gql`
         }
     }
 `;
+
+export const LOGOUT = gql`
+    mutation($key: String!) {
+        logout(key: $key)
+    }
+`;

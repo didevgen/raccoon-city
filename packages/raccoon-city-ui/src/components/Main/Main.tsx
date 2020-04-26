@@ -1,6 +1,12 @@
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Cookies from 'js-cookie';
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {client} from '../../core/apollo/client';
+import {TOKEN} from '../../core/constants';
+import {LOGOUT} from '../../graphql/mutations/authMutation';
+import {GET_USER_INFO} from '../../graphql/queries/userQuery';
 import {ApartmentComplexBuilder} from './ApartmentComplexBuilder/ApartmentComplexBuilder';
 import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
@@ -12,9 +18,19 @@ import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
 import {Sidebar} from './Sidebar/Sidebar';
 
 export function Main() {
+    const {data} = useQuery(GET_USER_INFO);
+    const [logout] = useMutation(LOGOUT);
     const [open, setOpen] = React.useState(false);
     const drawerStyles = useStyles();
 
+    const onLogoutClick = () => {
+        logout({
+            variables: {key: Cookies.get(TOKEN)}
+        }).then(() => {
+            client.resetStore();
+            Cookies.remove(TOKEN);
+        });
+    };
     return (
         <div className={drawerStyles.root}>
             <CssBaseline />
@@ -37,6 +53,12 @@ export function Main() {
                 <Switch>
                     <Route exact={true} path="/">
                         <ApartmentComplexList />
+                        {data && data.getUserInfo && (
+                            <div>
+                                <span>{`Hello, ${data.getUserInfo.name}`}</span>
+                                <button onClick={onLogoutClick}>Log out</button>
+                            </div>
+                        )}
                     </Route>
                     <Route exact={true} path="/apartmentComplex/new">
                         <ApartmentComplexBuilder />
