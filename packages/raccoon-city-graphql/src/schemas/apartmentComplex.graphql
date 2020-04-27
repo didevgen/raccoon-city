@@ -77,7 +77,7 @@ type ParsedApartmentComplex {
 }
 
 type Mutation {
-    createApartmentComplex(apartmentComplex: ApartmentComplexInput!): ApartmentComplex
+    createApartmentComplex(developerUuid: String!, apartmentComplex: ApartmentComplexInput!): ApartmentComplex
     updateApartmentComplex(uuid: String!, apartmentComplex: ApartmentComplexInput!): ApartmentComplex
     deleteApartmentComplex(uuid: String!): Boolean
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
@@ -87,6 +87,6 @@ type Mutation {
 }
 
 extend type Query {
-    getAllApartmentComplexes: [ApartmentComplex]
+    getAllApartmentComplexes(developerUuid: String!): [ApartmentComplex]
     getApartmentComplex(uuid: String!): ApartmentComplex
 }

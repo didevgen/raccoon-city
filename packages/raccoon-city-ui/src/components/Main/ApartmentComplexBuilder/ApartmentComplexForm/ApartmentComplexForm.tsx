@@ -43,6 +43,7 @@ const StyledLink = styled(Link)`
 const required = (value: any) => (value ? undefined : 'Required');
 
 export function ApartmentComplexCreateForm() {
+    const {developerUuid} = useParams();
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
     if (apartmentComplex && apartmentComplex.createApartmentComplex) {
@@ -58,6 +59,7 @@ export function ApartmentComplexCreateForm() {
                 onSubmit={async (values) => {
                     await createApartmentComplex({
                         variables: {
+                            developerUuid,
                             apartmentComplex: getApartmentComplexVariables(values as ApartmentComplexFormValues)
                         }
                     });

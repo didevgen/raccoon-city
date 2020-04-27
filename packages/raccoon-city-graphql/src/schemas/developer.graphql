@@ -1,0 +1,29 @@
+type Developer {
+    id: String
+    name: String
+    city: String
+    address: String
+    emails: [String]
+    receptionNumbers: [String]
+    salesNumbers: [String]
+    logo: SingleImage
+}
+
+input DeveloperInput {
+    name: String
+    city: String
+    address: String
+    emails: [String]
+    receptionNumbers: [String]
+    salesNumbers: [String]
+}
+
+type Mutation {
+    createDeveloper(developerData: DeveloperInput!, image: Upload): Developer
+    updateDeveloper(id: String!, developerData: DeveloperInput!, image: Upload): Developer
+}
+
+extend type Query {
+    getDevelopers: [Developer]
+    getDeveloper(uuid: String!): Developer
+}

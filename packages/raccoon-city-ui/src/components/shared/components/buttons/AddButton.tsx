@@ -2,7 +2,7 @@ import React from 'react';
 import {Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 const ButtonContainer = styled.div`
     width: 345px;
@@ -23,12 +23,10 @@ const StyledFab = styled(Fab)`
     }
 `;
 
-export function AddProperty() {
-    const {developerUuid} = useParams();
-
+export function AddButton({url}) {
     return (
         <ButtonContainer>
-            <Link to={`/developers/${developerUuid}/apartmentComplex/new`}>
+            <Link to={url}>
                 <StyledFab color="secondary" aria-label="add">
                     <AddIcon />
                 </StyledFab>

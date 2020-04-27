@@ -1,8 +1,8 @@
 import {gql} from 'apollo-boost';
 
 export const ALL_APARTMENT_COMPLEXES = gql`
-    {
-        getAllApartmentComplexes {
+    query getAllApartmentComplexes($developerUuid: String!) {
+        getAllApartmentComplexes(developerUuid: $developerUuid) {
             id
             name
             images {

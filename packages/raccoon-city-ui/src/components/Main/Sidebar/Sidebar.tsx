@@ -7,12 +7,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import AppsIcon from '@material-ui/icons/Apps';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from 'clsx';
 import * as React from 'react';
 import {StyledLink} from '../../shared/components/styled';
-import AppsIcon from '@material-ui/icons/Apps';
-import ApartmentIcon from '@material-ui/icons/Apartment';
 interface SidebarProps {
     open: boolean;
     drawerStyles: any;
@@ -47,7 +47,7 @@ export function Sidebar({open, handleDrawerClose, drawerStyles}: SidebarProps) {
                 <StyledLink to="/">
                     <ListItem button>
                         <ListItemIcon>{<ApartmentIcon />}</ListItemIcon>
-                        <ListItemText primary="Комплексы" />
+                        <ListItemText primary="Застройщики" />
                     </ListItem>
                 </StyledLink>
                 <StyledLink to="/chessgrid">

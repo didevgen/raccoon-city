@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import {apartmentComplexTypes} from '../../constants/apartmentComplexTypes';
 import {cities} from '../../constants/cities';
 import {complexClasses} from '../../constants/complexClasses';
@@ -7,7 +8,6 @@ import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmen
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
 import {ApartmentComplexInputArgs, AssignFlatInputArgs} from '../../types/apartment_complex';
 import {Context} from '../../utils';
-import {HouseLayoutModel} from '../../db/models/houseLayout';
 
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
@@ -19,6 +19,7 @@ export const apartmentComplex = {
 
         result.city = {key, displayName};
         result.district = district;
+        result.developer = mongoose.Types.ObjectId(args.developerUuid);
         result.type = apartmentComplexTypes.find((type) => type.key === apartmentComplexArg.type);
         result.class = complexClasses.find((type) => type.key === apartmentComplexArg.class);
         return await ApartmentComplexModel.create(result);

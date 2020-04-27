@@ -1,8 +1,9 @@
 import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {KeyDisplayName} from '../../types/shared';
-import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
+import {Developer} from './developer';
 import {House} from './house';
+import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
 
 export interface ApartmentComplex extends Document {
     type: KeyDisplayName;
@@ -17,6 +18,7 @@ export interface ApartmentComplex extends Document {
     endDate: string;
     houses: House[];
     images: ApartmentComplexImages;
+    developer: Developer;
 }
 
 const ApartmentComplexSchema: Schema = new Schema({
@@ -39,6 +41,10 @@ const ApartmentComplexSchema: Schema = new Schema({
             }
         }
     ],
+    developer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Developer'
+    },
     images: {
         type: imagesSchema,
         default: () => {

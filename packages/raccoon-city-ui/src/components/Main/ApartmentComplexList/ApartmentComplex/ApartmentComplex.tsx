@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../core/constants';
 import {DELETE_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
 import {ALL_APARTMENT_COMPLEXES} from '../../../../graphql/queries/apartmentComplexQuery';
@@ -35,11 +35,14 @@ export interface ApartmentComplexProps {
 
 export function ApartmentComplex(props: ApartmentComplexProps) {
     const classes = useStyles();
-
+    const {developerUuid} = useParams();
     const [deleteMutation] = useMutation(DELETE_APARTMENT_COMPLEX, {
         refetchQueries: [
             {
-                query: ALL_APARTMENT_COMPLEXES
+                query: ALL_APARTMENT_COMPLEXES,
+                variables: {
+                    developerUuid
+                }
             }
         ]
     });

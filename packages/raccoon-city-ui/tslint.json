@@ -5,6 +5,7 @@
         "prettier": true,
         "interface-name": false,
         "object-literal-sort-keys": false,
-        "jsx-boolean-value": false
+        "jsx-boolean-value": false,
+        "jsx-no-lambda": false
     }
 }

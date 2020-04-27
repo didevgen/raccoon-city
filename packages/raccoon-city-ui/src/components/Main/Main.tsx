@@ -14,6 +14,8 @@ import {
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
 import {MainChessGrid} from './MainChessGrid/MainChessGrid';
+import {DeveloperCreateForm, DeveloperEditForm} from './Developer/DeveloperForm';
+import {DeveloperList} from './Developer/DeveloperList';
 
 export function Main() {
     const [open, setOpen] = React.useState(false);
@@ -39,13 +41,22 @@ export function Main() {
             <main className={drawerStyles.content}>
                 <div className={drawerStyles.toolbar} />
                 <Switch>
-                    <Route exact={true} path="/">
+                    <Route exact={true} path="/developers/:developerUuid/apartmentComplexes">
                         <ApartmentComplexList />
                     </Route>
                     <Route exact={true} path="/chessgrid">
                         <MainChessGrid />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/new">
+                    <Route exact={true} path="/developers">
+                        <DeveloperList />
+                    </Route>
+                    <Route exact={true} path="/developer/new">
+                        <DeveloperCreateForm />
+                    </Route>
+                    <Route exact={true} path="/developer/:developerUuid/edit">
+                        <DeveloperEditForm />
+                    </Route>
+                    <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
                         <ApartmentComplexCreateForm />
                     </Route>
                     <Route exact={true} path="/apartmentComplex/:uuid/edit">
@@ -67,7 +78,7 @@ export function Main() {
                         <HouseEditForm />
                     </Route>
                     <Route path="*">
-                        <ApartmentComplexList />
+                        <DeveloperList />
                     </Route>
                 </Switch>
             </main>

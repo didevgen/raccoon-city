@@ -6,6 +6,7 @@ import {ALL_APARTMENT_COMPLEXES} from '../../../graphql/queries/apartmentComplex
 import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
+import {useParams} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,9 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function ApartmentComplexList() {
     const classes = useStyles();
+    const {developerUuid} = useParams();
     const {loading, error, data} = useQuery<{getAllApartmentComplexes: ApartmentComplexType[]}>(
         ALL_APARTMENT_COMPLEXES,
         {
+            variables: {
+                developerUuid
+            },
             fetchPolicy: 'cache-and-network'
         }
     );
