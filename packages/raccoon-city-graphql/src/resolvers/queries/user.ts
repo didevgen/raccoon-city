@@ -1,5 +1,5 @@
 import {UserModel} from '../../db/models/user';
-import {AuthError} from "../../utils";
+import {AuthError} from '../../utils';
 
 export const user = {
     async getUserInfo(parent, args, context) {

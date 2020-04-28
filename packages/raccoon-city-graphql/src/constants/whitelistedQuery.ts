@@ -1,3 +1,1 @@
-export const WHITELISTED_QUERIES = [
-    'login'
-];
+export const WHITELISTED_QUERIES = ['login'];
