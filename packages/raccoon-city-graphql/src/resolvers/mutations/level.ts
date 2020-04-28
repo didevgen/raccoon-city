@@ -8,7 +8,8 @@ export const levelMutation = {
     async assignLevelsToLayout(parent, {levelLayoutId, levels}) {
         await LevelLayoutModel.findOneAndUpdate(
             {
-                _id: levelLayoutId
+                _id: levelLayoutId,
+                isDeleted: false
             },
             {
                 $set: {
@@ -47,7 +48,8 @@ export const levelMutation = {
     async assignFlatLayoutsToLevelLayout(_, {layoutAssignmentId, flatLayoutId}) {
         await LevelFlatLayoutModel.findOneAndUpdate(
             {
-                _id: layoutAssignmentId
+                _id: layoutAssignmentId,
+                isDeleted: false
             },
             {
                 $set: {
@@ -60,7 +62,8 @@ export const levelMutation = {
     async unassignFlatLayoutsToLevelLayout(_, {layoutAssignmentId}) {
         await LevelFlatLayoutModel.findOneAndUpdate(
             {
-                _id: layoutAssignmentId
+                _id: layoutAssignmentId,
+                isDeleted: false
             },
             {
                 $unset: {
@@ -71,9 +74,16 @@ export const levelMutation = {
         return true;
     },
     async deleteFlatLayoutsToLevelLayout(_, {layoutAssignmentId}) {
-        await LevelFlatLayoutModel.deleteOne({
-            _id: layoutAssignmentId
-        });
+        await LevelFlatLayoutModel.updateOne(
+            {
+                _id: layoutAssignmentId
+            },
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        );
         return true;
     }
 };

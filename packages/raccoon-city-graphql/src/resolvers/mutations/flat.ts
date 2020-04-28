@@ -1,5 +1,4 @@
 import {Flat, FlatModel} from '../../db/models/flat';
-import HouseModel from '../../db/models/house';
 import {LevelModel} from '../../db/models/level';
 import {SectionModel} from '../../db/models/section';
 import {IdFlat} from '../../types/flat/flat';
@@ -42,6 +41,7 @@ async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId
 async function handleLevelMismatch(newFlat: IdFlat, previousFlat: Flat): Promise<Flat> {
     let level = await LevelModel.findOne({
         section: previousFlat.section.id,
+        isDeleted: false,
         levelNumber: newFlat.level
     });
 
@@ -61,11 +61,12 @@ async function handleLevelMismatch(newFlat: IdFlat, previousFlat: Flat): Promise
 async function handleLevelAbscense(section: string, levelNumber: number) {
     let level = await LevelModel.findOne({
         section,
+        isDeleted: false,
         levelNumber
     });
 
     if (!level) {
-        const [maxLevelNumber] = await LevelModel.find({section})
+        const [maxLevelNumber] = await LevelModel.find({section, isDeleted: false})
             .sort({levelNumber: -1})
             .limit(1)
             .exec();
@@ -96,7 +97,7 @@ export const flatMutation = {
     async updateFlat(parent, args, ctx: Context) {
         const flat: IdFlat = args.flat;
 
-        const previousFlat = await FlatModel.findById(flat.id)
+        const previousFlat = await FlatModel.findOne({_id: flat.id, isDeleted: false})
             .populate('section')
             .populate('level')
             .exec();
@@ -118,7 +119,7 @@ export const flatMutation = {
             level: previousFlat.level.id,
             house: previousFlat.house
         };
-        return FlatModel.findOneAndUpdate({_id: previousFlat.id}, result);
+        return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, result);
     },
     async createFlat(parent, args, ctx: Context) {
         const flat = args.flat;
@@ -126,7 +127,14 @@ export const flatMutation = {
         return FlatModel.create(newFlat);
     },
     async deleteFlat(parent, {uuid}, ctx: Context) {
-        await FlatModel.deleteOne({_id: uuid}).exec();
+        await FlatModel.findOneAndUpdate(
+            {_id: uuid},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
         return true;
     }
 };

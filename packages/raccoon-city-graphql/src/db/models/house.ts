@@ -29,6 +29,7 @@ const HouseSchema: Schema = new Schema({
     address: {type: Schema.Types.String},
     parking: {type: Schema.Types.Boolean},
     endDate: {type: Schema.Types.String},
+    isDeleted: {type: Schema.Types.Boolean, default: false},
     apartmentComplex: {
         type: Schema.Types.ObjectId,
         ref: 'ApartmentComplex'

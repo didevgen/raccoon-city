@@ -17,7 +17,8 @@ const LevelSchema: Schema = new Schema(
         section: {
             type: Schema.Types.ObjectId,
             ref: 'Section'
-        }
+        },
+        isDeleted: {type: Schema.Types.Boolean, default: false}
     },
     {
         toJSON: {virtuals: true},

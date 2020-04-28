@@ -15,3 +15,9 @@ export const UPDATE_DEVELOPER = gql`
         }
     }
 `;
+
+export const DELETE_DEVELOPER = gql`
+    mutation deleteDeveloper($id: String!) {
+        deleteDeveloper(id: $id)
+    }
+`;

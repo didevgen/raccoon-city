@@ -28,7 +28,8 @@ const LevelFlatLayoutSchema: Schema = new Schema(
         flatLayout: {
             type: Schema.Types.ObjectId,
             ref: 'HouseLayout'
-        }
+        },
+        isDeleted: {type: Schema.Types.Boolean, default: false}
     },
     {
         toJSON: {virtuals: true},

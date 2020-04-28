@@ -14,7 +14,8 @@ class LogoDbService implements DataImageService {
     public async uploadImage(imageUuid: string, downloadUrl: string, previewUrl?: string): Promise<void> {
         await DeveloperModel.findOneAndUpdate(
             {
-                _id: this.developerId
+                _id: this.developerId,
+                isDeleted: false
             },
             {
                 $set: {
@@ -40,10 +41,25 @@ export const developerMutation = {
 
         return developer;
     },
+    async deleteDeveloper(_, {id}) {
+        const developer = await DeveloperModel.findOneAndUpdate(
+            {
+                _id: id,
+                isDeleted: false
+            },
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        );
+        return true;
+    },
     async updateDeveloper(_, {id, developerData, image}) {
         const developer = await DeveloperModel.findOneAndUpdate(
             {
-                _id: id
+                _id: id,
+                isDeleted: false
             },
             {
                 $set: {

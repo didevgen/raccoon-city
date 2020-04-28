@@ -38,7 +38,8 @@ export const apartmentComplex = {
         result.class = complexClasses.find((type) => type.key === apartmentComplexArg.class);
         return await ApartmentComplexModel.findOneAndUpdate(
             {
-                _id: uuid
+                _id: uuid,
+                isDeleted: false
             },
             {
                 $set: {
@@ -48,7 +49,14 @@ export const apartmentComplex = {
         ).exec();
     },
     async deleteApartmentComplex(parent, {uuid}, ctx: Context) {
-        await ApartmentComplexModel.deleteOne({_id: uuid}).exec();
+        await ApartmentComplexModel.findOneAndUpdate(
+            {_id: uuid, isDeleted: false},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
         return true;
     },
     async addImage(parent, args, ctx: Context) {

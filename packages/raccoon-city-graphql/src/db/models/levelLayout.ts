@@ -20,6 +20,7 @@ const LevelLayoutSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'House'
         },
+        isDeleted: {type: Schema.Types.Boolean, default: false},
         levels: [
             {
                 type: Schema.Types.ObjectId,

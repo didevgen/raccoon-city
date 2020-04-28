@@ -21,6 +21,7 @@ const HouseLayoutSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'House'
         },
+        isDeleted: {type: Schema.Types.Boolean, default: false},
         images: {
             type: simpleImageSchema,
             default: () => {

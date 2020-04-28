@@ -32,6 +32,7 @@ const ApartmentComplexSchema: Schema = new Schema({
     price: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String, required: true},
     endDate: {type: Schema.Types.String, required: true},
+    isDeleted: {type: Schema.Types.Boolean, default: false},
     houses: [
         {
             type: Schema.Types.ObjectId,

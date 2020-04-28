@@ -35,6 +35,7 @@ const FlatSchema: Schema = new Schema(
         status: {type: Schema.Types.String},
         roomAmount: {type: Schema.Types.String},
         squarePrice: {type: Schema.Types.String},
+        isDeleted: {type: Schema.Types.Boolean, default: false},
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'

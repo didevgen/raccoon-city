@@ -6,20 +6,27 @@ import {Section} from '../../db/models/section';
 
 export const levelQuery = {
     async getLevelLayouts(_, {houseId}) {
-        return LevelLayoutModel.find({house: houseId}).populate('levels');
+        return LevelLayoutModel.find({house: houseId, isDeleted: false}).populate('levels');
     },
     async getSelectedLevelLayouts(_, {levelLayoutId, houseId}) {
         const data = await HouseModel.findById(houseId)
             .populate({
                 path: 'sections',
+                match: {
+                    isDeleted: false
+                },
                 options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
+                    match: {
+                        isDeleted: false
+                    },
                     options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'layouts',
                         match: {
-                            _id: levelLayoutId
+                            _id: levelLayoutId,
+                            isDeleted: false
                         }
                     }
                 }
@@ -45,10 +52,14 @@ export const levelQuery = {
     },
     async getLevelLayoutFlatLayouts(_, {levelLayoutId}) {
         return LevelFlatLayoutModel.find({
-            levelLayout: levelLayoutId
+            levelLayout: levelLayoutId,
+            isDeleted: false
         })
             .populate({
-                path: 'flatLayout'
+                path: 'flatLayout',
+                match: {
+                    isDeleted: false
+                }
             })
             .exec();
     }

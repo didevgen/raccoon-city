@@ -39,6 +39,7 @@ export const layoutMutation = {
             await FlatModel.update(
                 {
                     _id: {$nin: flats},
+                    isDeleted: false,
                     layout: layoutId
                 },
                 {
@@ -50,7 +51,8 @@ export const layoutMutation = {
             );
             const updateFlats = FlatModel.update(
                 {
-                    _id: {$in: flats}
+                    _id: {$in: flats},
+                    isDeleted: false
                 },
                 {
                     $set: {
@@ -61,7 +63,8 @@ export const layoutMutation = {
             );
             const updateLayout = HouseLayoutModel.findOneAndUpdate(
                 {
-                    _id: layoutId
+                    _id: layoutId,
+                    isDeleted: false
                 },
                 {
                     $set: {

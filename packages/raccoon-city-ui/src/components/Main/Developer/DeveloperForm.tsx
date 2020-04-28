@@ -187,7 +187,7 @@ export function DeveloperEditForm() {
             title={'Редактировать застройщика'}
             onSubmit={onSubmit}
             initialValues={initialValues}
-            logo={logo.downloadUrl}
+            logo={logo?.downloadUrl}
         />
     );
 }

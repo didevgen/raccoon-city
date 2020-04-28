@@ -17,14 +17,14 @@ export const house = {
             ...houseData
         };
         return await HouseModel.create(houseDataObj, (err, res) => {
-            ApartmentComplexModel.findById(apartmentComplexId, (error, doc) => {
+            ApartmentComplexModel.findOne({_id: apartmentComplexId, isDeleted: false}, (error, doc) => {
                 doc.houses.push(res);
                 doc.save();
             });
         });
     },
     async deleteHouse(parent, {uuid}, ctx: Context) {
-        await HouseModel.deleteOne({_id: uuid}).exec();
+        await HouseModel.findOneAndUpdate({_id: uuid}, {$set: {isDeleted: true}}).exec();
         return true;
     },
     async updateHouse(parent, args, ctx: Context) {
@@ -32,7 +32,8 @@ export const house = {
         const uuid = args.uuid;
         return await HouseModel.findOneAndUpdate(
             {
-                _id: uuid
+                _id: uuid,
+                isDeleted: false
             },
             {
                 $set: {
@@ -49,7 +50,7 @@ export const house = {
         return 'Success';
     },
     async addLevel(parent, {sectionId}, ctx: Context) {
-        const section = await SectionModel.findById(sectionId)
+        const section = await SectionModel.findOne({_id: sectionId, isDeleted: false})
             .populate({
                 path: 'levels',
                 options: {sort: {levelNumber: -1}}
@@ -64,10 +65,24 @@ export const house = {
         return true;
     },
     async deleteLevel(parent, {levelId}) {
-        await FlatModel.deleteMany({level: levelId}).exec();
+        await FlatModel.updateMany(
+            {level: levelId},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
         const {section} = await LevelModel.findById(levelId).exec();
-        await LevelModel.findByIdAndRemove(levelId).exec();
-        const existingLevels = await LevelModel.find({section})
+        await LevelModel.findOneAndUpdate(
+            {_id: levelId},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
+        const existingLevels = await LevelModel.find({section, isDeleted: false})
             .sort({levelNumber: 1})
             .exec();
 
@@ -85,7 +100,7 @@ export const house = {
         return true;
     },
     async reorderLevels(_, {sectionId, newIndex, oldIndex}) {
-        const existingLevels = await LevelModel.find({section: sectionId})
+        const existingLevels = await LevelModel.find({section: sectionId, isDeleted: false})
             .sort({levelNumber: -1})
             .exec();
         const movedLevels = arrayMove(existingLevels, oldIndex, newIndex);
@@ -104,9 +119,30 @@ export const house = {
         return true;
     },
     async deleteSection(parent, {sectionId}) {
-        await FlatModel.deleteMany({section: sectionId}).exec();
-        await LevelModel.deleteMany({section: sectionId}).exec();
-        await SectionModel.findByIdAndRemove(sectionId).exec();
+        await FlatModel.updateMany(
+            {section: sectionId},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
+        await LevelModel.updateMany(
+            {section: sectionId},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
+        await SectionModel.findOneAndUpdate(
+            {_id: sectionId},
+            {
+                $set: {
+                    isDeleted: true
+                }
+            }
+        ).exec();
         return true;
     }
 };

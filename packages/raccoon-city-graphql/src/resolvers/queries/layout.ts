@@ -5,21 +5,40 @@ import {Section} from '../../db/models/section';
 
 export const layoutQuery = {
     async getFlatLayouts(_, {houseId}) {
-        return HouseLayoutModel.find({house: houseId}).populate('flats');
+        return HouseLayoutModel.find({house: houseId, isDeleted: false}).populate({
+            path: 'flats',
+            match: {
+                isDeleted: false
+            }
+        });
     },
     async getFlatLayout(_, {layoutId}) {
-        return HouseLayoutModel.findById(layoutId).populate('flats');
+        return HouseLayoutModel.findOne({_id: layoutId, isDeleted: false}).populate({
+            path: 'flats',
+            match: {
+                isDeleted: false
+            }
+        });
     },
     getChessGridLayout: async (parent, {houseId, layoutId}) => {
         const data = await HouseModel.findById(houseId)
             .populate({
                 path: 'sections',
+                match: {
+                    isDeleted: false
+                },
                 options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
+                    match: {
+                        isDeleted: false
+                    },
                     options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'flats',
+                        match: {
+                            isDeleted: false
+                        },
                         options: {sort: {flatNumber: 1}}
                     }
                 }

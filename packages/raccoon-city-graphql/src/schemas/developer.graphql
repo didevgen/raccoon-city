@@ -21,6 +21,7 @@ input DeveloperInput {
 type Mutation {
     createDeveloper(developerData: DeveloperInput!, image: Upload): Developer
     updateDeveloper(id: String!, developerData: DeveloperInput!, image: Upload): Developer
+    deleteDeveloper(id: String!): Boolean
 }
 
 extend type Query {

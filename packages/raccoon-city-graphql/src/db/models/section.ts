@@ -15,7 +15,8 @@ const SectionSchema: Schema = new Schema(
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'
-        }
+        },
+        isDeleted: {type: Schema.Types.Boolean, default: false}
     },
     {
         toJSON: {virtuals: true},

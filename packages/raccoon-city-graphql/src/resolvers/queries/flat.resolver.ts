@@ -24,20 +24,25 @@ export interface FlatLevelLayouts {
 
 export const flatQuery = {
     getFlatSidebarInfo: async (parent, {flatId}) => {
-        const flat = await FlatModel.findById(flatId)
+        const flat = await FlatModel.findOne({_id: flatId, isDeleted: false})
             .populate({
-                path: 'layout'
+                path: 'layout',
+                match: {isDeleted: false}
             })
             .populate({
-                path: 'section'
+                path: 'section',
+                match: {isDeleted: false}
             })
             .populate({
-                path: 'level'
+                path: 'level',
+                match: {isDeleted: false}
             })
             .populate({
                 path: 'house',
+                match: {isDeleted: false},
                 populate: {
-                    path: 'apartmentComplex'
+                    path: 'apartmentComplex',
+                    match: {isDeleted: false}
                 }
             })
             .exec();
@@ -55,10 +60,12 @@ export const flatQuery = {
         }
 
         const levelFlatLayouts = await LevelFlatLayoutModel.find({
+            isDeleted: false,
             flatLayout: mongoose.Types.ObjectId(layout.id)
         })
             .populate({
-                path: 'levelLayout'
+                path: 'levelLayout',
+                match: {isDeleted: false}
             })
             .exec();
         if (levelFlatLayouts && levelFlatLayouts.length > 0) {

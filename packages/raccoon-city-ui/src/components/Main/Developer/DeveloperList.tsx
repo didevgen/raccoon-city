@@ -1,4 +1,4 @@
-import {useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import {CardActionArea} from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,8 +11,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {apartmentComplexDefaultImage} from '../../../core/constants';
+import {DELETE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
 import {AddButton} from '../../shared/components/buttons/AddButton';
+import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
 import {StyledLink} from '../../shared/components/styled';
 
@@ -36,13 +38,37 @@ export interface DeveloperCardProps {
 
 function DeveloperCard(props: DeveloperCardProps) {
     const classes = useStyles();
+    const [deleteMutation] = useMutation(DELETE_DEVELOPER);
     return (
         <Card className={classes.card} elevation={3}>
             <CardHeaderWithMenu title={props.name}>
                 <StyledLink to={`/developer/${props.id}/edit`}>
                     <MenuItem>Редактировать</MenuItem>
                 </StyledLink>
-                <MenuItem>Удалить</MenuItem>
+                <Confirmation>
+                    {(confirmFn: (cb: () => void) => void) => {
+                        return (
+                            <MenuItem
+                                onClick={() => {
+                                    confirmFn(() => async () => {
+                                        await deleteMutation({
+                                            variables: {
+                                                id: props.id
+                                            },
+                                            refetchQueries: [
+                                                {
+                                                    query: GET_DEVELOPERS
+                                                }
+                                            ]
+                                        });
+                                    });
+                                }}
+                            >
+                                Удалить
+                            </MenuItem>
+                        );
+                    }}
+                </Confirmation>
             </CardHeaderWithMenu>
             <CardActionArea>
                 <Link to={`/developers/${props.id}/apartmentComplexes`}>
@@ -108,7 +134,11 @@ export function DeveloperList() {
             {data.getDevelopers.map((developer) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={developer.id}>
-                        <DeveloperCard id={developer.id} name={developer.name} imageUrl={developer.logo.downloadUrl} />
+                        <DeveloperCard
+                            id={developer.id}
+                            name={developer.name}
+                            imageUrl={developer?.logo?.downloadUrl}
+                        />
                     </Grid>
                 );
             })}
