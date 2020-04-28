@@ -22,14 +22,12 @@ const initialValues: LoginFormInterface = {
 
 export function Login() {
     const [login, {data, error}] = useMutation(LOGIN);
-    const handleFormSubmit = (formObj: any) => {
-        login({
+    const handleFormSubmit = async (formObj: any) => {
+        await login({
             variables: {email: formObj.email, password: formObj.password}
-        });
+        }).catch(() => {});
     };
-    if (error) {
-        return <span>Not authorized</span>;
-    }
+
     if (data) {
         Cookies.set(TOKEN, data.login.token, {expires: 1});
         return <Redirect to="/" />;
@@ -45,22 +43,18 @@ export function Login() {
                     return validateLoginForm(values);
                 }}
                 render={({handleSubmit}) => (
-                    <StyleForm
-                        onSubmit={(e: React.ChangeEvent<{}>) => {
-                            e.preventDefault();
-                            handleSubmit();
-                        }}
-                    >
+                    <StyleForm>
                         <InputValidate id="email" label="Email" variant="outlined" fieldName="email" type="email" />
                         <InputValidate
                             id="password"
-                            label="Password"
+                            label="Пароль"
                             variant="outlined"
                             fieldName="password"
                             type="password"
                         />
-                        <Button type="submit" variant="outlined" color="primary">
-                            Login
+                        {error && <div>Неправильное имя пользователя или пароль</div>}
+                        <Button type="submit" variant="outlined" color="primary" onClick={handleSubmit}>
+                            Войти
                         </Button>
                     </StyleForm>
                 )}

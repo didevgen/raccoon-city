@@ -1,5 +1,5 @@
-import {createStyles, makeStyles, TextField, Theme} from '@material-ui/core';
-import React from 'react';
+import {TextField} from '@material-ui/core';
+import React, {Fragment} from 'react';
 import {Field} from 'react-final-form';
 import styled from 'styled-components';
 
@@ -13,36 +13,27 @@ interface Props {
 
 const Input = styled.div`
     display: flex;
-    width: 40%;
     margin-bottom: 20px;
+    width: 60%;
+    flex-direction: column;
 `;
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& .MuiFormControl-root': {
-            width: '25ch'
-        }
-    }
-}));
-
 const InputError = styled.div`
-    margin-bottom: -10px;
-    padding-top: 5px;
     font-size: 12px;
     color: #d73c2a;
     text-align: center;
+    margin-top: 8px;
 `;
 
 const InputValidate: React.FC<Props> = ({fieldName, id, label, type}) => {
-    const classes = useStyles();
     return (
-        <Input className={classes.root}>
+        <Input>
             <Field name={fieldName}>
                 {({input, meta}) => (
-                    <div>
-                        <TextField variant="outlined" id={id} label={label} type={type} {...input} />
+                    <Fragment>
+                        <TextField fullWidth variant="outlined" id={id} label={label} type={type} {...input} />
                         {meta.error && meta.touched && <InputError>{meta.error}</InputError>}
-                    </div>
+                    </Fragment>
                 )}
             </Field>
         </Input>

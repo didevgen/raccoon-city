@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
-export const LoginForm = styled.form`
-    max-width: 60%;
-    width: 40%;
+export const LoginForm = styled.div`
+    width: 60%;
     margin: 300px auto;
 `;
 
-export const StyleForm = styled.form`
+export const StyleForm = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

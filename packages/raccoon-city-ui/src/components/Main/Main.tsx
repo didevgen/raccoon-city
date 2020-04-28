@@ -1,11 +1,7 @@
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Cookies from 'js-cookie';
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
-import {client} from '../../core/apollo/client';
-import {TOKEN} from '../../core/constants';
-import {LOGOUT} from '../../graphql/mutations/authMutation';
 import {GET_USER_INFO} from '../../graphql/queries/userQuery';
 import {
     ApartmentComplexCreateForm,
@@ -24,19 +20,19 @@ import {MainChessGrid} from './MainChessGrid/MainChessGrid';
 import {Sidebar} from './Sidebar/Sidebar';
 
 export function Main() {
-    const {data, loading, error} = useQuery(GET_USER_INFO);
-    const [logout] = useMutation(LOGOUT);
+    const {data, loading} = useQuery(GET_USER_INFO);
+    // const [logout] = useMutation(LOGOUT);
     const [open, setOpen] = React.useState(false);
     const drawerStyles = useStyles();
 
-    const onLogoutClick = () => {
-        logout({
-            variables: {key: Cookies.get(TOKEN)}
-        }).then(() => {
-            client.resetStore();
-            Cookies.remove(TOKEN);
-        });
-    };
+    // const onLogoutClick = () => {
+    //     logout({
+    //         variables: {key: Cookies.get(TOKEN)}
+    //     }).then(() => {
+    //         client.resetStore();
+    //         Cookies.remove(TOKEN);
+    //     });
+    // };
     if (loading) {
         return <span>Loading...</span>;
     }

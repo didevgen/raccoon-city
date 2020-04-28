@@ -1,4 +1,3 @@
-import {ApolloLink} from 'apollo-boost';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {ApolloClient} from 'apollo-client';
 import {setContext} from 'apollo-link-context';
@@ -29,12 +28,12 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
                 return;
             }
 
-            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+            console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
         });
     }
 
     if (networkError) {
-        console.log(`[Network error]: ${networkError}`);
+        console.error(`[Network error]: ${networkError}`);
     }
 });
 
