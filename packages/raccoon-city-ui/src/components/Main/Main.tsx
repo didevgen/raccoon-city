@@ -1,26 +1,49 @@
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Cookies from 'js-cookie';
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
-import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
-import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
-import {ChessGrid} from './ChessGrid/ChessGrid';
-import {useStyles} from './drawerStyles';
-import {Header} from './Header/Header';
-import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
-import {Sidebar} from './Sidebar/Sidebar';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {client} from '../../core/apollo/client';
+import {TOKEN} from '../../core/constants';
+import {LOGOUT} from '../../graphql/mutations/authMutation';
+import {GET_USER_INFO} from '../../graphql/queries/userQuery';
 import {
     ApartmentComplexCreateForm,
     ApartmentComplexEditForm
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
-import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
-import {MainChessGrid} from './MainChessGrid/MainChessGrid';
+import {ApartmentComplexInfo} from './ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
+import {ApartmentComplexList} from './ApartmentComplexList/ApartmentComplexList';
+import {ChessGrid} from './ChessGrid/ChessGrid';
 import {DeveloperCreateForm, DeveloperEditForm} from './Developer/DeveloperForm';
 import {DeveloperList} from './Developer/DeveloperList';
+import {useStyles} from './drawerStyles';
+import {Header} from './Header/Header';
+import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
+import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
+import {MainChessGrid} from './MainChessGrid/MainChessGrid';
+import {Sidebar} from './Sidebar/Sidebar';
 
 export function Main() {
+    const {data, loading, error} = useQuery(GET_USER_INFO);
+    const [logout] = useMutation(LOGOUT);
     const [open, setOpen] = React.useState(false);
     const drawerStyles = useStyles();
 
+    const onLogoutClick = () => {
+        logout({
+            variables: {key: Cookies.get(TOKEN)}
+        }).then(() => {
+            client.resetStore();
+            Cookies.remove(TOKEN);
+        });
+    };
+    if (loading) {
+        return <span>Loading...</span>;
+    }
+
+    if (!data.getUserInfo) {
+        return <Redirect to="/login" />;
+    }
     return (
         <div className={drawerStyles.root}>
             <CssBaseline />

@@ -1,4 +1,5 @@
 import {apartmentComplex as apartmentComplexMutation} from './mutations/apartmentComplex';
+import {auth} from './mutations/auth';
 import {developerMutation} from './mutations/developer';
 import {flatMutation} from './mutations/flat';
 import {house as houseMutation} from './mutations/house';
@@ -11,6 +12,7 @@ import {flatQuery} from './queries/flat.resolver';
 import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
+import {user} from './queries/user';
 
 export default {
     Query: {
@@ -20,7 +22,8 @@ export default {
         ...layoutQuery,
         ...levelQuery,
         ...flatQuery,
-        ...developerQuery
+        ...developerQuery,
+        ...user
     },
     Mutation: {
         ...apartmentComplexMutation,
@@ -28,6 +31,7 @@ export default {
         ...flatMutation,
         ...layoutMutation,
         ...levelMutation,
-        ...developerMutation
+        ...developerMutation,
+        ...auth
     }
 };

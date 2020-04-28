@@ -1,0 +1,26 @@
+type User {
+    id: String
+    name: String
+    email: String
+    features: [String]
+    isDeleted: Boolean
+}
+
+type Auth {
+    token: String
+}
+
+input CurrentUserInfo {
+    id: String
+    features: [String]
+}
+
+type Mutation {
+    login(email: String!, password: String!): Auth
+    logout(key: String!): Boolean!
+    signup(name: String!, email: String!, password: String!): Auth
+}
+
+type Query {
+    getUserInfo: User
+}

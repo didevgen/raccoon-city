@@ -1,6 +1,8 @@
+import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import {Context} from '../../utils';
+import {UserModel} from '../../db/models/user';
+import {authTokenGenerate, Context} from '../../utils';
 
 export const auth = {
     async signup(parent, args, ctx: Context) {
@@ -13,20 +15,31 @@ export const auth = {
         };
     },
 
-    async login(parent, {email, password}, ctx: Context) {
-        const user = await ctx.prisma.user({email});
+    async login(parent, {email, password}, {redis}) {
+        const user = await UserModel.findOne({email});
         if (!user) {
-            throw new Error(`No such user found for email: ${email}`);
+            throw new ApolloError(`No such user found for email: ${email}`, '404');
         }
-
-        const valid = await bcrypt.compare(password, user.password);
+        const valid = await bcrypt.compareSync(password, user.password);
         if (!valid) {
-            throw new Error('Invalid password');
+            throw new ApolloError('Unauthorized', '401');
         }
+        const token = authTokenGenerate(user);
+        await redis.set(
+            token,
+            JSON.stringify({id: user._id, features: user.features}),
+            'ex',
+            process.env.REDIS_KEY_TTL
+        );
+        return {token};
+    },
 
-        return {
-            token: jwt.sign({userId: user.id}, process.env.APP_SECRET),
-            user
-        };
+    async logout(parent, {key}, {redis}) {
+        try {
+            await redis.del(key);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 };

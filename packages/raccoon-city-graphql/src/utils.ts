@@ -1,11 +1,10 @@
 import * as jwt from 'jsonwebtoken';
 import {Prisma} from './generated/prisma-client';
-import * as firebase from 'firebase-admin';
+import {User} from './db/models/user';
 
 export interface Context {
     prisma: Prisma;
     request: any;
-    Firebase: firebase.app.App
 }
 
 export function getUserId(ctx: Context) {
@@ -17,6 +16,12 @@ export function getUserId(ctx: Context) {
     }
 
     throw new AuthError();
+}
+
+export function authTokenGenerate(user: User) {
+    return jwt.sign({userId: user._id}, process.env.APP_SECRET, {
+        expiresIn: process.env.JWT_LIFETIME
+    });
 }
 
 export class AuthError extends Error {

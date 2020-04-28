@@ -13,11 +13,11 @@ const App: React.FC = () => {
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                 <Router basename={process.env.PUBLIC_URL}>
                     <Switch>
-                        <Route path="/">
-                            <Main />
-                        </Route>
                         <Route path="/login">
                             <Login />
+                        </Route>
+                        <Route path="/">
+                            <Main />
                         </Route>
                     </Switch>
                 </Router>

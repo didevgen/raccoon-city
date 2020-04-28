@@ -35,3 +35,5 @@ export const FLAT_STATUSES = [
         label: 'Свободно'
     }
 ];
+
+export const TOKEN = 'token';
