@@ -6,6 +6,13 @@ type User {
     isDeleted: Boolean
 }
 
+input UserInput {
+    name: String
+    email: String
+    password: String
+    features: [String]
+}
+
 type Auth {
     token: String
 }
@@ -18,9 +25,11 @@ input CurrentUserInfo {
 type Mutation {
     login(email: String!, password: String!): Auth
     logout(key: String!): Boolean!
-    signup(name: String!, email: String!, password: String!): Auth
+    createUser(userData: UserInput): User
+    deleteUser(id: String): Boolean
 }
 
 type Query {
     getUserInfo: User
+    getUsers: [User]
 }

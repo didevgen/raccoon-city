@@ -10,3 +10,15 @@ export const GET_USER_INFO = gql`
         }
     }
 `;
+
+export const GET_USERS = gql`
+    query getUsers {
+        getUsers {
+            id
+            name
+            email
+            features
+            isDeleted
+        }
+    }
+`;

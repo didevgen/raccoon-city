@@ -8,6 +8,14 @@ export const LOGIN = gql`
     }
 `;
 
+export const CREATE_USER = gql`
+    mutation createUser($userData: UserInput) {
+        createUser(userData: $userData) {
+            id
+        }
+    }
+`;
+
 export const LOGOUT = gql`
     mutation logout($key: String!) {
         logout(key: $key)

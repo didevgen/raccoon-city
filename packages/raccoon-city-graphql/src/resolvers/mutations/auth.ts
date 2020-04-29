@@ -1,20 +1,25 @@
 import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
 import {UserModel} from '../../db/models/user';
-import {authTokenGenerate, Context} from '../../utils';
+import {authTokenGenerate} from '../../utils';
 
 export const auth = {
-    async signup(parent, args, ctx: Context) {
-        const password = await bcrypt.hash(args.password, 10);
-        const user = await ctx.prisma.createUser({...args, password});
-
-        return {
-            token: jwt.sign({userId: user.id}, process.env.APP_SECRET),
-            user
-        };
+    async createUser(parent, {userData}) {
+        try {
+            userData.password = bcrypt.hashSync(userData.password);
+            return UserModel.create(userData);
+        } catch (e) {
+            return null;
+        }
     },
-
+    async deleteUser(parent, {id}) {
+        try {
+            await UserModel.findOneAndUpdate({_id: id}, {$set: {isDeleted: true}});
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
     async login(parent, {email, password}, {redis}) {
         const user = await UserModel.findOne({email});
         if (!user) {

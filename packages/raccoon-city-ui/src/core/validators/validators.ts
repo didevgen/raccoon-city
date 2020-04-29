@@ -21,6 +21,10 @@ export const isNumber = (value: any) => {
 export const isInteger = (value: any) => {
     return validate.isInteger(+value) ? undefined : 'Это целое число';
 };
+
+export const isEmail = (email: any) => {
+    return !validate({email}, constraints) ? undefined : 'Это целое число';
+};
 export const isRequiredAndIsNumber = (value: any) => {
     return isRequired(value) || isNumber(value);
 };
@@ -34,6 +38,7 @@ export const validatePassword = (password: string) => {
     const regex = /(?=.*\d)(?=.*[a-z]).{6,}/;
     return regex.test(password);
 };
+
 export const validateLoginForm = (form: LoginFormInterface) => {
     const errors: any = {};
     if (!validateEmail(form.email)) {

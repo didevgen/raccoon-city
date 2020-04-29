@@ -18,6 +18,7 @@ import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm
 import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
 import {MainChessGrid} from './MainChessGrid/MainChessGrid';
 import {Sidebar} from './Sidebar/Sidebar';
+import {UserList} from './Users/UserList';
 
 export function Main() {
     const {data, loading} = useQuery(GET_USER_INFO);
@@ -37,7 +38,7 @@ export function Main() {
         return <span>Loading...</span>;
     }
 
-    if (!data.getUserInfo) {
+    if (!data || !data.getUserInfo) {
         return <Redirect to="/login" />;
     }
     return (
@@ -65,6 +66,9 @@ export function Main() {
                     </Route>
                     <Route exact={true} path="/chessgrid">
                         <MainChessGrid />
+                    </Route>
+                    <Route exact={true} path="/users">
+                        <UserList />
                     </Route>
                     <Route exact={true} path="/developers">
                         <DeveloperList />
