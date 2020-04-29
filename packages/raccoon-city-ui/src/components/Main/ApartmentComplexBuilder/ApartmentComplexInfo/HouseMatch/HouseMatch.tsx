@@ -81,7 +81,7 @@ function mapState(data: HouseMapInterface) {
 
 export function HouseMatch(props: HouseMatchProps) {
     const [matchMap, setValue] = useState<any>({});
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     const {loading, error, data} = useQuery<{getHouses: House[]}>(HOUSE_LIST, {
         variables: {
             apartmentComplexId: props.apartmentComplexUuid
@@ -95,7 +95,7 @@ export function HouseMatch(props: HouseMatchProps) {
     }
 
     if (result) {
-        return <Redirect to={`/apartmentComplex/${uuid}/overview/houses`} />;
+        return <Redirect to={`/apartmentComplex/${apartmentComplexUuid}/overview/houses`} />;
     }
 
     const houses = data.getHouses;

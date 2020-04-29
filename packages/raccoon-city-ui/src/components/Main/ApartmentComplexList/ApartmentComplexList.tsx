@@ -1,12 +1,14 @@
 import {useQuery} from '@apollo/react-hooks';
 import Grid from '@material-ui/core/Grid';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {ALL_APARTMENT_COMPLEXES} from '../../../graphql/queries/apartmentComplexQuery';
+import {setRouteParams} from '../../../redux/actions';
 import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
-import {useParams} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,7 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function ApartmentComplexList() {
+export const ApartmentComplexList = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
+
     const classes = useStyles();
     const {developerUuid} = useParams();
     const {loading, error, data} = useQuery<{getAllApartmentComplexes: ApartmentComplexType[]}>(
@@ -60,4 +70,4 @@ export function ApartmentComplexList() {
             </Grid>
         </div>
     );
-}
+});

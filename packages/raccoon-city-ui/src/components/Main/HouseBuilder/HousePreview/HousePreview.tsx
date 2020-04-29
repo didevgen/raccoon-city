@@ -35,14 +35,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function HousePreview(props: HousePreviewProps) {
     const {house} = props;
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     const classes = useStyles();
     const [deleteMutation] = useMutation(DELETE_HOUSE, {
         refetchQueries: [
             {
                 query: HOUSE_LIST,
                 variables: {
-                    apartmentComplexId: uuid
+                    apartmentComplexId: apartmentComplexUuid
                 }
             }
         ]
@@ -51,7 +51,7 @@ export function HousePreview(props: HousePreviewProps) {
     return (
         <Card className={classes.card}>
             <CardHeaderWithMenu title={house.name}>
-                <StyledLink to={`/apartmentComplex/${uuid}/houseEdit/${house.id}`}>
+                <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/houseEdit/${house.id}`}>
                     <MenuItem>Редактировать</MenuItem>
                 </StyledLink>
                 <Confirmation>
@@ -75,7 +75,7 @@ export function HousePreview(props: HousePreviewProps) {
                 </Confirmation>
             </CardHeaderWithMenu>
             <CardActionArea>
-                <Link to={`/apartmentComplex/${uuid}/house/${house.id}/info`}>
+                <Link to={`/apartmentComplex/${apartmentComplexUuid}/house/${house.id}/info`}>
                     <CardMedia className={classes.media} image={image} title={house.name} />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />

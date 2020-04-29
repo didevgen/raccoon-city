@@ -6,8 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {DatePicker} from '@material-ui/pickers';
-import React, {ChangeEvent, Fragment, useState} from 'react';
+import React, {ChangeEvent, Fragment, useEffect, useState} from 'react';
 import {Field, Form} from 'react-final-form';
+import {connect} from 'react-redux';
 import {Link, Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_APARTMENT_COMPLEX, EDIT_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
@@ -15,9 +16,9 @@ import {
     APARTMENT_COMPLEX_DROPDOWNS,
     GET_EDIT_APARTMENT_COMPLEX_INFO
 } from '../../../../graphql/queries/apartmentComplexQuery';
+import {setRouteParams} from '../../../../redux/actions';
 import {ApartmentComplexFormValues, ApartmentComplexType} from '../../../shared/types/apartmentComplex.types';
 import {getApartmentComplexVariables} from './utils';
-
 const FormContainer = styled.div`
     border: 1px solid #aaa;
 `;
@@ -42,7 +43,15 @@ const StyledLink = styled(Link)`
 
 const required = (value: any) => (value ? undefined : 'Required');
 
-export function ApartmentComplexCreateForm() {
+export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
+
     const {developerUuid} = useParams();
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
@@ -67,17 +76,24 @@ export function ApartmentComplexCreateForm() {
             />
         </Fragment>
     );
-}
+});
 
-export function ApartmentComplexEditForm() {
-    const {uuid} = useParams();
+export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
+    const {apartmentComplexUuid} = useParams();
 
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(
         GET_EDIT_APARTMENT_COMPLEX_INFO,
         {
             fetchPolicy: 'cache-and-network',
             variables: {
-                uuid
+                uuid: apartmentComplexUuid
             }
         }
     );
@@ -109,7 +125,7 @@ export function ApartmentComplexEditForm() {
                 onSubmit={async (updatedValues) => {
                     await updateApartmentComplex({
                         variables: {
-                            uuid,
+                            uuid: apartmentComplexUuid,
                             apartmentComplex: getApartmentComplexVariables(updatedValues as ApartmentComplexFormValues)
                         }
                     });
@@ -118,7 +134,7 @@ export function ApartmentComplexEditForm() {
             />
         </Fragment>
     );
-}
+});
 
 interface ApartmentComplexForm {
     onSubmit: (values: any) => void;

@@ -1,6 +1,6 @@
 import {useQuery} from '@apollo/react-hooks';
 import {Drawer} from '@material-ui/core';
-import React, {Fragment, useReducer, useState} from 'react';
+import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -12,7 +12,8 @@ import {Flat} from '../../shared/types/flat.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFilters} from './ChessGridFilters/ChessGridFilters';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
-
+import {connect} from 'react-redux';
+import {setRouteParams} from '../../../redux/actions';
 const ChessGridWrapper = styled.div`
     width: 100%;
     overflow-y: scroll;
@@ -96,7 +97,14 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-export function ChessGrid() {
+export const ChessGrid = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const {houseUuid: uuid} = useParams();
     const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {
         variables: {
@@ -160,4 +168,4 @@ export function ChessGrid() {
             </ViewModeContext.Provider>
         </Fragment>
     );
-}
+});

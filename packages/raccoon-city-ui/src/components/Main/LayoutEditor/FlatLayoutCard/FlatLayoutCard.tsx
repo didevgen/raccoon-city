@@ -31,7 +31,7 @@ export interface FlatLayoutCardProps {
 
 export function FlatLayoutCard(props: FlatLayoutCardProps) {
     const classes = useStyles();
-    const {uuid, houseUuid} = useParams();
+    const {apartmentComplexUuid, houseUuid} = useParams();
     return (
         <Card className={classes.card} elevation={3}>
             <CardHeaderWithMenu title={props.name}>
@@ -39,7 +39,7 @@ export function FlatLayoutCard(props: FlatLayoutCardProps) {
                 <MenuItem>Удалить</MenuItem>
             </CardHeaderWithMenu>
             <CardActionArea>
-                <Link to={`/apartmentComplex/${uuid}/house/${houseUuid}/layout/${props.id}/info`}>
+                <Link to={`/apartmentComplex/${apartmentComplexUuid}/house/${houseUuid}/layout/${props.id}/info`}>
                     <CardMedia
                         className={classes.media}
                         image={props.imageUrl || apartmentComplexDefaultImage}

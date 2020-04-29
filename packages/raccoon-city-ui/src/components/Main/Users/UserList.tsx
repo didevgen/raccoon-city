@@ -1,8 +1,11 @@
 import {useQuery} from '@apollo/react-hooks';
 import {Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {GET_USERS} from '../../../graphql/queries/userQuery';
+import {setRouteParams} from '../../../redux/actions';
 import {UserDialog} from './UserDialog';
 
 const useStyles = makeStyles({
@@ -12,7 +15,14 @@ const useStyles = makeStyles({
     }
 });
 
-export function UserList() {
+export const UserList = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const classes = useStyles();
     const {data, loading, error} = useQuery(GET_USERS);
 
@@ -51,4 +61,4 @@ export function UserList() {
             </Table>
         </TableContainer>
     );
-}
+});

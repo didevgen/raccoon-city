@@ -64,7 +64,7 @@ export function Main() {
                     <Route exact={true} path="/developers/:developerUuid/apartmentComplexes">
                         <ApartmentComplexList />
                     </Route>
-                    <Route exact={true} path="/chessgrid">
+                    <Route exact={true} path="/developers/:developerUuid/chessgrid">
                         <MainChessGrid />
                     </Route>
                     <Route exact={true} path="/users">
@@ -82,22 +82,22 @@ export function Main() {
                     <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
                         <ApartmentComplexCreateForm />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:uuid/edit">
+                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/edit">
                         <ApartmentComplexEditForm />
                     </Route>
-                    <Route path="/apartmentComplex/:uuid/overview">
+                    <Route path="/apartmentComplex/:apartmentComplexUuid/overview">
                         <ApartmentComplexInfo />
                     </Route>
-                    <Route path="/apartmentComplex/:uuid/house/:houseUuid">
+                    <Route path="/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
                         <HouseInfo />
                     </Route>
                     <Route path="/houseGrid/:houseUuid">
                         <ChessGrid />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:uuid/create/house">
+                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/create/house">
                         <HouseCreateForm />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:uuid/houseEdit/:houseUuid">
+                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid">
                         <HouseEditForm />
                     </Route>
                     <Route path="*">

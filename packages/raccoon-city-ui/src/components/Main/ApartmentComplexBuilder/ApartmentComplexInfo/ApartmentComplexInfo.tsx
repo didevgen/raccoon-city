@@ -11,19 +11,21 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import {Fragment, useState} from 'react';
+import {useEffect} from 'react';
+import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
+import {setRouteParams} from '../../../../redux/actions';
+import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 import {StyledLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
+import {HouseList} from '../../HouseList/HouseList';
 import {ApartmentComplexData} from './ApartmentComplexData/ApartmentComplexData';
+import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexImport';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import {HouseList} from '../../HouseList/HouseList';
-import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexImport';
-import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
-
 interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
@@ -55,12 +57,19 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-export function ApartmentComplexInfo() {
+export const ApartmentComplexInfo = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
-    const {uuid} = useParams();
-    if (!uuid) {
+    const {apartmentComplexUuid} = useParams();
+    if (!apartmentComplexUuid) {
         return <Redirect to="/" />;
     }
 
@@ -68,7 +77,7 @@ export function ApartmentComplexInfo() {
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(APARTMENT_COMPLEX_INFO, {
         fetchPolicy: 'cache-and-network',
         variables: {
-            uuid
+            uuid: apartmentComplexUuid
         }
     });
 
@@ -92,7 +101,7 @@ export function ApartmentComplexInfo() {
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <TitleWithEditIcon title={name} editUrl={`/apartmentComplex/${uuid}/edit`} />
+                <TitleWithEditIcon title={name} editUrl={`/apartmentComplex/${apartmentComplexUuid}/edit`} />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <Paper>
@@ -135,13 +144,25 @@ export function ApartmentComplexInfo() {
                                         <MainApartmentComplexImages images={images} />
                                     </TabPanel>
                                     <TabPanel value={value} index={2}>
-                                        <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />
+                                        <VRImages
+                                            uuid={apartmentComplexUuid}
+                                            images={images.VR || []}
+                                            mode={ImageType.VR}
+                                        />
                                     </TabPanel>
                                     <TabPanel value={value} index={3}>
-                                        <VRImages uuid={uuid} images={images.HALF_VR || []} mode={ImageType.HALF_VR} />
+                                        <VRImages
+                                            uuid={apartmentComplexUuid}
+                                            images={images.HALF_VR || []}
+                                            mode={ImageType.HALF_VR}
+                                        />
                                     </TabPanel>
                                     <TabPanel value={value} index={4}>
-                                        <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
+                                        <Photos
+                                            uuid={apartmentComplexUuid}
+                                            images={images.PHOTO || []}
+                                            mode={ImageType.PHOTO}
+                                        />
                                     </TabPanel>
                                 </Route>
                                 <Route path={`${path}/houses`}>
@@ -157,4 +178,4 @@ export function ApartmentComplexInfo() {
             </Container>
         </Fragment>
     );
-}
+});

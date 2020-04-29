@@ -74,8 +74,19 @@ export const hosueQuery = {
                 }
             }
         ]).exec();
-        const {maxPrice, minPrice, maxArea, minArea} = result;
         if (data && data.sections) {
+            let maxPrice = 0;
+            let minPrice = 0;
+            let maxArea = 0;
+            let minArea = 0;
+
+            if (!!result) {
+                maxPrice = result.maxPrice;
+                minPrice = result.minPrice;
+                maxArea = result.maxArea;
+                minArea = result.minArea;
+            }
+
             return {
                 maxPrice,
                 minPrice,

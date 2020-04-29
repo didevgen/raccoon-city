@@ -26,10 +26,10 @@ const StyledAddIcon = styled(AddIcon)`
 `;
 
 export function AddHouseButton() {
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     return (
         <FabButtonContainer>
-            <StyledLink to={`/apartmentComplex/${uuid}/create/house`}>
+            <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/create/house`}>
                 <StyledFab color="secondary" aria-label="add">
                     <AddIcon />
                 </StyledFab>
@@ -39,14 +39,14 @@ export function AddHouseButton() {
 }
 
 function EmptyHouseList() {
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     return (
         <EmptyHouseWrapper>
             <Typography variant="h4" gutterBottom={true}>
                 У этого жилищного комлпекса еще нет домов. Желаете создать?
             </Typography>
             <div>
-                <StyledLink to={`/apartmentComplex/${uuid}/create/house`}>
+                <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/create/house`}>
                     <Fab variant="extended" size="medium" color="primary" aria-label="add">
                         <StyledAddIcon />
                         Создать
@@ -79,10 +79,10 @@ function HouseGrid({houses}: HouseGridProps) {
 }
 
 export function HouseList() {
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     const {loading, error, data} = useQuery<{getHouses: House[]}>(HOUSE_LIST, {
         variables: {
-            apartmentComplexId: uuid
+            apartmentComplexId: apartmentComplexUuid
         },
         fetchPolicy: 'cache-and-network'
     });

@@ -39,14 +39,14 @@ function CsvDropzone(props: any) {
 }
 
 export function ApartmentComplexImport() {
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     const [matching, setMatching] = useState(false);
     const [uploadFile, {data}] = useMutation(UPLOAD_SPREADSHEET);
     const handleDrop = async (file: any) => {
         await uploadFile({
             variables: {
                 file,
-                uuid
+                uuid: apartmentComplexUuid
             }
         });
 
@@ -57,7 +57,7 @@ export function ApartmentComplexImport() {
         return (
             <HouseMatch
                 data={data.uploadApartmentComplexFile}
-                apartmentComplexUuid={uuid || ''}
+                apartmentComplexUuid={apartmentComplexUuid || ''}
                 onCancel={() => {
                     setMatching(false);
                 }}

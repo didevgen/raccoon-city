@@ -93,13 +93,13 @@ interface MainApartmentComplexImagesProps {
 }
 
 export function MainApartmentComplexImages({images}: MainApartmentComplexImagesProps) {
-    const {uuid} = useParams();
+    const {apartmentComplexUuid} = useParams();
     return (
         <Grid container={true} spacing={3}>
             <Grid item={true} xs={4}>
                 <PreviewComponent
                     images={images}
-                    uuid={uuid as string}
+                    uuid={apartmentComplexUuid as string}
                     mode={{
                         title: 'Сайт',
                         value: ImageType.SITE
@@ -109,7 +109,7 @@ export function MainApartmentComplexImages({images}: MainApartmentComplexImagesP
             <Grid item={true} xs={4}>
                 <PreviewComponent
                     images={images}
-                    uuid={uuid as string}
+                    uuid={apartmentComplexUuid as string}
                     mode={{
                         title: 'Приложение',
                         value: ImageType.MOBILE
@@ -119,7 +119,7 @@ export function MainApartmentComplexImages({images}: MainApartmentComplexImagesP
             <Grid item={true} xs={4}>
                 <PreviewComponent
                     images={images}
-                    uuid={uuid as string}
+                    uuid={apartmentComplexUuid as string}
                     mode={{
                         title: 'Шахматка',
                         value: ImageType.CHESS_GRID

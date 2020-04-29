@@ -7,12 +7,14 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {Link, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {apartmentComplexDefaultImage} from '../../../core/constants';
 import {DELETE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
+import {setRouteParams} from '../../../redux/actions';
 import {AddButton} from '../../shared/components/buttons/AddButton';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
@@ -110,7 +112,14 @@ function EmptyDevelopers() {
     );
 }
 
-export function DeveloperList() {
+export const DeveloperList = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const {loading, error, data} = useQuery(GET_DEVELOPERS, {
         fetchPolicy: 'cache-and-network'
     });
@@ -144,4 +153,4 @@ export function DeveloperList() {
             })}
         </Grid>
     );
-}
+});

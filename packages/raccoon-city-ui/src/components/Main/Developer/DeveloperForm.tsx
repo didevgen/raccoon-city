@@ -9,16 +9,17 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import arrayMutators from 'final-form-arrays';
-import React, {ChangeEvent, Fragment, useState} from 'react';
+import React, {ChangeEvent, Fragment, useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Field, Form} from 'react-final-form';
 import {FieldArray} from 'react-final-form-arrays';
+import {connect} from 'react-redux';
 import {Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_DEVELOPER, UPDATE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {DEVELOPER_DROPDOWNS, GET_DEVELOPER} from '../../../graphql/queries/developerQuery';
+import {setRouteParams} from '../../../redux/actions';
 import {DropzoneContainer, StyledLink} from '../../shared/components/styled';
-
 const FormBlock = styled.div`
     padding: 16px;
 `;
@@ -148,7 +149,14 @@ function LogoComponent({setImage, logo}) {
     );
 }
 
-export function DeveloperEditForm() {
+export const DeveloperEditForm = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const {developerUuid} = useParams();
 
     const {data, loading, error} = useQuery(GET_DEVELOPER, {
@@ -190,9 +198,17 @@ export function DeveloperEditForm() {
             logo={logo?.downloadUrl}
         />
     );
-}
+});
 
-export function DeveloperCreateForm() {
+export const DeveloperCreateForm = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
+
     const [createDeveloper, {data: createResult}] = useMutation(CREATE_DEVELOPER);
 
     if (createResult) {
@@ -215,7 +231,7 @@ export function DeveloperCreateForm() {
     };
 
     return <DeveloperForm title={'Создать застройщика'} onSubmit={onSubmit} initialValues={initialValues} />;
-}
+});
 
 interface DeveloperFormProps {
     onSubmit: (values, image) => void;

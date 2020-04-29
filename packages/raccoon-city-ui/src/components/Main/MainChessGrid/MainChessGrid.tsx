@@ -1,7 +1,9 @@
-import React from 'react';
-import {Theme, createStyles, makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
+import {setRouteParams} from '../../../redux/actions';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -16,7 +18,14 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function MainChessGrid() {
+export const MainChessGrid = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams}) => {
+    const params = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
     const classes = useStyles();
 
     return (
@@ -27,4 +36,4 @@ export function MainChessGrid() {
             <Paper elevation={3} />
         </div>
     );
-}
+});

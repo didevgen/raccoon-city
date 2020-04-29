@@ -12,15 +12,21 @@ import AppsIcon from '@material-ui/icons/Apps';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from 'clsx';
 import * as React from 'react';
+import {connect} from 'react-redux';
 import {StyledLink} from '../../shared/components/styled';
+
 interface SidebarProps {
     open: boolean;
     drawerStyles: any;
     handleDrawerClose: () => void;
+    params?: any;
 }
 
-export function Sidebar({open, handleDrawerClose, drawerStyles}: SidebarProps) {
+export const Sidebar = connect((state) => ({
+    params: state.route.params
+}))(({open, handleDrawerClose, drawerStyles, params}: SidebarProps) => {
     const theme = useTheme();
+    console.log(params);
 
     return (
         <Drawer
@@ -60,4 +66,4 @@ export function Sidebar({open, handleDrawerClose, drawerStyles}: SidebarProps) {
             <Divider />
         </Drawer>
     );
-}
+});
