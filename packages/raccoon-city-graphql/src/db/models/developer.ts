@@ -25,15 +25,6 @@ const DeveloperSchema: Schema = new Schema(
         receptionNumbers: [{type: Schema.Types.String}],
         salesNumbers: [{type: Schema.Types.String}],
         isDeleted: {type: Schema.Types.Boolean, default: false},
-        apartmentComplexes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'ApartmentComplex',
-                default: () => {
-                    return [];
-                }
-            }
-        ],
         logo: {type: SingleImageSchema}
     },
     {
@@ -41,5 +32,11 @@ const DeveloperSchema: Schema = new Schema(
         toObject: {virtuals: true}
     }
 );
+
+DeveloperSchema.virtual('apartmentComplexes', {
+    ref: 'ApartmentComplex',
+    localField: '_id',
+    foreignField: 'developer'
+});
 
 export const DeveloperModel = mongoose.model<Developer>('Developer', DeveloperSchema);

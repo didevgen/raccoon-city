@@ -73,7 +73,7 @@ export function HouseSelect(props: HouseSelectProps) {
     return (
         <Select
             id="place"
-            label="Выберете дом"
+            label="Выберите дом"
             options={props.houses}
             value={house}
             onChange={(selectedValue: House) => {

@@ -1,9 +1,11 @@
 import {Avatar, Paper, Slider, Tooltip} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import styled from 'styled-components';
+import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessGrid';
+import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 
 const StyledPaper = styled(Paper)`
     width: 100%;
@@ -12,6 +14,17 @@ const StyledPaper = styled(Paper)`
     position: fixed;
     top: 64px;
     z-index: 1202;
+    padding: 8px;
+`;
+
+const SelectContainer = styled.div`
+    display: flex;
+    align-items: center;
+    width: 400px;
+    margin: 16px;
+    .HouseSelect {
+        width: 100%;
+    }
 `;
 
 const StyledAvatar = styled(Avatar)`
@@ -242,18 +255,37 @@ function ViewMode({dispatch}) {
 
 interface ChessGridFiltersProps {
     dispatchFn: (param: {type: string; payload: any}) => void;
-    minArea: number;
-    maxArea: number;
-    minPrice: number;
-    maxPrice: number;
+    onHouseChange?: (house: House) => void;
+    data: any;
+}
+
+export function EmptyChessGridFilters({onHouseChange}) {
+    return (
+        <StyledPaper elevation={3}>
+            <SelectContainer>
+                <ChessGridHouseSelect onChange={onHouseChange} />
+            </SelectContainer>
+        </StyledPaper>
+    );
 }
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
+    const data = props?.data?.getGroupedFlatsBySection;
+
     return (
         <StyledPaper elevation={3}>
+            {props.onHouseChange && (
+                <SelectContainer>
+                    <ChessGridHouseSelect onChange={props.onHouseChange} />
+                </SelectContainer>
+            )}
             <RoomAmountFilter dispatch={props.dispatchFn} />
-            <PriceFilter maxPrice={props.maxPrice} minPrice={props.minPrice} dispatch={props.dispatchFn} />
-            <AreaFilter maxArea={props.maxArea} minArea={props.minArea} dispatch={props.dispatchFn} />
+            {data && data?.groupedFlats?.length > 0 && (
+                <Fragment>
+                    <PriceFilter maxPrice={data.maxPrice} minPrice={data.minPrice} dispatch={props.dispatchFn} />
+                    <AreaFilter maxArea={data.maxArea} minArea={data.minArea} dispatch={props.dispatchFn} />
+                </Fragment>
+            )}
             <ViewMode dispatch={props.dispatchFn} />
         </StyledPaper>
     );

@@ -1,6 +1,7 @@
-import {useQuery} from '@apollo/react-hooks';
+import {useApolloClient, useQuery} from '@apollo/react-hooks';
 import {Drawer} from '@material-ui/core';
 import React, {Fragment, useEffect, useReducer, useState} from 'react';
+import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -8,12 +9,13 @@ import {
     GetGroupedFlatsBySectionQuery,
     GroupedFlats
 } from '../../../graphql/queries/houseQuery';
-import {Flat} from '../../shared/types/flat.types';
-import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
-import {ChessGridFilters} from './ChessGridFilters/ChessGridFilters';
-import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
-import {connect} from 'react-redux';
 import {setRouteParams} from '../../../redux/actions';
+import {Flat} from '../../shared/types/flat.types';
+import {House} from '../../shared/types/house.types';
+import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
+import {ChessGridFilters, EmptyChessGridFilters} from './ChessGridFilters/ChessGridFilters';
+import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
+
 const ChessGridWrapper = styled.div`
     width: 100%;
     overflow-y: scroll;
@@ -97,75 +99,94 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-export const ChessGrid = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
-    const params = useParams();
-
-    useEffect(() => {
-        applyParams(params);
-    }, [applyParams, params]);
-    const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {
-        variables: {
-            uuid
-        },
-        fetchPolicy: 'cache-and-network'
-    });
-
-    const [filters, dispatch] = useReducer(reducer, initialState);
-
+function ChessGridContent({filters, data, loading, error}) {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
-
     if (loading) {
-        return <span>loading...</span>;
+        return <ChessGridWrapper>Loading</ChessGridWrapper>;
     }
 
     if (error) {
-        return <span>error...</span>;
+        return <ChessGridWrapper>Error :(</ChessGridWrapper>;
     }
 
-    if (!data?.getGroupedFlatsBySection?.groupedFlats) {
-        return <span>no data...</span>;
+    if (!data) {
+        return null;
     }
 
     const {groupedFlats} = data?.getGroupedFlatsBySection;
 
-    if (groupedFlats && groupedFlats.length === 0) {
-        return <span>В данном доме еще нет квартир</span>;
+    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
+        return <ChessGridWrapper>В данном доме еще нет квартир</ChessGridWrapper>;
+    }
+
+    return (
+        <ViewModeContext.Provider value={filters}>
+            <ChessGridWrapper>
+                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                    return (
+                        <ChessGridColumn
+                            key={item.id}
+                            columnName={item.section}
+                            levels={item.levels}
+                            onSelect={(flat: Flat) => {
+                                setSelectedFlat(flat);
+                                setFlatCardOpen(true);
+                            }}
+                        />
+                    );
+                })}
+                <Drawer
+                    anchor="right"
+                    open={flatCardOpen}
+                    onClose={() => {
+                        setFlatCardOpen(false);
+                        setSelectedFlat(undefined);
+                    }}
+                >
+                    {selectedFlat && <FlatSidebarInfo flat={selectedFlat} />}
+                </Drawer>
+            </ChessGridWrapper>
+        </ViewModeContext.Provider>
+    );
+}
+
+export const ChessGridComponent = ({uuid, hasSelect}) => {
+    const [filters, dispatch] = useReducer(reducer, initialState);
+    const [id, setId] = useState(uuid);
+    const {data, error, loading} = useQuery(GET_GROUPED_FLATS_CHESSGRID, {
+        variables: {
+            uuid: id
+        },
+        skip: !id
+    });
+
+    let onHouseChange;
+    if (hasSelect) {
+        onHouseChange = async (house: House) => {
+            if (house) {
+                setId(house.id);
+            }
+        };
     }
 
     return (
         <Fragment>
-            <ChessGridFilters dispatchFn={dispatch} {...data?.getGroupedFlatsBySection} />
-            <ViewModeContext.Provider value={filters}>
-                <ChessGridWrapper>
-                    {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
-                        return (
-                            <ChessGridColumn
-                                key={item.id}
-                                columnName={item.section}
-                                levels={item.levels}
-                                onSelect={(flat: Flat) => {
-                                    setSelectedFlat(flat);
-                                    setFlatCardOpen(true);
-                                }}
-                            />
-                        );
-                    })}
-                    <Drawer
-                        anchor="right"
-                        open={flatCardOpen}
-                        onClose={() => {
-                            setFlatCardOpen(false);
-                            setSelectedFlat(undefined);
-                        }}
-                    >
-                        {selectedFlat && <FlatSidebarInfo flat={selectedFlat} />}
-                    </Drawer>
-                </ChessGridWrapper>
-            </ViewModeContext.Provider>
+            <ChessGridFilters dispatchFn={dispatch} data={data} onHouseChange={onHouseChange} />
+            <ChessGridContent filters={filters} loading={loading} error={error} data={data} />
         </Fragment>
     );
+};
+
+export const ChessGrid = connect(null, (dispatch) => ({
+    applyParams: (params) => dispatch(setRouteParams(params))
+}))(({applyParams, hasSelect}) => {
+    const params = useParams();
+    const {houseUuid} = useParams();
+
+    useEffect(() => {
+        applyParams(params);
+    }, [applyParams, params]);
+
+    return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} />;
 });
