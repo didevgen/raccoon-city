@@ -42,7 +42,11 @@ export const flatQuery = {
                 match: {isDeleted: false},
                 populate: {
                     path: 'apartmentComplex',
-                    match: {isDeleted: false}
+                    match: {isDeleted: false},
+                    populate: {
+                        path: 'developer',
+                        match: {isDeleted: false}
+                    }
                 }
             })
             .exec();
@@ -53,6 +57,7 @@ export const flatQuery = {
         flatObj.section = flatObj.section.sectionName as any;
         flatObj.level = flatObj.level.levelNumber as any;
         flatObj.apartmentComplex = flat.house.apartmentComplex;
+        flatObj.developer = flatObj.apartmentComplex.developer;
         const layout = flat.layout;
 
         if (!layout) {

@@ -1,8 +1,9 @@
 import {gql} from 'apollo-boost';
-import {Flat} from '../../components/shared/types/flat.types';
-import {SinglePreviewImage} from '../../components/shared/types/layout.types';
 import {ApartmentComplex} from '../../../../raccoon-city-graphql/src/db/models/apartmentComplex';
+import {Developer} from '../../../../raccoon-city-graphql/src/db/models/developer';
+import {Flat} from '../../components/shared/types/flat.types';
 import {House} from '../../components/shared/types/house.types';
+import {SinglePreviewImage} from '../../components/shared/types/layout.types';
 
 export const GET_SECTION = gql`
     query getSectionData($sectionId: String!) {
@@ -40,6 +41,7 @@ interface ViewBox {
 export interface SidebarFlat extends Flat {
     apartmentComplex: ApartmentComplex;
     house: House;
+    developer: Developer;
     levelLayouts: Array<{
         id: string;
         paths: string[];
@@ -64,6 +66,14 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
             squarePrice
             apartmentComplex {
                 name
+            }
+            developer {
+                id
+                receptionNumbers
+                salesNumbers
+                logo {
+                    downloadUrl
+                }
             }
             house {
                 name

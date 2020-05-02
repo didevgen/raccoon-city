@@ -24,8 +24,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 35
     },
     title: {
+        marginTop: -15,
         fontSize: 24,
-        paddingBottom: 24,
+        paddingBottom: 8,
         textAlign: 'center',
         fontWeight: 'bold'
     },
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     image: {
-        marginVertical: 15,
+        marginVertical: 8,
         marginHorizontal: 150,
         maxWidth: 240
     },
@@ -72,8 +73,16 @@ const ImageWrapper = styled.View`
     justify-content: center;
     width: 100%;
 `;
+
+const Logo = styled.Image`
+    max-height: 100px;
+    margin-bottom: 12px;
+    max-width: 100px;
+    height: auto;
+`;
+
 const StyledImage = styled.Image`
-    margin-top: 12px;
+    margin-top: 4px;
     max-width: 50%;
     left: 25%;
     justify-self: center;
@@ -166,6 +175,11 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
+                {flat.developer.logo && (
+                    <ImageWrapper>
+                        <Logo src={flat.developer.logo.downloadUrl} />
+                    </ImageWrapper>
+                )}
                 <Text style={styles.title}>ЖК {flat.apartmentComplex.name}</Text>
                 <Text style={styles.flatNumber}>Квартира №{flat.flatNumber}</Text>
                 <Text style={styles.status}>{status?.label}</Text>
@@ -179,14 +193,15 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
                 <NumberSection>
                     <PhoneSection>
                         <PhoneSectionTitle>Приемная</PhoneSectionTitle>
-                        <Text>+3805795452</Text>
+                        {flat.developer.receptionNumbers.map((phone, i) => {
+                            return <Text key={phone + i}>{phone}</Text>;
+                        })}
                     </PhoneSection>
                     <PhoneSection>
                         <PhoneSectionTitle>Отдел продаж</PhoneSectionTitle>
-                        <Text>+3805795452</Text>
-                        <Text>+3805795452</Text>
-                        <Text>+3805795452</Text>
-                        <Text>+3805795452</Text>
+                        {flat.developer.salesNumbers.map((phone, i) => {
+                            return <Text key={phone + i}>{phone}</Text>;
+                        })}
                     </PhoneSection>
                 </NumberSection>
             </Page>

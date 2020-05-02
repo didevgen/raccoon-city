@@ -32,6 +32,7 @@ type HouseSidebarFlat {
     house: House
     apartmentComplex: ApartmentComplex
     levelLayouts: [HouseSidebarFlatLevelLayouts]
+    developer: Developer
 }
 
 input HouseFlatInput {
