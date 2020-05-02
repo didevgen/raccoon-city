@@ -1,19 +1,15 @@
-import {useApolloClient, useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {Drawer} from '@material-ui/core';
 import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {
-    GET_GROUPED_FLATS_CHESSGRID,
-    GetGroupedFlatsBySectionQuery,
-    GroupedFlats
-} from '../../../graphql/queries/houseQuery';
+import {GET_GROUPED_FLATS_CHESSGRID, GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {setRouteParams} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
-import {ChessGridFilters, EmptyChessGridFilters} from './ChessGridFilters/ChessGridFilters';
+import {ChessGridFilters} from './ChessGridFilters/ChessGridFilters';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 
 const ChessGridWrapper = styled.div`

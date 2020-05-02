@@ -14,7 +14,6 @@ import {components} from 'react-select';
 import styled from 'styled-components';
 import {houseDefaultImage} from '../../../../core/constants';
 import {GET_DEVELOPER_APARTMENT_COMPLEXES} from '../../../../graphql/queries/developerQuery';
-import {ApartmentComplexType} from '../../../shared/types/apartmentComplex.types';
 import {House} from '../../../shared/types/house.types';
 
 const StyledHeading = styled.div`
