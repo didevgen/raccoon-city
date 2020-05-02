@@ -26,10 +26,10 @@ const StyledAddIcon = styled(AddIcon)`
 `;
 
 export function AddHouseButton() {
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
     return (
         <FabButtonContainer>
-            <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/create/house`}>
+            <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/create/house`}>
                 <StyledFab color="secondary" aria-label="add">
                     <AddIcon />
                 </StyledFab>
@@ -39,14 +39,14 @@ export function AddHouseButton() {
 }
 
 function EmptyHouseList() {
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
     return (
         <EmptyHouseWrapper>
             <Typography variant="h4" gutterBottom={true}>
                 У этого жилищного комлпекса еще нет домов. Желаете создать?
             </Typography>
             <div>
-                <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/create/house`}>
+                <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/create/house`}>
                     <Fab variant="extended" size="medium" color="primary" aria-label="add">
                         <StyledAddIcon />
                         Создать

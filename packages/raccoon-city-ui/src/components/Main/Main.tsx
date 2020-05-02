@@ -82,22 +82,28 @@ export function Main() {
                     <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
                         <ApartmentComplexCreateForm />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/edit">
+                    <Route exact={true} path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/edit">
                         <ApartmentComplexEditForm />
                     </Route>
-                    <Route path="/apartmentComplex/:apartmentComplexUuid/overview">
+                    <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/overview">
                         <ApartmentComplexInfo />
                     </Route>
-                    <Route path="/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
+                    <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
                         <HouseInfo />
                     </Route>
-                    <Route path="/houseGrid/:houseUuid">
+                    <Route path="/developers/:developerUuid/houseGrid/:houseUuid">
                         <ChessGrid />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/create/house">
+                    <Route
+                        exact={true}
+                        path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/create/house"
+                    >
                         <HouseCreateForm />
                     </Route>
-                    <Route exact={true} path="/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid">
+                    <Route
+                        exact={true}
+                        path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid"
+                    >
                         <HouseEditForm />
                     </Route>
                     <Route path="*">

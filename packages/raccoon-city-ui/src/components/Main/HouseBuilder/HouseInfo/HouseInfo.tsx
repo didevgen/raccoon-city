@@ -63,7 +63,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
-    const {houseUuid: uuid, apartmentComplexUuid} = useParams();
+    const {houseUuid: uuid, apartmentComplexUuid, developerUuid} = useParams();
     if (!uuid) {
         return <Redirect to="/" />;
     }
@@ -98,7 +98,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
             <Container maxWidth="lg">
                 <TitleWithEditIcon
                     title={name}
-                    editUrl={`/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}
+                    editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}
                 />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
@@ -109,7 +109,10 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Информация" />
                                     </ListItem>
                                 </StyledLink>
-                                <StyledLink activeClassName="Mui-selected" to={`/houseGrid/${uuid}`}>
+                                <StyledLink
+                                    activeClassName="Mui-selected"
+                                    to={`/developers/${developerUuid}/houseGrid/${uuid}`}
+                                >
                                     <ListItem button={true}>
                                         <ListItemText primary="Просмотр шахматки" />
                                     </ListItem>

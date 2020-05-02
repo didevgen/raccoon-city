@@ -50,7 +50,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
     return (
         <Card className={classes.card}>
             <CardHeaderWithMenu title={props.name}>
-                <StyledLink to={`/apartmentComplex/${props.id}/edit`}>
+                <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${props.id}/edit`}>
                     <MenuItem>Редактировать</MenuItem>
                 </StyledLink>
                 <Confirmation>
@@ -74,7 +74,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                 </Confirmation>
             </CardHeaderWithMenu>
             <CardActionArea>
-                <Link to={`/apartmentComplex/${props.id}/overview`}>
+                <Link to={`/developers/${developerUuid}/apartmentComplex/${props.id}/overview`}>
                     <CardMedia
                         className={classes.media}
                         image={props.imageUrl || apartmentComplexDefaultImage}

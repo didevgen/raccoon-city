@@ -56,7 +56,11 @@ export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
 
     if (apartmentComplex && apartmentComplex.createApartmentComplex) {
-        return <Redirect to={`/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview`} />;
+        return (
+            <Redirect
+                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview`}
+            />
+        );
     }
 
     return (
@@ -86,7 +90,7 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
     useEffect(() => {
         applyParams(params);
     }, [applyParams, params]);
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
 
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(
         GET_EDIT_APARTMENT_COMPLEX_INFO,
@@ -101,7 +105,11 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
     const [updateApartmentComplex, {data: apartmentComplex}] = useMutation(EDIT_APARTMENT_COMPLEX);
 
     if (apartmentComplex && apartmentComplex.updateApartmentComplex) {
-        return <Redirect to={`/apartmentComplex/${apartmentComplex.updateApartmentComplex.id}/overview`} />;
+        return (
+            <Redirect
+                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.updateApartmentComplex.id}/overview`}
+            />
+        );
     }
 
     if (loading) {

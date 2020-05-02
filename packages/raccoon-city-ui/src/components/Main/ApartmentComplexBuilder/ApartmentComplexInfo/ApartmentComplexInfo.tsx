@@ -68,7 +68,7 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
     if (!apartmentComplexUuid) {
         return <Redirect to="/" />;
     }
@@ -101,7 +101,10 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <TitleWithEditIcon title={name} editUrl={`/apartmentComplex/${apartmentComplexUuid}/edit`} />
+                <TitleWithEditIcon
+                    title={name}
+                    editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/edit`}
+                />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <Paper>

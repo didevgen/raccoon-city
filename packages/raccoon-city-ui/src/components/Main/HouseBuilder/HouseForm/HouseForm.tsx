@@ -48,10 +48,12 @@ export const HouseCreateForm = connect(null, (dispatch) => ({
         applyParams(params);
     }, [applyParams, params]);
     const [createHouse, {data, loading}] = useMutation(CREATE_HOUSE);
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
 
     if (data) {
-        return <Redirect to={`/apartmentComplex/${apartmentComplexUuid}/overview/houses`} />;
+        return (
+            <Redirect to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/overview/houses`} />
+        );
     }
 
     return (
@@ -87,7 +89,7 @@ export const HouseEditForm = connect(null, (dispatch) => ({
         applyParams(params);
     }, [applyParams, params]);
     const [updateHouse, {data: result, loading: updating}] = useMutation(UPDATE_HOUSE);
-    const {apartmentComplexUuid, houseUuid} = useParams();
+    const {apartmentComplexUuid, houseUuid, developerUuid} = useParams();
 
     const {loading, error, data} = useQuery<{getHouse: House}>(HOUSE_DATA, {
         fetchPolicy: 'network-only',
@@ -104,7 +106,9 @@ export const HouseEditForm = connect(null, (dispatch) => ({
     }
 
     if (result) {
-        return <Redirect to={`/apartmentComplex/${apartmentComplexUuid}/overview/houses`} />;
+        return (
+            <Redirect to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/overview/houses`} />
+        );
     }
 
     return (
@@ -139,7 +143,7 @@ interface HouseFormProps {
 }
 
 export function HouseForm(outerProps: HouseFormProps) {
-    const {apartmentComplexUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams();
     return (
         <Fragment>
             <Form
@@ -212,7 +216,9 @@ export function HouseForm(outerProps: HouseFormProps) {
                             </Field>
                             <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
                                 <Grid justify="flex-end" container={true} item={true} xs={6}>
-                                    <StyledLink to={`/apartmentComplex/${apartmentComplexUuid}/overview/houses`}>
+                                    <StyledLink
+                                        to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/overview/houses`}
+                                    >
                                         <StyledButton variant="outlined" size="large">
                                             Отмена
                                         </StyledButton>
