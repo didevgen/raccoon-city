@@ -26,6 +26,14 @@ export const StyledNavLink = styled(NavLink)`
         text-decoration: none;
         color: inherit;
     }
+
+    &.Mui-selected > div {
+        color: white;
+        background-color: #3f51b5;
+        &:hover {
+            background-color: #7986cb;
+        }
+    }
 `;
 
 export const FabButtonContainer = styled.div`

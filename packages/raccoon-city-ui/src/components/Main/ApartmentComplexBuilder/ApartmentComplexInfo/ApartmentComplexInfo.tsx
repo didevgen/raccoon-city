@@ -18,7 +18,7 @@ import {useRouteMatch} from 'react-router-dom';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
-import {StyledLink} from '../../../shared/components/styled';
+import {StyledLink, StyledNavLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {HouseList} from '../../HouseList/HouseList';
 import {ApartmentComplexData} from './ApartmentComplexData/ApartmentComplexData';
@@ -126,28 +126,28 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                         <StyledPaper>
                             {images.CHESS_GRID && <HouseImage src={images.CHESS_GRID?.downloadUrl} alt={name} />}
                             <List component="nav" aria-label="main mailbox folders">
-                                <StyledLink to={`${url}`}>
+                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/info`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Информация" />
                                     </ListItem>
-                                </StyledLink>
-                                <StyledLink to={`${url}/houses`}>
+                                </StyledNavLink>
+                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/houses`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Дома" />
                                     </ListItem>
-                                </StyledLink>
-                                <StyledLink to={`${url}/import`}>
+                                </StyledNavLink>
+                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/import`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Импорт помещений" />
                                     </ListItem>
-                                </StyledLink>
+                                </StyledNavLink>
                             </List>
                         </StyledPaper>
                     </Grid>
                     <Grid item={true} xs={9}>
                         <div className={classes.root}>
                             <Switch>
-                                <Route exact={true} path={path}>
+                                <Route exact={true} path={`${path}/info`}>
                                     <AppBar position="static" color="default">
                                         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                                             <Tab label="Информация" />

@@ -60,7 +60,7 @@ export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
     if (apartmentComplex && apartmentComplex.createApartmentComplex) {
         return (
             <Redirect
-                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview`}
+                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.createApartmentComplex.id}/overview/info`}
             />
         );
     }
@@ -109,7 +109,7 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
     if (apartmentComplex && apartmentComplex.updateApartmentComplex) {
         return (
             <Redirect
-                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.updateApartmentComplex.id}/overview`}
+                to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplex.updateApartmentComplex.id}/overview/info`}
             />
         );
     }

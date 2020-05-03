@@ -28,10 +28,7 @@ export const FlatLayoutData = React.memo(({flatLayout, refetch}: FlatLayoutDataP
     return (
         <Wrapper>
             <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <ImageContainer src={flatLayout.image.previewImageUrl} alt="Flat layout" />
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <MiscContainer>
                         <Typography variant="h5" component="h5" gutterBottom>
                             {flatLayout.name}
@@ -40,6 +37,9 @@ export const FlatLayoutData = React.memo(({flatLayout, refetch}: FlatLayoutDataP
                             <ChessGridDialog layoutId={flatLayout.id} refetch={refetch} />
                         </div>
                     </MiscContainer>
+                </Grid>
+                <Grid item xs={12}>
+                    <ImageContainer src={flatLayout.image.previewImageUrl} alt="Flat layout" />
                 </Grid>
                 {flatLayout?.flats?.length > 0 && (
                     <Grid item xs={12}>

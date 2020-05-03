@@ -58,7 +58,7 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
                 </Confirmation>
             </CardHeaderWithMenu>
             <CardActionArea>
-                <Link to={`/developers/${developerUuid}/apartmentComplex/${props.id}/overview`}>
+                <Link to={`/developers/${developerUuid}/apartmentComplex/${props.id}/overview/info`}>
                     <StyledCardMedia image={props.imageUrl || apartmentComplexDefaultImage} title={props.name} />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />

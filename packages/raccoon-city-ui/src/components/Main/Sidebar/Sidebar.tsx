@@ -15,6 +15,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {StyledLink} from '../../shared/components/styled';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 
 interface SidebarProps {
     open: boolean;
@@ -53,7 +54,7 @@ export const Sidebar = connect((state) => ({
             <List>
                 <StyledLink to="/">
                     <ListItem button>
-                        <ListItemIcon>{<ApartmentIcon />}</ListItemIcon>
+                        <ListItemIcon>{<BusinessCenterIcon />}</ListItemIcon>
                         <ListItemText primary="Застройщики" />
                     </ListItem>
                 </StyledLink>
@@ -70,6 +71,14 @@ export const Sidebar = connect((state) => ({
                         <ListItem button>
                             <ListItemIcon>{<HomeWorkIcon />}</ListItemIcon>
                             <ListItemText primary="Шахматка дома" />
+                        </ListItem>
+                    </StyledLink>
+                )}
+                {developerUuid && (
+                    <StyledLink to={`/developers/${developerUuid}/apartmentComplexes`}>
+                        <ListItem button>
+                            <ListItemIcon>{<ApartmentIcon />}</ListItemIcon>
+                            <ListItemText primary="ЖК" />
                         </ListItem>
                     </StyledLink>
                 )}
