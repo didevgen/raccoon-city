@@ -70,11 +70,22 @@ export class FlatService {
         return await HouseModel.findById(this.houseId)
             .populate({
                 path: 'sections',
+                match: {
+                    isDeleted: false
+                },
                 populate: {
-                    path: 'levels'
+                    path: 'levels',
+                    match: {
+                        isDeleted: false
+                    }
                 }
             })
-            .populate('flats')
+            .populate({
+                path: 'flats',
+                match: {
+                    isDeleted: false
+                }
+            })
             .exec();
     }
 
@@ -94,7 +105,7 @@ export class FlatService {
                 level: level._id
             };
             await FlatModel.updateOne(
-                {flatNumber: num, house: this.houseId},
+                {flatNumber: num, house: this.houseId, isDeleted: false},
                 {
                     $set: {
                         ...result

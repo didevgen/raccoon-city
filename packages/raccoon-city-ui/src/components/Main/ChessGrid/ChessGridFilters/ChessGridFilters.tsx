@@ -1,4 +1,4 @@
-import {Avatar, Paper, Slider, Tooltip} from '@material-ui/core';
+import {Avatar, Grid, Paper, Slider, Tooltip} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
 import React, {Fragment, useEffect, useState} from 'react';
@@ -9,9 +9,8 @@ import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 
 const StyledPaper = styled(Paper)`
     width: 100%;
-    margin-bottom: 16px;
     display: inline-flex;
-    position: fixed;
+    position: sticky;
     top: 64px;
     z-index: 1202;
     padding: 8px;
@@ -20,7 +19,6 @@ const StyledPaper = styled(Paper)`
 const SelectContainer = styled.div`
     display: flex;
     align-items: center;
-    width: 400px;
     margin: 16px;
     .HouseSelect {
         width: 100%;
@@ -59,8 +57,8 @@ const FilterItemContainer = styled.div`
 `;
 
 const RangeContainer = styled(FilterItemContainer)`
-    min-width: 200px;
-    margin: 0 32px;
+    width: 140px;
+    margin: 0 48px;
 `;
 
 const FilterTitle = styled.div`
@@ -271,22 +269,40 @@ export function EmptyChessGridFilters({onHouseChange}) {
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
-
+    const hasPrices = data && data?.groupedFlats?.length > 0;
     return (
         <StyledPaper elevation={3}>
-            {props.onHouseChange && (
-                <SelectContainer>
-                    <ChessGridHouseSelect onChange={props.onHouseChange} />
-                </SelectContainer>
-            )}
-            <RoomAmountFilter dispatch={props.dispatchFn} />
-            {data && data?.groupedFlats?.length > 0 && (
-                <Fragment>
-                    <PriceFilter maxPrice={data.maxPrice} minPrice={data.minPrice} dispatch={props.dispatchFn} />
-                    <AreaFilter maxArea={data.maxArea} minArea={data.minArea} dispatch={props.dispatchFn} />
-                </Fragment>
-            )}
-            <ViewMode dispatch={props.dispatchFn} />
+            <Grid container spacing={1}>
+                {props.onHouseChange && (
+                    <Grid item xs={hasPrices ? 6 : 4} lg={hasPrices ? 3 : 3} xl={3}>
+                        <SelectContainer>
+                            <ChessGridHouseSelect onChange={props.onHouseChange} />
+                        </SelectContainer>
+                    </Grid>
+                )}
+                <Grid item xs={hasPrices ? 6 : 4} lg={hasPrices ? 3 : 3} xl={hasPrices ? 3 : 4}>
+                    <Grid container justify="center">
+                        <RoomAmountFilter dispatch={props.dispatchFn} />
+                    </Grid>
+                </Grid>
+                <Grid item xs={hasPrices ? 3 : 4} lg={hasPrices ? 2 : 2} xl={hasPrices ? 2 : 3}>
+                    <Grid container justify="center">
+                        <ViewMode dispatch={props.dispatchFn} />
+                    </Grid>
+                </Grid>
+                {hasPrices && (
+                    <Grid item xs={9} lg={4} xl={4}>
+                        <Grid container justify="center" direction="row">
+                            <PriceFilter
+                                maxPrice={data.maxPrice}
+                                minPrice={data.minPrice}
+                                dispatch={props.dispatchFn}
+                            />
+                            <AreaFilter maxArea={data.maxArea} minArea={data.minArea} dispatch={props.dispatchFn} />
+                        </Grid>
+                    </Grid>
+                )}
+            </Grid>
         </StyledPaper>
     );
 }

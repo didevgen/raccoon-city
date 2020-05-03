@@ -112,6 +112,7 @@ export function ChessGridHouseSelect({onChange}: ChessGridHouseSelectProps) {
     const [house, setHouse] = useState<House>();
 
     const {data, loading, error} = useQuery(GET_DEVELOPER_APARTMENT_COMPLEXES, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             uuid: developerUuid
         }

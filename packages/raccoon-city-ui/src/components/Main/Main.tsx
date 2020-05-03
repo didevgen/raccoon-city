@@ -2,6 +2,7 @@ import {useQuery} from '@apollo/react-hooks';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
+import styled from 'styled-components';
 import {GET_USER_INFO} from '../../graphql/queries/userQuery';
 import {
     ApartmentComplexCreateForm,
@@ -19,6 +20,11 @@ import {HouseInfo} from './HouseBuilder/HouseInfo/HouseInfo';
 import {MainChessGrid} from './MainChessGrid/MainChessGrid';
 import {Sidebar} from './Sidebar/Sidebar';
 import {UserList} from './Users/UserList';
+
+const Content = styled.div`
+    position: relative;
+    transform: rotate(0);
+`;
 
 export function Main() {
     const {data, loading} = useQuery(GET_USER_INFO);
@@ -58,7 +64,7 @@ export function Main() {
                     setOpen(false);
                 }}
             />
-            <main className={drawerStyles.content}>
+            <Content className={drawerStyles.content}>
                 <div className={drawerStyles.toolbar} />
                 <Switch>
                     <Route exact={true} path="/developers/:developerUuid/apartmentComplexes">
@@ -110,7 +116,7 @@ export function Main() {
                         <DeveloperList />
                     </Route>
                 </Switch>
-            </main>
+            </Content>
         </div>
     );
 }

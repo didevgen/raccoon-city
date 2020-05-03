@@ -18,7 +18,6 @@ const ChessGridWrapper = styled.div`
     background-color: #fff;
     display: flex;
     flex-direction: row;
-    margin-top: 80px;
 `;
 
 export enum ViewModeValues {
@@ -151,6 +150,7 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid);
     const {data, error, loading} = useQuery(GET_GROUPED_FLATS_CHESSGRID, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             uuid: id
         },
