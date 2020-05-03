@@ -16,7 +16,7 @@ import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
-import {setRouteParams} from '../../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 import {StyledLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
@@ -26,6 +26,20 @@ import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexI
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
+import styled from 'styled-components';
+
+const StyledPaper = styled(Paper)`
+    display: flex;
+    flex-direction: column;
+`;
+
+const HouseImage = styled.img`
+    width: 90%;
+    margin: 8px;
+    align-self: center;
+    border: 1px solid #ccc;
+`;
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
@@ -58,13 +72,15 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export const ApartmentComplexInfo = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Жилищный комплекс');
+    }, [params]); // eslint-disable-line
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
@@ -107,7 +123,8 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                 />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
-                        <Paper>
+                        <StyledPaper>
+                            {images.CHESS_GRID && <HouseImage src={images.CHESS_GRID?.downloadUrl} alt={name} />}
                             <List component="nav" aria-label="main mailbox folders">
                                 <StyledLink to={`${url}`}>
                                     <ListItem button={true}>
@@ -125,7 +142,7 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                     </ListItem>
                                 </StyledLink>
                             </List>
-                        </Paper>
+                        </StyledPaper>
                     </Grid>
                     <Grid item={true} xs={9}>
                         <div className={classes.root}>

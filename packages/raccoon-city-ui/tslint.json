@@ -6,6 +6,7 @@
         "interface-name": false,
         "object-literal-sort-keys": false,
         "jsx-boolean-value": false,
-        "jsx-no-lambda": false
+        "jsx-no-lambda": false,
+        "react-hooks/exhaustive-deps":  "off"
     }
 }

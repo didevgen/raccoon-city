@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {Link, useParams} from 'react-router-dom';
 
 const ButtonContainer = styled.div`
-    width: 345px;
     height: 140px;
     display: flex;
     align-items: center;

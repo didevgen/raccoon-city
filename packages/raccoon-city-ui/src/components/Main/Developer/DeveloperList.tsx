@@ -1,11 +1,8 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {CardActionArea} from '@material-ui/core';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
@@ -14,23 +11,11 @@ import styled from 'styled-components';
 import {apartmentComplexDefaultImage} from '../../../core/constants';
 import {DELETE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
-import {setRouteParams} from '../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../redux/actions';
 import {AddButton} from '../../shared/components/buttons/AddButton';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
-import {StyledLink} from '../../shared/components/styled';
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        card: {
-            maxWidth: 345
-        },
-        media: {
-            height: 0,
-            paddingTop: '56.25%' // 16:9
-        }
-    })
-);
+import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
 
 export interface DeveloperCardProps {
     id: string;
@@ -39,10 +24,9 @@ export interface DeveloperCardProps {
 }
 
 function DeveloperCard(props: DeveloperCardProps) {
-    const classes = useStyles();
     const [deleteMutation] = useMutation(DELETE_DEVELOPER);
     return (
-        <Card className={classes.card} elevation={3}>
+        <StyledCard elevation={3}>
             <CardHeaderWithMenu title={props.name}>
                 <StyledLink to={`/developer/${props.id}/edit`}>
                     <MenuItem>Редактировать</MenuItem>
@@ -74,17 +58,13 @@ function DeveloperCard(props: DeveloperCardProps) {
             </CardHeaderWithMenu>
             <CardActionArea>
                 <Link to={`/developers/${props.id}/apartmentComplexes`}>
-                    <CardMedia
-                        className={classes.media}
-                        image={props.imageUrl || apartmentComplexDefaultImage}
-                        title={props.name}
-                    />
+                    <StyledCardMedia image={props.imageUrl || apartmentComplexDefaultImage} title={props.name} />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />
                     </CardContent>
                 </Link>
             </CardActionArea>
-        </Card>
+        </StyledCard>
     );
 }
 
@@ -113,13 +93,15 @@ function EmptyDevelopers() {
 }
 
 export const DeveloperList = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Застройщики');
+    }, [params]); // eslint-disable-line
     const {loading, error, data} = useQuery(GET_DEVELOPERS, {
         fetchPolicy: 'cache-and-network'
     });
@@ -143,11 +125,13 @@ export const DeveloperList = connect(null, (dispatch) => ({
             {data.getDevelopers.map((developer) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={developer.id}>
-                        <DeveloperCard
-                            id={developer.id}
-                            name={developer.name}
-                            imageUrl={developer?.logo?.downloadUrl}
-                        />
+                        <Grid container justify="center">
+                            <DeveloperCard
+                                id={developer.id}
+                                name={developer.name}
+                                imageUrl={developer?.logo?.downloadUrl}
+                            />
+                        </Grid>
                     </Grid>
                 );
             })}

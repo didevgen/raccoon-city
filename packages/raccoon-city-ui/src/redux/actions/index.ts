@@ -4,3 +4,10 @@ export const setRouteParams = (params) => ({
         params
     }
 });
+
+export const setTitle = (title) => ({
+    type: 'SET_TITLE',
+    payload: {
+        title
+    }
+});

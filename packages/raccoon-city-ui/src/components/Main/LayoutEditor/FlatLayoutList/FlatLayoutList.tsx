@@ -21,7 +21,9 @@ export function FlatLayoutList() {
     return data.getFlatLayouts.map((layout: HouseLayout) => {
         return (
             <Grid item={true} xs={12} md={3} key={layout.id}>
-                <FlatLayoutCard name={layout.name} id={layout.id} imageUrl={layout.image.previewImageUrl} />
+                <Grid container justify="center">
+                    <FlatLayoutCard name={layout.name} id={layout.id} imageUrl={layout.image.previewImageUrl} />
+                </Grid>
             </Grid>
         );
     });

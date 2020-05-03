@@ -18,7 +18,7 @@ import {Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_HOUSE, UPDATE_HOUSE} from '../../../../graphql/mutations/houseMutation';
 import {HOUSE_DATA} from '../../../../graphql/queries/houseQuery';
-import {setRouteParams} from '../../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {StyledLink} from '../../../shared/components/styled';
 import {House} from '../../../shared/types/house.types';
 import {getHouseDataVariables, HouseFormValues} from './utils';
@@ -40,13 +40,15 @@ const FormBlock = styled.div`
 `;
 
 export const HouseCreateForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Создание дома');
+    }, [params]); // eslint-disable-line
     const [createHouse, {data, loading}] = useMutation(CREATE_HOUSE);
     const {apartmentComplexUuid, developerUuid} = useParams();
 
@@ -81,13 +83,15 @@ export const HouseCreateForm = connect(null, (dispatch) => ({
 });
 
 export const HouseEditForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Редактирование дома');
+    }, [params]); // eslint-disable-line
     const [updateHouse, {data: result, loading: updating}] = useMutation(UPDATE_HOUSE);
     const {apartmentComplexUuid, houseUuid, developerUuid} = useParams();
 

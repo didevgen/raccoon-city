@@ -16,7 +16,7 @@ import {
     APARTMENT_COMPLEX_DROPDOWNS,
     GET_EDIT_APARTMENT_COMPLEX_INFO
 } from '../../../../graphql/queries/apartmentComplexQuery';
-import {setRouteParams} from '../../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {ApartmentComplexFormValues, ApartmentComplexType} from '../../../shared/types/apartmentComplex.types';
 import {getApartmentComplexVariables} from './utils';
 const FormContainer = styled.div`
@@ -44,13 +44,15 @@ const StyledLink = styled(Link)`
 const required = (value: any) => (value ? undefined : 'Required');
 
 export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Создание ЖК');
+    }, [params]); // eslint-disable-line
 
     const {developerUuid} = useParams();
     const [createApartmentComplex, {data: apartmentComplex}] = useMutation(CREATE_APARTMENT_COMPLEX);
@@ -65,10 +67,8 @@ export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
 
     return (
         <Fragment>
-            <Typography variant="h5" gutterBottom={true}>
-                Создание комплекса
-            </Typography>
             <ApartmentComplexForm
+                title={'Создание комплекса'}
                 onSubmit={async (values) => {
                     await createApartmentComplex({
                         variables: {
@@ -83,19 +83,21 @@ export const ApartmentComplexCreateForm = connect(null, (dispatch) => ({
 });
 
 export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Редактирование ЖК');
+    }, [params]); // eslint-disable-line
     const {apartmentComplexUuid, developerUuid} = useParams();
 
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(
         GET_EDIT_APARTMENT_COMPLEX_INFO,
         {
-            fetchPolicy: 'cache-and-network',
+            fetchPolicy: 'no-cache',
             variables: {
                 uuid: apartmentComplexUuid
             }
@@ -126,10 +128,8 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
     values.district = values?.district?.key;
     return (
         <Fragment>
-            <Typography variant="h5" gutterBottom={true}>
-                Редактирование комплекса
-            </Typography>
             <ApartmentComplexForm
+                title={'Редактирование комплекса'}
                 onSubmit={async (updatedValues) => {
                     await updateApartmentComplex({
                         variables: {
@@ -147,6 +147,7 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
 interface ApartmentComplexForm {
     onSubmit: (values: any) => void;
     values?: any;
+    title: string;
 }
 
 function getDistricts(cities, selectedCity) {
@@ -154,6 +155,7 @@ function getDistricts(cities, selectedCity) {
 }
 
 export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
+    const {developerUuid} = useParams();
     const [selectedCity, setCity] = useState<any>(outerProps.values?.city);
 
     const {loading, error, data} = useQuery(APARTMENT_COMPLEX_DROPDOWNS);
@@ -173,6 +175,9 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                             <Container maxWidth="md">
                                 <FormContainer>
                                     <FormBlock>
+                                        <Typography variant="h5" gutterBottom={true}>
+                                            {outerProps.title}
+                                        </Typography>
                                         <Grid container={true} spacing={3}>
                                             <Grid item={true} xs={12} md={6}>
                                                 <Field name="type" validate={required}>
@@ -266,7 +271,7 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                                     props.input.onChange(e.target.value);
                                                                 }}
                                                             >
-                                                                {selectedCity &&
+                                                                {selectedCity ? (
                                                                     getDistricts(cities, selectedCity).map(
                                                                         (item: any) => {
                                                                             return (
@@ -278,7 +283,10 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                                                 </MenuItem>
                                                                             );
                                                                         }
-                                                                    )}
+                                                                    )
+                                                                ) : (
+                                                                    <MenuItem />
+                                                                )}
                                                             </TextField>
                                                         );
                                                     }}
@@ -405,7 +413,7 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                     alignItems="center"
                                 >
                                     <Grid justify="flex-end" container={true} item={true} xs={6}>
-                                        <StyledLink to="/">
+                                        <StyledLink to={`/developers/${developerUuid}/apartmentComplexes`}>
                                             <StyledButton variant="outlined" size="large">
                                                 Отмена
                                             </StyledButton>

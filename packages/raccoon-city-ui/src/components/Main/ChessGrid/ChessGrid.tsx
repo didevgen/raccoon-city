@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {GET_GROUPED_FLATS_CHESSGRID, GroupedFlats} from '../../../graphql/queries/houseQuery';
-import {setRouteParams} from '../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
@@ -175,14 +175,16 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
 };
 
 export const ChessGrid = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams, hasSelect}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, hasSelect, applyTitle}) => {
     const params = useParams();
     const {houseUuid} = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Шахматка');
+    }, [params]); // eslint-disable-line
 
     return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} />;
 });

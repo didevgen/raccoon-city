@@ -1,7 +1,6 @@
 import {CardActionArea} from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
@@ -15,6 +14,7 @@ import {flatDefaultImage} from '../../../../../core/constants';
 import {useMutation} from '@apollo/react-hooks';
 import {DELETE_FLAT} from '../../../../../graphql/mutations/flatMutation';
 import {GET_SECTION} from '../../../../../graphql/queries/flatQuery';
+import {StyledCardMedia} from '../../../../shared/components/styled';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -80,7 +80,7 @@ export const FlatCard = memo((props: FlatCardProps) => {
                     </MenuItem>
                 </CardHeaderWithMenu>
                 <CardActionArea>
-                    <CardMedia className={classes.media} image={flatDefaultImage} />
+                    <StyledCardMedia image={flatDefaultImage} />
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p" />
                     </CardContent>

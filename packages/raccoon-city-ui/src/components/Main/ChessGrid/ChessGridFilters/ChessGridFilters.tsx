@@ -1,7 +1,7 @@
 import {Avatar, Grid, Paper, Slider, Tooltip} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessGrid';

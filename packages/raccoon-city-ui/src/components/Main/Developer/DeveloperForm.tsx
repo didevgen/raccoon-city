@@ -18,7 +18,7 @@ import {Redirect, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {CREATE_DEVELOPER, UPDATE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {DEVELOPER_DROPDOWNS, GET_DEVELOPER} from '../../../graphql/queries/developerQuery';
-import {setRouteParams} from '../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../redux/actions';
 import {DropzoneContainer, StyledLink} from '../../shared/components/styled';
 const FormBlock = styled.div`
     padding: 16px;
@@ -150,13 +150,15 @@ function LogoComponent({setImage, logo}) {
 }
 
 export const DeveloperEditForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Редактирование застройщика');
+    }, [params]); // eslint-disable-line
     const {developerUuid} = useParams();
 
     const {data, loading, error} = useQuery(GET_DEVELOPER, {
@@ -201,13 +203,15 @@ export const DeveloperEditForm = connect(null, (dispatch) => ({
 });
 
 export const DeveloperCreateForm = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Создание застройщика');
+    }, [params]); // eslint-disable-line
 
     const [createDeveloper, {data: createResult}] = useMutation(CREATE_DEVELOPER);
 

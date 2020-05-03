@@ -13,14 +13,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
-import {Fragment, useEffect, useState} from 'react';
 import * as React from 'react';
+import {Fragment, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import styled from 'styled-components';
 import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
-import {setRouteParams} from '../../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 import {StyledNavLink} from '../../../shared/components/styled';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
@@ -42,6 +42,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
+const StyledPaper = styled(Paper)`
+    display: flex;
+    flex-direction: column;
+`;
+
+const HouseImage = styled.img`
+    width: 90%;
+    margin: 8px;
+    align-self: center;
+    border: 1px solid #ccc;
+`;
+
 const StyledLink = styled(StyledNavLink)`
     &.Mui-selected > div {
         color: white;
@@ -53,13 +65,15 @@ const StyledLink = styled(StyledNavLink)`
 `;
 
 export const HouseInfo = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Информация о доме');
+    }, [params]); // eslint-disable-line
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const {path, url} = useRouteMatch();
@@ -102,7 +116,8 @@ export const HouseInfo = connect(null, (dispatch) => ({
                 />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
-                        <Paper>
+                        <StyledPaper>
+                            {images.CHESS_GRID && <HouseImage src={images.CHESS_GRID?.downloadUrl} alt={name} />}
                             <List component="nav" aria-label="main mailbox folders">
                                 <StyledLink activeClassName="Mui-selected" to={`${url}/info`}>
                                     <ListItem button={true}>
@@ -133,7 +148,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                     </ListItem>
                                 </StyledLink>
                             </List>
-                        </Paper>
+                        </StyledPaper>
                     </Grid>
                     <Grid item={true} xs={9}>
                         <div className={classes.root}>

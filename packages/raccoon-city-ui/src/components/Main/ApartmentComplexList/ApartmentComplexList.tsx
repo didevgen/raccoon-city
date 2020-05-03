@@ -5,7 +5,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {ALL_APARTMENT_COMPLEXES} from '../../../graphql/queries/apartmentComplexQuery';
-import {setRouteParams} from '../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../redux/actions';
 import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
@@ -24,13 +24,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ApartmentComplexList = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Жилищные комплексы');
+    }, [params]); // eslint-disable-line
 
     const classes = useStyles();
     const {developerUuid} = useParams();
@@ -63,7 +65,9 @@ export const ApartmentComplexList = connect(null, (dispatch) => ({
 
                         return (
                             <Grid item={true} xs={12} md={3} key={complex.id}>
-                                <ApartmentComplex name={complex.name} id={complex.id} imageUrl={imageUrl} />
+                                <Grid container justify="center">
+                                    <ApartmentComplex name={complex.name} id={complex.id} imageUrl={imageUrl} />
+                                </Grid>
                             </Grid>
                         );
                     })}

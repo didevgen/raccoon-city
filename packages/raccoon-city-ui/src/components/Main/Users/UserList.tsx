@@ -5,7 +5,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {GET_USERS} from '../../../graphql/queries/userQuery';
-import {setRouteParams} from '../../../redux/actions';
+import {setRouteParams, setTitle} from '../../../redux/actions';
 import {UserDialog} from './UserDialog';
 
 const useStyles = makeStyles({
@@ -16,13 +16,15 @@ const useStyles = makeStyles({
 });
 
 export const UserList = connect(null, (dispatch) => ({
-    applyParams: (params) => dispatch(setRouteParams(params))
-}))(({applyParams}) => {
+    applyParams: (params) => dispatch(setRouteParams(params)),
+    applyTitle: (title) => dispatch(setTitle(title))
+}))(({applyParams, applyTitle}) => {
     const params = useParams();
 
     useEffect(() => {
         applyParams(params);
-    }, [applyParams, params]);
+        applyTitle('Пользователи');
+    }, [params]); // eslint-disable-line
     const classes = useStyles();
     const {data, loading, error} = useQuery(GET_USERS);
 

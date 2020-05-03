@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {StyledLink} from '../../shared/components/styled';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 
 interface SidebarProps {
     open: boolean;
@@ -67,7 +68,7 @@ export const Sidebar = connect((state) => ({
                 {houseUuid && (
                     <StyledLink to={`/developers/${developerUuid}/houseGrid/${houseUuid}`}>
                         <ListItem button>
-                            <ListItemIcon>{<AppsIcon />}</ListItemIcon>
+                            <ListItemIcon>{<HomeWorkIcon />}</ListItemIcon>
                             <ListItemText primary="Шахматка дома" />
                         </ListItem>
                     </StyledLink>

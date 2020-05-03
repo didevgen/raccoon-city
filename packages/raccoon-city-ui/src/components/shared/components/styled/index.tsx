@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import {Card, CardMedia, Fab} from '@material-ui/core';
 import {Link, NavLink} from 'react-router-dom';
-import {Fab} from '@material-ui/core';
+import styled from 'styled-components';
 
 export const StyledLink = styled(Link)`
     text-decoration: none;
@@ -72,4 +72,14 @@ export const DropzoneContainer = styled.div`
     color: #bdbdbd;
     outline: none;
     transition: border 0.24s ease-in-out;
+`;
+
+export const StyledCard = styled(Card)`
+    max-width: 345px;
+    width: 100%;
+`;
+
+export const StyledCardMedia = styled(CardMedia)`
+    height: 0;
+    padding-top: 56.25%;
 `;
