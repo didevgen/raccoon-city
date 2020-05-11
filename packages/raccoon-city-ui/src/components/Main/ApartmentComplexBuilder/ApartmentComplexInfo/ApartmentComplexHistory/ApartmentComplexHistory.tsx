@@ -40,11 +40,9 @@ export function ApartmentComplexHistory() {
                             </TableCell>
                             <TableCell>{row.name}</TableCell>
                             <TableCell>
-                                <a href={row.downloadUrl} target="_blank">
-                                    <Button variant="outlined" color="primary">
-                                        Скачать
-                                    </Button>
-                                </a>
+                                <Button variant="outlined" color="primary" target="_blank" href={row.downloadUrl}>
+                                    Скачать
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}
