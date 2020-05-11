@@ -1,19 +1,21 @@
-import {CardActionArea} from '@material-ui/core';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import Typography from '@material-ui/core/Typography';
-import * as React from 'react';
-import {useParams} from 'react-router';
-import {apartmentComplexDefaultImage} from '../../../../../core/constants';
-import {ApartmentComplexImages, ImageType, SingleImage} from '../../../../shared/types/apartmentComplex.types';
-import {ImageDialog} from '../../../Images/ImageDialog/ImageDialog';
 import {useMutation} from '@apollo/react-hooks';
+import * as React from 'react';
+import {Fragment} from 'react';
+import {useParams} from 'react-router';
+import styled from 'styled-components';
+import {apartmentComplexDefaultImage} from '../../../../../core/constants';
 import {UPLOAD_FILE} from '../../../../../graphql/mutations/apartmentComplexMutation';
 import {APARTMENT_COMPLEX_INFO} from '../../../../../graphql/queries/apartmentComplexQuery';
-import {StyledCard, StyledCardMedia} from '../../../../shared/components/styled';
+import {ApartmentComplexImages, ImageType, SingleImage} from '../../../../shared/types/apartmentComplex.types';
+import {ImageDialog} from '../../../Images/ImageDialog/ImageDialog';
+
+const HouseImage = styled.img`
+    width: 90%;
+    margin: 8px;
+    align-self: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+`;
 
 interface Mode {
     title: string;
@@ -45,32 +47,21 @@ function PreviewComponent(props: PreviewComponentProps) {
     });
 
     return (
-        <StyledCard>
-            <CardHeader
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={props.mode.title}
-            />
-            <CardActionArea
+        <Fragment>
+            <HouseImage
+                src={image.downloadUrl}
+                alt={'ЖК'}
                 onClick={() => {
                     setOpen(true);
                 }}
-            >
-                <StyledCardMedia image={image.downloadUrl} />
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p" />
-                </CardContent>
-            </CardActionArea>
+            />
             <ImageDialog
                 mutation={mutation}
                 setOpen={setOpen}
                 open={open}
                 params={{uuid: props.uuid, mode: props.mode.value}}
             />
-        </StyledCard>
+        </Fragment>
     );
 }
 
@@ -81,37 +72,13 @@ interface MainApartmentComplexImagesProps {
 export function MainApartmentComplexImages({images}: MainApartmentComplexImagesProps) {
     const {apartmentComplexUuid} = useParams();
     return (
-        <Grid container={true} spacing={3}>
-            <Grid item xs={4}>
-                <PreviewComponent
-                    images={images}
-                    uuid={apartmentComplexUuid as string}
-                    mode={{
-                        title: 'Сайт',
-                        value: ImageType.SITE
-                    }}
-                />
-            </Grid>
-            <Grid item xs={4}>
-                <PreviewComponent
-                    images={images}
-                    uuid={apartmentComplexUuid as string}
-                    mode={{
-                        title: 'Приложение',
-                        value: ImageType.MOBILE
-                    }}
-                />
-            </Grid>
-            <Grid item xs={4}>
-                <PreviewComponent
-                    images={images}
-                    uuid={apartmentComplexUuid as string}
-                    mode={{
-                        title: 'Шахматка',
-                        value: ImageType.CHESS_GRID
-                    }}
-                />
-            </Grid>
-        </Grid>
+        <PreviewComponent
+            images={images}
+            uuid={apartmentComplexUuid as string}
+            mode={{
+                title: 'Изображение',
+                value: ImageType.CHESS_GRID
+            }}
+        />
     );
 }

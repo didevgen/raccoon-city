@@ -60,6 +60,12 @@ export const UNASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
     }
 `;
 
+export const DELETE_FLAT_LAYOUT = gql`
+    mutation deleteFlatLayout($uuid: String!) {
+        deleteFlatLayout(uuid: $uuid)
+    }
+`;
+
 export const DELETE_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
     mutation deleteFlatLayoutsToLevelLayout($layoutAssignmentId: String!) {
         deleteFlatLayoutsToLevelLayout(layoutAssignmentId: $layoutAssignmentId)

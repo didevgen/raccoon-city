@@ -4,7 +4,6 @@ import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {LayoutDbService} from '../../db/services/layoutDbService';
 import {LayoutImageService} from '../../services/image/layout';
 import {Context} from '../../utils';
-import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {FlatLayoutImageServiceFactory} from '../../services/image/flatLayoutImageServiceFactory';
 
 export const layoutMutation = {
@@ -33,6 +32,10 @@ export const layoutMutation = {
     async deleteFlatLayoutImage(parent, args, ctx: Context) {
         await new FlatLayoutImageServiceFactory(args.mode).getImageService(args.uuid).removeImage(args.imageId);
         return 'Success';
+    },
+    async deleteFlatLayout(parent, {uuid}, ctx: Context) {
+        await HouseLayoutModel.findOneAndUpdate({_id: uuid}, {$set: {isDeleted: true}}).exec();
+        return true;
     },
     async assignFlatsToLayout(parent, {flats, layoutId}) {
         if (layoutId) {

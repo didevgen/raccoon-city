@@ -23,6 +23,7 @@ type Mutation {
     createLevelLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     addFlatLayoutImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
     deleteFlatLayoutImage(mode: String!, uuid: String!, imageId: String!): String
+    deleteFlatLayout(uuid: String!): Boolean
 }
 
 type Query {

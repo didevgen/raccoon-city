@@ -117,7 +117,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <StyledPaper>
-                            {images.CHESS_GRID && <HouseImage src={images.CHESS_GRID?.downloadUrl} alt={name} />}
+                            <MainHouseImages images={images} />
                             <List component="nav" aria-label="main mailbox folders">
                                 <StyledLink activeClassName="Mui-selected" to={`${url}/info`}>
                                     <ListItem button={true}>
@@ -157,9 +157,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                     <AppBar position="static" color="default">
                                         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                                             <Tab label="Информация" />
-                                            <Tab label="Главная" />
                                             <Tab label="360" />
-                                            <Tab label="180" />
                                             <Tab label="Фото" />
                                         </Tabs>
                                     </AppBar>
@@ -218,15 +216,9 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         </Table>
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
-                                        <MainHouseImages images={images} />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={2}>
                                         <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />
                                     </TabPanel>
-                                    <TabPanel value={value} index={3}>
-                                        <VRImages uuid={uuid} images={images.HALF_VR || []} mode={ImageType.HALF_VR} />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={4}>
+                                    <TabPanel value={value} index={2}>
                                         <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
                                     </TabPanel>
                                 </Route>

@@ -33,13 +33,6 @@ const StyledPaper = styled(Paper)`
     flex-direction: column;
 `;
 
-const HouseImage = styled.img`
-    width: 90%;
-    margin: 8px;
-    align-self: center;
-    border: 1px solid #ccc;
-`;
-
 interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
@@ -124,7 +117,7 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <StyledPaper>
-                            {images.CHESS_GRID && <HouseImage src={images.CHESS_GRID?.downloadUrl} alt={name} />}
+                            <MainApartmentComplexImages images={images} />
                             <List component="nav" aria-label="main mailbox folders">
                                 <StyledNavLink activeClassName="Mui-selected" to={`${url}/info`}>
                                     <ListItem button={true}>
@@ -156,9 +149,7 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                     <AppBar position="static" color="default">
                                         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                                             <Tab label="Информация" />
-                                            <Tab label="Главная" />
                                             <Tab label="360" />
-                                            <Tab label="180" />
                                             <Tab label="Фото" />
                                         </Tabs>
                                     </AppBar>
@@ -166,23 +157,13 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ApartmentComplexData apartmentComplex={data.getApartmentComplex} />
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
-                                        <MainApartmentComplexImages images={images} />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={2}>
                                         <VRImages
                                             uuid={apartmentComplexUuid}
                                             images={images.VR || []}
                                             mode={ImageType.VR}
                                         />
                                     </TabPanel>
-                                    <TabPanel value={value} index={3}>
-                                        <VRImages
-                                            uuid={apartmentComplexUuid}
-                                            images={images.HALF_VR || []}
-                                            mode={ImageType.HALF_VR}
-                                        />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={4}>
+                                    <TabPanel value={value} index={2}>
                                         <Photos
                                             uuid={apartmentComplexUuid}
                                             images={images.PHOTO || []}

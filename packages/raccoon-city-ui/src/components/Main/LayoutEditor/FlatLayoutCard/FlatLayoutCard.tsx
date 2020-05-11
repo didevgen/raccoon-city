@@ -1,3 +1,4 @@
+import {useMutation} from '@apollo/react-hooks';
 import {CardActionArea} from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -5,6 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../core/constants';
+import {DELETE_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
+import {DELETE_FLAT_LAYOUT} from '../../../../graphql/mutations/layoutMutation';
+import {ALL_APARTMENT_COMPLEXES} from '../../../../graphql/queries/apartmentComplexQuery';
+import {GET_LAYOUTS} from '../../../../graphql/queries/layoutQuery';
+import {Confirmation} from '../../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia} from '../../../shared/components/styled';
 
@@ -16,11 +22,41 @@ export interface FlatLayoutCardProps {
 
 export function FlatLayoutCard(props: FlatLayoutCardProps) {
     const {apartmentComplexUuid, houseUuid, developerUuid} = useParams();
+
+    const [deleteMutation] = useMutation(DELETE_FLAT_LAYOUT, {
+        refetchQueries: [
+            {
+                query: GET_LAYOUTS,
+                variables: {
+                    houseId: houseUuid
+                }
+            }
+        ]
+    });
+
     return (
         <StyledCard elevation={3}>
             <CardHeaderWithMenu title={props.name}>
                 <MenuItem>Редактировать</MenuItem>
-                <MenuItem>Удалить</MenuItem>
+                <Confirmation>
+                    {(confirmFn: (cb: () => void) => void) => {
+                        return (
+                            <MenuItem
+                                onClick={() => {
+                                    confirmFn(() => async () => {
+                                        await deleteMutation({
+                                            variables: {
+                                                uuid: props.id
+                                            }
+                                        });
+                                    });
+                                }}
+                            >
+                                Удалить
+                            </MenuItem>
+                        );
+                    }}
+                </Confirmation>
             </CardHeaderWithMenu>
             <CardActionArea>
                 <Link
