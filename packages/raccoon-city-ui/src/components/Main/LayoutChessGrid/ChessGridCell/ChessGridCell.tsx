@@ -1,5 +1,6 @@
 import {Theme, withStyles} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
+import HomeIcon from '@material-ui/icons/Home';
 import React from 'react';
 import {createSelectable, TSelectableItemProps} from 'react-selectable-fast/lib';
 import styled from 'styled-components';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const Cell = styled.div<Props>`
+    position: relative;
     color: #fff;
     background-color: #4caf50;
     border-radius: 0;
@@ -103,6 +105,12 @@ const DataContainer = styled.div`
     font-size: 12px;
 `;
 
+const StyledIcon = styled.div`
+    position: absolute;
+    top: -6px;
+    right: -6px;
+`;
+
 export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}: {flat: Flat} & TSelectableItemProps) {
     return (
         <HtmlTooltip
@@ -124,6 +132,11 @@ export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}
         >
             <Cell ref={selectableRef} isSelected={isSelected} isSelecting={isSelecting} className={flat.status}>
                 {flat.roomAmount}
+                {!flat.belongsToLayout && flat.hasLayout && (
+                    <StyledIcon>
+                        <HomeIcon style={{fontSize: 14}} color="primary" />
+                    </StyledIcon>
+                )}
             </Cell>
         </HtmlTooltip>
     );

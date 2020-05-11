@@ -32,6 +32,7 @@ export interface Flat {
     status: FlatStatus;
     roomAmount: string;
     belongsToLayout?: boolean;
+    hasLayout?: boolean;
     layout?: HouseLayout;
     isActive?: boolean;
 }

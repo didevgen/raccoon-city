@@ -1,5 +1,6 @@
 extend type HouseFlat {
     belongsToLayout: Boolean
+    hasLayout: Boolean
 }
 
 type FlatLauoutImages {

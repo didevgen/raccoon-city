@@ -58,7 +58,8 @@ export const layoutQuery = {
                             return {
                                 ...flat.toObject(),
                                 ...newFlat,
-                                belongsToLayout: flat.layout && flat.layout.toString() === layoutId
+                                belongsToLayout: flat.layout && flat.layout.toString() === layoutId,
+                                hasLayout: !!flat.layout
                             };
                         });
                         return {

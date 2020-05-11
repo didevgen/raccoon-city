@@ -74,6 +74,7 @@ export const GET_GROUPED_FLATS_WITH_LAYOUT = gql`
                     status
                     roomAmount
                     belongsToLayout
+                    hasLayout
                 }
             }
         }
