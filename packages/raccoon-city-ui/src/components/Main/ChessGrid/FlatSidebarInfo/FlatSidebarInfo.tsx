@@ -41,7 +41,8 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(GET_FLAT_SIDEBAR_DATA, {
         variables: {
             flatId: props.flat.id
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
     const [value, setValue] = React.useState(0);
 

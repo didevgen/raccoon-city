@@ -164,7 +164,8 @@ export const DeveloperEditForm = connect(null, (dispatch) => ({
     const {data, loading, error} = useQuery(GET_DEVELOPER, {
         variables: {
             uuid: developerUuid
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
     const [updateDeveloper, {data: updateResult}] = useMutation(UPDATE_DEVELOPER);
 

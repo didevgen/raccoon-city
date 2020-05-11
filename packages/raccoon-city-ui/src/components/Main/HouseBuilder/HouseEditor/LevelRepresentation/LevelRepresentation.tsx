@@ -225,7 +225,8 @@ export const LevelRepresentation = memo(function LevelRepresentationFn(props: Le
     const {data, error, loading} = useQuery(GET_MAX_LEVEL, {
         variables: {
             sectionId: section.id
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     useEffect(() => {

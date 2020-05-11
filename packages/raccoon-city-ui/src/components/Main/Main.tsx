@@ -27,7 +27,9 @@ const Content = styled.div`
 `;
 
 export function Main() {
-    const {data, loading} = useQuery(GET_USER_INFO);
+    const {data, loading} = useQuery(GET_USER_INFO, {
+        fetchPolicy: 'cache-and-network'
+    });
     // const [logout] = useMutation(LOGOUT);
     const [open, setOpen] = React.useState(false);
     const drawerStyles = useStyles();

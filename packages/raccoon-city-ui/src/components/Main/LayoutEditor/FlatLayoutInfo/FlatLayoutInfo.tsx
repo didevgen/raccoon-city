@@ -19,7 +19,8 @@ export function FlatLayouInfo() {
     const {data, loading, error, refetch} = useQuery<GetLayoutQuery>(GET_LAYOUT, {
         variables: {
             layoutId
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (!layoutId) {

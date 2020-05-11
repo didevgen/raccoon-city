@@ -20,7 +20,8 @@ export function FlatLayoutSelectionList(props: FlatLayoutSelectionListProps) {
     const {loading, error, data} = useQuery(GET_LAYOUTS, {
         variables: {
             houseId: houseUuid
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading || error) {

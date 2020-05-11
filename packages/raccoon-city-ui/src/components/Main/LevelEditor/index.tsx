@@ -66,7 +66,8 @@ function LevelLayouts() {
     const {loading, error, data, refetch} = useQuery(GET_LEVEL_LAYOUTS, {
         variables: {
             houseId: houseUuid
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading || error) {

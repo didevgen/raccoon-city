@@ -11,7 +11,8 @@ export function FlatLayoutList() {
     const {loading, error, data} = useQuery(GET_LAYOUTS, {
         variables: {
             houseId: houseUuid
-        }
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading || error) {
