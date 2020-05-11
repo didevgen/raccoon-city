@@ -47,13 +47,6 @@ const StyledPaper = styled(Paper)`
     flex-direction: column;
 `;
 
-const HouseImage = styled.img`
-    width: 90%;
-    margin: 8px;
-    align-self: center;
-    border: 1px solid #ccc;
-`;
-
 const StyledLink = styled(StyledNavLink)`
     &.Mui-selected > div {
         color: white;
