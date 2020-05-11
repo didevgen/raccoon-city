@@ -6,7 +6,7 @@ import {Context} from '../../utils';
 
 async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId: string): Promise<Flat> {
     const prevFlat = previousFlat ? previousFlat.toObject() : {};
-    let section = await SectionModel.findOne({house: houseId, sectionName: newFlat.section});
+    let section = await SectionModel.findOne({house: houseId, sectionName: newFlat.section, isDeleted: false});
     let level;
     if (!section) {
         section = await SectionModel.create({
@@ -21,6 +21,7 @@ async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId
     } else {
         level = await LevelModel.findOne({
             section: section.id,
+            isDeleted: false,
             levelNumber: newFlat.level
         });
 
@@ -104,12 +105,12 @@ export const flatMutation = {
 
         if (flat.section !== previousFlat.section.sectionName) {
             const updatedFlat = await handleSection(flat, previousFlat, flat.house);
-            return FlatModel.findOneAndUpdate({_id: previousFlat.id}, updatedFlat);
+            return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, updatedFlat);
         }
 
         if (flat.level !== previousFlat.level.levelNumber) {
             const updatedFlat = await handleLevelMismatch(flat, previousFlat);
-            return FlatModel.findOneAndUpdate({_id: previousFlat.id}, updatedFlat);
+            return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, updatedFlat);
         }
 
         const result = {

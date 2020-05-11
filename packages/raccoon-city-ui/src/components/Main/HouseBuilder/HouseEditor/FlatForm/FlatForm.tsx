@@ -22,6 +22,7 @@ import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMut
 import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
 import {Flat} from '../../../../shared/types/flat.types';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
+import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
 
 interface FlatFormDialogProps {
     open: boolean;
@@ -66,9 +67,9 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                     },
                     refetchQueries: [
                         {
-                            query: GET_SECTION,
+                            query: GET_GROUPED_FLATS,
                             variables: {
-                                sectionId
+                                uuid
                             }
                         },
                         {
