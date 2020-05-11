@@ -81,7 +81,7 @@ type Mutation {
     updateApartmentComplex(uuid: String!, apartmentComplex: ApartmentComplexInput!): ApartmentComplex
     deleteApartmentComplex(uuid: String!): Boolean
     addImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
-    uploadApartmentComplexFile(file: Upload!): [ParsedApartmentComplex]
+    uploadApartmentComplexFile(uuid: String!, file: Upload!): [ParsedApartmentComplex]
     deleteImage(mode: String!, uuid: String!, imageId: String!): String
     assignFlats(data: [HosueWithFlats]): String
 }

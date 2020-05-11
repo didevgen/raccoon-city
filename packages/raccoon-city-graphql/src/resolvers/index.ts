@@ -8,6 +8,7 @@ import {levelMutation} from './mutations/level';
 import {apartmentComplex as apartmentComplexQuery} from './queries/apartmentComplex.resolver';
 import {constants} from './queries/constants.resolver';
 import {developerQuery} from './queries/developer.resolver';
+import {fileHistoryQuery} from './queries/fileHistory.resolver';
 import {flatQuery} from './queries/flat.resolver';
 import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
@@ -23,6 +24,7 @@ export default {
         ...levelQuery,
         ...flatQuery,
         ...developerQuery,
+        ...fileHistoryQuery,
         ...user
     },
     Mutation: {

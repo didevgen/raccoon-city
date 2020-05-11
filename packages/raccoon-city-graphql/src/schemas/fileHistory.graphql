@@ -1,0 +1,14 @@
+type FileHistory {
+    id: String
+    name: String
+    timestamp: String
+    downloadUrl: String
+}
+#
+#type Mutation {
+#    deleteFileHistoryItem(id: String!): Boolean
+#}
+
+extend type Query {
+    getHistory(apartmentComplexId: String!): [FileHistory]
+}

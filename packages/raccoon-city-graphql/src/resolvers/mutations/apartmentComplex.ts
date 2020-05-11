@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
+import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {apartmentComplexTypes} from '../../constants/apartmentComplexTypes';
 import {cities} from '../../constants/cities';
 import {complexClasses} from '../../constants/complexClasses';
 import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartmentComplex';
+import {FileHistoryDbService} from '../../db/services/fileHistory.service';
 import {FlatService} from '../../db/services/flat.service';
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
+import {PhotosService} from '../../services/image/photos';
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
 import {ApartmentComplexInputArgs, AssignFlatInputArgs} from '../../types/apartment_complex';
 import {Context} from '../../utils';
+import {UploadedFile} from '../../services/image/imageService';
+import {FileService} from '../../services/image/fileService';
 
 export const apartmentComplex = {
     async createApartmentComplex(parent, args, ctx: Context): Promise<ApartmentComplex> {
@@ -69,7 +74,12 @@ export const apartmentComplex = {
         return 'Success';
     },
     async uploadApartmentComplexFile(parent, args, ctx: Context) {
-        return new ApartmentComplexSpreadsheetService(await args.file).parse();
+        const file: UploadedFile = await args.file;
+        await new FileService(
+            new S3ImageUploader('spreadsheet'),
+            new FileHistoryDbService(args.uuid, file.filename)
+        ).addImage(file);
+        return new ApartmentComplexSpreadsheetService(file).parse();
     },
     async assignFlats(parent, args, ctx: Context) {
         const data: AssignFlatInputArgs[] = args.data;

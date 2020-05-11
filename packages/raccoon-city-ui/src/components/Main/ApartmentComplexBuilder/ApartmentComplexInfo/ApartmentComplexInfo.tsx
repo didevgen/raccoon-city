@@ -26,6 +26,7 @@ import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApart
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
 import styled from 'styled-components';
+import {ApartmentComplexHistory} from './ApartmentComplexHistory/ApartmentComplexHistory';
 
 const StyledPaper = styled(Paper)`
     display: flex;
@@ -140,6 +141,11 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Импорт помещений" />
                                     </ListItem>
                                 </StyledNavLink>
+                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/history`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="История обновлений" />
+                                    </ListItem>
+                                </StyledNavLink>
                             </List>
                         </StyledPaper>
                     </Grid>
@@ -189,6 +195,9 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                 </Route>
                                 <Route path={`${path}/import`}>
                                     <ApartmentComplexImport />
+                                </Route>
+                                <Route path={`${path}/history`}>
+                                    <ApartmentComplexHistory />
                                 </Route>
                             </Switch>
                         </div>
