@@ -6,11 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../core/constants';
-import {DELETE_FLAT_LAYOUT} from '../../../../graphql/mutations/layoutMutation';
+import {DELETE_FLAT_LAYOUT, EDIT_LAYOUT} from '../../../../graphql/mutations/layoutMutation';
 import {GET_LAYOUTS} from '../../../../graphql/queries/layoutQuery';
 import {Confirmation} from '../../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia} from '../../../shared/components/styled';
+import {LayoutDialog} from '../../Images/LayoutDialog/LayoutDialog';
 
 export interface FlatLayoutCardProps {
     id: string;
@@ -20,6 +21,17 @@ export interface FlatLayoutCardProps {
 
 export function FlatLayoutCard(props: FlatLayoutCardProps) {
     const {apartmentComplexUuid, houseUuid, developerUuid} = useParams();
+    const [open, setOpen] = React.useState(false);
+    const mutation = useMutation(EDIT_LAYOUT, {
+        refetchQueries: [
+            {
+                query: GET_LAYOUTS,
+                variables: {
+                    houseId: houseUuid
+                }
+            }
+        ]
+    });
 
     const [deleteMutation] = useMutation(DELETE_FLAT_LAYOUT, {
         refetchQueries: [
@@ -35,7 +47,13 @@ export function FlatLayoutCard(props: FlatLayoutCardProps) {
     return (
         <StyledCard elevation={3}>
             <CardHeaderWithMenu title={props.name}>
-                <MenuItem>Редактировать</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        setOpen(true);
+                    }}
+                >
+                    Редактировать
+                </MenuItem>
                 <Confirmation>
                     {(confirmFn: (cb: () => void) => void) => {
                         return (
@@ -66,6 +84,14 @@ export function FlatLayoutCard(props: FlatLayoutCardProps) {
                     </CardContent>
                 </Link>
             </CardActionArea>
+            <LayoutDialog
+                isEdit={true}
+                mutation={mutation}
+                downloadLink={props.imageUrl}
+                setOpen={setOpen}
+                open={open}
+                params={{uuid: props.id, name: props.name}}
+            />
         </StyledCard>
     );
 }

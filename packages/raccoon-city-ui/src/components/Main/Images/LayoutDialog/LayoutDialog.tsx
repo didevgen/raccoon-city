@@ -1,3 +1,4 @@
+import {MutationTuple} from '@apollo/react-hooks/lib/types';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,9 +8,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 // @ts-ignore
 import React, {Fragment, useState} from 'react';
+import {useDropzone} from 'react-dropzone';
 import styled from 'styled-components';
 import {StyledDropzone} from '../../../shared/components/dropzone/Dropzone';
-import {MutationTuple} from '@apollo/react-hooks/lib/types';
 
 const EditorContainer = styled.div`
     display: flex;
@@ -23,7 +24,9 @@ export interface LayoutDialog {
     downloadLink?: string;
     params: {
         uuid: string;
+        name?: string;
     };
+    isEdit?: boolean;
     mutation: MutationTuple<any, any>;
 }
 
@@ -34,10 +37,31 @@ const ImageContainer = styled.div`
 const StyledImage = styled.img`
     max-width: 100%;
 `;
+const ResetImage = styled(Button)`
+    margin: 16px 0 !important;
+`;
 
-export function LayoutDialog({setOpen, open, params, downloadLink, mutation}: LayoutDialog) {
+function ChangeImage({onDrop}) {
+    const {getRootProps, getInputProps} = useDropzone({
+        accept: 'image/*',
+        onDrop: (acceptedFiles) => {
+            onDrop(acceptedFiles[0]);
+        }
+    });
+
+    return (
+        <div className="container">
+            <input {...getInputProps()} />
+            <ResetImage {...getRootProps()} size="small" variant="outlined" color="primary">
+                Изменить изображение
+            </ResetImage>
+        </div>
+    );
+}
+
+export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutation}: LayoutDialog) {
     const [image, setImage] = useState<any>();
-    const [name, setName] = useState<any>();
+    const [name, setName] = useState<any>(params.name);
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
     const {uuid} = params;
 
@@ -45,7 +69,9 @@ export function LayoutDialog({setOpen, open, params, downloadLink, mutation}: La
 
     const handleClose = () => {
         setImage(undefined);
-        setPreviewUrl(undefined);
+        if (!isEdit) {
+            setPreviewUrl(undefined);
+        }
         setOpen(false);
     };
 
@@ -71,11 +97,12 @@ export function LayoutDialog({setOpen, open, params, downloadLink, mutation}: La
     };
     return (
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
-            <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
+            <DialogTitle id="form-dialog-title">{isEdit ? 'Редактировать' : 'Добавить изображение'}</DialogTitle>
             <DialogContent>
                 {!previewUrl && <StyledDropzone onDrop={handleDrop} />}
                 {previewUrl && (
                     <Fragment>
+                        <ChangeImage onDrop={handleDrop} />
                         <EditorContainer>
                             <ImageContainer>
                                 <StyledImage src={previewUrl} />
@@ -100,7 +127,7 @@ export function LayoutDialog({setOpen, open, params, downloadLink, mutation}: La
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button disabled={!image || loading || !name} onClick={onSave} color="primary">
+                <Button disabled={(!image && !isEdit) || loading || !name} onClick={onSave} color="primary">
                     {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>

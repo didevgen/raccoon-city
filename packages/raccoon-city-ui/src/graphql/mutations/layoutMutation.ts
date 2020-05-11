@@ -9,6 +9,15 @@ export const CREATE_LAYOUT = gql`
     }
 `;
 
+export const EDIT_LAYOUT = gql`
+    mutation editLayout($uuid: String!, $file: Upload, $name: String!) {
+        editLayout(uuid: $uuid, file: $file, name: $name) {
+            id
+            name
+        }
+    }
+`;
+
 export const CREATE_LEVEL_LAYOUT = gql`
     mutation createLevelLayout($uuid: String!, $file: Upload!, $name: String!) {
         createLevelLayout(houseId: $uuid, file: $file, name: $name) {

@@ -1,10 +1,11 @@
+import mongoose, {mongo} from 'mongoose';
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {FlatModel} from '../../db/models/flat';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {LayoutDbService} from '../../db/services/layoutDbService';
+import {FlatLayoutImageServiceFactory} from '../../services/image/flatLayoutImageServiceFactory';
 import {LayoutImageService} from '../../services/image/layout';
 import {Context} from '../../utils';
-import {FlatLayoutImageServiceFactory} from '../../services/image/flatLayoutImageServiceFactory';
 
 export const layoutMutation = {
     async createLayout(parent, args) {
@@ -15,9 +16,35 @@ export const layoutMutation = {
                 house: houseId
             });
             await new LayoutImageService(
-                new S3ImageUploader(houseId),
+                new S3ImageUploader(layout.id),
                 new LayoutDbService(layout, HouseLayoutModel)
             ).addImage(await file);
+
+            return layout;
+        }
+
+        return null;
+    },
+    async editLayout(parent, args) {
+        const {uuid, name, file} = args;
+        if (uuid) {
+            const layout = await HouseLayoutModel.findOneAndUpdate(
+                {
+                    _id: mongoose.Types.ObjectId(uuid)
+                },
+                {
+                    $set: {
+                        name
+                    }
+                }
+            );
+
+            if (file) {
+                await new LayoutImageService(
+                    new S3ImageUploader(uuid),
+                    new LayoutDbService(layout, HouseLayoutModel)
+                ).addImage(await file);
+            }
 
             return layout;
         }

@@ -19,6 +19,7 @@ type FlatLayout {
 
 type Mutation {
     createLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
+    editLayout(uuid: String!, file: Upload, name: String!): BaseLayout
     assignFlatsToLayout(layoutId: String!, flats: [String]): FlatLayout
     createLevelLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     addFlatLayoutImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
