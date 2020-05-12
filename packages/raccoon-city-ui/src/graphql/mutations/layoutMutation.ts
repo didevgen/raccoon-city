@@ -18,6 +18,15 @@ export const EDIT_LAYOUT = gql`
     }
 `;
 
+export const EDIT_LEVEL_LAYOUT = gql`
+    mutation editLevelLayout($uuid: String!, $file: Upload, $name: String!) {
+        editLevelLayout(uuid: $uuid, file: $file, name: $name) {
+            id
+            name
+        }
+    }
+`;
+
 export const CREATE_LEVEL_LAYOUT = gql`
     mutation createLevelLayout($uuid: String!, $file: Upload!, $name: String!) {
         createLevelLayout(houseId: $uuid, file: $file, name: $name) {
@@ -72,6 +81,12 @@ export const UNASSIGN_FLAT_LAYOUT_TO_LEVEL_LAYOUT = gql`
 export const DELETE_FLAT_LAYOUT = gql`
     mutation deleteFlatLayout($uuid: String!) {
         deleteFlatLayout(uuid: $uuid)
+    }
+`;
+
+export const DELETE_LEVEL_LAYOUT = gql`
+    mutation deleteLevelLayout($uuid: String!) {
+        deleteLevelLayout(uuid: $uuid)
     }
 `;
 

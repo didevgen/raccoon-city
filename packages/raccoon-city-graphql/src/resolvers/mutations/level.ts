@@ -1,8 +1,10 @@
+import mongoose from 'mongoose';
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {LayoutDbService} from '../../db/services/layoutDbService';
 import {LayoutImageService} from '../../services/image/layout';
+import {Context} from '../../utils';
 
 export const levelMutation = {
     async assignLevelsToLayout(parent, {levelLayoutId, levels}) {
@@ -35,6 +37,46 @@ export const levelMutation = {
         }
 
         return null;
+    },
+    async editLevelLayout(parent, args) {
+        const {uuid, name, file} = args;
+        if (uuid) {
+            const layout = await LevelLayoutModel.findOneAndUpdate(
+                {
+                    _id: mongoose.Types.ObjectId(uuid)
+                },
+                {
+                    $set: {
+                        name
+                    }
+                }
+            );
+
+            if (file) {
+                await new LayoutImageService(
+                    new S3ImageUploader(uuid),
+                    new LayoutDbService(layout, LevelLayoutModel)
+                ).addImage(await file);
+                await LevelFlatLayoutModel.updateMany(
+                    {
+                        levelLayout: mongoose.Types.ObjectId(uuid)
+                    },
+                    {
+                        $set: {
+                            isDeleted: true
+                        }
+                    }
+                ).exec();
+            }
+
+            return layout;
+        }
+
+        return null;
+    },
+    async deleteLevelLayout(parent, {uuid}, ctx: Context) {
+        await LevelLayoutModel.findOneAndUpdate({_id: uuid}, {$set: {isDeleted: true}}).exec();
+        return true;
     },
     async assignFlatLayoutsToLevel(_, {levelLayoutId, flatLayoutId, path, viewBox}) {
         await LevelFlatLayoutModel.create({
