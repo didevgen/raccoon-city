@@ -114,7 +114,9 @@ function RoomAmountFilter({dispatch}) {
     );
 }
 
-function PriceFilter({minPrice, maxPrice, dispatch}) {
+function PriceFilter({minPrice, maxPrice, dispatch, data}) {
+    const [min, setMin] = useState(minPrice);
+    const [max, setMax] = useState(maxPrice);
     useEffect(() => {
         dispatch({
             type: 'price',
@@ -123,19 +125,27 @@ function PriceFilter({minPrice, maxPrice, dispatch}) {
                 maxPrice
             }
         });
+
+        setMin(minPrice);
+        setMax(maxPrice);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [minPrice, maxPrice, data]);
     return (
         <RangeContainer>
             <FilterTitle>Стоимость</FilterTitle>
             <Slider
-                defaultValue={[minPrice, maxPrice]}
+                value={[min, max]}
                 ValueLabelComponent={ValueLabelComponent}
                 aria-labelledby="discrete-slider-custom"
                 step={10}
                 min={minPrice}
                 max={maxPrice}
                 valueLabelDisplay="auto"
+                onChange={(e, value) => {
+                    const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                    setMin(minPriceRes);
+                    setMax(maxPriceRes);
+                }}
                 onChangeCommitted={(e, value) => {
                     const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
                     dispatch({
@@ -161,7 +171,10 @@ function PriceFilter({minPrice, maxPrice, dispatch}) {
     );
 }
 
-function AreaFilter({maxArea, minArea, dispatch}) {
+function AreaFilter({maxArea, minArea, dispatch, data}) {
+    const [min, setMin] = useState(minArea);
+    const [max, setMax] = useState(maxArea);
+
     useEffect(() => {
         dispatch({
             type: 'area',
@@ -170,19 +183,27 @@ function AreaFilter({maxArea, minArea, dispatch}) {
                 maxArea
             }
         });
+        setMin(minArea);
+        setMax(maxArea);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [maxArea, minArea, data]);
     return (
         <RangeContainer>
             <FilterTitle>Площадь</FilterTitle>
             <Slider
-                defaultValue={[minArea, maxArea]}
+                value={[min, max]}
                 ValueLabelComponent={ValueLabelComponent}
                 aria-labelledby="discrete-slider-custom"
                 step={10}
                 min={minArea}
                 max={maxArea}
                 valueLabelDisplay="auto"
+                onChange={(e, value) => {
+                    const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
+                    setMin(minAreaRes);
+                    setMax(maxAreaRes);
+                }}
                 onChangeCommitted={(e, value) => {
                     const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
                     dispatch({
@@ -294,11 +315,17 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                     <Grid item xs={9} lg={4} xl={4}>
                         <Grid container justify="center" direction="row">
                             <PriceFilter
+                                data={data}
                                 maxPrice={data.maxPrice}
                                 minPrice={data.minPrice}
                                 dispatch={props.dispatchFn}
                             />
-                            <AreaFilter maxArea={data.maxArea} minArea={data.minArea} dispatch={props.dispatchFn} />
+                            <AreaFilter
+                                maxArea={data.maxArea}
+                                minArea={data.minArea}
+                                dispatch={props.dispatchFn}
+                                data={data}
+                            />
                         </Grid>
                     </Grid>
                 )}
