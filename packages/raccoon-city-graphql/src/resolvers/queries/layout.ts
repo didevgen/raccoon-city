@@ -39,7 +39,13 @@ export const layoutQuery = {
                         match: {
                             isDeleted: false
                         },
-                        options: {sort: {flatNumber: 1}}
+                        options: {sort: {flatNumber: 1}},
+                        populate: {
+                            path: 'layout',
+                            match: {
+                                isDeleted: false
+                            }
+                        }
                     }
                 }
             })
@@ -58,7 +64,7 @@ export const layoutQuery = {
                             return {
                                 ...flat.toObject(),
                                 ...newFlat,
-                                belongsToLayout: flat.layout && flat.layout.toString() === layoutId,
+                                belongsToLayout: flat.layout && flat.layout.id === layoutId,
                                 hasLayout: !!flat.layout
                             };
                         });
