@@ -15,6 +15,17 @@ const ImageContainer = styled.div<any>`
     width: ${(props: any) => props.width}px;
     height: ${(props: any) => props.height}px;
     background: url(${(props: any) => props.url});
+    background-size: 100%;
+`;
+
+const ImageMask = styled.img`
+    height: 100%;
+    width: auto;
+    position: absolute;
+    top: -999999px;
+    left: -9999999px;
+    z-index: -1;
+    visibility: hidden;
 `;
 
 const MainContainer = styled.div`
@@ -211,17 +222,6 @@ export function LevelLayoutSelection({
             }
         });
 
-        const img = new Image();
-        img.src = imageUrl;
-        img.onload = () => {
-            setImageSize({
-                width: img.naturalWidth,
-                height: img.naturalHeight
-            });
-            if (svgRef.current) {
-                svgRef.current.viewbox(0, 0, img.naturalWidth, img.naturalHeight);
-            }
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -236,9 +236,30 @@ export function LevelLayoutSelection({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [flatLayouts]);
 
+    const setImageSizes = (width, height) => {
+        setImageSize({
+            width,
+            height
+        });
+        if (svgRef.current) {
+            svgRef.current.viewbox(0, 0, width, height);
+        }
+    };
+
     return (
         <MainContainer>
             <ImageContainer id="img-container" width={imageSize.width} height={imageSize.height} url={imageUrl} />
+            <ImageMask
+                src={imageUrl}
+                onLoad={(event) => {
+                    const img: any = event.target;
+                    if (img.width < img.naturalWidth || img.height < img.naturalHeight) {
+                        setImageSizes(img.naturalWidth, img.naturalHeight);
+                    } else {
+                        setImageSizes(img.width, img.height);
+                    }
+                }}
+            />
             <FlatLayoutSelectionDialog
                 open={isHouseLayoutsOpen}
                 setOpen={setHouseLayoutsDialogState}

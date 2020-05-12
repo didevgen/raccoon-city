@@ -107,7 +107,16 @@ function LevelLayouts() {
 
 export function LevelLayoutEditor() {
     const {houseUuid: uuid} = useParams();
-    const mutation = useMutation(CREATE_LEVEL_LAYOUT);
+    const mutation = useMutation(CREATE_LEVEL_LAYOUT, {
+        refetchQueries: [
+            {
+                query: GET_LEVEL_LAYOUTS,
+                variables: {
+                    houseId: uuid
+                }
+            }
+        ]
+    });
 
     if (!uuid) {
         return null;
