@@ -1,4 +1,4 @@
-import {Theme, withStyles} from '@material-ui/core';
+import {Badge, Theme, withStyles} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import React, {useContext} from 'react';
 import styled from 'styled-components';
@@ -108,6 +108,13 @@ const DataContainer = styled.div`
     font-size: 12px;
 `;
 
+const StyledBagde = styled(Badge)`
+    .MuiBadge-badge {
+        top: 10px;
+        right: 10px;
+    }
+`;
+
 export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Flat) => void}) {
     const viewContextValue = useContext<any>(ViewModeContext);
     return (
@@ -135,14 +142,27 @@ export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Fl
                 </TooltipContainer>
             }
         >
-            <Cell
-                className={flat.isActive ? flat.status : 'MUTED'}
-                onClick={() => {
-                    onSelect(flat);
-                }}
-            >
-                {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
-            </Cell>
+            {flat.levelAmount > 1 ? (
+                <StyledBagde color="primary" badgeContent={flat.levelAmount}>
+                    <Cell
+                        className={flat.isActive ? flat.status : 'MUTED'}
+                        onClick={() => {
+                            onSelect(flat);
+                        }}
+                    >
+                        {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
+                    </Cell>
+                </StyledBagde>
+            ) : (
+                <Cell
+                    className={flat.isActive ? flat.status : 'MUTED'}
+                    onClick={() => {
+                        onSelect(flat);
+                    }}
+                >
+                    {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
+                </Cell>
+            )}
         </HtmlTooltip>
     );
 }

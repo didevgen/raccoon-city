@@ -36,6 +36,7 @@ export function FlatSidebarData(props: FlatSidebarDataProps) {
             <FlatInfoItem label="Цена" value={flat.price} />
             <FlatInfoItem label="Цена м2" value={flat.squarePrice} />
             <FlatInfoItem label="Этаж" value={flat.level} />
+            <FlatInfoItem label="Количество уровней" value={flat.levelAmount} />
             <FlatInfoItem label="Подъезд" value={flat.section} />
             <FlatInfoItem label="Количество комнат" value={flat.roomAmount} />
             <FlatInfoItem label="Площадь" value={flat.area} />
