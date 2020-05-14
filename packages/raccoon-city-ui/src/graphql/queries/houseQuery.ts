@@ -107,6 +107,8 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
                     flats {
                         id
                         flatNumber
+                        levelAmount
+                        fakeLevel
                         price
                         level
                         section
@@ -139,6 +141,7 @@ export const GET_GROUPED_FLATS = gql`
                         status
                         squarePrice
                         roomAmount
+                        levelAmount
                     }
                 }
             }

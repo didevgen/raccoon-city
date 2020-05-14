@@ -47,6 +47,7 @@ type ImageType {
 input ParsedFlatInput {
     house: String
     flatNumber: String
+    levelAmount: String
     price: String
     level: String
     section: String
@@ -63,6 +64,7 @@ input HosueWithFlats {
 type ParsedFlat {
     house: String
     flatNumber: String
+    levelAmount: String
     price: String
     level: String
     section: String

@@ -16,6 +16,7 @@ export const GET_SECTION = gql`
                 flats {
                     id
                     flatNumber
+                    levelAmount
                     price
                     level
                     section
@@ -57,6 +58,7 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
         getFlatSidebarInfo(flatId: $flatId) {
             id
             flatNumber
+            levelAmount
             price
             level
             section

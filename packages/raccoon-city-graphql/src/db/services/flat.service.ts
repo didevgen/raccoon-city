@@ -9,7 +9,8 @@ import {Section, SectionModel} from '../models/section';
 
 function spreadsheetFlatToFlat(flat: SpreadsheetFlat, houseId: string): Flat {
     return {
-        flatNumber: Number(flat.flatNumber),
+        flatNumber: flat.flatNumber,
+        levelAmount: Number(flat.levelAmount),
         price: Number(flat.price),
         level: Number(flat.level),
         section: flat.section,
@@ -22,14 +23,14 @@ function spreadsheetFlatToFlat(flat: SpreadsheetFlat, houseId: string): Flat {
 }
 
 function convertToMapOfFlats(flats: SpreadsheetFlat[], houseId: string) {
-    const result = new Map<number, Flat>();
+    const result = new Map<string, Flat>();
     flats.forEach((flat) => {
-        result.set(Number(flat.flatNumber), spreadsheetFlatToFlat(flat, houseId));
+        result.set(flat.flatNumber, spreadsheetFlatToFlat(flat, houseId));
     });
     return result;
 }
 
-function convertToFlatArray(flatMap: Map<number, Flat>) {
+function convertToFlatArray(flatMap: Map<string, Flat>) {
     return [...flatMap.entries()].map(([k, flat]) => {
         return flat;
     });
@@ -48,8 +49,8 @@ export class FlatService {
 
         const newFlatsMap = convertToMapOfFlats(flats, this.houseId);
 
-        const newFlatNumbers: number[] = [...newFlatsMap.keys()];
-        const oldFlatNumbers = house.flats.map((i) => Number(i.flatNumber));
+        const newFlatNumbers: string[] = [...newFlatsMap.keys()];
+        const oldFlatNumbers = house.flats.map((i) => i.flatNumber);
 
         const {missingSections, existingSections} = this.getExistingAndMissingSections(
             convertToFlatArray(newFlatsMap),
@@ -90,9 +91,9 @@ export class FlatService {
     }
 
     private async handleExistingFlats(
-        flatNumbersToUpdate: number[],
+        flatNumbersToUpdate: string[],
         sectionMap: Map<string, {section: Section; levels: Level[]}>,
-        newFlatsMap: Map<number, Flat>
+        newFlatsMap: Map<string, Flat>
     ) {
         for (const num of flatNumbersToUpdate) {
             const updateFlatValues = newFlatsMap.get(num);
@@ -116,9 +117,9 @@ export class FlatService {
     }
 
     private async handleNewFlats(
-        flatNumbersToCreate: number[],
+        flatNumbersToCreate: string[],
         sectionMap: Map<string, {section: Section; levels: Level[]}>,
-        newFlatsMap: Map<number, Flat>
+        newFlatsMap: Map<string, Flat>
     ) {
         const newFlats: Flat[] = flatNumbersToCreate.map((num) => {
             return newFlatsMap.get(num);

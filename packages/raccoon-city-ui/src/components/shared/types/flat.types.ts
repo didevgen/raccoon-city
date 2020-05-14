@@ -19,11 +19,13 @@ export interface ParsedFlat {
     squarePrice: string;
     status: FlatStatus;
     roomAmount: string;
+    levelAmount: string;
 }
 
 export interface Flat {
     id: string;
-    flatNumber: number;
+    flatNumber: string;
+    levelAmount: number;
     price: number;
     level: number;
     section: string;

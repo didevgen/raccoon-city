@@ -19,10 +19,10 @@ import {
     isRequiredAndIsNumber
 } from '../../../../../core/validators/validators';
 import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
-import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
-import {Flat} from '../../../../shared/types/flat.types';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
 import {GET_GROUPED_FLATS} from '../../../../../graphql/queries/houseQuery';
+import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog';
+import {Flat} from '../../../../shared/types/flat.types';
 
 interface FlatFormDialogProps {
     open: boolean;
@@ -36,11 +36,12 @@ interface FlatFormDialogProps {
 function toGraphqlFlat(flat: Flat): Flat {
     return omit(['__typename'], {
         ...flat,
-        flatNumber: Number(flat.flatNumber),
+        flatNumber: flat.flatNumber,
         area: Number(flat.area),
         section: flat.section,
         level: Number(flat.level),
         price: Number(flat.price),
+        levelAmount: Number(flat.levelAmount),
         roomAmount: flat.roomAmount
     });
 }
@@ -116,7 +117,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                             <DialogContent>
                                 <Grid container={true} spacing={1}>
                                     <Grid item={true} xs={6}>
-                                        <Field name="flatNumber" validate={isRequiredAndIsInteger}>
+                                        <Field name="flatNumber" validate={isRequired}>
                                             {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Номер квартиры"
@@ -227,6 +228,26 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                                 <TextField
                                                     label="Количество комнат"
                                                     margin="normal"
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
+                                                    fullWidth={true}
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        </Field>
+                                    </Grid>
+                                    <Grid item={true} xs={6}>
+                                        <Field name="levelAmount" validate={isRequiredAndIsInteger}>
+                                            {({input, meta, ...rest}) => (
+                                                <TextField
+                                                    label="Количество уровней"
+                                                    type="number"
+                                                    margin="normal"
+                                                    inputProps={{
+                                                        min: 1
+                                                    }}
                                                     {...input}
                                                     {...rest}
                                                     error={!!getError(meta)}

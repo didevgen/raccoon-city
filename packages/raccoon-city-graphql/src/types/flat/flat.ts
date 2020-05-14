@@ -17,6 +17,7 @@ export interface SpreadsheetFlat {
     status: FlatStatus;
     roomAmount: string;
     squarePrice: string;
+    levelAmount: string;
 }
 
 export interface GroupedFlatsByHouse {
@@ -24,7 +25,7 @@ export interface GroupedFlatsByHouse {
 }
 
 export interface Flat {
-    flatNumber: number;
+    flatNumber: string;
     price: number;
     level: number;
     section: string;
@@ -33,6 +34,7 @@ export interface Flat {
     roomAmount: string;
     squarePrice: string;
     house: string;
+    levelAmount: number;
 }
 
 export interface IdFlat extends Flat {

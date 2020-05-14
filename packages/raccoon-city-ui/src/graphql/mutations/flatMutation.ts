@@ -5,6 +5,7 @@ export const UPDATE_FLAT = gql`
         updateFlat(flat: $flat) {
             id
             flatNumber
+            levelAmount
             price
             area
             status
@@ -18,6 +19,7 @@ export const CREATE_FLAT = gql`
         createFlat(houseGuid: $houseGuid, flat: $flat) {
             id
             flatNumber
+            levelAmount
             price
             area
             status

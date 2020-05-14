@@ -34,6 +34,10 @@ export const headerKeys = [
     {
         csvKeys: ['Кол-во комнат'],
         headerValue: 'roomAmount'
+    },
+    {
+        csvKeys: ['Уровни'],
+        headerValue: 'levelAmount'
     }
 ];
 

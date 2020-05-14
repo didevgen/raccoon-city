@@ -42,6 +42,7 @@ export const UPLOAD_SPREADSHEET = gql`
             house
             flats {
                 flatNumber
+                levelAmount
                 price
                 level
                 section

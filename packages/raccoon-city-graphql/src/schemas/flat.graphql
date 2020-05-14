@@ -1,6 +1,6 @@
 type HouseFlat {
     id: String
-    flatNumber: Int
+    flatNumber: String
     price: Float
     level: Int
     section: String
@@ -9,6 +9,8 @@ type HouseFlat {
     roomAmount: String
     squarePrice: String
     layout: BaseLayout
+    levelAmount: Int
+    fakeLevel: Boolean
 }
 
 type HouseSidebarFlatLevelLayouts {
@@ -20,9 +22,10 @@ type HouseSidebarFlatLevelLayouts {
 
 type HouseSidebarFlat {
     id: String
-    flatNumber: Int
+    flatNumber: String
     price: Float
     level: Int
+    levelAmount: Int
     section: String
     area: Float
     status: String
@@ -37,7 +40,8 @@ type HouseSidebarFlat {
 
 input HouseFlatInput {
     id: String
-    flatNumber: Int
+    flatNumber: String
+    levelAmount: Int
     price: Float
     level: Int
     section: String

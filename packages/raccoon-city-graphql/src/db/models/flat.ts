@@ -7,7 +7,7 @@ import {Level} from './level';
 import {Section} from './section';
 
 export interface Flat extends Document {
-    flatNumber: number;
+    flatNumber: string;
     price: number;
     level: Level;
     section: Section;
@@ -17,11 +17,12 @@ export interface Flat extends Document {
     squarePrice: string;
     house: House;
     layout: HouseLayout;
+    levelAmount: number;
 }
 
 const FlatSchema: Schema = new Schema(
     {
-        flatNumber: {type: Schema.Types.Number},
+        flatNumber: {type: Schema.Types.String},
         price: {type: Schema.Types.Number},
         level: {
             type: Schema.Types.ObjectId,
@@ -43,7 +44,8 @@ const FlatSchema: Schema = new Schema(
         layout: {
             type: Schema.Types.ObjectId,
             ref: 'HouseLayout'
-        }
+        },
+        levelAmount: {type: Schema.Types.Number, default: 1}
     },
     {
         toJSON: {virtuals: true},
