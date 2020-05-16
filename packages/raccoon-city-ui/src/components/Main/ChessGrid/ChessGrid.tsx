@@ -17,10 +17,10 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFilters} from './ChessGridFilters/ChessGridFilters';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 
-const ChessGridWrapper = styled.div`
+const ChessGridWrapper: any = styled.div`
     width: 100%;
     overflow-y: scroll;
-    margin-top: 170px;
+    margin-top: ${(p: any) => (p.hasSelect ? '170px' : '64px')};
     background-color: #fff;
     display: flex;
     flex-direction: row;
@@ -118,7 +118,7 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-function ChessGridContent({filters, data, loading, error}) {
+function ChessGridContent({filters, data, loading, error, hasSelect}) {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     if (loading) {
@@ -137,7 +137,7 @@ function ChessGridContent({filters, data, loading, error}) {
 
     return (
         <ViewModeContext.Provider value={filters}>
-            <ChessGridWrapper>
+            <ChessGridWrapper hasSelect={hasSelect}>
                 {houseFlats.map((group: FlatsInHouse) => {
                     const {groupedFlats} = group;
 
@@ -213,7 +213,13 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
                 data={id.length === 0 ? null : data}
                 onHouseChange={onHouseChange}
             />
-            <ChessGridContent filters={filters} loading={loading} error={error} data={id.length === 0 ? null : data} />
+            <ChessGridContent
+                hasSelect={hasSelect}
+                filters={filters}
+                loading={loading}
+                error={error}
+                data={id.length === 0 ? null : data}
+            />
         </Fragment>
     );
 };
