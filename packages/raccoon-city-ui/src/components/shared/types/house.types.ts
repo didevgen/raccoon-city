@@ -11,7 +11,6 @@ export interface House {
     beginDate: string;
     endDate: string;
     apartmentComplex: string;
-    address?: string;
     parking: boolean;
     images: HouseImages;
 }

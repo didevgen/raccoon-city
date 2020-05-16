@@ -21,7 +21,6 @@ export const HOUSE_INFO = gql`
         getHouse(uuid: $uuid) {
             id
             name
-            address
             parking
             price
             images {
@@ -64,7 +63,6 @@ export const HOUSE_DATA = gql`
         getHouse(uuid: $uuid) {
             id
             name
-            address
             parking
             price
         }
@@ -114,6 +112,7 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
                         section
                         area
                         status
+                        sale
                         squarePrice
                         roomAmount
                     }
@@ -140,6 +139,7 @@ export const GET_GROUPED_FLATS = gql`
                         area
                         status
                         squarePrice
+                        sale
                         roomAmount
                         levelAmount
                     }

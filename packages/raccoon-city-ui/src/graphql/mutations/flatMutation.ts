@@ -10,6 +10,7 @@ export const UPDATE_FLAT = gql`
             area
             status
             roomAmount
+            sale
         }
     }
 `;
@@ -24,6 +25,7 @@ export const CREATE_FLAT = gql`
             area
             status
             roomAmount
+            sale
         }
     }
 `;

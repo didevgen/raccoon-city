@@ -18,12 +18,14 @@ export interface Flat extends Document {
     house: House;
     layout: HouseLayout;
     levelAmount: number;
+    sale: number;
 }
 
 const FlatSchema: Schema = new Schema(
     {
         flatNumber: {type: Schema.Types.String},
         price: {type: Schema.Types.Number},
+        sale: {type: Schema.Types.Number},
         level: {
             type: Schema.Types.ObjectId,
             ref: 'Level'

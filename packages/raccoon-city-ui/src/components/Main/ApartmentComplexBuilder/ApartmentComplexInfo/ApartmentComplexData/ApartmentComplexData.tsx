@@ -50,6 +50,11 @@ function getTableRows(props: ApartmentComplexType) {
             value: props.sections
         },
         {
+            key: 'address',
+            label: 'Строительный адрес',
+            value: props.address
+        },
+        {
             key: 'price',
             label: 'Цена за м2',
             value: props.price

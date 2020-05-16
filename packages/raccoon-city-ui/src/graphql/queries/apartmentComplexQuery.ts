@@ -53,6 +53,7 @@ export const APARTMENT_COMPLEX_INFO = gql`
             class {
                 displayName
             }
+            address
             levels
             sections
             price
@@ -114,6 +115,7 @@ export const GET_EDIT_APARTMENT_COMPLEX_INFO = gql`
                 key
                 displayName
             }
+            address
             levels
             sections
             price

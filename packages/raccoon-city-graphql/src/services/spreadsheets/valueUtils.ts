@@ -13,10 +13,25 @@ export function transofrmValue(value: string, field: string | number): any {
         return statusMap.get(value) || value;
     }
 
+    if (field === 'levelAmount') {
+        if (!value) {
+            return 1;
+        }
+
+        const result = Number(value);
+        return isNaN(result) ? 1 : result;
+    }
+
     if (field === 'price' || field === 'area') {
         const valueWithoutSpaces = value.replace(/\s/g, '').replace(/,/g, '.');
         const result = Number(valueWithoutSpaces);
         return isNaN(result) ? 0 : result;
+    }
+
+    if (field === 'sale') {
+        const valueWithoutSpaces = value.replace(/\s/g, '').replace(/,/g, '.');
+        const result = Number(valueWithoutSpaces);
+        return isNaN(result) ? undefined : result;
     }
 
     return value;

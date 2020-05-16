@@ -4,7 +4,6 @@ type House {
     levels: Int
     price: Float
     parking: Boolean
-    address: String
     images: HouseImages
 }
 
@@ -13,7 +12,6 @@ input HouseInput {
     levels: Int
     price: Float
     parking: Boolean
-    address: String
 }
 
 type HouseImages {

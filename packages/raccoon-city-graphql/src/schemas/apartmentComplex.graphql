@@ -4,6 +4,7 @@ type ApartmentComplex {
     name: String
     city: City
     district: District
+    address: String
     class: ApartmentComplexClass
     levels: Int
     sections: Int
@@ -19,6 +20,7 @@ input ApartmentComplexInput {
     type: String
     name: String
     city: String
+    address: String
     district: String
     class: String
     levels: Int
@@ -49,6 +51,7 @@ input ParsedFlatInput {
     flatNumber: String
     levelAmount: String
     price: String
+    sale: String
     level: String
     section: String
     area: String
@@ -66,6 +69,7 @@ type ParsedFlat {
     flatNumber: String
     levelAmount: String
     price: String
+    sale: String
     level: String
     section: String
     area: String

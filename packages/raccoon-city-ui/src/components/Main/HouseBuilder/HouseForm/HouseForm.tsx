@@ -170,19 +170,6 @@ export function HouseForm(outerProps: HouseFormProps) {
                                     />
                                 )}
                             </Field>
-                            <Field name="address" validate={required}>
-                                {(props) => (
-                                    <TextField
-                                        label="Строительный адрес"
-                                        margin="normal"
-                                        name={props.input.name}
-                                        value={props.input.value}
-                                        onChange={props.input.onChange}
-                                        fullWidth={true}
-                                        variant="outlined"
-                                    />
-                                )}
-                            </Field>
                             <Field name="price" validate={required}>
                                 {(props) => (
                                     <TextField

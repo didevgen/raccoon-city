@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import {AppBar, Tab, Tabs} from '@material-ui/core';
+import {AppBar, Chip, Tab, Tabs, Typography} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import InfoIcon from '@material-ui/icons/Info';
 import PrintIcon from '@material-ui/icons/Print';
@@ -10,13 +10,13 @@ import React from 'react';
 import styled from 'styled-components';
 import {GET_FLAT_SIDEBAR_DATA, GetFlatSidebarDataQuery} from '../../../../graphql/queries/flatQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
+import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {Flat} from '../../../shared/types/flat.types';
 import {FlatSidebarData} from './FlatSidebarData';
 import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
-import {ImageType} from '../../../shared/types/apartmentComplex.types';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -28,6 +28,16 @@ const ImageContainer = styled.div`
     .FlatSidebarInfo__image {
         width: 100%;
     }
+`;
+
+const FlatTitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const SaleChip = styled(Chip)`
+    font-weight: bold;
+    border-radius: 0 !important;
 `;
 
 interface FlatSidebarInfoProps {
@@ -61,6 +71,12 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const flat = data.getFlatSidebarInfo;
     return (
         <FlatSidebarWrapper>
+            <FlatTitleContainer>
+                <Typography variant="h5" gutterBottom>
+                    Квартира № {flat.flatNumber}
+                </Typography>
+                {!!flat.sale && <SaleChip label="Акция" color="secondary" />}
+            </FlatTitleContainer>
             {flat.layout && (
                 <ImageContainer>
                     <img

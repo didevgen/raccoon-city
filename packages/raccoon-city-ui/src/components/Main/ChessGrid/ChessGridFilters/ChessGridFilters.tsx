@@ -267,6 +267,18 @@ function ViewMode({dispatch}) {
                 >
                     М²
                 </StyledAvatar>
+                <StyledAvatar
+                    className={classNames({...isSelected(ViewModeValues.NUMBER)})}
+                    onClick={() => {
+                        setSelected(ViewModeValues.NUMBER);
+                        dispatch({
+                            type: 'mode',
+                            payload: ViewModeValues.NUMBER
+                        });
+                    }}
+                >
+                    №
+                </StyledAvatar>
             </RoomContainer>
         </FilterItemContainer>
     );

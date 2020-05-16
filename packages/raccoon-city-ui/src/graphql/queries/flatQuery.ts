@@ -23,6 +23,7 @@ export const GET_SECTION = gql`
                     area
                     status
                     roomAmount
+                    sale
                 }
             }
         }
@@ -65,6 +66,7 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
             area
             status
             roomAmount
+            sale
             squarePrice
             apartmentComplex {
                 name

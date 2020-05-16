@@ -22,7 +22,8 @@ const ChessGridWrapper = styled.div`
 
 export enum ViewModeValues {
     AREA = 'area',
-    ROOM = 'room'
+    ROOM = 'roomAmount',
+    NUMBER = 'flatNumber'
 }
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});

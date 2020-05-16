@@ -293,6 +293,21 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                 </Field>
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
+                                                <Field name="address" validate={required}>
+                                                    {(props) => (
+                                                        <TextField
+                                                            label="Строительный адрес"
+                                                            margin="normal"
+                                                            fullWidth={true}
+                                                            variant="outlined"
+                                                            name={props.input.name}
+                                                            value={props.input.value}
+                                                            onChange={props.input.onChange}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </Grid>
+                                            <Grid item={true} xs={12} md={6}>
                                                 <Field name="class" validate={required}>
                                                     {(props) => (
                                                         <TextField

@@ -73,6 +73,7 @@ export const GET_GROUPED_FLATS_WITH_LAYOUT = gql`
                     section
                     area
                     status
+                    sale
                     roomAmount
                     belongsToLayout
                     hasLayout

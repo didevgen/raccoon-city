@@ -25,6 +25,13 @@ export const isInteger = (value: any) => {
 export const isEmail = (email: any) => {
     return !validate({email}, constraints) ? undefined : 'Это целое число';
 };
+export const notRequiredAndIsNumber = (value: any) => {
+    if (value === undefined || value === null) {
+        return undefined;
+    }
+
+    return isNumber(value);
+};
 export const isRequiredAndIsNumber = (value: any) => {
     return isRequired(value) || isNumber(value);
 };

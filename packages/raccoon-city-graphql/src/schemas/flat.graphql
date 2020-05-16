@@ -2,6 +2,7 @@ type HouseFlat {
     id: String
     flatNumber: String
     price: Float
+    sale: Float
     level: Int
     section: String
     area: Float
@@ -24,6 +25,7 @@ type HouseSidebarFlat {
     id: String
     flatNumber: String
     price: Float
+    sale: Float
     level: Int
     levelAmount: Int
     section: String
@@ -43,6 +45,7 @@ input HouseFlatInput {
     flatNumber: String
     levelAmount: Int
     price: Float
+    sale: Float
     level: Int
     section: String
     area: Float

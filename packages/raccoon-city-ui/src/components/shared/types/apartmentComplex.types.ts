@@ -32,6 +32,7 @@ export interface KeyDisplayName {
 export interface ApartmentComplexDTO {
     type: KeyDisplayName;
     name: string;
+    address: string;
     city: KeyDisplayName;
     district: KeyDisplayName;
     class: KeyDisplayName;
@@ -63,6 +64,7 @@ export interface ApartmentComplexType {
     price: number;
     beginDate: string;
     endDate: string;
+    address: string;
     images: ApartmentComplexImages;
     houses: House[];
 }
@@ -71,6 +73,7 @@ export interface ApartmentComplexFormValues {
     type: KeyDisplayName;
     name: string;
     city: City;
+    address: string;
     district: District;
     class: KeyDisplayName;
     levels: string;

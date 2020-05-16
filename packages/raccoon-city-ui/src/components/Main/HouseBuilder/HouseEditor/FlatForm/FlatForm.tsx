@@ -16,7 +16,8 @@ import {
     getError,
     isRequired,
     isRequiredAndIsInteger,
-    isRequiredAndIsNumber
+    isRequiredAndIsNumber,
+    notRequiredAndIsNumber
 } from '../../../../../core/validators/validators';
 import {CREATE_FLAT, UPDATE_FLAT} from '../../../../../graphql/mutations/flatMutation';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
@@ -41,6 +42,7 @@ function toGraphqlFlat(flat: Flat): Flat {
         section: flat.section,
         level: Number(flat.level),
         price: Number(flat.price),
+        sale: !!flat.sale ? Number(flat.sale) : undefined,
         levelAmount: Number(flat.levelAmount),
         roomAmount: flat.roomAmount
     });
@@ -137,6 +139,22 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                             {({input, meta, ...rest}) => (
                                                 <TextField
                                                     label="Цена"
+                                                    margin="normal"
+                                                    {...input}
+                                                    {...rest}
+                                                    error={!!getError(meta)}
+                                                    helperText={getError(meta)}
+                                                    fullWidth={true}
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        </Field>
+                                    </Grid>
+                                    <Grid item={true} xs={6}>
+                                        <Field name="sale" validate={notRequiredAndIsNumber}>
+                                            {({input, meta, ...rest}) => (
+                                                <TextField
+                                                    label="Акционная цена"
                                                     margin="normal"
                                                     {...input}
                                                     {...rest}

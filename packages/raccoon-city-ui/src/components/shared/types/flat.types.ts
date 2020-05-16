@@ -13,6 +13,7 @@ export interface ParsedFlat {
     house: string;
     flatNumber: string;
     price: string;
+    sale: string;
     level: string;
     section: string;
     area: string;
@@ -27,6 +28,7 @@ export interface Flat {
     flatNumber: string;
     levelAmount: number;
     price: number;
+    sale?: number;
     level: number;
     section: string;
     area: number;

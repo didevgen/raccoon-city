@@ -94,7 +94,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
         return <Redirect to="/" />;
     }
 
-    const {name, images, address, parking, price} = data.getHouse;
+    const {name, images, parking, price} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -166,18 +166,6 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                                     <TableCell align="right">
                                                         <Typography variant="body2" component="p">
                                                             {name}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Строительный адрес
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {address}
                                                         </Typography>
                                                     </TableCell>
                                                 </TableRow>

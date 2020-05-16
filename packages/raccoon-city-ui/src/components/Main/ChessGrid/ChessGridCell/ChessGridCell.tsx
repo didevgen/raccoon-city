@@ -150,7 +150,7 @@ export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Fl
                             onSelect(flat);
                         }}
                     >
-                        {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
+                        {flat[viewContextValue.selectedViewMode]}
                     </Cell>
                 </StyledBagde>
             ) : (
@@ -160,7 +160,7 @@ export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Fl
                         onSelect(flat);
                     }}
                 >
-                    {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
+                    {flat[viewContextValue.selectedViewMode]}
                 </Cell>
             )}
         </HtmlTooltip>

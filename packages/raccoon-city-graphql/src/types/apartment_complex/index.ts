@@ -11,6 +11,7 @@ export interface ApartmentComplexModelArgs {
     sections: number;
     price: number;
     beginDate: string;
+    address: string;
     endDate: string;
 }
 
@@ -18,6 +19,7 @@ export interface ApartmentComplexInputArgs {
     type: string;
     name: string;
     city: string;
+    address: string;
     district: string;
     class: string;
     levels: number;

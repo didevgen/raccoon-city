@@ -38,6 +38,10 @@ export const headerKeys = [
     {
         csvKeys: ['Уровни'],
         headerValue: 'levelAmount'
+    },
+    {
+        csvKeys: ['Акция'],
+        headerValue: 'sale'
     }
 ];
 

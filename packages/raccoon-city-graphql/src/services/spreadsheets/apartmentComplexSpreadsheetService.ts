@@ -30,6 +30,7 @@ export class ApartmentComplexSpreadsheetService {
                     house,
                     flatNumber,
                     price,
+                    sale,
                     level,
                     section,
                     area,
@@ -49,7 +50,8 @@ export class ApartmentComplexSpreadsheetService {
                         status,
                         roomAmount,
                         squarePrice,
-                        levelAmount
+                        levelAmount,
+                        sale
                     });
                 }
             });
