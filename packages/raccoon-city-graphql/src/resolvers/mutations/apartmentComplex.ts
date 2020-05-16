@@ -7,7 +7,6 @@ import ApartmentComplexModel, {ApartmentComplex} from '../../db/models/apartment
 import {FileHistoryDbService} from '../../db/services/fileHistory.service';
 import {FlatService} from '../../db/services/flat.service';
 import {ApartmentComplexImageServiceFactory} from '../../services/image/apartmentComplexImageServiceFactory';
-import {PhotosService} from '../../services/image/photos';
 import {ApartmentComplexSpreadsheetService} from '../../services/spreadsheets/apartmentComplexSpreadsheetService';
 import {ApartmentComplexInputArgs, AssignFlatInputArgs} from '../../types/apartment_complex';
 import {Context} from '../../utils';

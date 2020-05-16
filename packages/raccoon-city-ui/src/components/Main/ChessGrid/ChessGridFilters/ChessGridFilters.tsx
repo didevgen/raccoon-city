@@ -8,10 +8,10 @@ import {ViewModeValues} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 
 const StyledPaper = styled(Paper)`
-    width: 100%;
+    width: 93vw;
     display: inline-flex;
-    position: sticky;
     top: 64px;
+    position: fixed;
     z-index: 1202;
     padding: 8px;
 `;
@@ -286,7 +286,7 @@ function ViewMode({dispatch}) {
 
 interface ChessGridFiltersProps {
     dispatchFn: (param: {type: string; payload: any}) => void;
-    onHouseChange?: (house: House) => void;
+    onHouseChange?: (house: House[]) => void;
     data: any;
 }
 
@@ -302,12 +302,12 @@ export function EmptyChessGridFilters({onHouseChange}) {
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
-    const hasPrices = data && data?.groupedFlats?.length > 0;
+    const hasPrices = data && data?.houseFlats?.length > 0;
     return (
         <StyledPaper elevation={3}>
             <Grid container spacing={1}>
                 {props.onHouseChange && (
-                    <Grid item xs={hasPrices ? 6 : 4} lg={hasPrices ? 3 : 3} xl={3}>
+                    <Grid item xs={12}>
                         <SelectContainer>
                             <ChessGridHouseSelect onChange={props.onHouseChange} />
                         </SelectContainer>

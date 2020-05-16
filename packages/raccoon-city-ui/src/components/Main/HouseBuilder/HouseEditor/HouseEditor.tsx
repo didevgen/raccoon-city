@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React, {Fragment, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {GET_GROUPED_FLATS, GetGroupedFlatsBySectionQuery, GroupedFlats} from '../../../../graphql/queries/houseQuery';
+import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../graphql/queries/houseQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {LevelRepresentation} from './LevelRepresentation/LevelRepresentation';
 
@@ -32,18 +32,18 @@ export function HouseEditor() {
     };
 
     const {houseUuid: uuid} = useParams();
-    const {loading, error, data} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS, {
+    const {loading, error, data} = useQuery(GET_GROUPED_FLATS, {
         variables: {
-            uuid
+            uuid: uuid
         },
         fetchPolicy: 'cache-and-network'
     });
 
-    if (loading || error || !data?.getGroupedFlatsBySection?.groupedFlats) {
+    if (loading || error || !data?.getGroupedHouseData?.groupedFlats) {
         return null;
     }
 
-    const sections = data.getGroupedFlatsBySection.groupedFlats;
+    const sections = data.getGroupedHouseData.groupedFlats;
     return (
         <Fragment>
             <AppBar position="static" color="default">

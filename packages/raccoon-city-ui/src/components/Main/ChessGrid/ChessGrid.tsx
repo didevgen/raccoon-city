@@ -1,10 +1,15 @@
 import {useQuery} from '@apollo/react-hooks';
-import {Drawer} from '@material-ui/core';
+import {Drawer, Typography} from '@material-ui/core';
 import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {GET_GROUPED_FLATS_CHESSGRID, GroupedFlats} from '../../../graphql/queries/houseQuery';
+import {
+    FlatsInHouse,
+    GET_GROUPED_FLATS_CHESSGRID,
+    GetGroupedFlatsBySectionQuery,
+    GroupedFlats
+} from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
@@ -15,9 +20,27 @@ import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 const ChessGridWrapper = styled.div`
     width: 100%;
     overflow-y: scroll;
+    margin-top: 170px;
     background-color: #fff;
     display: flex;
     flex-direction: row;
+`;
+
+const ColumnWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const Container = styled.div`
+    padding: 0 16px;
+    border-right: 1px solid #cccccc;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+`;
+
+const ColumnTitle = styled(Typography)`
+    text-align: center;
 `;
 
 export enum ViewModeValues {
@@ -110,28 +133,42 @@ function ChessGridContent({filters, data, loading, error}) {
         return null;
     }
 
-    const {groupedFlats} = data?.getGroupedFlatsBySection;
-
-    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
-        return <ChessGridWrapper>В данном доме еще нет квартир</ChessGridWrapper>;
-    }
+    const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
 
     return (
         <ViewModeContext.Provider value={filters}>
             <ChessGridWrapper>
-                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                {houseFlats.map((group: FlatsInHouse) => {
+                    const {groupedFlats} = group;
+
+                    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
+                        return null;
+                    }
+
                     return (
-                        <ChessGridColumn
-                            key={item.id}
-                            columnName={item.section}
-                            levels={item.levels}
-                            onSelect={(flat: Flat) => {
-                                setSelectedFlat(flat);
-                                setFlatCardOpen(true);
-                            }}
-                        />
+                        <Container key={group.id}>
+                            <ColumnWrapper>
+                                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                                    return (
+                                        <ChessGridColumn
+                                            key={item.id}
+                                            columnName={item.section}
+                                            levels={item.levels}
+                                            onSelect={(flat: Flat) => {
+                                                setSelectedFlat(flat);
+                                                setFlatCardOpen(true);
+                                            }}
+                                        />
+                                    );
+                                })}
+                            </ColumnWrapper>
+                            <ColumnTitle variant="h5" gutterBottom>
+                                {group.name}
+                            </ColumnTitle>
+                        </Container>
                     );
                 })}
+
                 <Drawer
                     anchor="right"
                     open={flatCardOpen}
@@ -149,28 +186,34 @@ function ChessGridContent({filters, data, loading, error}) {
 
 export const ChessGridComponent = ({uuid, hasSelect}) => {
     const [filters, dispatch] = useReducer(reducer, initialState);
-    const [id, setId] = useState(uuid);
-    const {data, error, loading} = useQuery(GET_GROUPED_FLATS_CHESSGRID, {
+    const [id, setId] = useState(uuid ? [uuid] : []);
+    const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {
         fetchPolicy: 'cache-and-network',
         variables: {
             uuid: id
         },
-        skip: !id
+        skip: id.length === 0
     });
 
     let onHouseChange;
     if (hasSelect) {
-        onHouseChange = async (house: House) => {
-            if (house) {
-                setId(house.id);
+        onHouseChange = async (houses: House[]) => {
+            if (houses) {
+                setId(houses.map((h) => h.id));
+            } else {
+                setId([]);
             }
         };
     }
 
     return (
         <Fragment>
-            <ChessGridFilters dispatchFn={dispatch} data={data} onHouseChange={onHouseChange} />
-            <ChessGridContent filters={filters} loading={loading} error={error} data={data} />
+            <ChessGridFilters
+                dispatchFn={dispatch}
+                data={id.length === 0 ? null : data}
+                onHouseChange={onHouseChange}
+            />
+            <ChessGridContent filters={filters} loading={loading} error={error} data={id.length === 0 ? null : data} />
         </Fragment>
     );
 };

@@ -40,8 +40,61 @@ export const hosueQuery = {
             return [];
         }
     },
+    getGroupedHouseData: async (parent, {uuid}) => {
+        const house = await HouseModel.findById(uuid)
+            .populate({
+                path: 'sections',
+                match: {isDeleted: false},
+                options: {sort: {sectionName: 1}},
+                populate: {
+                    path: 'levels',
+                    match: {isDeleted: false},
+                    options: {sort: {levelNumber: -1}},
+                    populate: {
+                        path: 'flats',
+                        match: {isDeleted: false},
+                        options: {sort: {flatNumber: 1}},
+                        populate: {
+                            path: 'layout',
+                            match: {isDeleted: false}
+                        }
+                    }
+                }
+            })
+            .exec();
+
+        return {
+            groupedFlats: house.sections.map((section: Section) => {
+                return {
+                    id: section.id,
+                    section: section.sectionName,
+                    levels: section.levels.map((level: Level) => {
+                        const newFlat = {
+                            level: level.levelNumber,
+                            section: section.sectionName
+                        };
+                        const flats = level.flats.map((flat) => {
+                            return {
+                                ...flat.toObject(),
+                                ...newFlat
+                            };
+                        });
+                        return {
+                            id: level.id,
+                            level: level.levelNumber,
+                            flats
+                        };
+                    })
+                };
+            })
+        };
+    },
     getGroupedFlatsBySection: async (parent, {uuid}) => {
-        const data = await HouseModel.findById(uuid)
+        const houses = await HouseModel.find({
+            _id: {
+                $in: uuid.map((item) => mongoose.Types.ObjectId(item))
+            }
+        })
             .populate({
                 path: 'sections',
                 match: {isDeleted: false},
@@ -63,7 +116,7 @@ export const hosueQuery = {
             })
             .exec();
         const [result] = await FlatModel.aggregate([
-            {$match: {house: mongoose.Types.ObjectId(uuid), isDeleted: false}},
+            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
                 $group: {
                     _id: null,
@@ -74,53 +127,59 @@ export const hosueQuery = {
                 }
             }
         ]).exec();
-        if (data && data.sections) {
-            let maxPrice = 0;
-            let minPrice = 0;
-            let maxArea = 0;
-            let minArea = 0;
+        let maxPrice = 0;
+        let minPrice = 0;
+        let maxArea = 0;
+        let minArea = 0;
 
-            if (!!result) {
-                maxPrice = result.maxPrice;
-                minPrice = result.minPrice;
-                maxArea = result.maxArea;
-                minArea = result.minArea;
-            }
-
-            return {
-                maxPrice,
-                minPrice,
-                maxArea,
-                minArea,
-                groupedFlats: data.sections.map((section: Section) => {
-                    return {
-                        id: section.id,
-                        section: section.sectionName,
-                        levels: section.levels.map((level: Level) => {
-                            const newFlat = {
-                                level: level.levelNumber,
-                                section: section.sectionName
-                            };
-                            const flats = level.flats.map((flat) => {
-                                return {
-                                    ...flat.toObject(),
-                                    ...newFlat
-                                };
-                            });
-                            return {
-                                id: level.id,
-                                level: level.levelNumber,
-                                flats
-                            };
-                        })
-                    };
-                })
-            };
-        } else {
-            return {
-                groupedFlats: []
-            };
+        if (!!result) {
+            maxPrice = result.maxPrice;
+            minPrice = result.minPrice;
+            maxArea = result.maxArea;
+            minArea = result.minArea;
         }
+
+        const res = {
+            maxPrice,
+            minPrice,
+            maxArea,
+            minArea,
+            houseFlats: []
+        };
+
+        houses.forEach((data) => {
+            if (data.sections) {
+                res.houseFlats.push({
+                    id: data.id,
+                    name: data.name,
+                    groupedFlats: data.sections.map((section: Section) => {
+                        return {
+                            id: section.id,
+                            section: section.sectionName,
+                            levels: section.levels.map((level: Level) => {
+                                const newFlat = {
+                                    level: level.levelNumber,
+                                    section: section.sectionName
+                                };
+                                const flats = level.flats.map((flat) => {
+                                    return {
+                                        ...flat.toObject(),
+                                        ...newFlat
+                                    };
+                                });
+                                return {
+                                    id: level.id,
+                                    level: level.levelNumber,
+                                    flats
+                                };
+                            })
+                        };
+                    })
+                });
+            }
+        });
+
+        return res;
     },
     getSectionData: async (parent, {sectionId}) => {
         const section = await SectionModel.findById(sectionId)

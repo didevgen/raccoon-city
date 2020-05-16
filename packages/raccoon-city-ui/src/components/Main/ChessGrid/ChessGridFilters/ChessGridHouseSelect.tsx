@@ -7,8 +7,8 @@ import List from '@material-ui/core/List';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import {makeStyles} from '@material-ui/core/styles';
-import {useState} from 'react';
 import * as React from 'react';
+import {useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {components} from 'react-select';
 import styled from 'styled-components';
@@ -58,10 +58,6 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function SingleValue({data}: any) {
-    return data.name;
-}
-
 function GroupHeading(props) {
     const imageUrl = props.apartmentComplexImage ? props.apartmentComplexImage.downloadUrl : houseDefaultImage;
     return (
@@ -105,11 +101,11 @@ function CustomOption(props: {data: House} & any) {
     );
 }
 interface ChessGridHouseSelectProps {
-    onChange: (house: House) => void;
+    onChange: (house: House[]) => void;
 }
 export function ChessGridHouseSelect({onChange}: ChessGridHouseSelectProps) {
     const {developerUuid} = useParams();
-    const [house, setHouse] = useState<House>();
+    const [houses, setHouses] = useState<House[]>([]);
 
     const {data, loading, error} = useQuery(GET_DEVELOPER_APARTMENT_COMPLEXES, {
         fetchPolicy: 'cache-and-network',
@@ -141,14 +137,17 @@ export function ChessGridHouseSelect({onChange}: ChessGridHouseSelectProps) {
             label="Выберите дом"
             options={options}
             className="HouseSelect"
-            value={house}
-            onChange={(selectedValue: House) => {
-                setHouse(selectedValue);
-                onChange(selectedValue);
+            value={houses}
+            isMulti
+            getOptionValue={(value) => {
+                return value.id;
+            }}
+            onChange={(selectedValues: [House]) => {
+                setHouses(selectedValues);
+                onChange(selectedValues);
             }}
             isClearable={true}
             components={{
-                SingleValue,
                 GroupHeading,
                 Option: CustomOption,
                 Group

@@ -79,42 +79,52 @@ export interface GroupedFlats {
     }>;
 }
 
+export interface FlatsInHouse {
+    id: string;
+    name: string;
+    groupedFlats: GroupedFlats[];
+}
+
 export interface GetGroupedFlatsBySectionQuery {
     getGroupedFlatsBySection: {
         maxPrice: number;
         minPrice: number;
         maxArea: number;
         minArea: number;
-        groupedFlats: GroupedFlats[];
+        houseFlats: FlatsInHouse[];
     };
 }
 
 export const GET_GROUPED_FLATS_CHESSGRID = gql`
-    query getGroupedFlatsBySection($uuid: String!) {
+    query getGroupedFlatsBySection($uuid: [String]) {
         getGroupedFlatsBySection(uuid: $uuid) {
             maxPrice
             minPrice
             maxArea
             minArea
-            groupedFlats {
+            houseFlats {
                 id
-                section
-                levels {
+                name
+                groupedFlats {
                     id
-                    level
-                    flats {
+                    section
+                    levels {
                         id
-                        flatNumber
-                        levelAmount
-                        fakeLevel
-                        price
                         level
-                        section
-                        area
-                        status
-                        sale
-                        squarePrice
-                        roomAmount
+                        flats {
+                            id
+                            flatNumber
+                            levelAmount
+                            fakeLevel
+                            price
+                            level
+                            section
+                            area
+                            status
+                            sale
+                            squarePrice
+                            roomAmount
+                        }
                     }
                 }
             }
@@ -122,8 +132,8 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
     }
 `;
 export const GET_GROUPED_FLATS = gql`
-    query getGroupedFlatsBySection($uuid: String!) {
-        getGroupedFlatsBySection(uuid: $uuid) {
+    query getGroupedHouseData($uuid: String!) {
+        getGroupedHouseData(uuid: $uuid) {
             groupedFlats {
                 id
                 section

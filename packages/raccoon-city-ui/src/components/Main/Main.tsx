@@ -23,7 +23,6 @@ import {UserList} from './Users/UserList';
 
 const Content = styled.div`
     position: relative;
-    transform: rotate(0);
 `;
 
 export function Main() {

@@ -23,6 +23,10 @@ type HouseImages {
     PHOTO: [NamedImage]
 }
 
+type GroupedBySectionHouseResult {
+    groupedFlats: [GroupedBySectionFlat]
+}
+
 type Mutation {
     createHouse(apartmentComplexId: String!, houseData: HouseInput!): House
     updateHouse(uuid: String!, houseData: HouseInput!): House
@@ -37,6 +41,7 @@ type Mutation {
 
 extend type Query {
     getHouses(apartmentComplexId: String!): [House]
+    getGroupedHouseData(uuid: String!): GroupedBySectionHouseResult
     getHouse(uuid: String!): House
     getMaxLevelInSection(sectionId: String!): Int
 }
