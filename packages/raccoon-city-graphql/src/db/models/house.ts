@@ -4,6 +4,8 @@ import {KeyDisplayName} from '../../types/shared';
 import {Flat} from './flat';
 import {ApartmentComplexImages, imagesSchema, KeyDisplayNameSchema} from './shared';
 import {Section} from './section';
+import {HouseLayout} from './houseLayout';
+import {LevelLayout} from './levelLayout';
 
 export interface House extends Document {
     name: string;
@@ -15,6 +17,8 @@ export interface House extends Document {
     endDate: string;
     apartmentComplex: string;
     flats: Flat[];
+    layouts: HouseLayout[];
+    levelLayouts: LevelLayout[];
     sections: Section[];
     images: ApartmentComplexImages;
 }
@@ -38,7 +42,8 @@ const HouseSchema: Schema = new Schema({
         default: () => {
             return {};
         }
-    }
+    },
+    publishedDate: {type: Schema.Types.String}
 });
 
 HouseSchema.virtual('sections', {
@@ -52,5 +57,19 @@ HouseSchema.virtual('flats', {
     localField: '_id',
     foreignField: 'house'
 });
+
+HouseSchema.virtual('layouts', {
+    ref: 'HouseLayout',
+    localField: '_id',
+    foreignField: 'house'
+});
+
+HouseSchema.virtual('levelLayouts', {
+    ref: 'LevelLayout',
+    localField: '_id',
+    foreignField: 'house'
+});
+
+HouseSchema.add({published: HouseSchema});
 
 export default mongoose.model<House>('House', HouseSchema);

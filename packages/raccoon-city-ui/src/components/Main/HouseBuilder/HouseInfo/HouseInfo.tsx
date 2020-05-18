@@ -1,4 +1,4 @@
-import {useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import {AppBar, Grid, Theme} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
@@ -13,12 +13,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
-import * as React from 'react';
+import {format, parseISO} from 'date-fns';
 import {Fragment, useEffect, useState} from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import styled from 'styled-components';
+import {PUBLISH_HOUSE} from '../../../../graphql/mutations/houseMutation';
 import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
@@ -57,6 +59,33 @@ const StyledLink = styled(StyledNavLink)`
     }
 `;
 
+function PublishHouse({uuid}) {
+    const [mutation] = useMutation(PUBLISH_HOUSE);
+
+    return (
+        <ListItem
+            button={true}
+            onClick={async () => {
+                await mutation({
+                    variables: {
+                        uuid
+                    },
+                    refetchQueries: [
+                        {
+                            query: HOUSE_INFO,
+                            variables: {
+                                uuid
+                            }
+                        }
+                    ]
+                });
+            }}
+        >
+            <ListItemText primary="Опубликовать" />
+        </ListItem>
+    );
+}
+
 export const HouseInfo = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
@@ -94,18 +123,19 @@ export const HouseInfo = connect(null, (dispatch) => ({
         return <Redirect to="/" />;
     }
 
-    const {name, images, parking, price} = data.getHouse;
+    const {name, images, parking, price, publishedDate} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
-
+    const publishedText = publishedDate ? `Опубликовано: ${format(parseISO(publishedDate), 'dd.MM.yyyy HH:mm')}` : '';
     return (
         <Fragment>
             <Container maxWidth="lg">
                 <TitleWithEditIcon
-                    title={name}
+                    title={`${name}`}
                     editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}
+                    children={<span>{publishedText}</span>}
                 />
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
@@ -140,6 +170,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Планировка квартир" />
                                     </ListItem>
                                 </StyledLink>
+                                <PublishHouse uuid={uuid} />
                             </List>
                         </StyledPaper>
                     </Grid>

@@ -1,12 +1,33 @@
 import arrayMove from 'array-move';
+import omit from 'ramda/src/omit';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {FlatModel} from '../../db/models/flat';
 import HouseModel, {House} from '../../db/models/house';
+import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {LevelModel} from '../../db/models/level';
+import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
+import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
+
+function updateModel(Model, id, value, timestamp?) {
+    const updateObj: any = {published: omit(['published'], value.toObject())};
+
+    if (timestamp) {
+        updateObj.publishedDate = timestamp;
+    }
+
+    return Model.updateOne(
+        {
+            _id: id
+        },
+        {
+            $set: updateObj
+        }
+    ).exec();
+}
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
@@ -41,6 +62,68 @@ export const house = {
                 }
             }
         ).exec();
+    },
+    async publishHouse(parent, args, ctx: Context) {
+        const uuid = args.uuid;
+        const houseData = await HouseModel.findById(uuid)
+            .populate([
+                {
+                    path: 'sections',
+                    match: {isDeleted: false},
+                    populate: {
+                        path: 'levels',
+                        match: {isDeleted: false},
+                        populate: [
+                            {
+                                path: 'flats',
+                                match: {isDeleted: false}
+                            }
+                        ]
+                    }
+                },
+                {
+                    path: 'layouts',
+                    match: {isDeleted: false}
+                },
+                {
+                    path: 'levelLayouts',
+                    match: {isDeleted: false},
+                    populate: {
+                        path: 'flatLayouts',
+                        match: {isDeleted: false}
+                    }
+                }
+            ])
+            .exec();
+
+        const requests = [];
+
+        requests.push(updateModel(HouseModel, houseData.id, houseData, new Date().toISOString()));
+
+        houseData.layouts.forEach((layout) => {
+            requests.push(updateModel(HouseLayoutModel, layout.id, layout));
+        });
+        houseData.levelLayouts.forEach((levelLayout) => {
+            requests.push(updateModel(LevelLayoutModel, levelLayout.id, levelLayout));
+            levelLayout.flatLayouts.forEach((flatLayout) => {
+                requests.push(updateModel(LevelFlatLayoutModel, flatLayout.id, flatLayout));
+            });
+        });
+
+        houseData.sections.forEach((section) => {
+            requests.push(updateModel(SectionModel, section.id, section));
+
+            section.levels.forEach((level) => {
+                requests.push(updateModel(LevelModel, level.id, level));
+
+                level.flats.forEach((flat) => {
+                    requests.push(updateModel(FlatModel, flat.id, flat));
+                });
+            });
+        });
+
+        await Promise.all(requests);
+        return true;
     },
     async addHouseImage(parent, args, ctx: Context) {
         return new HouseImageServiceFactory(args.mode).getImageService(args.uuid, args.name).addImage(await args.file);

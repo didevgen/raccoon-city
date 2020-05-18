@@ -7,6 +7,7 @@ export interface House {
     name: string;
     class: KeyDisplayName;
     levels: number;
+    publishedDate: string;
     price: number;
     beginDate: string;
     endDate: string;

@@ -3,6 +3,7 @@ import {Document, Schema} from 'mongoose';
 import {SinglePreviewImage} from '../../types/shared';
 import {House} from './house';
 import {Level} from './level';
+import {LevelFlatLayout} from './levelFlatLayout';
 import {SinglePreviewImageSchema} from './shared';
 
 export interface LevelLayout extends Document {
@@ -10,6 +11,7 @@ export interface LevelLayout extends Document {
     name: string;
     image: SinglePreviewImage;
     levels: Level[];
+    flatLayouts: LevelFlatLayout[];
 }
 
 const LevelLayoutSchema: Schema = new Schema(
@@ -36,5 +38,13 @@ const LevelLayoutSchema: Schema = new Schema(
         toObject: {virtuals: true}
     }
 );
+
+LevelLayoutSchema.virtual('flatLayouts', {
+    ref: 'LevelFlatLayout',
+    localField: '_id',
+    foreignField: 'levelLayout'
+});
+
+LevelLayoutSchema.add({published: LevelLayoutSchema});
 
 export const LevelLayoutModel = mongoose.model<LevelLayout>('LevelLayout', LevelLayoutSchema);

@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
-import * as React from 'react';
+import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import {StyledLink} from '../styled';
 
@@ -17,17 +17,21 @@ const TitleContainer = styled.div`
 interface TitleWithEditIconProps {
     editUrl: string;
     title: string;
+    children?: any;
 }
 
-export function TitleWithEditIcon({editUrl, title}: TitleWithEditIconProps) {
+export function TitleWithEditIcon({editUrl, title, children}: TitleWithEditIconProps) {
     return (
-        <Typography variant="h5" gutterBottom={true}>
-            <TitleContainer>
-                <div>{title}</div>
-                <StyledLink to={editUrl}>
-                    <EditIcon color="primary" />
-                </StyledLink>
-            </TitleContainer>
-        </Typography>
+        <Fragment>
+            <Typography variant="h5" gutterBottom={true}>
+                <TitleContainer>
+                    <div>{title}</div>
+                    <StyledLink to={editUrl}>
+                        <EditIcon color="primary" />
+                    </StyledLink>
+                </TitleContainer>
+            </Typography>
+            {children}
+        </Fragment>
     );
 }

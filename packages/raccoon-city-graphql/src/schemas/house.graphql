@@ -5,6 +5,7 @@ type House {
     price: Float
     parking: Boolean
     images: HouseImages
+    publishedDate: String
 }
 
 input HouseInput {
@@ -30,6 +31,7 @@ type GroupedBySectionHouseResult {
 type Mutation {
     createHouse(apartmentComplexId: String!, houseData: HouseInput!): House
     updateHouse(uuid: String!, houseData: HouseInput!): House
+    publishHouse(uuid: String!): Boolean
     deleteHouse(uuid: String!): Boolean
     addHouseImage(file: Upload!, mode: String!, uuid: String!, name: String): ImageMeta!
     deleteHouseImage(mode: String!, uuid: String!, imageId: String!): String

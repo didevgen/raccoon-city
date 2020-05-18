@@ -41,3 +41,9 @@ export const REORDER_LEVELS = gql`
         reorderLevels(sectionId: $sectionId, oldIndex: $oldIndex, newIndex: $newIndex)
     }
 `;
+
+export const PUBLISH_HOUSE = gql`
+    mutation publishHouse($uuid: String!) {
+        publishHouse(uuid: $uuid)
+    }
+`;
