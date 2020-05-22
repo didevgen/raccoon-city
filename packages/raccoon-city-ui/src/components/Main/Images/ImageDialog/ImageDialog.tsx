@@ -129,7 +129,7 @@ export function ImageDialog({setOpen, open, params, mutation}: ImageDialogProps)
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button disabled={!image} onClick={onSave} color="primary">
+                <Button variant="contained" disabled={!image} onClick={onSave} color="primary">
                     {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>

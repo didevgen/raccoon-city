@@ -438,7 +438,7 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                             onClick={() => {
                                                 outerProps.onSubmit(values);
                                             }}
-                                            variant="outlined"
+                                            variant="contained"
                                             color="primary"
                                             size="large"
                                         >

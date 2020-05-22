@@ -291,6 +291,7 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                         {(confirmFn: (cb: () => void) => void) => {
                                             return (
                                                 <Button
+                                                    variant="contained"
                                                     disabled={invalid}
                                                     onClick={() => {
                                                         confirmFn(() => handleSave(values as Flat));
@@ -303,7 +304,12 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                         }}
                                     </Confirmation>
                                 ) : (
-                                    <Button disabled={invalid} onClick={handleSave(values as Flat)} color="primary">
+                                    <Button
+                                        variant="contained"
+                                        disabled={invalid}
+                                        onClick={handleSave(values as Flat)}
+                                        color="primary"
+                                    >
                                         Сохранить
                                     </Button>
                                 )}

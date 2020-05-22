@@ -6,7 +6,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 
+const StyledAppBar = styled(AppBar)`
+    &.MuiAppBar-colorPrimary {
+        background-color: #37485c;
+    }
+`;
 interface HeaderProps {
     open: boolean;
     drawerStyles: any;
@@ -17,7 +23,7 @@ export const Header = connect((state) => ({
     title: state.route.title
 }))(({open, handleDrawerOpen, drawerStyles, title}: HeaderProps & any) => (
     <div className={drawerStyles.root}>
-        <AppBar
+        <StyledAppBar
             position="fixed"
             className={clsx(drawerStyles.appBar, {
                 [drawerStyles.appBarShift]: open
@@ -37,6 +43,6 @@ export const Header = connect((state) => ({
                 </IconButton>
                 <Typography variant="h6">{title}</Typography>
             </Toolbar>
-        </AppBar>
+        </StyledAppBar>
     </div>
 ));

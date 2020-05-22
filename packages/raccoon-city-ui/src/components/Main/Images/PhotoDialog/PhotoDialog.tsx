@@ -112,7 +112,7 @@ export function PhotoDialog({setOpen, open, params, downloadLink, mutation}: Ima
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button disabled={!image || loading || !name} onClick={onSave} color="primary">
+                <Button variant="contained" disabled={!image || loading || !name} onClick={onSave} color="primary">
                     {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>

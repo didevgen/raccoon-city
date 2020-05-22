@@ -219,7 +219,7 @@ export function HouseForm(outerProps: HouseFormProps) {
                                         onClick={() => {
                                             outerProps.onSubmit(values);
                                         }}
-                                        variant="outlined"
+                                        variant="contained"
                                         color="primary"
                                         size="large"
                                     >

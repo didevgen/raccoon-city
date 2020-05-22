@@ -502,7 +502,7 @@ function DeveloperForm({onSubmit, initialValues, title, logo}: DeveloperFormProp
                                     </StyledLink>
                                     <Button
                                         disabled={invalid}
-                                        variant="outlined"
+                                        variant="contained"
                                         color="primary"
                                         onClick={() => {
                                             onSubmit(values, image);

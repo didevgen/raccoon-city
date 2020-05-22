@@ -29,9 +29,9 @@ export const StyledNavLink = styled(NavLink)`
 
     &.Mui-selected > div {
         color: white;
-        background-color: #3f51b5;
+        background-color: #37485c;
         &:hover {
-            background-color: #7986cb;
+            background-color: #5d7a9c;
         }
     }
 `;

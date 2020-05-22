@@ -76,7 +76,7 @@ export function ChessGridDialog(props: ChessGridDialogProps) {
                         <Typography variant="h6" className={classes.title}>
                             Отметить помещения
                         </Typography>
-                        <Button disabled={!dirty} autoFocus color="inherit" onClick={handleSave}>
+                        <Button variant="contained" disabled={!dirty} autoFocus color="inherit" onClick={handleSave}>
                             Сохранить
                         </Button>
                     </Toolbar>

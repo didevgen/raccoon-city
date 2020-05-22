@@ -9,13 +9,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AppsIcon from '@material-ui/icons/Apps';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import clsx from 'clsx';
 import * as React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 import {StyledLink} from '../../shared/components/styled';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 
 interface SidebarProps {
     open: boolean;
@@ -24,6 +25,17 @@ interface SidebarProps {
     params?: any;
 }
 
+const StyledDrawer = styled(Drawer)`
+    .MuiPaper-root {
+        color: #fff;
+        background-color: #37485c;
+    }
+
+    .MuiListItemIcon-root,
+    .MuiSvgIcon-root {
+        color: #fff;
+    }
+`;
 export const Sidebar = connect((state) => ({
     params: state.route.params
 }))(({open, handleDrawerClose, drawerStyles, params}: SidebarProps) => {
@@ -31,7 +43,7 @@ export const Sidebar = connect((state) => ({
     const {developerUuid, houseUuid} = params || {};
 
     return (
-        <Drawer
+        <StyledDrawer
             variant="permanent"
             className={clsx(drawerStyles.drawer, {
                 [drawerStyles.drawerOpen]: open,
@@ -84,6 +96,6 @@ export const Sidebar = connect((state) => ({
                 )}
             </List>
             <Divider />
-        </Drawer>
+        </StyledDrawer>
     );
 });

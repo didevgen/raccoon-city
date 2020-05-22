@@ -127,7 +127,12 @@ export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutat
                 <Button onClick={handleClose} color="primary">
                     Отмена
                 </Button>
-                <Button disabled={(!image && !isEdit) || loading || !name} onClick={onSave} color="primary">
+                <Button
+                    variant="contained"
+                    disabled={(!image && !isEdit) || loading || !name}
+                    onClick={onSave}
+                    color="primary"
+                >
                     {loading && <CircularProgress size={30} thickness={5} />}
                     Сохранить
                 </Button>
