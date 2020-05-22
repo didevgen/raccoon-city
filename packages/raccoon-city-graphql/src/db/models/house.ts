@@ -72,4 +72,5 @@ HouseSchema.virtual('levelLayouts', {
 
 HouseSchema.add({published: HouseSchema});
 
-export default mongoose.model<House>('House', HouseSchema);
+export const HouseModel = mongoose.model<House>('House', HouseSchema);
+export default HouseModel;

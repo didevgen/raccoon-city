@@ -1,4 +1,3 @@
-import {Typography} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,6 +6,7 @@ import clsx from 'clsx';
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
+import {AppBreadcrumbs} from '../Breadcrumbs/AppBreadcrumbs';
 
 const StyledAppBar = styled(AppBar)`
     &.MuiAppBar-colorPrimary {
@@ -21,7 +21,7 @@ interface HeaderProps {
 
 export const Header = connect((state) => ({
     title: state.route.title
-}))(({open, handleDrawerOpen, drawerStyles, title}: HeaderProps & any) => (
+}))(({open, handleDrawerOpen, drawerStyles}: HeaderProps & any) => (
     <div className={drawerStyles.root}>
         <StyledAppBar
             position="fixed"
@@ -41,7 +41,7 @@ export const Header = connect((state) => ({
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6">{title}</Typography>
+                <AppBreadcrumbs />
             </Toolbar>
         </StyledAppBar>
     </div>

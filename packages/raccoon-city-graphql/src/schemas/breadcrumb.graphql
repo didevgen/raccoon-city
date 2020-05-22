@@ -1,0 +1,16 @@
+type BreadcrumbItem {
+    name: String
+    url: String
+
+}
+
+input BreadcrumbArgs {
+    developerUuid: String
+    apartmentComplexUuid: String
+    houseUuid: String
+    layoutId: String
+}
+
+type Query {
+    getBreadcrumbs(args: BreadcrumbArgs): [BreadcrumbItem]
+}

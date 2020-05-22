@@ -56,4 +56,6 @@ const ApartmentComplexSchema: Schema = new Schema({
     }
 });
 
-export default mongoose.model<ApartmentComplex>('ApartmentComplex', ApartmentComplexSchema);
+export const ApartmentComplexModel = mongoose.model<ApartmentComplex>('ApartmentComplex', ApartmentComplexSchema);
+
+export default ApartmentComplexModel;
