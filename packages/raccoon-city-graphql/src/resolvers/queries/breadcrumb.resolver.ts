@@ -1,7 +1,7 @@
-import {DeveloperModel} from "../../db/models/developer";
-import ApartmentComplexModel from "../../db/models/apartmentComplex";
-import HouseModel from "../../db/models/house";
-import {HouseLayoutModel} from "../../db/models/houseLayout";
+import {DeveloperModel} from '../../db/models/developer';
+import ApartmentComplexModel from '../../db/models/apartmentComplex';
+import HouseModel from '../../db/models/house';
+import {HouseLayoutModel} from '../../db/models/houseLayout';
 
 export const breadcrumbQuery = {
     async getBreadcrumbs(_, {args}) {
@@ -14,7 +14,7 @@ export const breadcrumbQuery = {
             currentUrl = `${currentUrl}/${developerUuid}`;
             result.push({
                 url: `${currentUrl}/apartmentComplexes`
-            })
+            });
         }
 
         if (apartmentComplexUuid) {
@@ -22,15 +22,15 @@ export const breadcrumbQuery = {
             currentUrl = `${currentUrl}/apartmentComplex/${apartmentComplexUuid}`;
             result.push({
                 url: `${currentUrl}/overview/info`
-            })
+            });
         }
 
         if (houseUuid) {
             requests.push(HouseModel.findById(houseUuid).exec());
-            currentUrl = `${currentUrl}/house/${houseUuid}`;
+            currentUrl = `${currentUrl}/house/${houseUuid}/info`;
             result.push({
                 url: currentUrl
-            })
+            });
         }
 
         if (layoutId) {
@@ -38,14 +38,14 @@ export const breadcrumbQuery = {
             currentUrl = `${currentUrl}/layout/${layoutId}`;
             result.push({
                 url: currentUrl
-            })
+            });
         }
 
         const items = await Promise.all(requests);
         result.forEach((item, i) => {
-            item.name = items[i].name
+            item.name = items[i].name;
         });
 
         return result;
     }
-}
+};

@@ -149,7 +149,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                 </StyledLink>
                                 <StyledLink
                                     activeClassName="Mui-selected"
-                                    to={`/developers/${developerUuid}/houseGrid/${uuid}`}
+                                    to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${uuid}`}
                                 >
                                     <ListItem button={true}>
                                         <ListItemText primary="Просмотр шахматки" />

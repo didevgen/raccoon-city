@@ -14,7 +14,7 @@ import {hosueQuery} from './queries/house.resolver';
 import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
 import {user} from './queries/user';
-import {breadcrumbQuery} from "./queries/breadcrumb.resolver";
+import {breadcrumbQuery} from './queries/breadcrumb.resolver';
 
 export default {
     Query: {

@@ -98,7 +98,7 @@ export function Main() {
                     <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
                         <HouseInfo />
                     </Route>
-                    <Route path="/developers/:developerUuid/houseGrid/:houseUuid">
+                    <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid">
                         <ChessGrid />
                     </Route>
                     <Route

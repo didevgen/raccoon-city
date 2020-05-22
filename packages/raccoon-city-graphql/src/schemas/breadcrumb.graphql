@@ -1,7 +1,6 @@
 type BreadcrumbItem {
     name: String
     url: String
-
 }
 
 input BreadcrumbArgs {

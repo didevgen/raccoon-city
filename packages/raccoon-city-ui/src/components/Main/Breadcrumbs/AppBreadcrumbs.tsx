@@ -39,13 +39,6 @@ export const AppBreadcrumbs = connect((state) => ({
     return (
         <StyledBreadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
             {data.getBreadcrumbs.map((breadcrumb, i) => {
-                if (i === data.getBreadcrumbs.length - 1) {
-                    return (
-                        <Typography key={breadcrumb.url} variant="h6" color="textPrimary">
-                            {breadcrumb.name}
-                        </Typography>
-                    );
-                }
                 return (
                     <StyledLink key={breadcrumb.url} to={breadcrumb.url}>
                         <Typography variant="h6" color="textPrimary">
