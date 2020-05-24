@@ -32,7 +32,7 @@ const PublishedHouseLayoutSchema = new Schema({
             }
         }
     ]
-})
+});
 const PublishedFlatSchema = new Schema({
     flatNumber: {type: Schema.Types.String},
     price: {type: Schema.Types.Number},
@@ -80,7 +80,7 @@ const PublishedLevelFlatLayoutSchema = new Schema({
         ref: 'HouseLayout'
     },
     isDeleted: {type: Schema.Types.Boolean, default: false}
-})
+});
 
 const PublishedLevelLayoutSchema = new Schema({
     name: Schema.Types.String,
@@ -99,10 +99,12 @@ const PublishedLevelLayoutSchema = new Schema({
             }
         }
     ],
-    flatLayouts: [{
-        type: PublishedLevelFlatLayoutSchema
-    }]
-})
+    flatLayouts: [
+        {
+            type: PublishedLevelFlatLayoutSchema
+        }
+    ]
+});
 
 const PublishedLevelSchema = new Schema({
     levelNumber: {type: Schema.Types.Number},
@@ -115,51 +117,56 @@ const PublishedLevelSchema = new Schema({
     }
 });
 
-
 const PublishedSectionSchema = new Schema({
     sectionName: {type: Schema.Types.String},
     isDeleted: {type: Schema.Types.Boolean, default: false},
-    levels: [{
-        type: PublishedLevelSchema
-    }],
+    levels: [
+        {
+            type: PublishedLevelSchema
+        }
+    ],
     house: {
         type: Schema.Types.ObjectId,
         ref: 'House'
     }
 });
 
-
-const PublishedHouseSchema: Schema = new Schema({
-    name: {type: Schema.Types.String, required: true},
-    class: {type: KeyDisplayNameSchema},
-    levels: {type: Schema.Types.Number},
-    price: {type: Schema.Types.Number, required: true},
-    beginDate: {type: Schema.Types.String},
-    squarePrice: {type: Schema.Types.Number},
-    parking: {type: Schema.Types.Boolean},
-    endDate: {type: Schema.Types.String},
-    isDeleted: {type: Schema.Types.Boolean, default: false},
-    images: {
-        type: imagesSchema,
-        default: () => {
-            return {};
-        }
+const PublishedHouseSchema: Schema = new Schema(
+    {
+        name: {type: Schema.Types.String, required: true},
+        class: {type: KeyDisplayNameSchema},
+        levels: {type: Schema.Types.Number},
+        price: {type: Schema.Types.Number, required: true},
+        beginDate: {type: Schema.Types.String},
+        squarePrice: {type: Schema.Types.Number},
+        parking: {type: Schema.Types.Boolean},
+        endDate: {type: Schema.Types.String},
+        isDeleted: {type: Schema.Types.Boolean, default: false},
+        images: {
+            type: imagesSchema,
+            default: () => {
+                return {};
+            }
+        },
+        sections: [
+            {
+                type: PublishedSectionSchema
+            }
+        ],
+        house: {
+            type: Schema.Types.ObjectId,
+            ref: 'House'
+        },
+        apartmentComplex: {
+            type: Schema.Types.ObjectId,
+            ref: 'ApartmentComplex'
+        },
+        publishedDate: {type: Schema.Types.String}
     },
-    sections: [{
-        type: PublishedSectionSchema
-    }],
-    house: {
-        type: Schema.Types.ObjectId,
-        ref: 'House'
-    },
-    apartmentComplex: {
-        type: Schema.Types.ObjectId,
-        ref: 'ApartmentComplex'
-    },
-    publishedDate: {type: Schema.Types.String}
-}, {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true}
-});
+    {
+        toJSON: {virtuals: true},
+        toObject: {virtuals: true}
+    }
+);
 
 export const PublishedHouseModel = mongoose.model<any>('PublishedHouse', PublishedHouseSchema);

@@ -23,31 +23,34 @@ export interface House extends Document {
     images: ApartmentComplexImages;
 }
 
-const HouseSchema: Schema = new Schema({
-    name: {type: Schema.Types.String, required: true},
-    class: {type: KeyDisplayNameSchema},
-    levels: {type: Schema.Types.Number},
-    price: {type: Schema.Types.Number, required: true},
-    beginDate: {type: Schema.Types.String},
-    squarePrice: {type: Schema.Types.Number},
-    parking: {type: Schema.Types.Boolean},
-    endDate: {type: Schema.Types.String},
-    isDeleted: {type: Schema.Types.Boolean, default: false},
-    apartmentComplex: {
-        type: Schema.Types.ObjectId,
-        ref: 'ApartmentComplex'
+const HouseSchema: Schema = new Schema(
+    {
+        name: {type: Schema.Types.String, required: true},
+        class: {type: KeyDisplayNameSchema},
+        levels: {type: Schema.Types.Number},
+        price: {type: Schema.Types.Number, required: true},
+        beginDate: {type: Schema.Types.String},
+        squarePrice: {type: Schema.Types.Number},
+        parking: {type: Schema.Types.Boolean},
+        endDate: {type: Schema.Types.String},
+        isDeleted: {type: Schema.Types.Boolean, default: false},
+        apartmentComplex: {
+            type: Schema.Types.ObjectId,
+            ref: 'ApartmentComplex'
+        },
+        images: {
+            type: imagesSchema,
+            default: () => {
+                return {};
+            }
+        },
+        publishedDate: {type: Schema.Types.String}
     },
-    images: {
-        type: imagesSchema,
-        default: () => {
-            return {};
-        }
-    },
-    publishedDate: {type: Schema.Types.String}
-}, {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true}
-});
+    {
+        toJSON: {virtuals: true},
+        toObject: {virtuals: true}
+    }
+);
 
 HouseSchema.virtual('sections', {
     ref: 'Section',

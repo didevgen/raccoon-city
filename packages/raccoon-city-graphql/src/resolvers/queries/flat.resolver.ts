@@ -107,7 +107,7 @@ export const flatQuery = {
             }
         }).populate({
             path: 'published'
-        })
+        });
         const [result] = await FlatModel.aggregate([
             {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
@@ -173,5 +173,5 @@ export const flatQuery = {
         });
 
         return res;
-    },
+    }
 };

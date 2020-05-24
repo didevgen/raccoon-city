@@ -97,14 +97,18 @@ export const house = {
             ])
             .exec();
         const dataSet = houseData.toObject();
-        await PublishedHouseModel.findOneAndUpdate({
-            house: uuid
-        }, {
-            $set: {
-                ...dataSet,
-                publishedDate: new Date().toISOString()
+        await PublishedHouseModel.findOneAndUpdate(
+            {
+                house: uuid
             },
-        }, { upsert: true }).exec();
+            {
+                $set: {
+                    ...dataSet,
+                    publishedDate: new Date().toISOString()
+                }
+            },
+            {upsert: true}
+        ).exec();
         return true;
     },
     async addHouseImage(parent, args, ctx: Context) {
