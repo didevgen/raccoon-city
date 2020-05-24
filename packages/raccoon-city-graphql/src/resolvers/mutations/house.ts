@@ -13,23 +13,6 @@ import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
-function updateModel(Model, id, value, timestamp?) {
-    const updateObj: any = {published: omit(['published'], value.toObject())};
-
-    if (timestamp) {
-        updateObj.publishedDate = timestamp;
-    }
-
-    return Model.updateOne(
-        {
-            _id: id
-        },
-        {
-            $set: updateObj
-        }
-    ).exec();
-}
-
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
         const houseData: HouseDataInputArgs = args.houseData;
@@ -97,18 +80,26 @@ export const house = {
             ])
             .exec();
         const dataSet = houseData.toObject();
-        await PublishedHouseModel.findOneAndUpdate(
+        await PublishedHouseModel.update(
             {
                 house: uuid
             },
             {
                 $set: {
                     ...dataSet,
+                    house: uuid,
                     publishedDate: new Date().toISOString()
                 }
             },
             {upsert: true}
         ).exec();
+        await HouseModel.update({
+            _id: uuid
+        }, {
+            $set: {
+                publishedDate: new Date().toISOString()
+            }
+        })
         return true;
     },
     async addHouseImage(parent, args, ctx: Context) {

@@ -6,6 +6,7 @@ import {SinglePreviewImage} from '../../types/shared';
 import HouseModel from '../../db/models/house';
 import {Section} from '../../db/models/section';
 import {Level} from '../../db/models/level';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -99,38 +100,16 @@ export const flatQuery = {
         return flatObj;
     },
     getPublicGroupedFlatsBySection: async (parent, {uuid}) => {
-        const houses = [];
-
-        const houses1 = await HouseModel.find({
-            _id: {
+        const houses = await PublishedHouseModel.find({
+            house: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))
             }
-        }).populate({
-            path: 'published'
-        });
-        const [result] = await FlatModel.aggregate([
-            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
-            {
-                $group: {
-                    _id: null,
-                    maxPrice: {$max: '$price'},
-                    minPrice: {$min: '$price'},
-                    maxArea: {$max: '$area'},
-                    minArea: {$min: '$area'}
-                }
-            }
-        ]).exec();
+        }).exec();
+
         let maxPrice = 0;
         let minPrice = 0;
         let maxArea = 0;
         let minArea = 0;
-
-        if (!!result) {
-            maxPrice = result.maxPrice;
-            minPrice = result.minPrice;
-            maxArea = result.maxArea;
-            minArea = result.minArea;
-        }
 
         const res = {
             maxPrice,
