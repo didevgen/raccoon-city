@@ -30,6 +30,4 @@ SectionSchema.virtual('levels', {
     foreignField: 'section'
 });
 
-SectionSchema.add({published: SectionSchema});
-
 export const SectionModel = mongoose.model<Section>('Section', SectionSchema);

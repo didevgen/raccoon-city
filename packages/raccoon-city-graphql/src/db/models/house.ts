@@ -44,6 +44,9 @@ const HouseSchema: Schema = new Schema({
         }
     },
     publishedDate: {type: Schema.Types.String}
+}, {
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
 });
 
 HouseSchema.virtual('sections', {
@@ -69,8 +72,6 @@ HouseSchema.virtual('levelLayouts', {
     localField: '_id',
     foreignField: 'house'
 });
-
-HouseSchema.add({published: HouseSchema});
 
 export const HouseModel = mongoose.model<House>('House', HouseSchema);
 export default HouseModel;

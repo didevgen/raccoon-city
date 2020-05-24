@@ -55,6 +55,4 @@ const FlatSchema: Schema = new Schema(
     }
 );
 
-FlatSchema.add({published: FlatSchema});
-
 export const FlatModel = mongoose.model<Flat>('Flat', FlatSchema);

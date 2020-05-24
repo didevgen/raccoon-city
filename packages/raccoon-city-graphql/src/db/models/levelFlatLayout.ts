@@ -36,5 +36,4 @@ const LevelFlatLayoutSchema: Schema = new Schema(
         toObject: {virtuals: true}
     }
 );
-LevelFlatLayoutSchema.add({published: LevelFlatLayoutSchema});
 export const LevelFlatLayoutModel = mongoose.model<LevelFlatLayout>('LevelFlatLayout', LevelFlatLayoutSchema);

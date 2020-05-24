@@ -39,6 +39,29 @@ jobs:
             - REACT_APP_GRAPHQL_URL=https://raccoon-city-test.herokuapp.com/
           on:
             branch: develop
+    - stage: ui
+      env:
+        - REACT_APP_GRAPHQL_URL=$GRAPHQL_URL
+      script:
+        - cd packages/raccoon-city-chessgrid
+        - yarn
+        - yarn run build
+      deploy:
+        - provider: script
+          script: ~/.local/bin/aws s3 sync build s3://raccoon-city-bucket/raccoon-city-chessgrid --region=eu-central-1 --delete
+          skip_cleanup: true
+          on:
+            branch: master
+        - provider: s3
+          skip_cleanup: true
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          bucket: raccoon-city-bucket
+          upload-dir: raccoon-city-chessgrid
+          local_dir: build
+          region: eu-central-1
+          on:
+            branch: master
     - stage: backend
       script:
         - cd packages/raccoon-city-graphql

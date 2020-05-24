@@ -38,6 +38,4 @@ LevelSchema.virtual('layouts', {
     foreignField: 'levels'
 });
 
-LevelSchema.add({published: LevelSchema});
-
 export const LevelModel = mongoose.model<Level>('Level', LevelSchema);

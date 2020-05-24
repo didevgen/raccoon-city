@@ -45,6 +45,4 @@ LevelLayoutSchema.virtual('flatLayouts', {
     foreignField: 'levelLayout'
 });
 
-LevelLayoutSchema.add({published: LevelLayoutSchema});
-
 export const LevelLayoutModel = mongoose.model<LevelLayout>('LevelLayout', LevelLayoutSchema);

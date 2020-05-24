@@ -11,6 +11,7 @@ import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
 function updateModel(Model, id, value, timestamp?) {
     const updateObj: any = {published: omit(['published'], value.toObject())};
@@ -76,53 +77,34 @@ export const house = {
                         populate: [
                             {
                                 path: 'flats',
-                                match: {isDeleted: false}
+                                match: {isDeleted: false},
+                                populate: {
+                                    path: 'layout',
+                                    match: {isDeleted: false}
+                                }
+                            },
+                            {
+                                path: 'layouts',
+                                match: {isDeleted: false},
+                                populate: {
+                                    path: 'flatLayouts',
+                                    match: {isDeleted: false}
+                                }
                             }
                         ]
-                    }
-                },
-                {
-                    path: 'layouts',
-                    match: {isDeleted: false}
-                },
-                {
-                    path: 'levelLayouts',
-                    match: {isDeleted: false},
-                    populate: {
-                        path: 'flatLayouts',
-                        match: {isDeleted: false}
                     }
                 }
             ])
             .exec();
-
-        const requests = [];
-
-        requests.push(updateModel(HouseModel, houseData.id, houseData, new Date().toISOString()));
-
-        houseData.layouts.forEach((layout) => {
-            requests.push(updateModel(HouseLayoutModel, layout.id, layout));
-        });
-        houseData.levelLayouts.forEach((levelLayout) => {
-            requests.push(updateModel(LevelLayoutModel, levelLayout.id, levelLayout));
-            levelLayout.flatLayouts.forEach((flatLayout) => {
-                requests.push(updateModel(LevelFlatLayoutModel, flatLayout.id, flatLayout));
-            });
-        });
-
-        houseData.sections.forEach((section) => {
-            requests.push(updateModel(SectionModel, section.id, section));
-
-            section.levels.forEach((level) => {
-                requests.push(updateModel(LevelModel, level.id, level));
-
-                level.flats.forEach((flat) => {
-                    requests.push(updateModel(FlatModel, flat.id, flat));
-                });
-            });
-        });
-
-        await Promise.all(requests);
+        const dataSet = houseData.toObject();
+        await PublishedHouseModel.findOneAndUpdate({
+            house: uuid
+        }, {
+            $set: {
+                ...dataSet,
+                publishedDate: new Date().toISOString()
+            },
+        }, { upsert: true }).exec();
         return true;
     },
     async addHouseImage(parent, args, ctx: Context) {

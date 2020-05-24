@@ -13,6 +13,11 @@ const StyledAppBar = styled(AppBar)`
         background-color: #37485c;
     }
 `;
+
+const FilterContainer = styled.div`
+    margin-left: auto;
+`;
+
 interface HeaderProps {
     open: boolean;
     drawerStyles: any;
@@ -42,6 +47,7 @@ export const Header = connect((state) => ({
                     <MenuIcon />
                 </IconButton>
                 <AppBreadcrumbs />
+                <FilterContainer id="chessGridFilterContainer" />
             </Toolbar>
         </StyledAppBar>
     </div>

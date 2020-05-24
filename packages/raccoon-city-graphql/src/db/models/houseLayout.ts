@@ -43,5 +43,4 @@ const HouseLayoutSchema: Schema = new Schema(
         toObject: {virtuals: true}
     }
 );
-HouseLayoutSchema.add({published: HouseLayoutSchema});
 export const HouseLayoutModel = mongoose.model<HouseLayout>('HouseLayout', HouseLayoutSchema);
