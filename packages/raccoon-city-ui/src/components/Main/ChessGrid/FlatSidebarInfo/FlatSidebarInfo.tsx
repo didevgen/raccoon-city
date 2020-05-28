@@ -21,6 +21,7 @@ import {SidebarPdfInfo} from './SidebarPdfInfo';
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
     width: 420px;
+    max-width: 100vw;
 `;
 
 const ImageContainer = styled.div`

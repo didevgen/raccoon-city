@@ -26,6 +26,11 @@ const Cell = styled.div`
     align-items: center;
     justify-content: center;
     line-height: 1;
+
+    @media (max-width: 889px) {
+        width: 72px;
+        height: 72px;
+    }
     &:hover {
         cursor: pointer;
     }
@@ -115,7 +120,7 @@ const StyledBagde = styled(Badge)`
     }
 `;
 
-export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Flat) => void}) {
+export const ChessGridCell = React.memo(({flat, onSelect}: {flat: Flat; onSelect: (flat: Flat) => void}) => {
     const viewContextValue = useContext<any>(ViewModeContext);
     return (
         <HtmlTooltip
@@ -165,4 +170,4 @@ export function ChessGridCell({flat, onSelect}: {flat: Flat; onSelect: (flat: Fl
             )}
         </HtmlTooltip>
     );
-}
+});

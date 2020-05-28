@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import {Breadcrumbs, Typography} from '@material-ui/core';
+import {Breadcrumbs, Typography, useMediaQuery, useTheme} from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -19,12 +19,19 @@ export const AppBreadcrumbs = connect((state) => ({
 }))(({params, title}) => {
     const noParams = !params || params.length === 0;
 
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('xs'));
+
     const {data, error, loading} = useQuery(GET_BREADCRUMBS, {
         variables: {
             args: params
         },
         skip: noParams
     });
+
+    if (matches) {
+        return null;
+    }
 
     if (noParams && title) {
         return (

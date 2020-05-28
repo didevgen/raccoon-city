@@ -10,6 +10,10 @@ const ColumnWrapper = styled.div`
     flex-direction: column;
     justify-content: flex-end;
     padding: 12px;
+
+    @media (max-width: 889px) {
+        flex-direction: column-reverse;
+    }
 `;
 
 const ColumnTitle = styled.div`
@@ -32,26 +36,36 @@ interface ChessGridColumnProps {
     onSelect: (flat: Flat) => void;
 }
 
-export function ChessGridColumn(props: ChessGridColumnProps) {
-    return (
-        <ColumnWrapper>
-            <CellContainer>
-                {props.levels.map((level) => {
-                    return (
-                        <ChessGridRow
-                            key={level.id}
-                            rowName={String(level.level)}
-                            flats={level.flats}
-                            onSelect={props.onSelect}
-                        />
-                    );
-                })}
-            </CellContainer>
-            <ColumnTitle>
-                <Typography variant="subtitle1" gutterBottom={true}>
-                    Подъезд №{props.columnName}
-                </Typography>
-            </ColumnTitle>
-        </ColumnWrapper>
-    );
+export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
+    public shouldComponentUpdate(
+        nextProps: Readonly<ChessGridColumnProps>,
+        nextState: Readonly<{}>,
+        nextContext: any
+    ): boolean {
+        return false;
+    }
+
+    public render() {
+        return (
+            <ColumnWrapper>
+                <CellContainer>
+                    {this.props.levels.map((level) => {
+                        return (
+                            <ChessGridRow
+                                key={level.id}
+                                rowName={String(level.level)}
+                                flats={level.flats}
+                                onSelect={this.props.onSelect}
+                            />
+                        );
+                    })}
+                </CellContainer>
+                <ColumnTitle>
+                    <Typography variant="subtitle1" gutterBottom={true}>
+                        Подъезд №{this.props.columnName}
+                    </Typography>
+                </ColumnTitle>
+            </ColumnWrapper>
+        );
+    }
 }

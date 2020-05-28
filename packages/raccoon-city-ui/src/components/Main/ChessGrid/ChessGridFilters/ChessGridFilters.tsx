@@ -1,7 +1,8 @@
 import {Avatar, Grid, Paper, Slider, Tooltip} from '@material-ui/core';
+import Input from '@material-ui/core/Input';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessGrid';
@@ -19,9 +20,10 @@ const StyledPaper = styled(Paper)`
 const SelectContainer = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     margin: 16px;
     .HouseSelect {
-        width: 100%;
+        width: 90%;
     }
 `;
 
@@ -56,10 +58,11 @@ const FilterItemContainer = styled.div`
     margin: 0 16px;
 `;
 
-const RangeContainer = styled(FilterItemContainer)`
-    width: 140px;
-    margin: 0 48px;
+const LeftInputGrid = styled(Grid)`
+    display: flex;
+    justify-content: flex-end;
 `;
+const RangeContainer = styled(FilterItemContainer)``;
 
 const FilterTitle = styled.div`
     text-align: center;
@@ -75,6 +78,8 @@ function ValueLabelComponent(props) {
         </Tooltip>
     );
 }
+
+const RangeInput = styled(Input)``;
 
 const roomFilters = [{value: 'КН'}, {value: 'П'}, {value: '1'}, {value: '2'}, {value: '3'}, {value: '4+'}];
 
@@ -133,40 +138,65 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
     return (
         <RangeContainer>
             <FilterTitle>Стоимость</FilterTitle>
-            <Slider
-                value={[min, max]}
-                ValueLabelComponent={ValueLabelComponent}
-                aria-labelledby="discrete-slider-custom"
-                step={10}
-                min={minPrice}
-                max={maxPrice}
-                valueLabelDisplay="auto"
-                onChange={(e, value) => {
-                    const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
-                    setMin(minPriceRes);
-                    setMax(maxPriceRes);
-                }}
-                onChangeCommitted={(e, value) => {
-                    const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
-                    dispatch({
-                        type: 'price',
-                        payload: {
-                            minPrice: minPriceRes,
-                            maxPrice: maxPriceRes
-                        }
-                    });
-                }}
-                marks={[
-                    {
-                        value: minPrice,
-                        label: `${minPrice} грн`
-                    },
-                    {
-                        value: maxPrice,
-                        label: `${maxPrice} грн`
-                    }
-                ]}
-            />
+            <Grid container spacing={2} alignItems="center">
+                <LeftInputGrid item xs={3}>
+                    <RangeInput
+                        className="LeftInput"
+                        value={min}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setMin(event.target.value === '' ? '' : Number(event.target.value));
+                        }}
+                        inputProps={{
+                            step: 10,
+                            min: minPrice,
+                            max: maxPrice,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider'
+                        }}
+                    />
+                </LeftInputGrid>
+                <Grid item xs={6}>
+                    <Slider
+                        value={[min, max]}
+                        ValueLabelComponent={ValueLabelComponent}
+                        aria-labelledby="discrete-slider-custom"
+                        step={10}
+                        min={minPrice}
+                        max={maxPrice}
+                        valueLabelDisplay="auto"
+                        onChange={(e, value) => {
+                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                            setMin(minPriceRes);
+                            setMax(maxPriceRes);
+                        }}
+                        onChangeCommitted={(e, value) => {
+                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                            dispatch({
+                                type: 'price',
+                                payload: {
+                                    minPrice: minPriceRes,
+                                    maxPrice: maxPriceRes
+                                }
+                            });
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RangeInput
+                        value={max}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setMax(event.target.value === '' ? '' : Number(event.target.value));
+                        }}
+                        inputProps={{
+                            step: 10,
+                            min: minPrice,
+                            max: maxPrice,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider'
+                        }}
+                    />
+                </Grid>
+            </Grid>
         </RangeContainer>
     );
 }
@@ -191,40 +221,65 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
     return (
         <RangeContainer>
             <FilterTitle>Площадь</FilterTitle>
-            <Slider
-                value={[min, max]}
-                ValueLabelComponent={ValueLabelComponent}
-                aria-labelledby="discrete-slider-custom"
-                step={10}
-                min={minArea}
-                max={maxArea}
-                valueLabelDisplay="auto"
-                onChange={(e, value) => {
-                    const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
-                    setMin(minAreaRes);
-                    setMax(maxAreaRes);
-                }}
-                onChangeCommitted={(e, value) => {
-                    const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
-                    dispatch({
-                        type: 'area',
-                        payload: {
-                            minArea: minAreaRes,
-                            maxArea: maxAreaRes
-                        }
-                    });
-                }}
-                marks={[
-                    {
-                        value: minArea,
-                        label: `${minArea} м²`
-                    },
-                    {
-                        value: maxArea,
-                        label: `${maxArea} м²`
-                    }
-                ]}
-            />
+            <Grid container spacing={2} alignItems="center">
+                <LeftInputGrid item xs={3}>
+                    <RangeInput
+                        className="LeftInput"
+                        value={min}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setMin(event.target.value === '' ? '' : Number(event.target.value));
+                        }}
+                        inputProps={{
+                            step: 10,
+                            min: minArea,
+                            max: maxArea,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider'
+                        }}
+                    />
+                </LeftInputGrid>
+                <Grid item xs={6}>
+                    <Slider
+                        value={[min, max]}
+                        ValueLabelComponent={ValueLabelComponent}
+                        aria-labelledby="discrete-slider-custom"
+                        step={10}
+                        min={minArea}
+                        max={maxArea}
+                        valueLabelDisplay="auto"
+                        onChange={(e, value) => {
+                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                            setMin(minPriceRes);
+                            setMax(maxPriceRes);
+                        }}
+                        onChangeCommitted={(e, value) => {
+                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                            dispatch({
+                                type: 'price',
+                                payload: {
+                                    minPrice: minPriceRes,
+                                    maxPrice: maxPriceRes
+                                }
+                            });
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RangeInput
+                        value={max}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setMax(event.target.value === '' ? '' : Number(event.target.value));
+                        }}
+                        inputProps={{
+                            step: 10,
+                            min: minArea,
+                            max: maxArea,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider'
+                        }}
+                    />
+                </Grid>
+            </Grid>
         </RangeContainer>
     );
 }
@@ -304,7 +359,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;
     return (
-        <StyledPaper elevation={3}>
+        <Fragment>
             <Grid container spacing={1}>
                 {props.onHouseChange && (
                     <Grid item xs={12}>
@@ -313,35 +368,41 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                         </SelectContainer>
                     </Grid>
                 )}
-                <Grid item xs={hasPrices ? 6 : 4} lg={hasPrices ? 3 : 3} xl={hasPrices ? 3 : 4}>
-                    <Grid container justify="center">
-                        <RoomAmountFilter dispatch={props.dispatchFn} />
-                    </Grid>
-                </Grid>
-                <Grid item xs={hasPrices ? 3 : 4} lg={hasPrices ? 2 : 2} xl={hasPrices ? 2 : 3}>
-                    <Grid container justify="center">
-                        <ViewMode dispatch={props.dispatchFn} />
-                    </Grid>
-                </Grid>
                 {hasPrices && (
-                    <Grid item xs={9} lg={4} xl={4}>
-                        <Grid container justify="center" direction="row">
-                            <PriceFilter
-                                data={data}
-                                maxPrice={data.maxPrice}
-                                minPrice={data.minPrice}
-                                dispatch={props.dispatchFn}
-                            />
-                            <AreaFilter
-                                maxArea={data.maxArea}
-                                minArea={data.minArea}
-                                dispatch={props.dispatchFn}
-                                data={data}
-                            />
+                    <Fragment>
+                        <Grid item xs={12} md={4}>
+                            <Grid container justify="center">
+                                <RoomAmountFilter dispatch={props.dispatchFn} />
+                            </Grid>
                         </Grid>
-                    </Grid>
+                        <Grid item xs={12} md={2}>
+                            <Grid container justify="center">
+                                <ViewMode dispatch={props.dispatchFn} />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Grid container justify="center" direction="row">
+                                <Grid item xs={12} md={6}>
+                                    <PriceFilter
+                                        data={data}
+                                        maxPrice={data.maxPrice}
+                                        minPrice={data.minPrice}
+                                        dispatch={props.dispatchFn}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <AreaFilter
+                                        maxArea={data.maxArea}
+                                        minArea={data.minArea}
+                                        dispatch={props.dispatchFn}
+                                        data={data}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Fragment>
                 )}
             </Grid>
-        </StyledPaper>
+        </Fragment>
     );
 }

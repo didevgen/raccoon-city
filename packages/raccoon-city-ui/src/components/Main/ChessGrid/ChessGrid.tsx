@@ -1,6 +1,7 @@
 import {useQuery} from '@apollo/react-hooks';
-import {Drawer, Typography} from '@material-ui/core';
+import {SwipeableDrawer, Typography} from '@material-ui/core';
 import React, {Fragment, useEffect, useReducer, useState} from 'react';
+import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,14 +15,10 @@ import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
-import {ChessGridFilters} from './ChessGridFilters/ChessGridFilters';
+import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 
 const ChessGridWrapper: any = styled.div`
-    width: 100%;
-    overflow-y: scroll;
-    margin-top: ${(p: any) => (p.hasSelect ? '170px' : '64px')};
-    background-color: #fff;
     display: flex;
     flex-direction: row;
 `;
@@ -32,6 +29,7 @@ const ColumnWrapper = styled.div`
 `;
 
 const Container = styled.div`
+    background-color: #fff;
     padding: 0 16px;
     border-right: 1px solid #cccccc;
     display: flex;
@@ -41,6 +39,14 @@ const Container = styled.div`
 
 const ColumnTitle = styled(Typography)`
     text-align: center;
+    padding: 16px 0;
+`;
+
+const SidebarDrawer = styled(SwipeableDrawer)`
+    max-width: 100vw;
+    .MuiDrawer-paper {
+        max-width: 100%;
+    }
 `;
 
 export enum ViewModeValues {
@@ -118,7 +124,7 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-function ChessGridContent({filters, data, loading, error, hasSelect}) {
+const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect}: any) => {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     if (loading) {
@@ -147,6 +153,9 @@ function ChessGridContent({filters, data, loading, error, hasSelect}) {
 
                     return (
                         <Container key={group.id}>
+                            <ColumnTitle variant="h5" gutterBottom>
+                                {group.name}
+                            </ColumnTitle>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
                                     return (
@@ -162,29 +171,39 @@ function ChessGridContent({filters, data, loading, error, hasSelect}) {
                                     );
                                 })}
                             </ColumnWrapper>
-                            <ColumnTitle variant="h5" gutterBottom>
-                                {group.name}
-                            </ColumnTitle>
                         </Container>
                     );
                 })}
 
-                <Drawer
+                <SidebarDrawer
                     anchor="right"
                     open={flatCardOpen}
+                    onOpen={() => {
+                        // silence
+                    }}
                     onClose={() => {
                         setFlatCardOpen(false);
                         setSelectedFlat(undefined);
                     }}
                 >
                     {selectedFlat && <FlatSidebarInfo flat={selectedFlat} />}
-                </Drawer>
+                </SidebarDrawer>
             </ChessGridWrapper>
         </ViewModeContext.Provider>
     );
+});
+
+function FilterIcon({setShownFilters}) {
+    const elem = document.getElementById('chessGridFilterContainer');
+    if (!elem) {
+        return null;
+    }
+    return ReactDOM.createPortal(<ShowFilter setShownFilters={setShownFilters} />, elem);
 }
 
 export const ChessGridComponent = ({uuid, hasSelect}) => {
+    const [isMounted, setMounted] = useState(false);
+    const [filterShown, setShownFilters] = useState(false);
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {
@@ -194,6 +213,10 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
         },
         skip: id.length === 0
     });
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     let onHouseChange;
     if (hasSelect) {
@@ -205,10 +228,11 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
             }
         };
     }
-
     return (
         <Fragment>
-            <ChessGridFilters
+            <ChessGridFiltersDrawer
+                filterShown={filterShown}
+                setShownFilters={setShownFilters}
                 dispatchFn={dispatch}
                 data={id.length === 0 ? null : data}
                 onHouseChange={onHouseChange}
@@ -220,6 +244,7 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
                 error={error}
                 data={id.length === 0 ? null : data}
             />
+            {isMounted && <FilterIcon setShownFilters={setShownFilters} />}
         </Fragment>
     );
 };

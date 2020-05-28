@@ -135,6 +135,7 @@ export const flatQuery = {
                                 };
                                 const flats = level.flats.map((flat) => {
                                     return {
+                                        id: flat.id,
                                         ...flat.toObject(),
                                         ...newFlat
                                     };

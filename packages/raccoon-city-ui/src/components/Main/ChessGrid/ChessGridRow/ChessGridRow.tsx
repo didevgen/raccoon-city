@@ -32,15 +32,14 @@ interface ChessGridItem {
 function EmplyLevel() {
     return <StyledEmptyLevel />;
 }
-export function ChessGridRow(props: ChessGridItem) {
-    return (
-        <RowWrapper>
-            <RowTitle>{props.rowName}</RowTitle>
-            {props.flats.length === 0 && <EmplyLevel />}
-            {props.flats.length !== 0 &&
-                props.flats.map((flat: Flat) => {
-                    return <ChessGridCell key={flat.id} flat={flat} onSelect={props.onSelect} />;
-                })}
-        </RowWrapper>
-    );
-}
+
+export const ChessGridRow = React.memo((props: ChessGridItem) => (
+    <RowWrapper>
+        <RowTitle>{props.rowName}</RowTitle>
+        {props.flats.length === 0 && <EmplyLevel />}
+        {props.flats.length !== 0 &&
+            props.flats.map((flat: Flat) => {
+                return <ChessGridCell key={flat.id} flat={flat} onSelect={props.onSelect} />;
+            })}
+    </RowWrapper>
+));

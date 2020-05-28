@@ -23,6 +23,8 @@ import {UserList} from './Users/UserList';
 
 const Content = styled.div`
     position: relative;
+    max-width: 100%;
+    overflow-y: scroll;
 `;
 
 export function Main() {
