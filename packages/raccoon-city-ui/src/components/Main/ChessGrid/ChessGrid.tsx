@@ -203,7 +203,7 @@ function FilterIcon({setShownFilters}) {
 
 export const ChessGridComponent = ({uuid, hasSelect}) => {
     const [isMounted, setMounted] = useState(false);
-    const [filterShown, setShownFilters] = useState(false);
+    const [filterShown, setShownFilters] = useState(hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {

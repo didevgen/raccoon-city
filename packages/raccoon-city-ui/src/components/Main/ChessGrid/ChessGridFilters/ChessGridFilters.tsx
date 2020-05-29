@@ -24,6 +24,11 @@ const SelectContainer = styled.div`
     margin: 16px;
     .HouseSelect {
         width: 90%;
+
+        @media (max-width: 889px) {
+            width: 100%;
+            padding: 32px 8px 8px;
+        }
     }
 `;
 

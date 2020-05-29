@@ -77,6 +77,9 @@ export function ChessGridFiltersDrawer({setShownFilters, filterShown, ...props}:
             onOpen={() => {
                 // silence
             }}
+            ModalProps={{
+                keepMounted: true
+            }}
             anchor={matches ? 'right' : 'top'}
             open={filterShown}
             onClose={() => {
