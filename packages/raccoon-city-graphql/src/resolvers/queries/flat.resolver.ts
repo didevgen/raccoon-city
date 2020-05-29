@@ -106,10 +106,38 @@ export const flatQuery = {
             }
         }).exec();
 
+        const [result] = await PublishedHouseModel.aggregate([
+            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
+            {
+                $unwind: '$sections'
+            },
+            {
+                $unwind: '$sections.levels'
+            },
+            {
+                $unwind: '$sections.levels.flats'
+            },
+            {
+                $group: {
+                    _id: null,
+                    maxPrice: {$max: '$sections.levels.flats.price'},
+                    minPrice: {$min: '$sections.levels.flats.price'},
+                    maxArea: {$max: '$sections.levels.flats.area'},
+                    minArea: {$min: '$sections.levels.flats.area'}
+                }
+            }
+        ]).exec();
         let maxPrice = 0;
         let minPrice = 0;
         let maxArea = 0;
         let minArea = 0;
+
+        if (!!result) {
+            maxPrice = result.maxPrice;
+            minPrice = result.minPrice;
+            maxArea = result.maxArea;
+            minArea = result.minArea;
+        }
 
         const res = {
             maxPrice,

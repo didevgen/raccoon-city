@@ -23,6 +23,7 @@ input CurrentUserInfo {
 }
 
 type Mutation {
+    authApp(apiKey: String!): Auth
     login(email: String!, password: String!): Auth
     logout(key: String!): Boolean!
     createUser(userData: UserInput): User

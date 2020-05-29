@@ -96,6 +96,43 @@ export interface GetGroupedFlatsBySectionQuery {
     };
 }
 
+export const GET_PUBLIC_GROUPED_FLATS_CHESSGRID = gql`
+    query getPublicGroupedFlatsBySection($uuid: [String]) {
+        getGroupedFlatsBySection: getPublicGroupedFlatsBySection(uuid: $uuid) {
+            maxPrice
+            minPrice
+            maxArea
+            minArea
+            houseFlats {
+                id
+                name
+                groupedFlats {
+                    id
+                    section
+                    levels {
+                        id
+                        level
+                        flats {
+                            id
+                            flatNumber
+                            levelAmount
+                            fakeLevel
+                            price
+                            level
+                            section
+                            area
+                            status
+                            sale
+                            squarePrice
+                            roomAmount
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const GET_GROUPED_FLATS_CHESSGRID = gql`
     query getGroupedFlatsBySection($uuid: [String]) {
         getGroupedFlatsBySection(uuid: $uuid) {

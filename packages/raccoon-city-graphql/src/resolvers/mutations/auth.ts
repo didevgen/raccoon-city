@@ -1,7 +1,7 @@
 import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
 import {UserModel} from '../../db/models/user';
-import {authTokenGenerate} from '../../utils';
+import {authAppTokenGenerate, authTokenGenerate} from '../../utils';
 
 export const auth = {
     async createUser(parent, {userData}) {
@@ -38,7 +38,14 @@ export const auth = {
         );
         return {token};
     },
-
+    async authApp(_, {apiKey}, {redis}) {
+        const token = authAppTokenGenerate(apiKey);
+        await redis.set(
+            token,
+            JSON.stringify({apiKey})
+        );
+        return {token};
+    },
     async logout(parent, {key}, {redis}) {
         try {
             await redis.del(key);

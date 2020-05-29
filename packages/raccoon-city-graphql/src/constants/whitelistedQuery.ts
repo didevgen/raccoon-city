@@ -1,6 +1,9 @@
 export const WHITELISTED_QUERIES = [
     'login',
-    'createUser',
+    'createUser'
+];
+
+export const PUBLIC_QUERIES = [
     'getApartmentComplexesByDeveloper',
     'getPublicGroupedFlatsBySection'
 ];

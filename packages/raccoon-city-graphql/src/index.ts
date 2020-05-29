@@ -2,7 +2,7 @@ import {ApolloError, ApolloServer, gql, AuthenticationError} from 'apollo-server
 import {config} from 'dotenv';
 import Redis from 'ioredis';
 import {logger} from './aws/logger';
-import {WHITELISTED_QUERIES} from './constants/whitelistedQuery';
+import {PUBLIC_QUERIES, WHITELISTED_QUERIES} from './constants/whitelistedQuery';
 import connect from './db/mongoose.client';
 import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
@@ -38,6 +38,20 @@ const server = new ApolloServer({
             currentUser = await tradeTokenForUser(authToken);
         } catch (e) {
             logger.warn(`Unable to authenticate using auth token: ${authToken}`);
+        }
+
+        if (req.headers.apitoken) {
+            const token = req.headers.apitoken || '';
+            // @ts-ignore
+            const app = await tradeTokenForUser(token);
+
+            if (app && PUBLIC_QUERIES.includes(req.body.operationName)) {
+                return {
+                    ...req,
+                    prisma,
+                    redis
+                };
+            }
         }
 
         if (!currentUser) {

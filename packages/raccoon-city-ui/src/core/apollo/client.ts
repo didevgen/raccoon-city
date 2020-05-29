@@ -4,7 +4,7 @@ import {setContext} from 'apollo-link-context';
 import {onError} from 'apollo-link-error';
 import {createUploadLink} from 'apollo-upload-client';
 import Cookies from 'js-cookie';
-import {TOKEN} from '../constants';
+import {API_TOKEN, TOKEN} from '../constants';
 
 const httpLink = createUploadLink({
     uri: process.env.REACT_APP_GRAPHQL_URL
@@ -12,10 +12,12 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, {headers}) => {
     const token = Cookies.get(TOKEN);
+    const apiToken = Cookies.get(API_TOKEN);
     return {
         headers: {
             ...headers,
-            authorization: token ? token : ''
+            authorization: token ? token : '',
+            apiToken: apiToken ? apiToken : ''
         }
     };
 });

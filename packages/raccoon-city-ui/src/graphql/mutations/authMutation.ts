@@ -8,6 +8,14 @@ export const LOGIN = gql`
     }
 `;
 
+export const AUTH_APP = gql`
+    mutation authApp($apiKey: String!) {
+        authApp(apiKey: $apiKey) {
+            token
+        }
+    }
+`;
+
 export const CREATE_USER = gql`
     mutation createUser($userData: UserInput) {
         createUser(userData: $userData) {

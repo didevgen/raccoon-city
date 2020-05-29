@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import {
     FlatsInHouse,
     GET_GROUPED_FLATS_CHESSGRID,
+    GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
     GroupedFlats
 } from '../../../graphql/queries/houseQuery';
@@ -17,6 +18,7 @@ import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
+import {PublicLink} from './PublicLink/PublicLink';
 
 const ChessGridWrapper: any = styled.div`
     display: flex;
@@ -201,12 +203,13 @@ function FilterIcon({setShownFilters}) {
     return ReactDOM.createPortal(<ShowFilter setShownFilters={setShownFilters} />, elem);
 }
 
-export const ChessGridComponent = ({uuid, hasSelect}) => {
+export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
     const [isMounted, setMounted] = useState(false);
-    const [filterShown, setShownFilters] = useState(hasSelect);
+    const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
-    const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(GET_GROUPED_FLATS_CHESSGRID, {
+    const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
+    const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(QUERY, {
         fetchPolicy: 'cache-and-network',
         variables: {
             uuid: id
@@ -237,6 +240,7 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
                 data={id.length === 0 ? null : data}
                 onHouseChange={onHouseChange}
             />
+            {!isPublic && <PublicLink />}
             <ChessGridContent
                 hasSelect={hasSelect}
                 filters={filters}
@@ -252,7 +256,7 @@ export const ChessGridComponent = ({uuid, hasSelect}) => {
 export const ChessGrid = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
-}))(({applyParams, hasSelect, applyTitle}) => {
+}))(({applyParams, hasSelect, applyTitle, isPublic}) => {
     const params = useParams();
     const {houseUuid} = useParams();
 
@@ -261,5 +265,5 @@ export const ChessGrid = connect(null, (dispatch) => ({
         applyTitle('Шахматка');
     }, [params]); // eslint-disable-line
 
-    return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} />;
+    return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} isPublic={isPublic} />;
 });

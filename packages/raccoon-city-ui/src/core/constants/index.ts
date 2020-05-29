@@ -37,3 +37,4 @@ export const FLAT_STATUSES = [
 ];
 
 export const TOKEN = 'token';
+export const API_TOKEN = 'apiToken';

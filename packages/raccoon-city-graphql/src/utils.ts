@@ -24,6 +24,12 @@ export function authTokenGenerate(user: User) {
     });
 }
 
+export function authAppTokenGenerate(apiKey: string) {
+    return jwt.sign({apiKey: apiKey}, process.env.APP_SECRET, {
+        expiresIn: process.env.JWT_APP_LIFETIME
+    });
+}
+
 export class AuthError extends Error {
     constructor() {
         super('Not authorized');
