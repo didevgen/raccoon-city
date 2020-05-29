@@ -40,10 +40,7 @@ export const auth = {
     },
     async authApp(_, {apiKey}, {redis}) {
         const token = authAppTokenGenerate(apiKey);
-        await redis.set(
-            token,
-            JSON.stringify({apiKey})
-        );
+        await redis.set(token, JSON.stringify({apiKey}));
         return {token};
     },
     async logout(parent, {key}, {redis}) {
