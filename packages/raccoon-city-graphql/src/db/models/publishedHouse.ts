@@ -149,9 +149,11 @@ const PublishedHouseSchema: Schema = new Schema(
                 type: PublishedSectionSchema
             }
         ],
-        layouts: [{
-            type: PublishedHouseLayoutSchema
-        }],
+        layouts: [
+            {
+                type: PublishedHouseLayoutSchema
+            }
+        ],
         levelLayouts: [{type: PublishedLevelLayoutSchema}],
         house: {
             type: Schema.Types.ObjectId,

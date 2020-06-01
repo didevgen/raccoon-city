@@ -111,7 +111,7 @@ export const flatQuery = {
             {
                 $unwind: '$sections.levels.flats'
             },
-            {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}},
+            {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}}
         ]).exec();
 
         if (!house) {
@@ -120,9 +120,11 @@ export const flatQuery = {
 
         const apartmentComplex = await ApartmentComplexModel.findOne({
             _id: house.apartmentComplex
-        }).populate({
-            path: 'developer'
-        }).exec();
+        })
+            .populate({
+                path: 'developer'
+            })
+            .exec();
 
         let flat = house.sections.levels.flats;
 
@@ -133,31 +135,33 @@ export const flatQuery = {
         flat.house = house;
 
         flat.layout = house.layouts.find((layout) => {
-            return !!layout.flats.find(item => {
+            return !!layout.flats.find((item) => {
                 return item.equals(flat._id);
-            })
-        });
-        flat.levelLayouts = house.levelLayouts.filter(levelLayout => {
-            if (!flat.layout) {
-                return false;
-            }
-
-            return levelLayout.flatLayouts.some(flatLevelLayout => {
-                return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
-            })
-        }).map((levelLayout) => {
-            const flatLayout: any[] = levelLayout.flatLayouts.filter(flatLevelLayout => {
-                return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
             });
-            return {
-                id: String(levelLayout._id),
-                image: levelLayout.image,
-                paths: flatLayout.reduce((acc: any[], layout) => {
-                    return acc.concat(layout.path);
-                }, []),
-                viewBox: flatLayout[0].viewBox
-            }
         });
+        flat.levelLayouts = house.levelLayouts
+            .filter((levelLayout) => {
+                if (!flat.layout) {
+                    return false;
+                }
+
+                return levelLayout.flatLayouts.some((flatLevelLayout) => {
+                    return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+                });
+            })
+            .map((levelLayout) => {
+                const flatLayout: any[] = levelLayout.flatLayouts.filter((flatLevelLayout) => {
+                    return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+                });
+                return {
+                    id: String(levelLayout._id),
+                    image: levelLayout.image,
+                    paths: flatLayout.reduce((acc: any[], layout) => {
+                        return acc.concat(layout.path);
+                    }, []),
+                    viewBox: flatLayout[0].viewBox
+                };
+            });
         return flat;
     },
     getPublicGroupedFlatsBySection: async (parent, {uuid}) => {

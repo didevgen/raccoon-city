@@ -64,10 +64,12 @@ export const house = {
                             }
                         ]
                     }
-                }, {
+                },
+                {
                     path: 'layouts',
                     match: {isDeleted: false}
-                }, {
+                },
+                {
                     path: 'levelLayouts',
                     match: {isDeleted: false},
                     populate: {
@@ -91,13 +93,16 @@ export const house = {
             },
             {upsert: true}
         ).exec();
-        await HouseModel.update({
-            _id: uuid
-        }, {
-            $set: {
-                publishedDate: new Date().toISOString()
+        await HouseModel.update(
+            {
+                _id: uuid
+            },
+            {
+                $set: {
+                    publishedDate: new Date().toISOString()
+                }
             }
-        })
+        );
         return true;
     },
     async addHouseImage(parent, args, ctx: Context) {
