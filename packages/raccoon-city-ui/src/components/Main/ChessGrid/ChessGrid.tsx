@@ -126,7 +126,7 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect}: any) => {
+const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect, isPublic}: any) => {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     if (loading) {
@@ -188,7 +188,7 @@ const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect}:
                         setSelectedFlat(undefined);
                     }}
                 >
-                    {selectedFlat && <FlatSidebarInfo flat={selectedFlat} />}
+                    {selectedFlat && <FlatSidebarInfo flat={selectedFlat} isPublic={isPublic} />}
                 </SidebarDrawer>
             </ChessGridWrapper>
         </ViewModeContext.Provider>
@@ -239,6 +239,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
                 dispatchFn={dispatch}
                 data={id.length === 0 ? null : data}
                 onHouseChange={onHouseChange}
+                isPublic={isPublic}
             />
             {!isPublic && <PublicLink />}
             <ChessGridContent
@@ -246,6 +247,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
                 filters={filters}
                 loading={loading}
                 error={error}
+                isPublic={isPublic}
                 data={id.length === 0 ? null : data}
             />
             {isMounted && <FilterIcon setShownFilters={setShownFilters} />}

@@ -1,4 +1,7 @@
 import {DeveloperModel} from '../../db/models/developer';
+import ApartmentComplexModel from '../../db/models/apartmentComplex';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import mongoose from "mongoose";
 
 export const developerQuery = {
     async getDevelopers() {
@@ -25,5 +28,24 @@ export const developerQuery = {
         }
 
         return developer.apartmentComplexes;
+    },
+    async getPublicApartmentComplexesByDeveloper(_, {uuid}) {
+        const apartmentComplexes = await ApartmentComplexModel.find({
+            developer: mongoose.Types.ObjectId(uuid)
+        }).exec();
+        const publishedHouses = await PublishedHouseModel.find({
+            apartmentComplex: {
+                $in: apartmentComplexes.map(item => item.id)
+            }
+        }).exec();
+        const res = apartmentComplexes.map(complex => {
+            const result = complex.toObject();
+            result.houses = publishedHouses.filter(house => {
+                return String(house.apartmentComplex) === String(complex._id);
+            }).map(house => house.toObject());
+            return result;
+        })
+
+        return res || [];
     }
 };

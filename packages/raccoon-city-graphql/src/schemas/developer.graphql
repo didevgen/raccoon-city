@@ -28,4 +28,5 @@ extend type Query {
     getDevelopers: [Developer]
     getDeveloper(uuid: String!): Developer
     getApartmentComplexesByDeveloper(uuid: String!): [ApartmentComplex]
+    getPublicApartmentComplexesByDeveloper(uuid: String!): [ApartmentComplex]
 }

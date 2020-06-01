@@ -60,21 +60,19 @@ export const house = {
                         populate: [
                             {
                                 path: 'flats',
-                                match: {isDeleted: false},
-                                populate: {
-                                    path: 'layout',
-                                    match: {isDeleted: false}
-                                }
-                            },
-                            {
-                                path: 'layouts',
-                                match: {isDeleted: false},
-                                populate: {
-                                    path: 'flatLayouts',
-                                    match: {isDeleted: false}
-                                }
+                                match: {isDeleted: false}
                             }
                         ]
+                    }
+                }, {
+                    path: 'layouts',
+                    match: {isDeleted: false}
+                }, {
+                    path: 'levelLayouts',
+                    match: {isDeleted: false},
+                    populate: {
+                        path: 'flatLayouts',
+                        match: {isDeleted: false}
                     }
                 }
             ])

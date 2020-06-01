@@ -126,3 +126,76 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
         }
     }
 `;
+
+export const GET_PUBLIC_FLAT_SIDEBAR_DATA = gql`
+    query getPublicFlatSidebarInfo($flatId: String!) {
+        getFlatSidebarInfo: getPublicFlatSidebarInfo(flatId: $flatId) {
+            id
+            flatNumber
+            levelAmount
+            price
+            level
+            section
+            area
+            status
+            roomAmount
+            sale
+            squarePrice
+            apartmentComplex {
+                name
+            }
+            developer {
+                id
+                receptionNumbers
+                salesNumbers
+                logo {
+                    downloadUrl
+                }
+            }
+            house {
+                name
+            }
+            layout {
+                id
+                name
+                image {
+                    uuid
+                    downloadUrl
+                    previewImageUrl
+                }
+                images {
+                    PHOTO {
+                        uuid
+                        downloadUrl
+                        name
+                    }
+                    VR {
+                        uuid
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                    HALF_VR {
+                        uuid
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                }
+            }
+            levelLayouts {
+                id
+                image {
+                    uuid
+                    downloadUrl
+                    previewImageUrl
+                }
+                viewBox {
+                    width
+                    height
+                }
+                paths
+            }
+        }
+    }
+`;

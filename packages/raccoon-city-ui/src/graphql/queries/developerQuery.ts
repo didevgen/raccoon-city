@@ -73,3 +73,28 @@ export const GET_DEVELOPER_APARTMENT_COMPLEXES = gql`
         }
     }
 `;
+
+export const GET_PUBLIC_DEVELOPER_APARTMENT_COMPLEXES = gql`
+    query getPublicApartmentComplexesByDeveloper($uuid: String!) {
+        getApartmentComplexesByDeveloper: getPublicApartmentComplexesByDeveloper(uuid: $uuid) {
+            id
+            name
+            images {
+                CHESS_GRID {
+                    uuid
+                    downloadUrl
+                }
+            }
+            houses {
+                id
+                name
+                images {
+                    CHESS_GRID {
+                        uuid
+                        downloadUrl
+                    }
+                }
+            }
+        }
+    }
+`;

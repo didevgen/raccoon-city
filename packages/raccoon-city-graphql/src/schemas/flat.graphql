@@ -91,4 +91,5 @@ extend type Query {
     getPublicGroupedFlatsBySection(uuid: [String]): GroupedBySectionResult
     getSectionData(sectionId: String!): GroupedBySectionFlat
     getFlatSidebarInfo(flatId: String!): HouseSidebarFlat
+    getPublicFlatSidebarInfo(flatId: String!): HouseSidebarFlat
 }

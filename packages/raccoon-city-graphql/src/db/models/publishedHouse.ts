@@ -43,9 +43,6 @@ const PublishedFlatSchema = new Schema({
     squarePrice: {type: Schema.Types.String},
     isDeleted: {type: Schema.Types.Boolean, default: false},
     levelAmount: {type: Schema.Types.Number, default: 1},
-    layout: {
-        type: PublishedHouseLayoutSchema
-    },
     level: {
         type: Schema.Types.ObjectId,
         ref: 'Level'
@@ -110,7 +107,6 @@ const PublishedLevelSchema = new Schema({
     levelNumber: {type: Schema.Types.Number},
     isDeleted: {type: Schema.Types.Boolean, default: false},
     flats: [{type: PublishedFlatSchema}],
-    layouts: [{type: PublishedLevelLayoutSchema}],
     section: {
         type: Schema.Types.ObjectId,
         ref: 'Section'
@@ -153,6 +149,10 @@ const PublishedHouseSchema: Schema = new Schema(
                 type: PublishedSectionSchema
             }
         ],
+        layouts: [{
+            type: PublishedHouseLayoutSchema
+        }],
+        levelLayouts: [{type: PublishedLevelLayoutSchema}],
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'

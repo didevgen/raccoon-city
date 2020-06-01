@@ -8,7 +8,11 @@ import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import ViewCompactIcon from '@material-ui/icons/ViewCompact';
 import React from 'react';
 import styled from 'styled-components';
-import {GET_FLAT_SIDEBAR_DATA, GetFlatSidebarDataQuery} from '../../../../graphql/queries/flatQuery';
+import {
+    GET_FLAT_SIDEBAR_DATA,
+    GET_PUBLIC_FLAT_SIDEBAR_DATA,
+    GetFlatSidebarDataQuery
+} from '../../../../graphql/queries/flatQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {Flat} from '../../../shared/types/flat.types';
@@ -43,18 +47,22 @@ const SaleChip = styled(Chip)`
 
 interface FlatSidebarInfoProps {
     flat: Flat;
+    isPublic: boolean;
 }
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
 export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
-    const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(GET_FLAT_SIDEBAR_DATA, {
-        variables: {
-            flatId: props.flat.id
-        },
-        fetchPolicy: 'cache-and-network'
-    });
+    const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(
+        props.isPublic ? GET_PUBLIC_FLAT_SIDEBAR_DATA : GET_FLAT_SIDEBAR_DATA,
+        {
+            variables: {
+                flatId: props.flat.id
+            },
+            fetchPolicy: 'cache-and-network'
+        }
+    );
     const [value, setValue] = React.useState(0);
 
     if (loading || !data) {

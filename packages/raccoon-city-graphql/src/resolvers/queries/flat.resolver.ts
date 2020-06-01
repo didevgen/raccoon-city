@@ -7,6 +7,7 @@ import HouseModel from '../../db/models/house';
 import {Section} from '../../db/models/section';
 import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import ApartmentComplexModel from '../../db/models/apartmentComplex';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -98,6 +99,66 @@ export const flatQuery = {
         }
 
         return flatObj;
+    },
+    getPublicFlatSidebarInfo: async (parent, {flatId}) => {
+        const [house] = await PublishedHouseModel.aggregate([
+            {
+                $unwind: '$sections'
+            },
+            {
+                $unwind: '$sections.levels'
+            },
+            {
+                $unwind: '$sections.levels.flats'
+            },
+            {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}},
+        ]).exec();
+
+        if (!house) {
+            return null;
+        }
+
+        const apartmentComplex = await ApartmentComplexModel.findOne({
+            _id: house.apartmentComplex
+        }).populate({
+            path: 'developer'
+        }).exec();
+
+        let flat = house.sections.levels.flats;
+
+        flat.section = house.sections.sectionName as any;
+        flat.level = house.sections.levels.levelNumber as any;
+        flat.apartmentComplex = apartmentComplex;
+        flat.developer = apartmentComplex.developer;
+        flat.house = house;
+
+        flat.layout = house.layouts.find((layout) => {
+            return !!layout.flats.find(item => {
+                return item.equals(flat._id);
+            })
+        });
+        flat.levelLayouts = house.levelLayouts.filter(levelLayout => {
+            if (!flat.layout) {
+                return false;
+            }
+
+            return levelLayout.flatLayouts.some(flatLevelLayout => {
+                return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+            })
+        }).map((levelLayout) => {
+            const flatLayout: any[] = levelLayout.flatLayouts.filter(flatLevelLayout => {
+                return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+            });
+            return {
+                id: String(levelLayout._id),
+                image: levelLayout.image,
+                paths: flatLayout.reduce((acc: any[], layout) => {
+                    return acc.concat(layout.path);
+                }, []),
+                viewBox: flatLayout[0].viewBox
+            }
+        });
+        return flat;
     },
     getPublicGroupedFlatsBySection: async (parent, {uuid}) => {
         const houses = await PublishedHouseModel.find({

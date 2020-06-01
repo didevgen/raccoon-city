@@ -1,4 +1,4 @@
-import {Avatar, Grid, Paper, Slider, Tooltip} from '@material-ui/core';
+import {Avatar, Grid, Slider, Tooltip} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
@@ -7,15 +7,6 @@ import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
-
-const StyledPaper = styled(Paper)`
-    width: 93vw;
-    display: inline-flex;
-    top: 64px;
-    position: fixed;
-    z-index: 1202;
-    padding: 8px;
-`;
 
 const SelectContainer = styled.div`
     display: flex;
@@ -348,16 +339,7 @@ interface ChessGridFiltersProps {
     dispatchFn: (param: {type: string; payload: any}) => void;
     onHouseChange?: (house: House[]) => void;
     data: any;
-}
-
-export function EmptyChessGridFilters({onHouseChange}) {
-    return (
-        <StyledPaper elevation={3}>
-            <SelectContainer>
-                <ChessGridHouseSelect onChange={onHouseChange} />
-            </SelectContainer>
-        </StyledPaper>
-    );
+    isPublic: boolean;
 }
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
@@ -369,7 +351,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                 {props.onHouseChange && (
                     <Grid item xs={12}>
                         <SelectContainer>
-                            <ChessGridHouseSelect onChange={props.onHouseChange} />
+                            <ChessGridHouseSelect onChange={props.onHouseChange} isPublic={props.isPublic} />
                         </SelectContainer>
                     </Grid>
                 )}

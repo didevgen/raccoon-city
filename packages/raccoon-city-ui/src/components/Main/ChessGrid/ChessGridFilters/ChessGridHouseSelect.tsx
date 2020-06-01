@@ -13,7 +13,10 @@ import {useParams} from 'react-router-dom';
 import {components} from 'react-select';
 import styled from 'styled-components';
 import {houseDefaultImage} from '../../../../core/constants';
-import {GET_DEVELOPER_APARTMENT_COMPLEXES} from '../../../../graphql/queries/developerQuery';
+import {
+    GET_DEVELOPER_APARTMENT_COMPLEXES,
+    GET_PUBLIC_DEVELOPER_APARTMENT_COMPLEXES
+} from '../../../../graphql/queries/developerQuery';
 import {House} from '../../../shared/types/house.types';
 
 const StyledHeading = styled.div`
@@ -102,17 +105,21 @@ function CustomOption(props: {data: House} & any) {
 }
 interface ChessGridHouseSelectProps {
     onChange: (house: House[]) => void;
+    isPublic: boolean;
 }
-export function ChessGridHouseSelect({onChange}: ChessGridHouseSelectProps) {
+export function ChessGridHouseSelect({onChange, isPublic}: ChessGridHouseSelectProps) {
     const {developerUuid} = useParams();
     const [houses, setHouses] = useState<House[]>([]);
 
-    const {data, loading, error} = useQuery(GET_DEVELOPER_APARTMENT_COMPLEXES, {
-        fetchPolicy: 'cache-and-network',
-        variables: {
-            uuid: developerUuid
+    const {data, loading, error} = useQuery(
+        isPublic ? GET_PUBLIC_DEVELOPER_APARTMENT_COMPLEXES : GET_DEVELOPER_APARTMENT_COMPLEXES,
+        {
+            fetchPolicy: 'cache-and-network',
+            variables: {
+                uuid: developerUuid
+            }
         }
-    });
+    );
 
     if (loading || error) {
         return null;
