@@ -140,7 +140,17 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
                         className="LeftInput"
                         value={min}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setMin(event.target.value === '' ? '' : Number(event.target.value));
+                            const val = event.target.value === '' ? '' : Number(event.target.value);
+                            setMin(val);
+                        }}
+                        onBlur={() => {
+                            dispatch({
+                                type: 'price',
+                                payload: {
+                                    minPrice: min,
+                                    maxPrice: max
+                                }
+                            });
                         }}
                         inputProps={{
                             step: 10,
@@ -181,7 +191,17 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
                     <RangeInput
                         value={max}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setMax(event.target.value === '' ? '' : Number(event.target.value));
+                            const val = event.target.value === '' ? '' : Number(event.target.value);
+                            setMax(val);
+                        }}
+                        onBlur={() => {
+                            dispatch({
+                                type: 'price',
+                                payload: {
+                                    minPrice: min,
+                                    maxPrice: max
+                                }
+                            });
                         }}
                         inputProps={{
                             step: 10,
@@ -222,8 +242,18 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
                     <RangeInput
                         className="LeftInput"
                         value={min}
+                        onBlur={() => {
+                            dispatch({
+                                type: 'area',
+                                payload: {
+                                    minArea: min,
+                                    maxArea: max
+                                }
+                            });
+                        }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setMin(event.target.value === '' ? '' : Number(event.target.value));
+                            const val = event.target.value === '' ? '' : Number(event.target.value);
+                            setMin(val);
                         }}
                         inputProps={{
                             step: 10,
@@ -249,12 +279,12 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
                             setMax(maxPriceRes);
                         }}
                         onChangeCommitted={(e, value) => {
-                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                            const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
                             dispatch({
-                                type: 'price',
+                                type: 'area',
                                 payload: {
-                                    minPrice: minPriceRes,
-                                    maxPrice: maxPriceRes
+                                    minArea: minAreaRes,
+                                    maxArea: maxAreaRes
                                 }
                             });
                         }}
@@ -263,8 +293,18 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
                 <Grid item xs={3}>
                     <RangeInput
                         value={max}
+                        onBlur={() => {
+                            dispatch({
+                                type: 'area',
+                                payload: {
+                                    minArea: min,
+                                    maxArea: max
+                                }
+                            });
+                        }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setMax(event.target.value === '' ? '' : Number(event.target.value));
+                            const val = event.target.value === '' ? '' : Number(event.target.value);
+                            setMax(val);
                         }}
                         inputProps={{
                             step: 10,

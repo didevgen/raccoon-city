@@ -13,6 +13,10 @@ const Content = styled.div`
     position: relative;
     max-width: 100%;
     overflow-y: scroll;
+
+    .ChessGridColumn__cell {
+        flex-direction: column-reverse;
+    }
 `;
 const FilterContainer = styled.div`
     margin-left: auto;
@@ -22,11 +26,11 @@ const StyledAppBar = styled(AppBar)`
         background-color: #37485c;
     }
 `;
+
 export function Public() {
     const drawerStyles = useStyles();
     const params = new URLSearchParams(window.location.search);
     const authToken = params.get('authToken');
-    console.log(authToken);
     if (authToken) {
         Cookies.set(API_TOKEN, authToken, {expires: 365});
     } else {
@@ -43,19 +47,18 @@ export function Public() {
                 </StyledAppBar>
             </div>
             <Content className={drawerStyles.content}>
-                <div>
-                    <Switch>
-                        <Route exact={true} path="/public/developers/:developerUuid/chessgrid">
-                            <ChessGrid hasSelect isPublic />
-                        </Route>
-                        <Route
-                            exact={true}
-                            path="/public/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid"
-                        >
-                            <ChessGrid isPublic />
-                        </Route>
-                    </Switch>
-                </div>
+                <div className={drawerStyles.toolbar} />
+                <Switch>
+                    <Route exact={true} path="/public/developers/:developerUuid/chessgrid">
+                        <ChessGrid hasSelect isPublic />
+                    </Route>
+                    <Route
+                        exact={true}
+                        path="/public/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid"
+                    >
+                        <ChessGrid isPublic />
+                    </Route>
+                </Switch>
             </Content>
         </div>
     );

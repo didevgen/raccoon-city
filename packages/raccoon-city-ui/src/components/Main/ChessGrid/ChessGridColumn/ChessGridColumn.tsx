@@ -47,8 +47,8 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
 
     public render() {
         return (
-            <ColumnWrapper>
-                <CellContainer>
+            <ColumnWrapper className="ChessGridColumn">
+                <CellContainer className="ChessGridColumn__cell">
                     {this.props.levels.map((level) => {
                         return (
                             <ChessGridRow
