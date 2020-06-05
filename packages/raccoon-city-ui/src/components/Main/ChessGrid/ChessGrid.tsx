@@ -269,3 +269,5 @@ export const ChessGrid = connect(null, (dispatch) => ({
 
     return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} isPublic={isPublic} />;
 });
+
+export default ChessGrid;

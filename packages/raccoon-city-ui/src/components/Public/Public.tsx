@@ -63,3 +63,5 @@ export function Public() {
         </div>
     );
 }
+
+export default Public;

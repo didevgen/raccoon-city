@@ -64,3 +64,5 @@ export const UserList = connect(null, (dispatch) => ({
         </TableContainer>
     );
 });
+
+export default UserList;

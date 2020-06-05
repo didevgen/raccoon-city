@@ -75,3 +75,5 @@ export const ApartmentComplexList = connect(null, (dispatch) => ({
         </div>
     );
 });
+
+export default ApartmentComplexList;

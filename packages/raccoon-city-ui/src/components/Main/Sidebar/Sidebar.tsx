@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AppsIcon from '@material-ui/icons/Apps';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
@@ -91,6 +92,14 @@ export const Sidebar = connect((state) => ({
                         <ListItem button>
                             <ListItemIcon>{<ApartmentIcon />}</ListItemIcon>
                             <ListItemText primary="ЖК" />
+                        </ListItem>
+                    </StyledLink>
+                )}
+                {developerUuid && (
+                    <StyledLink to={`/developers/${developerUuid}/contacts`}>
+                        <ListItem button>
+                            <ListItemIcon>{<PeopleAltIcon />}</ListItemIcon>
+                            <ListItemText primary="Клиенты" />
                         </ListItem>
                     </StyledLink>
                 )}

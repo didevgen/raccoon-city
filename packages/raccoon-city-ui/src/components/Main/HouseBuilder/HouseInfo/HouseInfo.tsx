@@ -254,3 +254,5 @@ export const HouseInfo = connect(null, (dispatch) => ({
         </Fragment>
     );
 });
+
+export default HouseInfo;

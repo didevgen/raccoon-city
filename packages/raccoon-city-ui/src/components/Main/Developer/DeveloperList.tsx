@@ -138,3 +138,5 @@ export const DeveloperList = connect(null, (dispatch) => ({
         </Grid>
     );
 });
+
+export default DeveloperList;

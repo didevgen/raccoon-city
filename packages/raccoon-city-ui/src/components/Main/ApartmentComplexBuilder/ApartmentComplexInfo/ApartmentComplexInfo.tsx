@@ -188,3 +188,5 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
         </Fragment>
     );
 });
+
+export default ApartmentComplexInfo;
