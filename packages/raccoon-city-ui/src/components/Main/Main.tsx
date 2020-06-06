@@ -26,6 +26,7 @@ const ApartmentComplexList = lazy(() => import('./ApartmentComplexList/Apartment
 const MainChessGrid = lazy(() => import('./MainChessGrid/MainChessGrid'));
 const DeveloperList = lazy(() => import('./Developer/DeveloperList'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
+const Contact = lazy(() => import('./Contacts/Contact/Contact'));
 const HouseInfo = lazy(() => import('./HouseBuilder/HouseInfo/HouseInfo'));
 const ApartmentComplexInfo = lazy(() => import('./ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo'));
 
