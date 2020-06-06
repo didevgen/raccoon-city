@@ -20,7 +20,7 @@
     "dependencies": {
         "@types/mongoose": "^5.5.32",
         "apollo-link": "^1.2.13",
-        "apollo-server": "^2.9.12",
+        "apollo-server": "^2.14.2",
         "array-move": "^2.2.1",
         "aws-sdk": "^2.610.0",
         "bcryptjs": "^2.4.3",
