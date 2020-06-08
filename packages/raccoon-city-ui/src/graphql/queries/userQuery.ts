@@ -6,7 +6,11 @@ export const GET_USER_INFO = gql`
             id
             name
             email
-            features
+            role {
+                key
+                displayName
+                features
+            }
         }
     }
 `;
@@ -17,8 +21,22 @@ export const GET_USERS = gql`
             id
             name
             email
-            features
+            role {
+                key
+                displayName
+                features
+            }
             isDeleted
+        }
+    }
+`;
+
+export const GET_ROLES = gql`
+    query getRoles {
+        userRoles {
+            key
+            displayName
+            features
         }
     }
 `;

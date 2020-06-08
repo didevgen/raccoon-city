@@ -25,6 +25,12 @@ type City {
     districts: [District]
 }
 
+type UserRole {
+    key: String
+    displayName: String
+    features: [String]
+}
+
 type ApartmentComplexType {
     key: String
     displayName: String
@@ -39,4 +45,5 @@ type Query {
     cities: [City]
     apartmentComplexTypes: [ApartmentComplexType]
     apartmentComplexClasses: [ApartmentComplexClass]
+    userRoles: [UserRole]
 }

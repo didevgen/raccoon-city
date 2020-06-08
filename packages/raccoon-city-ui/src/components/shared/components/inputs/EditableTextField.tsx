@@ -3,7 +3,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Edit from '@material-ui/icons/Edit';
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 
 const FieldWrapper = styled.div`
@@ -15,6 +15,7 @@ const StyledTextField = styled(TextField)`
 `;
 const Label = styled.div`
     margin-right: 8px;
+    white-space: nowrap;
 `;
 const styles = (theme) => ({
     disabled: {
@@ -25,56 +26,49 @@ const styles = (theme) => ({
     }
 });
 
-class EditableTextField extends React.Component<any, any> {
-    public state = {
-        editMode: false
-    };
-
-    public handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
-    };
-
-    public handleClick = () => {
-        this.setState({
-            editMode: true,
-            mouseOver: false
-        });
-    };
-
-    public render() {
-        const {classes, value} = this.props;
-
-        return (
-            <FieldWrapper>
-                {this.props.label && <Label>{this.props.label}</Label>}
-                <StyledTextField
-                    name="email"
-                    defaultValue={value}
-                    margin="normal"
-                    fullWidth
-                    onChange={this.handleChange}
-                    disabled={!this.state.editMode}
-                    onBlur={() => {
-                        this.setState(() => ({
-                            editMode: false
-                        }));
-                    }}
-                    InputProps={{
-                        classes: {
-                            disabled: classes.disabled
-                        },
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={this.handleClick}>
-                                    <Edit />
-                                </IconButton>
-                            </InputAdornment>
-                        )
-                    }}
-                />
-            </FieldWrapper>
-        );
-    }
+function EditableTextField({classes, value, label, inputProps, ...props}) {
+    const [editMode, setEditMode] = useState(false);
+    const ref: any = useRef();
+    const handleChange = () => {};
+    return (
+        <FieldWrapper>
+            {label && <Label>{label}</Label>}
+            <StyledTextField
+                inputRef={ref}
+                name="email"
+                margin="normal"
+                fullWidth
+                onChange={handleChange}
+                disabled={!editMode}
+                onBlur={() => {
+                    setEditMode(false);
+                }}
+                InputProps={{
+                    classes: {
+                        disabled: classes.disabled
+                    },
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                className="EditIcon"
+                                onClick={() => {
+                                    setEditMode(true);
+                                    if (ref.current) {
+                                        setTimeout(() => {
+                                            ref.current.focus();
+                                        });
+                                    }
+                                }}
+                            >
+                                <Edit />
+                            </IconButton>
+                        </InputAdornment>
+                    )
+                }}
+                {...inputProps}
+            />
+        </FieldWrapper>
+    );
 }
 
 export default withStyles(styles as any)(EditableTextField);

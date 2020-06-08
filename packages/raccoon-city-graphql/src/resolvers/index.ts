@@ -15,6 +15,8 @@ import {layoutQuery} from './queries/layout';
 import {levelQuery} from './queries/level.resolver';
 import {user} from './queries/user';
 import {breadcrumbQuery} from './queries/breadcrumb.resolver';
+import {contactsQuery} from './queries/contacts.resolver';
+import {contactsMutation} from './mutations/contact';
 
 export default {
     Query: {
@@ -27,7 +29,8 @@ export default {
         ...developerQuery,
         ...fileHistoryQuery,
         ...user,
-        ...breadcrumbQuery
+        ...breadcrumbQuery,
+        ...contactsQuery
     },
     Mutation: {
         ...apartmentComplexMutation,
@@ -36,6 +39,7 @@ export default {
         ...layoutMutation,
         ...levelMutation,
         ...developerMutation,
+        ...contactsMutation,
         ...auth
     }
 };

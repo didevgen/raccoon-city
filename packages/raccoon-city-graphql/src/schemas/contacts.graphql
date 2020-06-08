@@ -1,0 +1,29 @@
+
+type Contact {
+    id: String
+    name: String
+    phone: String
+    email: String
+    responsible: User
+    position: String
+}
+
+input ContactInput {
+    id: String
+    name: String
+    phone: String
+    email: String
+    responsible: String
+    position: String
+}
+
+type Mutation {
+    createContact(developerUuid: String!, contact: ContactInput!): Contact
+    updateContact(uuid: String!, contact: ContactInput!): Contact
+    deleteContact(uuid: String!): Boolean
+}
+
+extend type Query {
+    getAllContacts(developerUuid: String!): [Contact]
+    getContact(uuid: String!): Contact
+}

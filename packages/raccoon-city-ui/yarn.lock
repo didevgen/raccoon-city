@@ -10460,6 +10460,11 @@ react-final-form-arrays@^3.1.1:
   dependencies:
     "@babel/runtime" "^7.4.5"
 
+react-final-form-hooks@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/react-final-form-hooks/-/react-final-form-hooks-2.0.2.tgz#edd3d058d5eda620681644cb022861c5efe7955a"
+  integrity sha512-Q8ZP1B0vyAsJ3E8T8QEbje6ECdvD7xkNUd95iMoZuuXAuAtjEHoj8fL8SWxm3V/tG1GPwMkmKS/DPTYlVaaMVg==
+
 react-final-form@^6.4.0:
   version "6.4.0"
   resolved "https://registry.npmjs.org/react-final-form/-/react-final-form-6.4.0.tgz#7f9064c10a8bee6a02cd3e9b8aff06fa07f9c908"

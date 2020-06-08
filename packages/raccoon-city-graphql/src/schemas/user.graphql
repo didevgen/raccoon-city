@@ -1,8 +1,13 @@
+type UserRole {
+    key: String
+    displayName: String
+    features: [String]
+}
 type User {
     id: String
     name: String
     email: String
-    features: [String]
+    role: UserRole
     isDeleted: Boolean
 }
 
@@ -10,7 +15,7 @@ input UserInput {
     name: String
     email: String
     password: String
-    features: [String]
+    role: String
 }
 
 type Auth {

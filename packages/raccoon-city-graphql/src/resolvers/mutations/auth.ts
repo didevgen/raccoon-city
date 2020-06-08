@@ -2,11 +2,13 @@ import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
 import {UserModel} from '../../db/models/user';
 import {authAppTokenGenerate, authTokenGenerate} from '../../utils';
+import {userRoles} from '../../constants/userRoles';
 
 export const auth = {
     async createUser(parent, {userData}) {
         try {
             userData.password = bcrypt.hashSync(userData.password);
+            userData.role = userRoles.find((role) => role.key === userData.role);
             return UserModel.create(userData);
         } catch (e) {
             return null;
@@ -32,7 +34,7 @@ export const auth = {
         const token = authTokenGenerate(user);
         await redis.set(
             token,
-            JSON.stringify({id: user._id, features: user.features}),
+            JSON.stringify({id: user._id, features: user?.role?.features || []}),
             'ex',
             process.env.REDIS_KEY_TTL
         );

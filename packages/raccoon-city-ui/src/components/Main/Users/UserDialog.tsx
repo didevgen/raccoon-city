@@ -1,4 +1,4 @@
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,7 +11,8 @@ import {Field, Form} from 'react-final-form';
 import styled from 'styled-components';
 import {isEmail} from '../../../core/validators/validators';
 import {CREATE_USER} from '../../../graphql/mutations/authMutation';
-import {GET_USERS} from '../../../graphql/queries/userQuery';
+import {GET_ROLES, GET_USERS} from '../../../graphql/queries/userQuery';
+import {MenuItem} from '@material-ui/core';
 
 const FormBlock = styled.div`
     padding: 16px;
@@ -29,7 +30,12 @@ export const validatePassword = (password: string) => {
 
 export function UserDialog() {
     const [open, setOpen] = React.useState(false);
+    const {data, loading, error} = useQuery(GET_ROLES);
     const [createUser] = useMutation(CREATE_USER);
+
+    if (loading || error) {
+        return null;
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -120,6 +126,32 @@ export function UserDialog() {
                                                                 fullWidth={true}
                                                                 variant="outlined"
                                                             />
+                                                        );
+                                                    }}
+                                                </Field>
+                                            </Grid>
+                                            <Grid item={true} xs={12}>
+                                                <Field name="role" validate={required}>
+                                                    {(props) => {
+                                                        return (
+                                                            <TextField
+                                                                select
+                                                                name={props.input.name}
+                                                                value={props.input.value}
+                                                                onChange={props.input.onChange}
+                                                                label="Роль"
+                                                                margin="normal"
+                                                                fullWidth={true}
+                                                                variant="outlined"
+                                                            >
+                                                                {data.userRoles.map((item: any) => {
+                                                                    return (
+                                                                        <MenuItem key={item.key} value={item.key}>
+                                                                            {item.displayName}
+                                                                        </MenuItem>
+                                                                    );
+                                                                })}
+                                                            </TextField>
                                                         );
                                                     }}
                                                 </Field>

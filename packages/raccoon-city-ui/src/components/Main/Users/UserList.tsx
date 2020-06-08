@@ -56,7 +56,7 @@ export const UserList = connect(null, (dispatch) => ({
                             </TableCell>
                             <TableCell align="left">{user.name}</TableCell>
                             <TableCell align="left">{user.email}</TableCell>
-                            <TableCell align="left">{user.features.join(', ')}</TableCell>
+                            <TableCell align="left">{user?.role?.displayName}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
