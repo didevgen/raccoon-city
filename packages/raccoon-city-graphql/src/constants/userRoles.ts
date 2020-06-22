@@ -13,5 +13,5 @@ export const userRoles = [
         key: 'superAdmin',
         displayName: 'Супер-админ',
         features: []
-    },
+    }
 ];

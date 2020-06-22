@@ -15,6 +15,7 @@ services:
     container_name: raccoon-city-graphql
     links:
       - mongo
+      - redis
     build:
       context: ./packages/raccoon-city-graphql
       dockerfile: Dockerfile
@@ -30,3 +31,7 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+  redis:
+    image: redis
+    expose:
+      - 6379

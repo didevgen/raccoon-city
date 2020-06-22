@@ -11,7 +11,9 @@ export const UserRoleSchema = new Schema({
     displayName: {type: Schema.Types.String, required: true},
     features: [
         {
-            type: Schema.Types.String, required: true, default: () => {
+            type: Schema.Types.String,
+            required: true,
+            default: () => {
                 return [];
             }
         }

@@ -1,5 +1,5 @@
 import {ContactModel} from '../../db/models/contact';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const contactsQuery = {
     getAllContacts: async (_, {developerUuid}) => {
@@ -12,8 +12,10 @@ export const contactsQuery = {
         return await ContactModel.findOne({
             _id: uuid,
             isDeleted: false
-        }).populate({
-            path: 'responsible'
-        }).exec();
+        })
+            .populate({
+                path: 'responsible'
+            })
+            .exec();
     }
 };

@@ -10,7 +10,7 @@ export interface User extends Document {
         key: string;
         displayName: string;
         features: string[];
-    }
+    };
     isDeleted: boolean;
 }
 
