@@ -69,6 +69,7 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
             sale
             squarePrice
             apartmentComplex {
+                id
                 name
             }
             developer {
@@ -80,6 +81,7 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
                 }
             }
             house {
+                id
                 name
             }
             layout {
@@ -142,6 +144,7 @@ export const GET_PUBLIC_FLAT_SIDEBAR_DATA = gql`
             sale
             squarePrice
             apartmentComplex {
+                id
                 name
             }
             developer {
@@ -153,6 +156,7 @@ export const GET_PUBLIC_FLAT_SIDEBAR_DATA = gql`
                 }
             }
             house {
+                id
                 name
             }
             layout {

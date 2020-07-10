@@ -1,4 +1,4 @@
-import {InMemoryCache} from 'apollo-cache-inmemory';
+import {defaultDataIdFromObject, InMemoryCache} from 'apollo-cache-inmemory';
 import {ApolloClient} from 'apollo-client';
 import {setContext} from 'apollo-link-context';
 import {onError} from 'apollo-link-error';
@@ -41,5 +41,14 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 
 export const client = new ApolloClient({
     link: errorLink.concat(authLink).concat(httpLink),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+        dataIdFromObject: (object: any) => {
+            switch (object.__typename) {
+                case 'KeyDisplayName':
+                    return object.key + object.displayName;
+                default:
+                    return defaultDataIdFromObject(object); // fall back to default handling
+            }
+        }
+    })
 });

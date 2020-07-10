@@ -1,9 +1,5 @@
-import {useMutation, useQuery} from '@apollo/react-hooks';
-import Select from '@appgeist/react-select-material-ui';
-import {Button, Grid, IconButton, ListItem, Paper, Tab, Tabs} from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import {useMutation} from '@apollo/react-hooks';
+import {Button, Grid, IconButton, Paper, Tab, Tabs} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React from 'react';
@@ -13,7 +9,6 @@ import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {CREATE_CONTACT, UPDATE_CONTACT} from '../../../../graphql/mutations/contactMutation';
 import {ALL_CONTACTS} from '../../../../graphql/queries/contactQuery';
-import {GET_USERS} from '../../../../graphql/queries/userQuery';
 import EditableTextField from '../../../shared/components/inputs/EditableTextField';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 
@@ -76,50 +71,11 @@ const ButtonWrapper = styled.div`
     padding: 16px;
 `;
 
-const StyledList = styled(List)`
-    display: flex;
-    padding: 8px !important;
-    align-items: center;
-    margin-left: 8px;
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-    }
-`;
-
-function SingleValue({data}: any) {
-    return data.name;
-}
-
-function CustomOption(props: any) {
-    const {innerProps, data, innerRef} = props;
-    return (
-        <StyledList
-            ref={innerRef}
-            {...innerProps}
-            onClick={() => {
-                props.selectOption(data);
-            }}
-        >
-            <ListItem alignItems="flex-start">
-                <ListItemText primary={data.name} />
-                <ListItemText primary={data?.role?.displayName} />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-        </StyledList>
-    );
-}
-
 export function ContactForm({onClose, contact}) {
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
-    const {data, loading, error} = useQuery(GET_USERS);
 
     const [mutation] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
-
-    if (loading || error) {
-        return null;
-    }
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -172,26 +128,6 @@ export function ContactForm({onClose, contact}) {
                         </TitleArea>
                         <TabPanel value={value} index={0}>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <Field name="responsible" validate={isRequired}>
-                                        {(props) => (
-                                            <Select
-                                                id="place"
-                                                label="Ответственный"
-                                                options={data.getUsers}
-                                                value={props.input.value}
-                                                onChange={(selectedValue: any) => {
-                                                    props.input.onChange(selectedValue);
-                                                }}
-                                                isClearable={true}
-                                                components={{
-                                                    Option: CustomOption,
-                                                    SingleValue
-                                                }}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
                                 <Grid item xs={12}>
                                     <Field name="position">
                                         {(props) => {

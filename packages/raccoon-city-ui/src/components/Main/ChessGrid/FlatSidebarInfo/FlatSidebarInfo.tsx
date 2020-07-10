@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import {AppBar, Chip, Tab, Tabs, Typography} from '@material-ui/core';
+import {AppBar, Button, Chip, Tab, Tabs, Typography} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import InfoIcon from '@material-ui/icons/Info';
 import PrintIcon from '@material-ui/icons/Print';
@@ -48,6 +48,7 @@ const SaleChip = styled(Chip)`
 interface FlatSidebarInfoProps {
     flat: Flat;
     isPublic: boolean;
+    onFlatSelected?: (flat: Flat) => void;
 }
 
 const StyledTab = styled(Tab)`
@@ -86,6 +87,18 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 </Typography>
                 {!!flat.sale && <SaleChip label="Акция" color="secondary" />}
             </FlatTitleContainer>
+            {props.onFlatSelected && (
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                        // @ts-ignore
+                        props.onFlatSelected(flat);
+                    }}
+                >
+                    Выбрать квартиру
+                </Button>
+            )}
             {flat.layout && (
                 <ImageContainer>
                     <img

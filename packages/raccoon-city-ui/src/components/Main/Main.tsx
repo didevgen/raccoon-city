@@ -26,6 +26,7 @@ const ApartmentComplexList = lazy(() => import('./ApartmentComplexList/Apartment
 const MainChessGrid = lazy(() => import('./MainChessGrid/MainChessGrid'));
 const DeveloperList = lazy(() => import('./Developer/DeveloperList'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
+const Trades = lazy(() => import('./Trades/Trades'));
 const HouseInfo = lazy(() => import('./HouseBuilder/HouseInfo/HouseInfo'));
 const ApartmentComplexInfo = lazy(() => import('./ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo'));
 
@@ -85,6 +86,9 @@ export function Main() {
                         </Route>
                         <Route exact={true} path="/developers/:developerUuid/contacts">
                             <Contacts />
+                        </Route>
+                        <Route exact={true} path="/developers/:developerUuid/trades">
+                            <Trades />
                         </Route>
                         <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
                             <ApartmentComplexCreateForm />

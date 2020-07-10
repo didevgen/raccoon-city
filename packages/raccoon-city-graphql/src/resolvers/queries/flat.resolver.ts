@@ -128,11 +128,13 @@ export const flatQuery = {
 
         let flat = house.sections.levels.flats;
 
+        flat.id = flatId;
         flat.section = house.sections.sectionName as any;
         flat.level = house.sections.levels.levelNumber as any;
         flat.apartmentComplex = apartmentComplex;
         flat.developer = apartmentComplex.developer;
         flat.house = house;
+        flat.house.id = house.house;
 
         flat.layout = house.layouts.find((layout) => {
             return !!layout.flats.find((item) => {

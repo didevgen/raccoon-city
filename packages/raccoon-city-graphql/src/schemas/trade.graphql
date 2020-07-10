@@ -1,0 +1,71 @@
+type Trade {
+    id: String
+    tradeNumber: String
+    state: String
+    budget: Float
+    leadStatus: String
+    clientInterests: [String]
+    link: String
+    visitDate: String
+    paymentType: String
+    tradeSource: String
+    propertyType: String
+    paymentProvider: String
+    price: Float
+    responsible: User
+    flat: TradeFlat
+    contact: Contact
+}
+
+type TradeFlat {
+    flatId: String
+    flatNumber: Int
+    section: String
+    level: String
+    apartmentComplexId: String
+    apartmentComplex: String
+    house: String
+    houseId: String
+}
+
+input TradeFlatInput {
+    flatId: String
+    flatNumber: String
+    section: String
+    level: String
+    apartmentComplexId: String
+    apartmentComplex: String
+    house: String
+    houseId: String
+}
+
+input TradeInput {
+    id: String
+    tradeNumber: String
+    state: String
+    budget: Float
+    leadStatus: String
+    clientInterests: [String]
+    link: String
+    tradeSource: String
+    visitDate: String
+    paymentType: String
+    paymentProvider: String
+    propertyType: String
+    price: Float
+    responsible: String
+    flat: TradeFlatInput
+    existingContact: String
+    newContact: ContactInput
+}
+
+type Mutation {
+    createTrade(developerUuid: String!, trade: TradeInput!): Trade
+    updateTrade(uuid: String!, trade: TradeInput!): Trade
+    deleteTrade(uuid: String!): Boolean
+}
+
+extend type Query {
+    getAllTrades(developerUuid: String!): [Trade]
+    getTrade(uuid: String!): Trade
+}

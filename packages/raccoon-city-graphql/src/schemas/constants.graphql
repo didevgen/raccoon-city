@@ -41,9 +41,24 @@ type ApartmentComplexClass {
     displayName: String
 }
 
+type TradeState {
+    key: String
+    displayName: String
+    color: String
+}
+
 type Query {
     cities: [City]
     apartmentComplexTypes: [ApartmentComplexType]
     apartmentComplexClasses: [ApartmentComplexClass]
     userRoles: [UserRole]
+    tradeStates: [TradeState]
+    tradeSources: [KeyDisplayName]
+    leadStatuses: [KeyDisplayName]
+    clientInterests: [KeyDisplayName]
+    propertyTypes: [KeyDisplayName]
+    paymentTypes: [KeyDisplayName]
+    paymentProviders: [KeyDisplayName]
+    clientStatuses: [KeyDisplayName]
+    clientSources: [KeyDisplayName]
 }

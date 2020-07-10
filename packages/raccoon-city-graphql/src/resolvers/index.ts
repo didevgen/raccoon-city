@@ -17,6 +17,8 @@ import {user} from './queries/user';
 import {breadcrumbQuery} from './queries/breadcrumb.resolver';
 import {contactsQuery} from './queries/contacts.resolver';
 import {contactsMutation} from './mutations/contact';
+import {tradeMutation} from './mutations/trade';
+import {tradesQuery} from './queries/trade.resolver';
 
 export default {
     Query: {
@@ -30,7 +32,8 @@ export default {
         ...fileHistoryQuery,
         ...user,
         ...breadcrumbQuery,
-        ...contactsQuery
+        ...contactsQuery,
+        ...tradesQuery
     },
     Mutation: {
         ...apartmentComplexMutation,
@@ -40,6 +43,7 @@ export default {
         ...levelMutation,
         ...developerMutation,
         ...contactsMutation,
+        ...tradeMutation,
         ...auth
     }
 };

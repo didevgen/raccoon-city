@@ -126,7 +126,7 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect, isPublic}: any) => {
+const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect, isPublic, onFlatSelected}: any) => {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     if (loading) {
@@ -188,22 +188,24 @@ const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect, 
                         setSelectedFlat(undefined);
                     }}
                 >
-                    {selectedFlat && <FlatSidebarInfo flat={selectedFlat} isPublic={isPublic} />}
+                    {selectedFlat && (
+                        <FlatSidebarInfo flat={selectedFlat} isPublic={isPublic} onFlatSelected={onFlatSelected} />
+                    )}
                 </SidebarDrawer>
             </ChessGridWrapper>
         </ViewModeContext.Provider>
     );
 });
 
-function FilterIcon({setShownFilters}) {
-    const elem = document.getElementById('chessGridFilterContainer');
+function FilterIcon({setShownFilters, id}) {
+    const elem = document.getElementById(id);
     if (!elem) {
         return null;
     }
     return ReactDOM.createPortal(<ShowFilter setShownFilters={setShownFilters} />, elem);
 }
 
-export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
+export const ChessGridComponent = ({uuid, hasSelect, isPublic, onFlatSelected, filterId}) => {
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
@@ -247,10 +249,11 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
                 filters={filters}
                 loading={loading}
                 error={error}
+                onFlatSelected={onFlatSelected}
                 isPublic={isPublic}
                 data={id.length === 0 ? null : data}
             />
-            {isMounted && <FilterIcon setShownFilters={setShownFilters} />}
+            {isMounted && <FilterIcon setShownFilters={setShownFilters} id={filterId} />}
         </Fragment>
     );
 };
@@ -258,7 +261,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic}) => {
 export const ChessGrid = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
-}))(({applyParams, hasSelect, applyTitle, isPublic}) => {
+}))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId}) => {
     const params = useParams();
     const {houseUuid} = useParams();
 
@@ -266,8 +269,16 @@ export const ChessGrid = connect(null, (dispatch) => ({
         applyParams(params);
         applyTitle('Шахматка');
     }, [params]); // eslint-disable-line
-
-    return <ChessGridComponent uuid={houseUuid} hasSelect={hasSelect} isPublic={isPublic} />;
+    const filterBlockId = filterId || 'chessGridFilterContainer';
+    return (
+        <ChessGridComponent
+            uuid={houseUuid}
+            hasSelect={hasSelect}
+            isPublic={isPublic}
+            filterId={filterBlockId}
+            onFlatSelected={onFlatSelected}
+        />
+    );
 });
 
 export default ChessGrid;
