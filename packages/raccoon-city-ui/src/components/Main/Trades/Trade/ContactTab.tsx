@@ -1,7 +1,6 @@
 import {FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup} from '@material-ui/core';
 import React, {useState} from 'react';
 import {Field, useField} from 'react-final-form';
-import {isRequired} from '../../../../core/validators/validators';
 import {TradeContactForm} from './TradeContactForm';
 import {TradeExistingContact} from './TradeExistingContact';
 
@@ -13,7 +12,7 @@ export function ContactTab() {
             <Grid item xs={12}>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Тип контакта</FormLabel>
-                    <Field name="contactType" validate={isRequired}>
+                    <Field name="contactType">
                         {(props) => {
                             return (
                                 <RadioGroup

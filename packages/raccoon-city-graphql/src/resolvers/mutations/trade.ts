@@ -6,7 +6,9 @@ export const tradeMutation = {
     async createTrade(parent, args, ctx: Context): Promise<Trade> {
         const {developerUuid, trade} = args;
         let tradeNumber = 1;
-        const maxNumberTrade = await TradeModel.findOne({}).sort('-tradeNumber').exec();
+        const maxNumberTrade = await TradeModel.findOne({})
+            .sort('-tradeNumber')
+            .exec();
         if (maxNumberTrade) {
             tradeNumber = maxNumberTrade.tradeNumber + 1;
         }
@@ -42,6 +44,8 @@ export const tradeMutation = {
             });
             contact = newContact.id;
         }
+
+        trade.contact = contact;
 
         return await TradeModel.findOneAndUpdate(
             {

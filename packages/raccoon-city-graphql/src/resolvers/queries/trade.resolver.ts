@@ -6,11 +6,14 @@ export const tradesQuery = {
         return await TradeModel.find({
             developer: mongoose.Types.ObjectId(developerUuid),
             isDeleted: false
-        }).populate({
-            path: 'responsible'
-        }).populate({
-            path: 'contact'
-        }).exec();
+        })
+            .populate({
+                path: 'responsible'
+            })
+            .populate({
+                path: 'contact'
+            })
+            .exec();
     },
     getTrade: async (parent, {uuid}) => {
         return await TradeModel.findOne({

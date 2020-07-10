@@ -167,13 +167,13 @@ export function TradeForm({onClose, trade}) {
               state: dropdowns.tradeStates.find(({key}) => key === trade.state),
               tradeSource: dropdowns.tradeSources.find(({key}) => key === trade.tradeSource),
               leadStatus: dropdowns.leadStatuses.find(({key}) => key === trade.leadStatus),
-              clientInterests: dropdowns.clientInterests.filter(({key}) => trade.clientInterests.includes(key)),
+              // filter
+              clientInterests: dropdowns.clientInterests.find(({key}) => trade.clientInterests.includes(key)),
               propertyType: dropdowns.propertyTypes.find(({key}) => key === trade.propertyType),
               paymentType: dropdowns.paymentTypes.find(({key}) => key === trade.paymentType),
               paymentProvider: dropdowns.paymentProviders.find(({key}) => key === trade.paymentProvider)
           }
         : null;
-
     return (
         <Form
             subscription={{invalid: true}}

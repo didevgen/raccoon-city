@@ -3,11 +3,14 @@ import {apartmentComplexTypes} from '../../constants/apartmentComplexTypes';
 import {complexClasses} from '../../constants/complexClasses';
 import {userRoles} from '../../constants/userRoles';
 import {
-    ClientInterests, ClientSources,
+    ClientInterests,
+    ClientSources,
     ClientStatuses,
-    LeadStatuses, PaymentProviders,
+    LeadStatuses,
+    PaymentProviders,
     PaymentTypes,
-    PropertyTypes, TradeSources,
+    PropertyTypes,
+    TradeSources,
     TradeStates
 } from '../../constants/tradeConstants';
 
@@ -50,5 +53,5 @@ export const constants = {
     },
     clientSources: () => {
         return ClientSources;
-    },
+    }
 };

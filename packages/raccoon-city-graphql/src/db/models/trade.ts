@@ -44,7 +44,7 @@ const TradeFlatSchema = new Schema({
     apartmentComplex: {type: Schema.Types.String, required: true},
     house: {type: Schema.Types.String, required: true},
     houseId: {type: Schema.Types.String, required: true}
-})
+});
 
 const TradeSchema: Schema = new Schema(
     {
