@@ -1,7 +1,8 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {Typography} from '@material-ui/core';
+import {IconButton, Typography} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import MaterialTable, {MTableAction, MTableToolbar} from 'material-table';
+import DeleteIcon from '@material-ui/icons/Delete';
+import MaterialTable, {MTableToolbar} from 'material-table';
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -52,6 +53,36 @@ export const Trades = connect(null, (dispatch) => ({
             </Typography>
             <MaterialTable
                 columns={[
+                    {
+                        width: 50,
+                        title: '',
+                        field: 'name',
+                        render: (rowData: any) => {
+                            return (
+                                <Confirmation>
+                                    {(confirmFn: (cb: () => void) => void) => {
+                                        return (
+                                            <IconButton
+                                                color="secondary"
+                                                component="span"
+                                                onClick={() => {
+                                                    confirmFn(() => async () => {
+                                                        await deleteMutation({
+                                                            variables: {
+                                                                uuid: rowData.id
+                                                            }
+                                                        });
+                                                    });
+                                                }}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        );
+                                    }}
+                                </Confirmation>
+                            );
+                        }
+                    },
                     {title: 'Номер', field: 'tradeNumber'},
                     {title: 'Квартира', field: 'flat.flatNumber'}
                 ]}
@@ -70,13 +101,6 @@ export const Trades = connect(null, (dispatch) => ({
                         }
                     },
                     {
-                        icon: 'delete',
-                        tooltip: 'Удалить',
-                        onClick: (event, rowData) => {
-                            // silence
-                        }
-                    },
-                    {
                         icon: 'add',
                         tooltip: 'Новая сделка',
                         isFreeAction: true,
@@ -89,28 +113,7 @@ export const Trades = connect(null, (dispatch) => ({
                 data={data.getAllTrades}
                 title=""
                 components={{
-                    Toolbar: (props) => <MTableToolbar {...props} />,
-                    Action: (props) => {
-                        if (props.action.icon === 'delete') {
-                            return (
-                                <Confirmation>
-                                    {(confirmFn: (cb: () => void) => void) => {
-                                        props.action.onClick = () => {
-                                            confirmFn(() => async () => {
-                                                await deleteMutation({
-                                                    variables: {
-                                                        uuid: props.data.id
-                                                    }
-                                                });
-                                            });
-                                        };
-                                        return <MTableAction {...props} />;
-                                    }}
-                                </Confirmation>
-                            );
-                        }
-                        return <MTableAction {...props} />;
-                    }
+                    Toolbar: (props) => <MTableToolbar {...props} />
                 }}
             />
             <Trade

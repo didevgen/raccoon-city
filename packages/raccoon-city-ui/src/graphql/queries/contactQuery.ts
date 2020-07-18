@@ -6,7 +6,7 @@ export const ALL_CONTACTS = gql`
             id
             name
             email
-            phone
+            phones
             position
         }
     }
@@ -18,7 +18,7 @@ export const GET_CONTACT = gql`
             id
             name
             email
-            phone
+            phones
             position
             responsible {
                 id

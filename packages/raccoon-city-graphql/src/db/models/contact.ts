@@ -15,7 +15,7 @@ const ContactSchema: Schema = new Schema(
     {
         name: {type: Schema.Types.String, required: true},
         email: {type: Schema.Types.String},
-        phone: {type: Schema.Types.String},
+        phones: [{type: Schema.Types.String, required: true}],
         position: {type: Schema.Types.String},
         responsible: {
             type: Schema.Types.ObjectId,

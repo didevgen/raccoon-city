@@ -1,9 +1,14 @@
 import {useMutation} from '@apollo/react-hooks';
-import {Button, Grid, IconButton, Paper, Tab, Tabs} from '@material-ui/core';
+import {Button, Grid, IconButton, Paper, Tab, Tabs, TextField} from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import CancelIcon from '@material-ui/icons/Cancel';
 import SettingsIcon from '@material-ui/icons/Settings';
+import arrayMutators from 'final-form-arrays';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import React from 'react';
 import {Field, Form} from 'react-final-form';
+import {FieldArray} from 'react-final-form-arrays';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
@@ -76,6 +81,11 @@ export function ContactForm({onClose, contact}) {
     const [value, setValue] = React.useState(0);
 
     const [mutation] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
+    const initialValues = contact
+        ? contact
+        : {
+              phones: ['']
+          };
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -83,7 +93,11 @@ export function ContactForm({onClose, contact}) {
 
     return (
         <Form
-            initialValues={contact}
+            initialValues={initialValues}
+            mutators={{
+                ...arrayMutators
+            }}
+            subscription={{invalid: true, values: true}}
             onSubmit={() => {
                 // silence
             }}
@@ -131,21 +145,90 @@ export function ContactForm({onClose, contact}) {
                                 <Grid item xs={12}>
                                     <Field name="position">
                                         {(props) => {
-                                            return <EditableTextField inputProps={props.input} label="Должность" />;
+                                            return (
+                                                <TextField
+                                                    name={props.input.name}
+                                                    value={props.input.value}
+                                                    onChange={props.input.onChange}
+                                                    fullWidth
+                                                    label="Должность"
+                                                    variant="outlined"
+                                                />
+                                            );
                                         }}
                                     </Field>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Field name="phone">
-                                        {(props) => {
-                                            return <EditableTextField inputProps={props.input} label="Раб телефон" />;
-                                        }}
-                                    </Field>
+                                    <FieldArray name="phones">
+                                        {({fields}) =>
+                                            fields.map((name, index) => (
+                                                <Grid
+                                                    container={true}
+                                                    key={name}
+                                                    spacing={3}
+                                                    justify="center"
+                                                    alignItems="center"
+                                                    alignContent="center"
+                                                >
+                                                    <Grid item={true} xs={9}>
+                                                        <Field name={name} validate={isRequired}>
+                                                            {(props) => (
+                                                                <MuiPhoneNumber
+                                                                    name={props.input.name}
+                                                                    value={props.input.value}
+                                                                    onChange={props.input.onChange}
+                                                                    fullWidth
+                                                                    preferredCountries={['ua']}
+                                                                    regions={'europe'}
+                                                                    defaultCountry="ua"
+                                                                    label={`Раб телефон (${index + 1})`}
+                                                                    variant="outlined"
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                    </Grid>
+                                                    <Grid item xs={3}>
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                fields.push(undefined);
+                                                            }}
+                                                            color="primary"
+                                                            aria-label="upload picture"
+                                                            component="span"
+                                                        >
+                                                            <AddCircleIcon />
+                                                        </IconButton>
+                                                        {index > 0 && (
+                                                            <IconButton
+                                                                color="secondary"
+                                                                onClick={() => {
+                                                                    fields.remove(index);
+                                                                }}
+                                                                aria-label="upload picture"
+                                                                component="span"
+                                                            >
+                                                                <CancelIcon />
+                                                            </IconButton>
+                                                        )}
+                                                    </Grid>
+                                                </Grid>
+                                            ))
+                                        }
+                                    </FieldArray>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field name="email">
                                         {(props) => {
-                                            return <EditableTextField inputProps={props.input} label="Email" />;
+                                            return (
+                                                <TextField
+                                                    name={props.input.name}
+                                                    value={props.input.value}
+                                                    onChange={props.input.onChange}
+                                                    fullWidth
+                                                    label="Email"
+                                                    variant="outlined"
+                                                />
+                                            );
                                         }}
                                     </Field>
                                 </Grid>
@@ -161,8 +244,7 @@ export function ContactForm({onClose, contact}) {
                                 onClick={async () => {
                                     const variables: any = {
                                         contact: {
-                                            ...values,
-                                            responsible: values.responsible.id
+                                            ...values
                                         }
                                     };
 

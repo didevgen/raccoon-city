@@ -1,7 +1,7 @@
 type Contact {
     id: String
     name: String
-    phone: String
+    phones: [String]
     email: String
     responsible: User
     position: String
@@ -10,7 +10,7 @@ type Contact {
 input ContactInput {
     id: String
     name: String
-    phone: String
+    phones: [String]
     email: String
     responsible: String
     position: String

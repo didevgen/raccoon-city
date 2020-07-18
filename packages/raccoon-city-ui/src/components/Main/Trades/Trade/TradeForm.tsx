@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {KeyboardDatePicker} from '@material-ui/pickers';
+import arrayMutators from 'final-form-arrays';
 import React from 'react';
 import {Field, Form} from 'react-final-form';
 import {useParams} from 'react-router-dom';
@@ -173,11 +174,21 @@ export function TradeForm({onClose, trade}) {
               paymentType: dropdowns.paymentTypes.find(({key}) => key === trade.paymentType),
               paymentProvider: dropdowns.paymentProviders.find(({key}) => key === trade.paymentProvider)
           }
-        : null;
+        : {
+              existingContact: {
+                  phones: ['']
+              },
+              newContact: {
+                  phones: ['']
+              }
+          };
     return (
         <Form
             subscription={{invalid: true}}
             initialValues={initialTrade}
+            mutators={{
+                ...arrayMutators
+            }}
             initialValuesEqual={(a, b) => {
                 return true;
             }}
@@ -207,7 +218,7 @@ export function TradeForm({onClose, trade}) {
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <TradeTitle>
-                                            {initialTrade ? `Сделка №${initialTrade.tradeNumber}` : 'Новая сделка'}
+                                            {trade ? `Сделка №${initialTrade.tradeNumber}` : 'Новая сделка'}
                                         </TradeTitle>
                                     </Grid>
                                     <Grid item xs={12}>

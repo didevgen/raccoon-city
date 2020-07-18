@@ -7,8 +7,10 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import React from 'react';
 import {Field, useForm} from 'react-final-form';
+import {FieldArray} from 'react-final-form-arrays';
 import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {TradeContactList} from './TradeContactList';
@@ -84,21 +86,39 @@ export function TradeExistingContact() {
                         </Field>
                     </Grid>
                     <Grid item xs={12}>
-                        <Field name="existingContact.phone">
-                            {(props) => {
-                                return (
-                                    <TextField
-                                        inputProps={{readOnly: true}}
-                                        name={props.input.name}
-                                        value={props.input.value}
-                                        onChange={props.input.onChange}
-                                        fullWidth
-                                        label="Раб телефон"
-                                        variant="outlined"
-                                    />
-                                );
-                            }}
-                        </Field>
+                        <FieldArray name="existingContact.phones">
+                            {({fields}) =>
+                                fields.map((name, index) => (
+                                    <Grid
+                                        container={true}
+                                        key={name}
+                                        spacing={3}
+                                        justify="center"
+                                        alignItems="center"
+                                        alignContent="center"
+                                    >
+                                        <Grid item={true} xs={12}>
+                                            <Field name={name} validate={isRequired}>
+                                                {(props) => (
+                                                    <MuiPhoneNumber
+                                                        inputProps={{readOnly: true}}
+                                                        name={props.input.name}
+                                                        value={props.input.value}
+                                                        onChange={props.input.onChange}
+                                                        fullWidth
+                                                        preferredCountries={['ua']}
+                                                        regions={'europe'}
+                                                        defaultCountry="ua"
+                                                        label={`Раб телефон (${index + 1})`}
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            </Field>
+                                        </Grid>
+                                    </Grid>
+                                ))
+                            }
+                        </FieldArray>
                     </Grid>
                     <Grid item xs={12}>
                         <Field name="existingContact.email">

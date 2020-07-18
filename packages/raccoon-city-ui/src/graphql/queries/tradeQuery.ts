@@ -33,7 +33,7 @@ export const ALL_TRADES = gql`
             contact {
                 id
                 name
-                phone
+                phones
                 email
                 position
             }
@@ -74,7 +74,7 @@ export const GET_TRADE = gql`
             contact {
                 id
                 name
-                phone
+                phones
                 email
                 position
             }
