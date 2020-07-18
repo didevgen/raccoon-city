@@ -28,7 +28,15 @@ export function TradeContactList({contactSelected}) {
                 }}
                 columns={[
                     {title: 'Имя', field: 'name'},
-                    {title: 'Телефон', field: 'phone'},
+                    {
+                        title: 'Телефон',
+                        field: 'phones',
+                        render: (rowData: any) => {
+                            return rowData.phones.map((phone, i) => {
+                                return <div key={`${rowData.id}${i}`}>{phone}</div>;
+                            });
+                        }
+                    },
                     {title: 'Почта', field: 'email'},
                     {title: 'Должность', field: 'position'}
                 ]}

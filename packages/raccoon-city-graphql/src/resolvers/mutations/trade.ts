@@ -17,11 +17,30 @@ export const tradeMutation = {
         if (trade.existingContact) {
             contact = trade.existingContact;
         } else if (trade.newContact) {
-            const newContact = await ContactModel.create({
-                ...trade.newContact,
-                developer: developerUuid
-            });
-            contact = newContact.id;
+            const contacts = await ContactModel.find({
+                isDeleted: false,
+                phones: {
+                    $elemMatch: { $in: trade.newContact.phones}
+                }
+            }).exec();
+
+            if (contacts.length > 0) {
+                const secondaryMatch = contacts.find(c => {
+                    return c?.name === trade.newContact?.name ||
+                        c?.email === trade.newContact?.email;
+                });
+                if (secondaryMatch) {
+                    contact = secondaryMatch.id;
+                } else {
+                    contact = contacts[0].id;
+                }
+            } else {
+                const newContact = await ContactModel.create({
+                    ...trade.newContact,
+                    developer: developerUuid
+                });
+                contact = newContact.id;
+            }
         }
         return await TradeModel.create({
             ...trade,
@@ -38,11 +57,30 @@ export const tradeMutation = {
         if (trade.existingContact) {
             contact = trade.existingContact;
         } else if (trade.newContact) {
-            const newContact = await ContactModel.create({
-                ...trade.newContact,
-                developer: existingTrade.developer
-            });
-            contact = newContact.id;
+            const contacts = await ContactModel.find({
+                isDeleted: false,
+                phones: {
+                    $elemMatch: { $in: trade.newContact.phones}
+                }
+            }).exec();
+
+            if (contacts.length > 0) {
+                const secondaryMatch = contacts.find(c => {
+                    return c?.name === trade.newContact?.name ||
+                        c?.email === trade.newContact?.email;
+                });
+                if (secondaryMatch) {
+                    contact = secondaryMatch.id;
+                } else {
+                    contact = contacts[0].id;
+                }
+            } else {
+                const newContact = await ContactModel.create({
+                    ...trade.newContact,
+                    developer: existingTrade.developer
+                });
+                contact = newContact.id;
+            }
         }
 
         trade.contact = contact;

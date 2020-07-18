@@ -153,6 +153,9 @@ export function TradeForm({onClose, trade}) {
         ? {
               ...trade,
               existingContact: trade.contact,
+              newContact: {
+                  phones: ['']
+              },
               flat: {
                   ...trade.flat,
                   apartmentComplex: {
