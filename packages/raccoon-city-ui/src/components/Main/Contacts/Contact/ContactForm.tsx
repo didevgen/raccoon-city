@@ -1,5 +1,9 @@
-import {useMutation} from '@apollo/react-hooks';
-import {Button, Grid, IconButton, Paper, Tab, Tabs, TextField} from '@material-ui/core';
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import Select from '@appgeist/react-select-material-ui';
+import {Button, Grid, IconButton, ListItem, Paper, Tab, Tabs, TextField} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -13,9 +17,11 @@ import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {CREATE_CONTACT, UPDATE_CONTACT} from '../../../../graphql/mutations/contactMutation';
-import {ALL_CONTACTS} from '../../../../graphql/queries/contactQuery';
+import {ALL_CONTACTS, GET_CONTACT_DROPDOWNS} from '../../../../graphql/queries/contactQuery';
+import {GET_USERS} from '../../../../graphql/queries/userQuery';
 import EditableTextField from '../../../shared/components/inputs/EditableTextField';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
+import {KeyDisplayNameOptions, SingleDisplayName} from '../../Trades/Trade/components';
 
 const ContactFormWrapper = styled.div`
     width: 40%;
@@ -75,14 +81,55 @@ const OptionIcon: any = styled(IconButton)`
 const ButtonWrapper = styled.div`
     padding: 16px;
 `;
+const StyledList = styled(List)`
+    display: flex;
+    padding: 8px !important;
+    align-items: center;
+    margin-left: 8px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+    }
+`;
+
+function SingleValue({data}: any) {
+    return data.name;
+}
+
+function CustomOption(props: any) {
+    const {innerProps, data, innerRef} = props;
+    return (
+        <StyledList
+            ref={innerRef}
+            {...innerProps}
+            onClick={() => {
+                props.selectOption(data);
+            }}
+        >
+            <ListItem alignItems="flex-start">
+                <ListItemText primary={data.name} />
+                <ListItemText primary={data?.role?.displayName} />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+        </StyledList>
+    );
+}
 
 export function ContactForm({onClose, contact}) {
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
+    const {data, loading, error} = useQuery(GET_USERS);
+    const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_CONTACT_DROPDOWNS);
 
     const [mutation] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
+    if (loading || error || dropdownsLoading) {
+        return null;
+    }
     const initialValues = contact
-        ? contact
+        ? {
+              ...contact,
+              clientStatus: dropdowns.clientStatuses.find(({key}) => key === contact.clientStatus)
+          }
         : {
               phones: ['']
           };
@@ -102,7 +149,7 @@ export function ContactForm({onClose, contact}) {
                 // silence
             }}
         >
-            {({values, invalid, form}) => {
+            {({values, invalid}) => {
                 return (
                     <ContactFormWrapper>
                         <TitleArea>
@@ -143,19 +190,23 @@ export function ContactForm({onClose, contact}) {
                         <TabPanel value={value} index={0}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
-                                    <Field name="position">
-                                        {(props) => {
-                                            return (
-                                                <TextField
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
-                                                    fullWidth
-                                                    label="Должность"
-                                                    variant="outlined"
-                                                />
-                                            );
-                                        }}
+                                    <Field name="responsible" validate={isRequired}>
+                                        {(props) => (
+                                            <Select
+                                                id="place"
+                                                label="Ответственный *"
+                                                options={data.getUsers}
+                                                value={props.input.value}
+                                                onChange={(selectedValue: any) => {
+                                                    props.input.onChange(selectedValue);
+                                                }}
+                                                isClearable={true}
+                                                components={{
+                                                    Option: CustomOption,
+                                                    SingleValue
+                                                }}
+                                            />
+                                        )}
                                     </Field>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -181,7 +232,7 @@ export function ContactForm({onClose, contact}) {
                                                                     preferredCountries={['ua']}
                                                                     regions={'europe'}
                                                                     defaultCountry="ua"
-                                                                    label={`Раб телефон (${index + 1})`}
+                                                                    label={`Раб телефон (${index + 1}) *`}
                                                                     variant="outlined"
                                                                 />
                                                             )}
@@ -217,6 +268,42 @@ export function ContactForm({onClose, contact}) {
                                     </FieldArray>
                                 </Grid>
                                 <Grid item xs={12}>
+                                    <Field name="clientStatus">
+                                        {(props) => (
+                                            <Select
+                                                id="place"
+                                                label="Статус клиента"
+                                                options={dropdowns.clientStatuses}
+                                                value={props.input.value}
+                                                onChange={(selectedValue: any) => {
+                                                    props.input.onChange(selectedValue);
+                                                }}
+                                                isClearable={true}
+                                                components={{
+                                                    Option: KeyDisplayNameOptions,
+                                                    SingleValue: SingleDisplayName
+                                                }}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Field name="position">
+                                        {(props) => {
+                                            return (
+                                                <TextField
+                                                    name={props.input.name}
+                                                    value={props.input.value}
+                                                    onChange={props.input.onChange}
+                                                    fullWidth
+                                                    label="Должность"
+                                                    variant="outlined"
+                                                />
+                                            );
+                                        }}
+                                    </Field>
+                                </Grid>
+                                <Grid item xs={12}>
                                     <Field name="email">
                                         {(props) => {
                                             return (
@@ -244,7 +331,9 @@ export function ContactForm({onClose, contact}) {
                                 onClick={async () => {
                                     const variables: any = {
                                         contact: {
-                                            ...values
+                                            ...values,
+                                            clientStatus: values.clientStatus?.key,
+                                            responsible: values.responsible.id
                                         }
                                     };
 

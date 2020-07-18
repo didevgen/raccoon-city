@@ -36,6 +36,7 @@ export const tradeMutation = {
             } else {
                 const newContact = await ContactModel.create({
                     ...trade.newContact,
+                    responsible: trade.responsible,
                     developer: developerUuid
                 });
                 contact = newContact.id;
@@ -75,6 +76,7 @@ export const tradeMutation = {
             } else {
                 const newContact = await ContactModel.create({
                     ...trade.newContact,
+                    responsible: trade.responsible,
                     developer: existingTrade.developer
                 });
                 contact = newContact.id;

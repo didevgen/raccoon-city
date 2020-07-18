@@ -229,7 +229,7 @@ export function TradeForm({onClose, trade}) {
                                             {(props) => (
                                                 <TradeTypeSelect
                                                     id="place"
-                                                    label="Статус сделки"
+                                                    label="Статус сделки *"
                                                     options={dropdowns.tradeStates}
                                                     value={props.input.value}
                                                     onChange={(selectedValue: any) => {
@@ -266,7 +266,7 @@ export function TradeForm({onClose, trade}) {
                                         {(props) => (
                                             <Select
                                                 id="place"
-                                                label="Ответственный"
+                                                label="Ответственный *"
                                                 options={data.getUsers}
                                                 value={props.input.value}
                                                 onChange={(selectedValue: any) => {

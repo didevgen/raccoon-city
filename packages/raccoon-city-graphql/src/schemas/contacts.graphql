@@ -3,6 +3,7 @@ type Contact {
     name: String
     phones: [String]
     email: String
+    clientStatus: String
     responsible: User
     position: String
 }
@@ -12,6 +13,7 @@ input ContactInput {
     name: String
     phones: [String]
     email: String
+    clientStatus: String
     responsible: String
     position: String
 }

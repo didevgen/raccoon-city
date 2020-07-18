@@ -8,6 +8,7 @@ export const ALL_CONTACTS = gql`
             email
             phones
             position
+            clientStatus
         }
     }
 `;
@@ -20,6 +21,7 @@ export const GET_CONTACT = gql`
             email
             phones
             position
+            clientStatus
             responsible {
                 id
                 name
@@ -28,6 +30,15 @@ export const GET_CONTACT = gql`
                     displayName
                 }
             }
+        }
+    }
+`;
+
+export const GET_CONTACT_DROPDOWNS = gql`
+    query getContactsDropdowns {
+        clientStatuses {
+            key
+            displayName
         }
     }
 `;

@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import {Document, Schema} from 'mongoose';
 import {User} from './user';
-import {Flat} from './flat';
 import {Contact} from './contact';
 import {Developer} from './developer';
 

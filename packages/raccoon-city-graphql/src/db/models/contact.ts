@@ -6,6 +6,7 @@ export interface Contact extends Document {
     name: string;
     email: string;
     position: string;
+    clientStatus: string,
     phone: string;
     responsible: User;
     isDeleted: boolean;
@@ -17,6 +18,7 @@ const ContactSchema: Schema = new Schema(
         email: {type: Schema.Types.String},
         phones: [{type: Schema.Types.String, required: true}],
         position: {type: Schema.Types.String},
+        clientStatus: {type: Schema.Types.String},
         responsible: {
             type: Schema.Types.ObjectId,
             ref: 'User'
