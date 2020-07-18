@@ -20,14 +20,13 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: { $in: trade.newContact.phones}
+                    $elemMatch: {$in: trade.newContact.phones}
                 }
             }).exec();
 
             if (contacts.length > 0) {
-                const secondaryMatch = contacts.find(c => {
-                    return c?.name === trade.newContact?.name ||
-                        c?.email === trade.newContact?.email;
+                const secondaryMatch = contacts.find((c) => {
+                    return c?.name === trade.newContact?.name || c?.email === trade.newContact?.email;
                 });
                 if (secondaryMatch) {
                     contact = secondaryMatch.id;
@@ -60,14 +59,13 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: { $in: trade.newContact.phones}
+                    $elemMatch: {$in: trade.newContact.phones}
                 }
             }).exec();
 
             if (contacts.length > 0) {
-                const secondaryMatch = contacts.find(c => {
-                    return c?.name === trade.newContact?.name ||
-                        c?.email === trade.newContact?.email;
+                const secondaryMatch = contacts.find((c) => {
+                    return c?.name === trade.newContact?.name || c?.email === trade.newContact?.email;
                 });
                 if (secondaryMatch) {
                     contact = secondaryMatch.id;
