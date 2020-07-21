@@ -11,6 +11,7 @@ export const ALL_TRADES = gql`
             clientInterests
             link
             visitDate
+            nextVisitDate
             paymentType
             tradeSource
             paymentProvider
@@ -52,6 +53,7 @@ export const GET_TRADE = gql`
             clientInterests
             link
             visitDate
+            nextVisitDate
             paymentType
             paymentProvider
             price

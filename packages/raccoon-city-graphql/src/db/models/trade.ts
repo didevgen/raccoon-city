@@ -26,6 +26,7 @@ export interface Trade extends Document {
     };
     contact: Contact;
     visitDate: string;
+    nextVisitDate: string;
     paymentType: string;
     propertyType: string;
     paymentProvider: string;
@@ -55,6 +56,7 @@ const TradeSchema: Schema = new Schema(
         clientInterests: [{type: Schema.Types.String}],
         link: {type: Schema.Types.String},
         visitDate: {type: Schema.Types.String},
+        nextVisitDate: {type: Schema.Types.String},
         paymentType: {type: Schema.Types.String},
         propertyType: {type: Schema.Types.String},
         paymentProvider: {type: Schema.Types.String},
