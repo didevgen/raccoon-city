@@ -1,16 +1,16 @@
 import Papa from 'papaparse';
 import groupBy from 'ramda/src/groupBy';
-import {GroupedFlatsByHouse, SpreadsheetFlat} from '../../types/flat/flat';
-import {UploadedFile} from '../image/imageService';
-import {transformHeader} from './headerUtils';
-import {transofrmValue} from './valueUtils';
+import { GroupedFlatsByHouse, SpreadsheetFlat } from '../../types/flat/flat';
+import { UploadedFile } from '../image/imageService';
+import { transformHeader } from './headerUtils';
+import { transofrmValue } from './valueUtils';
 
 interface ParseResult {
     house: string;
     flats: SpreadsheetFlat[];
 }
 export class ApartmentComplexSpreadsheetService {
-    constructor(private file: UploadedFile) {}
+    constructor(private file: UploadedFile) { }
 
     public async parse(): Promise<ParseResult[]> {
         return new Promise((resolve) => {
