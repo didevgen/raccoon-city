@@ -1,8 +1,7 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import Select from '@appgeist/react-select-material-ui';
-import {Button, Grid, IconButton, ListItem, Paper, Tab, Tabs, TextField} from '@material-ui/core';
+import {Button, Grid, IconButton, ListItem, Tab, Tabs, TextField} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -14,7 +13,6 @@ import React from 'react';
 import {Field, Form} from 'react-final-form';
 import {FieldArray} from 'react-final-form-arrays';
 import {useParams} from 'react-router-dom';
-import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {CREATE_CONTACT, UPDATE_CONTACT} from '../../../../graphql/mutations/contactMutation';
 import {ALL_CONTACTS, GET_CONTACT_DROPDOWNS} from '../../../../graphql/queries/contactQuery';
@@ -22,75 +20,16 @@ import {GET_USERS} from '../../../../graphql/queries/userQuery';
 import EditableTextField from '../../../shared/components/inputs/EditableTextField';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {KeyDisplayNameOptions, SingleDisplayName} from '../../Trades/Trade/components';
-
-const ContactFormWrapper = styled.div`
-    width: 40%;
-    background-color: #fff;
-    border-right: 3px solid #dbdbdb;
-`;
-
-const TitleArea = styled.div`
-    height: 30%;
-    max-height: 240px;
-    background-color: #37485c;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-`;
-
-const TabContainer = styled(Paper)`
-    box-shadow: none;
-    background-color: #37485c !important;
-    .MuiButtonBase--root {
-        color: #fff !important;
-    }
-    .MuiTab-textColorPrimary {
-        color: #fff !important;
-    }
-    .MuiTabs-indicator {
-        background-color: #fff !important;
-    }
-    margin-top: auto;
-`;
-
-const OptionsArea = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const TitleWrapper = styled.div`
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-
-    .MuiInputBase-input,
-    .EditIcon {
-        font-size: 24px;
-        line-height: 24px;
-        color: #fff;
-    }
-`;
-
-const OptionIcon: any = styled(IconButton)`
-    &.MuiIconButton-root {
-        color: white !important;
-    }
-`;
-
-const ButtonWrapper = styled.div`
-    padding: 16px;
-`;
-const StyledList = styled(List)`
-    display: flex;
-    padding: 8px !important;
-    align-items: center;
-    margin-left: 8px;
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-    }
-`;
+import {
+    ContactFormWrapper,
+    TitleArea,
+    TabContainer,
+    OptionsArea,
+    TitleWrapper,
+    OptionIcon,
+    ButtonWrapper,
+    StyledList
+} from './ContactForm.styled';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -116,19 +55,22 @@ function CustomOption(props: any) {
 }
 
 export function ContactForm({onClose, contact}) {
+    console.log('CONTACT FORM');
+
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_CONTACT_DROPDOWNS);
 
-    const [mutation] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
+    const [upsertContact] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
     if (loading || error || dropdownsLoading) {
         return null;
     }
     const initialValues = contact
         ? {
               ...contact,
-              clientStatus: dropdowns.clientStatuses.find(({key}) => key === contact.clientStatus)
+              clientStatus: dropdowns.clientStatuses.find(({key}) => key === contact.clientStatus),
+              clientSources: dropdowns.clientSources.find(({key}) => key === contact.clientSources)
           }
         : {
               phones: ['']
@@ -287,6 +229,28 @@ export function ContactForm({onClose, contact}) {
                                         )}
                                     </Field>
                                 </Grid>
+
+                                <Grid item xs={12}>
+                                    <Field name="clientSources">
+                                        {(props) => (
+                                            <Select
+                                                id="place"
+                                                label="Источник клиента"
+                                                options={dropdowns.clientSources}
+                                                value={props.input.value}
+                                                onChange={(selectedValue: any) => {
+                                                    props.input.onChange(selectedValue);
+                                                }}
+                                                isClearable={true}
+                                                components={{
+                                                    Option: KeyDisplayNameOptions,
+                                                    SingleValue: SingleDisplayName
+                                                }}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid>
+
                                 <Grid item xs={12}>
                                     <Field name="position">
                                         {(props) => {
@@ -333,6 +297,7 @@ export function ContactForm({onClose, contact}) {
                                         contact: {
                                             ...values,
                                             clientStatus: values.clientStatus?.key,
+                                            clientSources: values.clientSources?.key,
                                             responsible: values.responsible.id
                                         }
                                     };
@@ -344,17 +309,26 @@ export function ContactForm({onClose, contact}) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    await mutation({
-                                        variables,
-                                        refetchQueries: [
-                                            {
-                                                query: ALL_CONTACTS,
-                                                variables: {
-                                                    developerUuid
+                                    console.log('variables');
+                                    console.log(variables);
+
+                                    try {
+                                        await upsertContact({
+                                            variables,
+                                            refetchQueries: [
+                                                {
+                                                    query: ALL_CONTACTS,
+                                                    variables: {
+                                                        developerUuid
+                                                    }
                                                 }
-                                            }
-                                        ]
-                                    });
+                                            ]
+                                        });
+                                    } catch (error) {
+                                        console.log('Error');
+                                        console.log(error);
+                                    }
+
                                     onClose();
                                 }}
                             >
