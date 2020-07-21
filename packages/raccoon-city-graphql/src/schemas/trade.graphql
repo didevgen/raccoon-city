@@ -70,4 +70,5 @@ type Mutation {
 extend type Query {
     getAllTrades(developerUuid: String!): [Trade]
     getTrade(uuid: String!): Trade
+    getTradesForAppropriateContact(contactId: String!): [Trade]
 }

@@ -37,4 +37,10 @@ const ContactSchema: Schema = new Schema(
     }
 );
 
+ContactSchema.virtual('trades', {
+    ref: 'Trade',
+    localField: '_id',
+    foreignField: 'contact'
+});
+
 export const ContactModel = mongoose.model<Contact>('Contact', ContactSchema);

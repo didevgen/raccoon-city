@@ -15,6 +15,7 @@ const constraints = {
 };
 
 export const isRequired = (value: any) => (value ? undefined : 'Обязательное поле');
+
 export const isNumber = (value: any) => {
     return validate.isNumber(+value) ? undefined : 'Это числовое поле';
 };
