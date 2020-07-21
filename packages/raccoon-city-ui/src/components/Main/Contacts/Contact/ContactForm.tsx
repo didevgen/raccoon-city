@@ -55,8 +55,6 @@ function CustomOption(props: any) {
 }
 
 export function ContactForm({onClose, contact}) {
-    console.log('CONTACT FORM');
-
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
@@ -309,25 +307,17 @@ export function ContactForm({onClose, contact}) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    console.log('variables');
-                                    console.log(variables);
-
-                                    try {
-                                        await upsertContact({
-                                            variables,
-                                            refetchQueries: [
-                                                {
-                                                    query: ALL_CONTACTS,
-                                                    variables: {
-                                                        developerUuid
-                                                    }
+                                    await upsertContact({
+                                        variables,
+                                        refetchQueries: [
+                                            {
+                                                query: ALL_CONTACTS,
+                                                variables: {
+                                                    developerUuid
                                                 }
-                                            ]
-                                        });
-                                    } catch (error) {
-                                        console.log('Error');
-                                        console.log(error);
-                                    }
+                                            }
+                                        ]
+                                    });
 
                                     onClose();
                                 }}
