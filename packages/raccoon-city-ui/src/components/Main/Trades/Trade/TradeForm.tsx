@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {KeyboardDatePicker} from '@material-ui/pickers';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import arrayMutators from 'final-form-arrays';
 import React from 'react';
 import {Field, Form} from 'react-final-form';
@@ -285,14 +286,21 @@ export function TradeForm({onClose, trade}) {
                                     <Field name="budget">
                                         {(props) => {
                                             return (
-                                                <TextField
+                                                <CurrencyTextField
+                                                    label="Стоимость сделки"
+                                                    variant="outlined"
                                                     name={props.input.name}
                                                     value={props.input.value}
-                                                    onChange={props.input.onChange}
+                                                    minimumValue="0"
+                                                    onChange={(event, val) => {
+                                                        props.input.onChange(val);
+                                                    }}
+                                                    currencySymbol="₴"
+                                                    outputFormat="number"
+                                                    textAlign="left"
                                                     fullWidth
-                                                    id="outlined-basic"
-                                                    label="Бюджет"
-                                                    variant="outlined"
+                                                    decimalCharacter="."
+                                                    digitGroupSeparator=","
                                                 />
                                             );
                                         }}
@@ -319,11 +327,11 @@ export function TradeForm({onClose, trade}) {
                                     </Field>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Field name="leadStatus">
+                                    <Field name="leadStatus" validate={isRequired}>
                                         {(props) => (
                                             <Select
                                                 id="place"
-                                                label="Статус лида"
+                                                label="Статус лида *"
                                                 options={dropdowns.leadStatuses}
                                                 value={props.input.value}
                                                 onChange={(selectedValue: any) => {
@@ -376,14 +384,30 @@ export function TradeForm({onClose, trade}) {
                                     </Field>
                                 </Grid>
                                 <Grid item={true} xs={12}>
-                                    <Field name="visitDate">
+                                    <Field name="visitDate" validate={isRequired}>
                                         {(props) => (
                                             <KeyboardDatePicker
                                                 name={props.input.name}
                                                 inputVariant="outlined"
                                                 placeholder="день.месяц.год"
                                                 fullWidth
-                                                label="Дата визита"
+                                                label="Дата визита *"
+                                                value={props.input.value ? props.input.value : null}
+                                                onChange={props.input.onChange}
+                                                format="dd.MM.yyyy"
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid>
+                                <Grid item={true} xs={12}>
+                                    <Field name="nextVisitDate" validate={isRequired}>
+                                        {(props) => (
+                                            <KeyboardDatePicker
+                                                name={props.input.name}
+                                                inputVariant="outlined"
+                                                placeholder="день.месяц.год"
+                                                fullWidth
+                                                label="Дата следующего визита *"
                                                 value={props.input.value ? props.input.value : null}
                                                 onChange={props.input.onChange}
                                                 format="dd.MM.yyyy"
@@ -458,14 +482,21 @@ export function TradeForm({onClose, trade}) {
                                     <Field name="price">
                                         {(props) => {
                                             return (
-                                                <TextField
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
-                                                    fullWidth
-                                                    id="outlined-basic"
+                                                <CurrencyTextField
                                                     label="Цена за м2"
                                                     variant="outlined"
+                                                    name={props.input.name}
+                                                    value={props.input.value}
+                                                    minimumValue="0"
+                                                    onChange={(event, val) => {
+                                                        props.input.onChange(val);
+                                                    }}
+                                                    currencySymbol="₴"
+                                                    outputFormat="number"
+                                                    fullWidth
+                                                    textAlign="left"
+                                                    decimalCharacter="."
+                                                    digitGroupSeparator=","
                                                 />
                                             );
                                         }}
@@ -501,6 +532,7 @@ export function TradeForm({onClose, trade}) {
                                             clientInterests: [values.clientInterests?.key],
                                             link: values.link,
                                             visitDate: values.visitDate,
+                                            nextVisitDate: values.nextVisitDate,
                                             paymentType: values.paymentType?.key,
                                             tradeSource: values.tradeSource?.key,
                                             propertyType: values.propertyType?.key,

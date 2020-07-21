@@ -94,6 +94,18 @@ export const LeadStatuses = [
     {
         key: 'partner',
         displayName: 'Партнер'
+    },
+    {
+        key: 'delayed',
+        displayName: 'Отложенный'
+    },
+    {
+        key: 'refuse_potential',
+        displayName: 'Отказ с потенциалом'
+    },
+    {
+        key: 'non_targetive',
+        displayName: 'Нецелевой'
     }
 ];
 

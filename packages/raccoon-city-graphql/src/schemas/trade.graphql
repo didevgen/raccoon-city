@@ -7,6 +7,7 @@ type Trade {
     clientInterests: [String]
     link: String
     visitDate: String
+    nextVisitDate: String
     paymentType: String
     tradeSource: String
     propertyType: String
@@ -49,6 +50,7 @@ input TradeInput {
     link: String
     tradeSource: String
     visitDate: String
+    nextVisitDate: String
     paymentType: String
     paymentProvider: String
     propertyType: String

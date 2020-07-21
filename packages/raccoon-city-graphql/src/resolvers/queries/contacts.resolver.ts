@@ -6,9 +6,11 @@ export const contactsQuery = {
         return await ContactModel.find({
             developer: mongoose.Types.ObjectId(developerUuid),
             isDeleted: false
-        }).populate({
-            path: 'responsible'
-        }).exec();
+        })
+            .populate({
+                path: 'responsible'
+            })
+            .exec();
     },
     getContact: async (parent, {uuid}) => {
         return await ContactModel.findOne({
