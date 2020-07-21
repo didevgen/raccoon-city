@@ -9,6 +9,7 @@ export const ALL_CONTACTS = gql`
             phones
             position
             clientStatus
+            clientSources
         }
     }
 `;
@@ -22,6 +23,7 @@ export const GET_CONTACT = gql`
             phones
             position
             clientStatus
+            clientSources
             responsible {
                 id
                 name
@@ -37,6 +39,10 @@ export const GET_CONTACT = gql`
 export const GET_CONTACT_DROPDOWNS = gql`
     query getContactsDropdowns {
         clientStatuses {
+            key
+            displayName
+        }
+        clientSources {
             key
             displayName
         }

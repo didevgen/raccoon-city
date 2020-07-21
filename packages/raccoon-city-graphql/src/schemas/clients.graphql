@@ -6,6 +6,7 @@ type Contact {
     clientStatus: String
     responsible: User
     position: String
+    clientSources: String
 }
 
 input ContactInput {
@@ -16,6 +17,7 @@ input ContactInput {
     clientStatus: String
     responsible: String
     position: String
+    clientSources: String
 }
 
 type Mutation {
