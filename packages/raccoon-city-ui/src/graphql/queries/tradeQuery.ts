@@ -89,6 +89,28 @@ export const APPROPRIATE_TRADES = gql`
         getContactTrades(contactId: $contactId) {
             id
             tradeNumber
+            state
+            budget
+            leadStatus
+            clientInterests
+            link
+            visitDate
+            nextVisitDate
+            paymentType
+            tradeSource
+            paymentProvider
+            price
+            propertyType
+            flat {
+                flatId
+                flatNumber
+                section
+                level
+                apartmentComplexId
+                apartmentComplex
+                house
+                houseId
+            }
         }
     }
 `;

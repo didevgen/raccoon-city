@@ -30,6 +30,14 @@ export const Contact = ({open, handleClose, uuid}) => {
         return null;
     }
 
+    // TODO think about it
+    if (!open) {
+        return null;
+    }
+    if (!uuid) {
+        return null;
+    }
+
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
             <ContactsWrapper>
