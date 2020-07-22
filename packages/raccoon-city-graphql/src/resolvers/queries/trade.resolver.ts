@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import {TradeModel} from '../../db/models/trade';
+import { TradeModel } from '../../db/models/trade';
 
 export const tradesQuery = {
-    getAllTrades: async (_, {developerUuid}) => {
+    getAllTrades: async (_, { developerUuid }) => {
         return await TradeModel.find({
             developer: mongoose.Types.ObjectId(developerUuid),
             isDeleted: false
@@ -15,7 +15,7 @@ export const tradesQuery = {
             })
             .exec();
     },
-    getTrade: async (parent, {uuid}) => {
+    getTrade: async (parent, { uuid }) => {
         return await TradeModel.findOne({
             _id: uuid,
             isDeleted: false
@@ -28,7 +28,7 @@ export const tradesQuery = {
             })
             .exec();
     },
-    getTradesForAppropriateContact: async (parent, {contactId}) => {
-        return await TradeModel.find({contact: contactId});
+    getContactTrades: async (parent, { contactId }) => {
+        return await TradeModel.find({ contact: contactId, isDeleted: false });
     }
 };

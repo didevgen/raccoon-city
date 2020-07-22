@@ -85,8 +85,8 @@ export const GET_TRADE = gql`
 `;
 
 export const APPROPRIATE_TRADES = gql`
-    query getTradesForAppropriateContact($contactId: String!) {
-        getTradesForAppropriateContact(contactId: $contactId) {
+    query getContactTrades($contactId: String!) {
+        getContactTrades(contactId: $contactId) {
             id
             tradeNumber
         }

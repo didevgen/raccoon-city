@@ -61,7 +61,7 @@ export function ContactForm({onClose, contact}) {
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_CONTACT_DROPDOWNS);
 
-    const {data: trades, loading: tradesLoading, error: tradesError} = useQuery(APPROPRIATE_TRADES, {
+    const {data: trades} = useQuery(APPROPRIATE_TRADES, {
         fetchPolicy: 'cache-and-network',
         variables: {
             contactId: contact.id
@@ -69,8 +69,7 @@ export function ContactForm({onClose, contact}) {
     });
 
     // TODO remove later
-    console.log('trades.getTradesForAppropriateContact');
-    console.log(trades.getTradesForAppropriateContact);
+    console.log(trades.getContactTrades);
 
     const [upsertContact] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
     if (loading || error || dropdownsLoading) {
