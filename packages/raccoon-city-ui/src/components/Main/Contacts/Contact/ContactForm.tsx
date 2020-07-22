@@ -30,6 +30,7 @@ import {
     ButtonWrapper,
     StyledList
 } from './ContactForm.styled';
+import {APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -59,6 +60,16 @@ export function ContactForm({onClose, contact}) {
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_CONTACT_DROPDOWNS);
+
+    const {data: trades} = useQuery(APPROPRIATE_TRADES, {
+        fetchPolicy: 'cache-and-network',
+        variables: {
+            contactId: contact.id
+        }
+    });
+
+    // TODO remove later
+    console.log(trades.getContactTrades);
 
     const [upsertContact] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
     if (loading || error || dropdownsLoading) {

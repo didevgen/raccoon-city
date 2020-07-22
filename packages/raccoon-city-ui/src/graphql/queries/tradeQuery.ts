@@ -84,6 +84,15 @@ export const GET_TRADE = gql`
     }
 `;
 
+export const APPROPRIATE_TRADES = gql`
+    query getContactTrades($contactId: String!) {
+        getContactTrades(contactId: $contactId) {
+            id
+            tradeNumber
+        }
+    }
+`;
+
 export const GET_TRADE_DROPDOWNS = gql`
     query getTradeDropdowns {
         tradeStates {
