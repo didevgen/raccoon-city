@@ -70,3 +70,17 @@ export const StyledList = styled(List)`
         cursor: pointer;
     }
 `;
+
+export const RootContainer = styled.div`
+    width: '100%';
+`;
+
+export const TradeTitleContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const Bold = styled.span`
+    font-weight: 600;
+    margin: 10px;
+`;

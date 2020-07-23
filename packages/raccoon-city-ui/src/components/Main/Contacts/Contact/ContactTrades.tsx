@@ -1,43 +1,46 @@
 import React from 'react';
-import {Theme, createStyles, makeStyles} from '@material-ui/core/styles';
+import {useQuery} from '@apollo/react-hooks';
 import {Accordion, AccordionSummary, AccordionDetails} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import {GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
+import {format} from 'date-fns';
+import {getConstant, getClientInterests} from './ContactTradesUtils';
+import {RootContainer, TradeTitleContainer, Bold} from './ContactForm.styled';
 
 interface Props {
     trades: any;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%'
-        },
-        heading: {
-            fontSize: theme.typography.pxToRem(15),
-            fontWeight: theme.typography.fontWeightRegular
-        }
-    })
-);
-
 const ContactTrades: React.FC<Props> = ({trades}) => {
-    const classes = useStyles();
+    const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
 
-    if (!trades) {
+    if (!trades || dropdownsLoading) {
         return <div>Loading</div>;
     }
 
     return (
-        <div className={classes.root}>
+        <RootContainer>
             {trades.map((item) => (
-                <Accordion key={item.id}>
+                <Accordion key={item.id} TransitionProps={{unmountOnExit: true}}>
                     <AccordionSummary aria-controls="panel1a-content" id={item.id}>
-                        <span>
-                            {`№: ${item.tradeNumber} Cтатус: ${item.leadStatus} Квартира: ${item.flat.flatNumber}`}
-                        </span>
+                        <TradeTitleContainer>
+                            <p>
+                                <Bold>№ :</Bold>&nbsp;{item.tradeNumber}
+                                <Bold>Статус :</Bold>&nbsp;{getConstant(dropdowns, item.leadStatus, 'leadStatuses')}
+                            </p>
+                            <p>
+                                <Bold>ЖК :</Bold>
+                                {item.flat.apartmentComplex}
+                                <Bold>Дом :</Bold>
+                                {item.flat.house}
+                                <Bold>Квартира :</Bold>
+                                {item.flat.flatNumber}
+                            </p>
+                        </TradeTitleContainer>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Table aria-label="simple table">
@@ -45,12 +48,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            state
+                                            Статус сделки
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.state}
+                                            {getConstant(dropdowns, item.state, 'tradeStates')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -58,7 +61,7 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            budget
+                                            Стоимость сделки
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
@@ -71,12 +74,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            leadStatus
+                                            Статус лида
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.leadStatus}
+                                            {getConstant(dropdowns, item.leadStatus, 'leadStatuses')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -84,12 +87,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            clientInterests
+                                            Что интересует
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.clientInterests}
+                                            {getClientInterests(dropdowns, item.clientInterests)}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -97,7 +100,7 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            link
+                                            Ссылка
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
@@ -110,12 +113,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            visitDate
+                                            Дата визита
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.visitDate}
+                                            {format(new Date(item.visitDate), 'dd.MM.yyyy')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -123,12 +126,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            nextVisitDate
+                                            Дата следующего визита
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.nextVisitDate}
+                                            {format(new Date(item.nextVisitDate), 'dd.MM.yyyy')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -136,12 +139,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            paymentType
+                                            Тип оплаты
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.paymentType}
+                                            {getConstant(dropdowns, item.paymentType, 'paymentTypes')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -149,12 +152,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            tradeSource
+                                            Через кого оплата
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.tradeSource}
+                                            {getConstant(dropdowns, item.paymentProvider, 'paymentProviders')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -162,12 +165,23 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            paymentProvider
+                                            Цена
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {`${new Intl.NumberFormat('ru-RU').format(item.price)}₴`}
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow key={item.key}>
+                                    <TableCell component="th" scope="row">
+                                        <Typography variant="body2" component="p">
+                                            Источник заявки
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.paymentProvider}
+                                            {getConstant(dropdowns, item.tradeSource, 'tradeSources')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -175,12 +189,12 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            price
+                                            Тип объекта
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Typography variant="body2" component="p">
-                                            {item.price}
+                                            {getConstant(dropdowns, item.propertyType, 'propertyTypes')}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -188,20 +202,7 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                 <TableRow key={item.key}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="body2" component="p">
-                                            propertyType
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Typography variant="body2" component="p">
-                                            {item.propertyType}
-                                        </Typography>
-                                    </TableCell>
-                                </TableRow>
-
-                                <TableRow key={item.key}>
-                                    <TableCell component="th" scope="row">
-                                        <Typography variant="body2" component="p">
-                                            flatNumber
+                                            Номер квартиры
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
@@ -210,12 +211,38 @@ const ContactTrades: React.FC<Props> = ({trades}) => {
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
+
+                                <TableRow key={item.key}>
+                                    <TableCell component="th" scope="row">
+                                        <Typography variant="body2" component="p">
+                                            Секция
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Typography variant="body2" component="p">
+                                            {item.flat.section}
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow key={item.key}>
+                                    <TableCell component="th" scope="row">
+                                        <Typography variant="body2" component="p">
+                                            Этаж
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Typography variant="body2" component="p">
+                                            {item.flat.level}
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </AccordionDetails>
                 </Accordion>
             ))}
-        </div>
+        </RootContainer>
     );
 };
 
