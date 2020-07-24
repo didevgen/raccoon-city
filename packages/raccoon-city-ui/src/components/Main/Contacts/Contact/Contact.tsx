@@ -30,6 +30,10 @@ export const Contact = ({open, handleClose, uuid}) => {
         return null;
     }
 
+    if (!open || !uuid) {
+        return null;
+    }
+
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
             <ContactsWrapper>

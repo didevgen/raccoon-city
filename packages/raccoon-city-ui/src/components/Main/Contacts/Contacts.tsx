@@ -126,6 +126,7 @@ export const Contacts = connect(null, (dispatch) => ({
                     Toolbar: (props) => <MTableToolbar {...props} />
                 }}
             />
+
             <Contact
                 open={open}
                 uuid={contactUuid}
