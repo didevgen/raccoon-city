@@ -30,7 +30,6 @@ import {
     ButtonWrapper,
     StyledList
 } from './ContactForm.styled';
-import {APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 import ContactTrades from './ContactTrades';
 
 function SingleValue({data}: any) {
@@ -62,13 +61,6 @@ export function ContactForm({onClose, contact}) {
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_CONTACT_DROPDOWNS);
 
-    const {data: trades, loading: isLoadingTrade} = useQuery(APPROPRIATE_TRADES, {
-        fetchPolicy: 'cache-and-network',
-        variables: {
-            contactId: contact.id
-        }
-    });
-
     const [upsertContact] = useMutation(contact ? UPDATE_CONTACT : CREATE_CONTACT);
     if (loading || error || dropdownsLoading) {
         return null;
@@ -86,10 +78,6 @@ export function ContactForm({onClose, contact}) {
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
-
-    if (isLoadingTrade) {
-        return <div>Loading</div>;
-    }
 
     return (
         <Form
@@ -295,7 +283,7 @@ export function ContactForm({onClose, contact}) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTrades trades={trades.getContactTrades} />
+                            <ContactTrades contactId={contact.id} />
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

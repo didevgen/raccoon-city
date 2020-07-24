@@ -10,21 +10,30 @@ import {GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
 import {format} from 'date-fns';
 import {getConstant, getClientInterests} from './ContactTradesUtils';
 import {RootContainer, TradeTitleContainer, Bold} from './ContactForm.styled';
+import {APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 
-interface Props {
-    trades: any;
+interface ContactTradesProps {
+    contactId: string;
 }
 
-const ContactTrades: React.FC<Props> = ({trades}) => {
-    const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
+const ContactTrades = (props: ContactTradesProps) => {
+    const {contactId} = props;
 
-    if (!trades || dropdownsLoading) {
+    const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
+    const {data: trades, loading: isLoadingTrade} = useQuery(APPROPRIATE_TRADES, {
+        fetchPolicy: 'cache-and-network',
+        variables: {
+            contactId
+        }
+    });
+
+    if (dropdownsLoading || isLoadingTrade) {
         return <div>Loading</div>;
     }
 
     return (
         <RootContainer>
-            {trades.map((item) => (
+            {trades.getContactTrades.map((item) => (
                 <Accordion key={item.id} TransitionProps={{unmountOnExit: true}}>
                     <AccordionSummary aria-controls="panel1a-content" id={item.id}>
                         <TradeTitleContainer>

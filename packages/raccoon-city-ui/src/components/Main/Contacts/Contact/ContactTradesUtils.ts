@@ -5,9 +5,13 @@ export function getConstant(dropdowns, state, appropriateConstant) {
 export function getClientInterests(dropdowns, interests) {
     return dropdowns.clientInterests
         .map(({key, displayName}) => {
+            let interest = '';
+
             if (interests.some((item: string) => item === key)) {
-                return displayName;
+                interest = displayName;
             }
+
+            return interest;
         })
         .join(' ');
 }
