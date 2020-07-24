@@ -283,7 +283,7 @@ export function ContactForm({onClose, contact}) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTrades contactId={contact.id} />
+                            <ContactTrades contact={contact} />
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

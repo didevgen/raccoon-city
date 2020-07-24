@@ -17,7 +17,14 @@ const Transition: any = React.forwardRef((props: any, ref: React.Ref<unknown>) =
     <Slide direction="left" ref={ref} {...props} />
 ));
 
-export const Trade = ({open, handleClose, uuid}) => {
+interface TradePropsInterface {
+    open: any;
+    handleClose: any;
+    uuid: any;
+    contact?: any;
+}
+
+export const Trade = ({open, handleClose, uuid, contact}: TradePropsInterface) => {
     const {data, error, loading} = useQuery(GET_TRADE, {
         variables: {
             uuid
@@ -35,7 +42,7 @@ export const Trade = ({open, handleClose, uuid}) => {
             <ContactsWrapper>
                 <Grid container spacing={1}>
                     <Grid item md={4} xs={12}>
-                        <TradeForm onClose={handleClose} trade={data?.getTrade} />
+                        <TradeForm onClose={handleClose} trade={data?.getTrade} contact={contact} />
                     </Grid>
                     <Grid item md={8} xs={12}>
                         <Notes />

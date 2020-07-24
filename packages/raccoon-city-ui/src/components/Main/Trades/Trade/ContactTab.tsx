@@ -4,7 +4,7 @@ import {Field, useField} from 'react-final-form';
 import {TradeContactForm} from './TradeContactForm';
 import {TradeExistingContact} from './TradeExistingContact';
 
-export function ContactTab() {
+export function ContactTab({contact}: {contact?: any}) {
     const contactTypeValue = useField('contactType');
     const [contactType, setContactType] = useState<any>(contactTypeValue.input.value || 'existing');
     return (
@@ -39,7 +39,7 @@ export function ContactTab() {
             </Grid>
             <Grid item xs={12}>
                 {contactType === 'new' && <TradeContactForm />}
-                {contactType === 'existing' && <TradeExistingContact />}
+                {contactType === 'existing' && <TradeExistingContact contact={contact} />}
             </Grid>
         </Grid>
     );
