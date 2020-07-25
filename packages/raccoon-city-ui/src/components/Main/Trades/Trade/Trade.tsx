@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {GET_TRADE} from '../../../../graphql/queries/tradeQuery';
 import {Notes} from './Notes';
 import {TradeForm} from './TradeForm';
+import {ContactInterface} from '../../../shared/types/contact.type';
 
 const ContactsWrapper = styled.div`
     width: 100%;
@@ -21,7 +22,7 @@ interface TradePropsInterface {
     open: any;
     handleClose: any;
     uuid: any;
-    contact?: any;
+    contact?: ContactInterface;
 }
 
 export const Trade = ({open, handleClose, uuid, contact}: TradePropsInterface) => {

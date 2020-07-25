@@ -31,6 +31,7 @@ import {
     TradeTypeSelect,
     TradeTitle
 } from './TradeForm.styles';
+import {ContactInterface} from '../../../shared/types/contact.type';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -56,7 +57,7 @@ function CustomOption(props: any) {
 }
 
 interface TradeFormInterface {
-    contact?: any;
+    contact?: ContactInterface;
     onClose: any;
     trade: any;
 }
@@ -476,8 +477,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         variables.trade.newContact = values.newContact;
                                     } else {
                                         // TODO might be bug when user start change on another user and we have id in contact prop, think about behavior
-                                        console.log('contact.id', contact.id);
-                                        const existingContactId = contact.id || values.existingContact.id;
+                                        const existingContactId = contact?.id || values.existingContact.id;
 
                                         console.log('existing', existingContactId);
 

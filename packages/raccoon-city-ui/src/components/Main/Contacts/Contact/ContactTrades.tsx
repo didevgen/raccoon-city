@@ -13,11 +13,10 @@ import {RootContainer, TradeTitleContainer, Bold, EditTrade} from './ContactForm
 import {APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 import {AddTradeButton} from '../../../shared/components/addTradeButton/AddTradeButton';
 import Trade from '../../Trades/Trade/Trade';
-
-interface ContactInterface {}
+import {ContactInterface} from '../../../shared/types/contact.type';
 
 interface ContactTradesProps {
-    contact: any;
+    contact: ContactInterface;
 }
 
 const ContactTrades = (props: ContactTradesProps) => {
