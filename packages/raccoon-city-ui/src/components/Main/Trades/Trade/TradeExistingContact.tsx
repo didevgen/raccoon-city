@@ -33,7 +33,6 @@ const ContactFieldsWrapper = styled.div`
 `;
 
 export function TradeExistingContact(props) {
-    const {contact} = props;
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const formApi = useForm();

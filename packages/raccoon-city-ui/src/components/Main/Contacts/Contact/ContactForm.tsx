@@ -32,6 +32,8 @@ import {
 } from './ContactForm.styled';
 import ContactTrades from './ContactTrades';
 
+export const ContactContext = React.createContext('contact');
+
 function SingleValue({data}: any) {
     return data.name;
 }
@@ -283,7 +285,9 @@ export function ContactForm({onClose, contact}) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTrades contact={contact} />
+                            <ContactContext.Provider value={contact}>
+                                <ContactTrades contact={contact} />
+                            </ContactContext.Provider>
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

@@ -66,7 +66,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
-    const [mutation] = useMutation(trade ? UPDATE_TRADE : CREATE_TRADE);
+    const [upsertTrade] = useMutation(trade ? UPDATE_TRADE : CREATE_TRADE);
 
     if (loading || error || dropdownsLoading) {
         return null;
@@ -106,10 +106,10 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
           }
         : {
               existingContact: {
-                  phones: contact.phones || [''],
-                  name: contact.name,
-                  position: contact.position,
-                  email: contact.email
+                  phones: contact ? contact.phones : null || [''],
+                  name: contact?.name,
+                  position: contact?.position,
+                  email: contact?.email
               },
               newContact: {
                   phones: ['']
@@ -434,7 +434,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTab contact={contact} />
+                            <ContactTab />
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>
@@ -475,7 +475,13 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                     if (values.contactType === 'new') {
                                         variables.trade.newContact = values.newContact;
                                     } else {
-                                        variables.trade.existingContact = values.existingContact.id;
+                                        // TODO might be bug when user start change on another user and we have id in contact prop, think about behavior
+                                        console.log('contact.id', contact.id);
+                                        const existingContactId = contact.id || values.existingContact.id;
+
+                                        console.log('existing', existingContactId);
+
+                                        variables.trade.existingContact = existingContactId;
                                     }
 
                                     if (trade) {
@@ -484,7 +490,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    await mutation({
+                                    await upsertTrade({
                                         variables,
                                         refetchQueries: [
                                             {
