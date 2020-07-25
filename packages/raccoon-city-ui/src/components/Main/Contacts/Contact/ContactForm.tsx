@@ -289,9 +289,7 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactContext.Provider value={contact}>
-                                <ContactTrades contact={contact} />
-                            </ContactContext.Provider>
+                            <ContactTrades contact={contact} />
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>
