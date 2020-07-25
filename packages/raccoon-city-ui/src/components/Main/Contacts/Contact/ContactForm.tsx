@@ -31,6 +31,7 @@ import {
     StyledList
 } from './ContactForm.styled';
 import ContactTrades from './ContactTrades';
+import {ContactInterface} from '../../../shared/types/contact.type';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -55,7 +56,12 @@ function CustomOption(props: any) {
     );
 }
 
-export function ContactForm({onClose, contact}) {
+interface ContactFormInterface {
+    onClose: () => void;
+    contact: ContactInterface;
+}
+
+export function ContactForm({onClose, contact}: ContactFormInterface) {
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
@@ -283,7 +289,7 @@ export function ContactForm({onClose, contact}) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTrades contactId={contact.id} />
+                            <ContactTrades contact={contact} />
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

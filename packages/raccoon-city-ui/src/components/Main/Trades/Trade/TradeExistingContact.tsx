@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {TradeContactList} from './TradeContactList';
 
+// TODO in styled components
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         appBar: {
@@ -31,7 +32,7 @@ const ContactFieldsWrapper = styled.div`
     margin-top: 12px;
 `;
 
-export function TradeExistingContact() {
+export function TradeExistingContact(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const formApi = useForm();
@@ -54,6 +55,7 @@ export function TradeExistingContact() {
                     <Grid item xs={12}>
                         <Field name="existingContact.name" validate={isRequired}>
                             {(props) => {
+                                console.log(props);
                                 return (
                                     <TextField
                                         inputProps={{readOnly: true}}

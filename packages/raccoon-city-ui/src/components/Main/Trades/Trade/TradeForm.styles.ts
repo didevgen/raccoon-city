@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import {IconButton, Paper} from '@material-ui/core';
 import List from '@material-ui/core/List';
+import Select from '@appgeist/react-select-material-ui';
 
 export const ContactFormWrapper = styled.div`
-    width: 40%;
     background-color: #fff;
     border-right: 3px solid #dbdbdb;
 `;
@@ -40,6 +40,7 @@ export const OptionsArea = styled.div`
 export const TitleWrapper = styled.div`
     display: flex;
     height: 100%;
+    padding: 24px;
     align-items: center;
     justify-content: center;
 
@@ -60,6 +61,7 @@ export const OptionIcon: any = styled(IconButton)`
 export const ButtonWrapper = styled.div`
     padding: 16px;
 `;
+
 export const StyledList = styled(List)`
     display: flex;
     padding: 8px !important;
@@ -71,24 +73,22 @@ export const StyledList = styled(List)`
     }
 `;
 
-export const RootContainer = styled.div`
-    width: '100%';
+export const TradeTypeSelect = styled(Select)`
+    .MuiFormLabel-root {
+        color: white;
+    }
+    .MuiFormLabel-root.Mui-focused {
+        color: white;
+    }
+
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: inherit;
+    }
 `;
 
-export const TradeTitleContainer = styled.div`
+export const TradeTitle = styled.div`
     display: flex;
-    flex-direction: column;
-`;
-
-export const Bold = styled.span`
-    font-weight: 600;
-    margin: 10px;
-`;
-
-export const EditTrade = styled.div`
-    cursor: pointer;
-    background-color: #2196f3;
-    color: #fff;
-    padding: 10px 25px;
-    text-align: center;
+    font-size: 24px;
+    line-height: 24px;
+    justify-content: center;
 `;

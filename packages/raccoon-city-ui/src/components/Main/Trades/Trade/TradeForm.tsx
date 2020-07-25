@@ -1,8 +1,7 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import Select from '@appgeist/react-select-material-ui';
-import {Button, Grid, IconButton, ListItem, Paper, Tab, Tabs, TextField} from '@material-ui/core';
+import {Button, Grid, ListItem, Tab, Tabs, TextField} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -12,7 +11,6 @@ import arrayMutators from 'final-form-arrays';
 import React from 'react';
 import {Field, Form} from 'react-final-form';
 import {useParams} from 'react-router-dom';
-import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {CREATE_TRADE, UPDATE_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {ALL_TRADES, GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
@@ -21,96 +19,19 @@ import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {KeyDisplayNameOptions, SingleDisplayName, TradeStateOptions} from './components';
 import {ContactTab} from './ContactTab';
 import {FlatSelection} from './FlatSelection';
-
-const ContactFormWrapper = styled.div`
-    background-color: #fff;
-    border-right: 3px solid #dbdbdb;
-`;
-
-const TitleArea = styled.div`
-    height: 30%;
-    max-height: 240px;
-    background-color: #37485c;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-`;
-
-const TabContainer = styled(Paper)`
-    box-shadow: none;
-    background-color: #37485c !important;
-    .MuiButtonBase--root {
-        color: #fff !important;
-    }
-    .MuiTab-textColorPrimary {
-        color: #fff !important;
-    }
-    .MuiTabs-indicator {
-        background-color: #fff !important;
-    }
-    margin-top: auto;
-`;
-
-const OptionsArea = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const TitleWrapper = styled.div`
-    display: flex;
-    height: 100%;
-    padding: 24px;
-    align-items: center;
-    justify-content: center;
-
-    .MuiInputBase-input,
-    .EditIcon {
-        font-size: 24px;
-        line-height: 24px;
-        color: #fff;
-    }
-`;
-
-const OptionIcon: any = styled(IconButton)`
-    &.MuiIconButton-root {
-        color: white !important;
-    }
-`;
-
-const ButtonWrapper = styled.div`
-    padding: 16px;
-`;
-
-const StyledList = styled(List)`
-    display: flex;
-    padding: 8px !important;
-    align-items: center;
-    margin-left: 8px;
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-    }
-`;
-
-const TradeTypeSelect = styled(Select)`
-    .MuiFormLabel-root {
-        color: white;
-    }
-    .MuiFormLabel-root.Mui-focused {
-        color: white;
-    }
-
-    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-        border-color: inherit;
-    }
-`;
-
-const TradeTitle = styled.div`
-    display: flex;
-    font-size: 24px;
-    line-height: 24px;
-    justify-content: center;
-`;
+import {
+    ContactFormWrapper,
+    TitleArea,
+    TabContainer,
+    OptionsArea,
+    TitleWrapper,
+    OptionIcon,
+    ButtonWrapper,
+    StyledList,
+    TradeTypeSelect,
+    TradeTitle
+} from './TradeForm.styles';
+import {ContactInterface} from '../../../shared/types/contact.type';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -135,12 +56,18 @@ function CustomOption(props: any) {
     );
 }
 
-export function TradeForm({onClose, trade}) {
+interface TradeFormInterface {
+    contact?: ContactInterface;
+    onClose: any;
+    trade: any;
+}
+
+export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
     const {developerUuid} = useParams();
     const [value, setValue] = React.useState(0);
     const {data, loading, error} = useQuery(GET_USERS);
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
-    const [mutation] = useMutation(trade ? UPDATE_TRADE : CREATE_TRADE);
+    const [upsertTrade] = useMutation(trade ? UPDATE_TRADE : CREATE_TRADE);
 
     if (loading || error || dropdownsLoading) {
         return null;
@@ -180,7 +107,10 @@ export function TradeForm({onClose, trade}) {
           }
         : {
               existingContact: {
-                  phones: ['']
+                  phones: contact ? contact.phones : null || [''],
+                  name: contact?.name,
+                  position: contact?.position,
+                  email: contact?.email
               },
               newContact: {
                   phones: ['']
@@ -546,7 +476,12 @@ export function TradeForm({onClose, trade}) {
                                     if (values.contactType === 'new') {
                                         variables.trade.newContact = values.newContact;
                                     } else {
-                                        variables.trade.existingContact = values.existingContact.id;
+                                        // TODO might be bug when user start change on another user and we have id in contact prop, think about behavior
+                                        const existingContactId = contact?.id || values.existingContact.id;
+
+                                        console.log('existing', existingContactId);
+
+                                        variables.trade.existingContact = existingContactId;
                                     }
 
                                     if (trade) {
@@ -555,7 +490,7 @@ export function TradeForm({onClose, trade}) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    await mutation({
+                                    await upsertTrade({
                                         variables,
                                         refetchQueries: [
                                             {
