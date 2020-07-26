@@ -78,6 +78,7 @@ export const RootContainer = styled.div`
 export const TradeTitleContainer = styled.div`
     display: flex;
     flex-direction: column;
+    position: relative;
 `;
 
 export const Bold = styled.span`

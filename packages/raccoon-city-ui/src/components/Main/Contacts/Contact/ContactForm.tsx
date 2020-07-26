@@ -71,9 +71,11 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
     if (loading || error || dropdownsLoading) {
         return null;
     }
+
     const initialValues = contact
         ? {
               ...contact,
+              phones: (contact.phones.length ? contact.phones : null) || [''],
               clientStatus: dropdowns.clientStatuses.find(({key}) => key === contact.clientStatus),
               clientSources: dropdowns.clientSources.find(({key}) => key === contact.clientSources)
           }
@@ -130,7 +132,7 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
                                     centered
                                 >
                                     <Tab label="Основное" />
-                                    <Tab label="Сделки" />
+                                    {contact ? <Tab label="Сделки" /> : null}
                                 </Tabs>
                             </TabContainer>
                         </TitleArea>
@@ -289,7 +291,7 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <ContactTrades contact={contact} />
+                            {contact ? <ContactTrades contact={contact} /> : null}
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

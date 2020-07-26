@@ -107,7 +107,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
           }
         : {
               existingContact: {
-                  phones: contact ? contact.phones : null || [''],
+                  phones: contact?.phones || [''],
                   name: contact?.name,
                   position: contact?.position,
                   email: contact?.email
