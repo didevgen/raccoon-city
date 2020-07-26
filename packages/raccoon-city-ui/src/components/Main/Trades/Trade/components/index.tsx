@@ -16,12 +16,20 @@ const StyledList = styled(List)`
     }
 `;
 
-const StateMarker = styled.div`
+export const StateMarker = styled.div`
     display: inline-block;
     min-width: 20px;
     height: 20px;
     align-self: center;
     margin-right: 8px;
+`;
+
+export const SmallStateMarker = styled.div`
+    display: inline-block;
+    min-width: 10px;
+    height: 10px;
+    align-self: center;
+    margin-right: 4px;
 `;
 
 const DisplayNameWrapper = styled.div`
