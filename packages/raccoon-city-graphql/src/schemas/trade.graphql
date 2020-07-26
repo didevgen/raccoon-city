@@ -12,13 +12,14 @@ type Trade {
     tradeSource: String
     propertyType: String
     paymentProvider: String
-    price: Float
     responsible: User
     flat: TradeFlat
     contact: Contact
 }
 
 type TradeFlat {
+    sale: Float
+    price: Float
     flatId: String
     flatNumber: Int
     section: String
@@ -30,6 +31,8 @@ type TradeFlat {
 }
 
 input TradeFlatInput {
+    sale: Float
+    price: Float
     flatId: String
     flatNumber: String
     section: String
@@ -44,7 +47,6 @@ input TradeInput {
     id: String
     tradeNumber: String
     state: String
-    budget: Float
     leadStatus: String
     clientInterests: [String]
     link: String
@@ -54,7 +56,6 @@ input TradeInput {
     paymentType: String
     paymentProvider: String
     propertyType: String
-    price: Float
     responsible: String
     flat: TradeFlatInput
     existingContact: String

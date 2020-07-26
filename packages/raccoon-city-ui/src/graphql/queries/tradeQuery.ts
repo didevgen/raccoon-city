@@ -15,7 +15,6 @@ export const ALL_TRADES = gql`
             paymentType
             tradeSource
             paymentProvider
-            price
             propertyType
             responsible {
                 id
@@ -30,6 +29,8 @@ export const ALL_TRADES = gql`
                 apartmentComplex
                 house
                 houseId
+                price
+                sale
             }
             contact {
                 id
@@ -56,7 +57,6 @@ export const GET_TRADE = gql`
             nextVisitDate
             paymentType
             paymentProvider
-            price
             tradeSource
             propertyType
             responsible {
@@ -72,6 +72,8 @@ export const GET_TRADE = gql`
                 apartmentComplex
                 house
                 houseId
+                sale
+                price
             }
             contact {
                 id

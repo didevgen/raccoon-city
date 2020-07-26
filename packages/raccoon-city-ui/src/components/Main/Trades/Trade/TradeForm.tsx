@@ -1,12 +1,11 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import Select from '@appgeist/react-select-material-ui';
-import {Button, Grid, ListItem, Tab, Tabs, TextField} from '@material-ui/core';
+import {Button, Grid, ListItem, Tab, Tabs} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {KeyboardDatePicker} from '@material-ui/pickers';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import arrayMutators from 'final-form-arrays';
 import React from 'react';
 import {Field, Form} from 'react-final-form';
@@ -16,22 +15,22 @@ import {CREATE_TRADE, UPDATE_TRADE} from '../../../../graphql/mutations/tradeMut
 import {ALL_TRADES, GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
 import {GET_USERS} from '../../../../graphql/queries/userQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
-import {KeyDisplayNameOptions, SingleDisplayName, TradeStateOptions} from './components';
+import {ContactInterface} from '../../../shared/types/contact.type';
+import {KeyDisplayNameOptions, SingleDisplayName, TradeDisplayName, TradeStateOptions} from './components';
 import {ContactTab} from './ContactTab';
 import {FlatSelection} from './FlatSelection';
 import {
-    ContactFormWrapper,
-    TitleArea,
-    TabContainer,
-    OptionsArea,
-    TitleWrapper,
-    OptionIcon,
     ButtonWrapper,
+    ContactFormWrapper,
+    OptionIcon,
+    OptionsArea,
     StyledList,
-    TradeTypeSelect,
-    TradeTitle
+    TabContainer,
+    TitleArea,
+    TitleWrapper,
+    TradeTitle,
+    TradeTypeSelect
 } from './TradeForm.styles';
-import {ContactInterface} from '../../../shared/types/contact.type';
 
 function SingleValue({data}: any) {
     return data.name;
@@ -169,7 +168,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                                     isClearable={true}
                                                     components={{
                                                         Option: TradeStateOptions,
-                                                        SingleValue: SingleDisplayName
+                                                        SingleValue: TradeDisplayName
                                                     }}
                                                 />
                                             )}
@@ -210,30 +209,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                                 }}
                                             />
                                         )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="budget">
-                                        {(props) => {
-                                            return (
-                                                <CurrencyTextField
-                                                    label="Стоимость сделки"
-                                                    variant="outlined"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    minimumValue="0"
-                                                    onChange={(event, val) => {
-                                                        props.input.onChange(val);
-                                                    }}
-                                                    currencySymbol="₴"
-                                                    outputFormat="number"
-                                                    textAlign="left"
-                                                    fullWidth
-                                                    decimalCharacter="."
-                                                    digitGroupSeparator=","
-                                                />
-                                            );
-                                        }}
                                     </Field>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -281,7 +256,7 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         {(props) => (
                                             <Select
                                                 id="place"
-                                                label="Что интересует"
+                                                label="Что интересует *"
                                                 options={dropdowns.clientInterests}
                                                 value={props.input.value}
                                                 onChange={(selectedValue: any) => {
@@ -294,23 +269,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                                 }}
                                             />
                                         )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="link">
-                                        {(props) => {
-                                            return (
-                                                <TextField
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    onChange={props.input.onChange}
-                                                    fullWidth
-                                                    id="outlined-basic"
-                                                    label="Ссылка"
-                                                    variant="outlined"
-                                                />
-                                            );
-                                        }}
                                     </Field>
                                 </Grid>
                                 <Grid item={true} xs={12}>
@@ -346,11 +304,11 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                     </Field>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Field name="propertyType">
+                                    <Field name="propertyType" validate={isRequired}>
                                         {(props) => (
                                             <Select
                                                 id="place"
-                                                label="Тип объекта"
+                                                label="Тип объекта *"
                                                 options={dropdowns.propertyTypes}
                                                 value={props.input.value}
                                                 onChange={(selectedValue: any) => {
@@ -408,30 +366,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         )}
                                     </Field>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="price">
-                                        {(props) => {
-                                            return (
-                                                <CurrencyTextField
-                                                    label="Цена за м2"
-                                                    variant="outlined"
-                                                    name={props.input.name}
-                                                    value={props.input.value}
-                                                    minimumValue="0"
-                                                    onChange={(event, val) => {
-                                                        props.input.onChange(val);
-                                                    }}
-                                                    currencySymbol="₴"
-                                                    outputFormat="number"
-                                                    fullWidth
-                                                    textAlign="left"
-                                                    decimalCharacter="."
-                                                    digitGroupSeparator=","
-                                                />
-                                            );
-                                        }}
-                                    </Field>
-                                </Grid>
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
@@ -450,6 +384,8 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         level: String(values.flat.level),
                                         houseId: values.flat.house.id,
                                         house: values.flat.house.name,
+                                        price: Number(values.flat.price),
+                                        sale: values.flat.sale ? Number(values.flat.sale) : undefined,
                                         apartmentComplexId: values.flat.apartmentComplex.id,
                                         apartmentComplex: values.flat.apartmentComplex.name
                                     };
@@ -457,7 +393,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                     const variables: any = {
                                         trade: {
                                             state: values.state?.key,
-                                            budget: Number(values.budget),
                                             leadStatus: values.leadStatus?.key,
                                             clientInterests: [values.clientInterests?.key],
                                             link: values.link,
@@ -467,7 +402,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                             tradeSource: values.tradeSource?.key,
                                             propertyType: values.propertyType?.key,
                                             paymentProvider: values.paymentProvider?.key,
-                                            price: Number(values.price),
                                             flat,
                                             responsible: values.responsible.id
                                         }

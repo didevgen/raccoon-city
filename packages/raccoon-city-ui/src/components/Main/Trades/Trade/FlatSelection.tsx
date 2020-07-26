@@ -1,6 +1,7 @@
 import {AppBar, Button, Dialog, Grid, IconButton, TextField, Toolbar} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import React, {Fragment, useState} from 'react';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import React, {Fragment, useEffect, useState} from 'react';
 import {Field, useField, useForm} from 'react-final-form';
 import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
@@ -14,6 +15,73 @@ const StyledGrid = styled(Grid)`
 const FilterContainer = styled.div`
     margin-left: auto;
 `;
+
+function PriceWithSale({flat}) {
+    const [price, setPrice] = useState(flat.price);
+    const [sale, setSale] = useState(flat.sale);
+    useEffect(() => {
+        setPrice(flat.price);
+        setSale(flat.sale);
+    }, [flat]);
+    return (
+        <Fragment>
+            <Grid item xs={12}>
+                <Field name="flat.price">
+                    {(props) => {
+                        return (
+                            <CurrencyTextField
+                                modifyValueOnWheel={false}
+                                label="Стоимость сделки"
+                                variant="outlined"
+                                name={props.input.name}
+                                value={props.input.value}
+                                minimumValue="0"
+                                onChange={(event, val) => {
+                                    props.input.onChange(val);
+                                    setPrice(val);
+                                }}
+                                currencySymbol="₴"
+                                outputFormat="number"
+                                textAlign="left"
+                                fullWidth
+                                decimalCharacter="."
+                                digitGroupSeparator=","
+                            />
+                        );
+                    }}
+                </Field>
+                {!!price && !!sale && <div>Итого: {(price - (price * sale) / 100).toFixed(2)}</div>}
+            </Grid>
+            <Grid item xs={12}>
+                <Field name="flat.sale" defaultValue={0}>
+                    {(props) => {
+                        return (
+                            <CurrencyTextField
+                                modifyValueOnWheel={false}
+                                label="Скидка %"
+                                variant="outlined"
+                                name={props.input.name}
+                                value={props.input.value}
+                                minimumValue="0"
+                                maximumValue="100"
+                                onChange={(event, val) => {
+                                    props.input.onChange(val);
+                                    setSale(Number(val));
+                                }}
+                                currencySymbol="%"
+                                outputFormat="number"
+                                textAlign="left"
+                                fullWidth
+                                decimalCharacter="."
+                                digitGroupSeparator=","
+                            />
+                        );
+                    }}
+                </Field>
+            </Grid>
+        </Fragment>
+    );
+}
 
 export function FlatSelection() {
     const [open, setOpen] = useState(false);
@@ -35,6 +103,7 @@ export function FlatSelection() {
             </Field>
             {flat.input.value && (
                 <StyledGrid container spacing={3}>
+                    <PriceWithSale flat={flat.input.value} />
                     <Grid item xs={12}>
                         <Field name="flat.apartmentComplex.name">
                             {(props) => {

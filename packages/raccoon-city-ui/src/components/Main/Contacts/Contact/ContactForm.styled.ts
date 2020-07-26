@@ -10,7 +10,7 @@ export const ContactFormWrapper = styled.div`
 
 export const TitleArea = styled.div`
     height: 30%;
-    max-height: 240px;
+    max-height: 300px;
     background-color: #37485c;
     color: #fff;
     display: flex;
