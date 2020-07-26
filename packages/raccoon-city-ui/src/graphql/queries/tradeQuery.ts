@@ -11,10 +11,8 @@ export const ALL_TRADES = gql`
             id
             tradeNumber
             state
-            budget
             leadStatus
             clientInterests
-            link
             visitDate
             nextVisitDate
             paymentType
@@ -54,10 +52,8 @@ export const GET_TRADE = gql`
             id
             tradeNumber
             state
-            budget
             leadStatus
             clientInterests
-            link
             visitDate
             nextVisitDate
             paymentType
@@ -97,18 +93,17 @@ export const APPROPRIATE_TRADES = gql`
             id
             tradeNumber
             state
-            budget
             leadStatus
             clientInterests
-            link
             visitDate
             nextVisitDate
             paymentType
             tradeSource
             paymentProvider
-            price
             propertyType
             flat {
+                price
+                sale
                 flatId
                 flatNumber
                 section
