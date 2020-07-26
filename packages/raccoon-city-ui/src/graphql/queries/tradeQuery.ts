@@ -2,6 +2,11 @@ import {gql} from 'apollo-boost';
 
 export const ALL_TRADES = gql`
     query getAllTrades($developerUuid: String!) {
+        tradeStates {
+            key
+            displayName
+            color
+        }
         getAllTrades(developerUuid: $developerUuid) {
             id
             tradeNumber

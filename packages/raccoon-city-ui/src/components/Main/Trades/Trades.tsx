@@ -3,14 +3,21 @@ import {IconButton, Typography} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MaterialTable, {MTableToolbar} from 'material-table';
-import React, {useEffect} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import styled from 'styled-components';
 import {DELETE_TRADE} from '../../../graphql/mutations/tradeMutation';
 import {ALL_TRADES} from '../../../graphql/queries/tradeQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
+import {SmallStateMarker} from './Trade/components';
 import Trade from './Trade/Trade';
+
+const StateContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
 
 export const Trades = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
@@ -84,7 +91,41 @@ export const Trades = connect(null, (dispatch) => ({
                         }
                     },
                     {title: 'Номер', field: 'tradeNumber'},
-                    {title: 'Квартира', field: 'flat.flatNumber'}
+                    {
+                        title: 'Статус сделки',
+                        field: 'state',
+                        render: (rowData) => {
+                            const state = data.tradeStates.find((item) => rowData.state === item.key);
+                            return (
+                                <StateContainer>
+                                    <SmallStateMarker style={{backgroundColor: state.color}} />
+                                    <div>{state?.displayName}</div>
+                                </StateContainer>
+                            );
+                        }
+                    },
+                    {title: 'Менеджер', field: 'responsible.name'},
+                    {title: 'ЖК', field: 'flat.apartmentComplex'},
+                    {title: 'Квартира', field: 'flat.flatNumber'},
+                    {
+                        title: 'Бюджет',
+                        field: 'flat.price',
+                        render: (rowData: any) => {
+                            const hasSale = !!rowData.flat.sale;
+                            const price = rowData.flat.price;
+                            const sale = rowData.flat.sale;
+                            return (
+                                <Fragment>
+                                    <span className={hasSale ? 'text-crossed' : ''}>{rowData.flat.price}</span>
+                                    {hasSale && (
+                                        <span style={{marginLeft: '8px'}}>
+                                            {(price - (price * sale) / 100).toFixed(2)}
+                                        </span>
+                                    )}
+                                </Fragment>
+                            );
+                        }
+                    }
                 ]}
                 localization={{
                     header: {
