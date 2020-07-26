@@ -15,8 +15,34 @@ const StyledList = styled(List)`
         cursor: pointer;
     }
 `;
+
+const StateMarker = styled.div`
+    display: inline-block;
+    min-width: 20px;
+    height: 20px;
+    align-self: center;
+    margin-right: 8px;
+`;
+
+const DisplayNameWrapper = styled.div`
+    display: inline-flex;
+    align-items: center;
+`;
 export function SingleDisplayName({data}: any) {
     return data.displayName;
+}
+
+export function TradeDisplayName({data}: any) {
+    return (
+        <DisplayNameWrapper>
+            <StateMarker
+                style={{
+                    backgroundColor: data.color || '#aaa'
+                }}
+            />
+            <div>{data.displayName}</div>
+        </DisplayNameWrapper>
+    );
 }
 export function TradeStateOptions(props: any) {
     const {innerProps, data, innerRef} = props;
@@ -29,6 +55,11 @@ export function TradeStateOptions(props: any) {
             }}
         >
             <ListItem alignItems="flex-start">
+                <StateMarker
+                    style={{
+                        backgroundColor: data.color || '#aaa'
+                    }}
+                />
                 <ListItemText primary={data?.displayName} />
             </ListItem>
             <Divider variant="inset" component="li" />

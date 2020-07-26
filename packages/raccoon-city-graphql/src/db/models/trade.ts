@@ -22,6 +22,8 @@ export interface Trade extends Document {
         apartmentComplexId: string;
         apartmentComplex: string;
         house: string;
+        sale: number;
+        price: number;
         houseId: string;
     };
     contact: Contact;
@@ -30,13 +32,14 @@ export interface Trade extends Document {
     paymentType: string;
     propertyType: string;
     paymentProvider: string;
-    price: number;
     developer: Developer;
     isDeleted: boolean;
 }
 
 const TradeFlatSchema = new Schema({
     flatId: {type: Schema.Types.String, required: true},
+    sale: {type: Schema.Types.Number},
+    price: {type: Schema.Types.Number},
     flatNumber: {type: Schema.Types.String, required: true},
     section: {type: Schema.Types.String, required: true},
     level: {type: Schema.Types.String, required: true},
@@ -60,7 +63,6 @@ const TradeSchema: Schema = new Schema(
         paymentType: {type: Schema.Types.String},
         propertyType: {type: Schema.Types.String},
         paymentProvider: {type: Schema.Types.String},
-        price: {type: Schema.Types.Number},
         responsible: {
             type: Schema.Types.ObjectId,
             ref: 'User'
