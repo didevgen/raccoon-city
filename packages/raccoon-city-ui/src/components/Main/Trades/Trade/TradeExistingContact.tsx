@@ -55,7 +55,6 @@ export function TradeExistingContact(props) {
                     <Grid item xs={12}>
                         <Field name="existingContact.name" validate={isRequired}>
                             {(props) => {
-                                console.log(props);
                                 return (
                                     <TextField
                                         inputProps={{readOnly: true}}

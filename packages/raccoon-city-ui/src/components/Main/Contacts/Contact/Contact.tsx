@@ -30,14 +30,9 @@ export const Contact = ({open, handleClose, uuid}) => {
         return null;
     }
 
-    console.log('STEP 1');
-    console.log(uuid);
-
     if (!open) {
         return null;
     }
-
-    console.log('STEP 2');
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>

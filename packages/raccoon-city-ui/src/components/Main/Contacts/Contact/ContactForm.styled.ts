@@ -79,6 +79,7 @@ export const TradeTitleContainer = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 100%;
 `;
 
 export const Bold = styled.span`
@@ -92,4 +93,14 @@ export const EditTrade = styled.div`
     color: #fff;
     padding: 10px 25px;
     text-align: center;
+`;
+
+export const EditContainer = styled.div`
+    position: absolute;
+    right: 40px;
+`;
+
+export const DeleteContainer = styled.div`
+    position: absolute;
+    right: 0px;
 `;

@@ -9,7 +9,7 @@ import {getConstant, getClientInterests} from './ContactTradesUtils';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import {format} from 'date-fns';
-import {TradeTitleContainer, Bold} from './ContactForm.styled';
+import {TradeTitleContainer, Bold, DeleteContainer, EditContainer} from './ContactForm.styled';
 
 interface ContactOpeTradeProps {
     dropdowns: any;
@@ -35,7 +35,7 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
                     {item.flat.flatNumber}
                 </p>
 
-                <div style={{position: 'absolute', right: '0'}}>
+                <DeleteContainer>
                     <IconButton
                         color="secondary"
                         component="span"
@@ -54,9 +54,9 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
                     >
                         <DeleteIcon />
                     </IconButton>
-                </div>
+                </DeleteContainer>
 
-                <div style={{position: 'absolute', right: '40px'}}>
+                <EditContainer>
                     <IconButton
                         color="secondary"
                         component="span"
@@ -67,7 +67,7 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
                     >
                         <EditIcon />
                     </IconButton>
-                </div>
+                </EditContainer>
             </TradeTitleContainer>
         </AccordionSummary>
         <AccordionDetails>
