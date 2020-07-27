@@ -30,7 +30,7 @@ export const Contact = ({open, handleClose, uuid}) => {
         return null;
     }
 
-    if (!open || !uuid) {
+    if (!open) {
         return null;
     }
 
