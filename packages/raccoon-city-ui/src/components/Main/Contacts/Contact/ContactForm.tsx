@@ -132,7 +132,7 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
                                     centered
                                 >
                                     <Tab label="Основное" />
-                                    {contact ? <Tab label="Сделки" /> : null}
+                                    {contact && <Tab label="Сделки" />}
                                 </Tabs>
                             </TabContainer>
                         </TitleArea>
@@ -291,7 +291,7 @@ export function ContactForm({onClose, contact}: ContactFormInterface) {
                             </Grid>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            {contact ? <ContactTrades contact={contact} /> : null}
+                            {contact && <ContactTrades contact={contact} />}
                         </TabPanel>
                         <ButtonWrapper>
                             <Button onClick={onClose}>Отмена</Button>

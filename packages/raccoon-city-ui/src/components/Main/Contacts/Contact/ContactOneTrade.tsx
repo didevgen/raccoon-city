@@ -37,7 +37,7 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
 
                 <DeleteContainer>
                     <IconButton
-                        color="secondary"
+                        color="primary"
                         component="span"
                         onClick={(e) => {
                             e.stopPropagation();
@@ -58,7 +58,7 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
 
                 <EditContainer>
                     <IconButton
-                        color="secondary"
+                        color="primary"
                         component="span"
                         onClick={(e) => {
                             e.stopPropagation();
