@@ -104,3 +104,10 @@ export const DeleteContainer = styled.div`
     position: absolute;
     right: 0px;
 `;
+
+export const TradesContainer = styled.div`
+    height: 500px;
+    max-height: 100%;
+    padding: 20px 0px;
+    overflow-y: auto;
+`;
