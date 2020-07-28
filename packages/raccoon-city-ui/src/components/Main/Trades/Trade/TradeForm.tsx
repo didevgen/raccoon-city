@@ -413,8 +413,6 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         // TODO might be bug when user start change on another user and we have id in contact prop, think about behavior
                                         const existingContactId = contact?.id || values.existingContact.id;
 
-                                        console.log('existing', existingContactId);
-
                                         variables.trade.existingContact = existingContactId;
                                     }
 
