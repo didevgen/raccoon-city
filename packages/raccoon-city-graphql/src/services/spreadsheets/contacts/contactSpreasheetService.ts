@@ -10,7 +10,7 @@ function mapToPapa(contats: Contact[]): any[] {
             Почта: contact.email,
             Телефоны: contact.phone?.join(' ') || '',
             Должность: contact.position,
-            Ответственный: contact.responsible.name,
+            Ответственный: contact.responsible?.name || '',
             Статус: ClientStatuses.find((status) => status.key === contact.clientStatus)?.displayName || '',
             Источник: ClientSources.find((source) => source.key === contact.clientSources)?.displayName || ''
         };

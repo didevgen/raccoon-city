@@ -25,8 +25,8 @@ function mapToPapa(trades: Trade[]): any[] {
                     return ClientInterests.find((item) => item.key === interest).displayName;
                 })
                 .join(' '),
-            'Дата визита': format(parseISO(trade.visitDate), 'dd.MM.yyyy'),
-            'Дата следующего визита': format(parseISO(trade.nextVisitDate), 'dd.MM.yyyy'),
+            'Дата визита': trade.visitDate ? format(parseISO(trade.visitDate), 'dd.MM.yyyy') : '',
+            'Дата следующего визита': trade.nextVisitDate ? format(parseISO(trade.nextVisitDate), 'dd.MM.yyyy') : '',
             'Тип объекта': PropertyTypes.find((item) => trade.propertyType === item.key)?.displayName || '',
             'Стоимость сделки': trade.flat.price,
             'Скидка %': trade.flat.sale || '',
