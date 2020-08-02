@@ -61,7 +61,7 @@ export const Trades = connect(null, (dispatch) => ({
                 Сделки
             </Typography>
             <a
-                href={`${process.env.REACT_APP_URL}spreadsheets/trades/${params.developerUuid}`}
+                href={`${process.env.REACT_APP_URL}/spreadsheets/trades/${params.developerUuid}`}
                 target="_blank"
                 rel="noopener noreferrer"
             >

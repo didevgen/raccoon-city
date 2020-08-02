@@ -1,5 +1,5 @@
 const express = require('express');
-const { ApolloServer, gql, AuthenticationError } = require('apollo-server-express');
+const {ApolloServer, gql, AuthenticationError} = require('apollo-server-express');
 import {config} from 'dotenv';
 import cors from 'cors';
 import Redis from 'ioredis';
@@ -76,10 +76,9 @@ const server = new ApolloServer({
     }
 });
 const path = '/graphql';
-server.applyMiddleware({ app, path });
+server.applyMiddleware({app, path});
 const db = process.env.MONGODB_URI;
 connect({db});
 app.listen({port: process.env.PORT || 4000}, () => {
     logger.info(`🚀  Server ready`);
 });
-

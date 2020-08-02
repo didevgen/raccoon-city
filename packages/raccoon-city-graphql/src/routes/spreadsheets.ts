@@ -20,14 +20,16 @@ router.get('/spreadsheets/contacts/:developerId', async (req, res) => {
         const contacts = await ContactModel.find({
             developer: developerId,
             isDeleted: false
-        }).populate('responsible').exec();
+        })
+            .populate('responsible')
+            .exec();
         const csv = `\uFEFF${contactsToCsv(contacts)}`;
         const fileName = encodeURIComponent(`${developer.name}-contacts.csv`);
-        res.setHeader('Content-type', "text/csv; charset=utf-8");
+        res.setHeader('Content-type', 'text/csv; charset=utf-8');
         res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
         res.send(csv);
     } catch (e) {
-        res.status(500).send('error')
+        res.status(500).send('error');
     }
 });
 
@@ -44,14 +46,16 @@ router.get('/spreadsheets/trades/:developerId', async (req, res) => {
         const trades = await TradeModel.find({
             developer: developerId,
             isDeleted: false
-        }).populate('responsible').exec();
+        })
+            .populate('responsible')
+            .exec();
         const csv = `\uFEFF${tradesToCsv(trades)}`;
         const fileName = encodeURIComponent(`${developer.name}-trades.csv`);
-        res.setHeader('Content-type', "text/csv; charset=utf-8");
+        res.setHeader('Content-type', 'text/csv; charset=utf-8');
         res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
         res.send(csv);
     } catch (e) {
-        res.status(500).send('error')
+        res.status(500).send('error');
     }
 });
 

@@ -54,7 +54,7 @@ export const Contacts = connect(null, (dispatch) => ({
                 Контакты
             </Typography>
             <a
-                href={`${process.env.REACT_APP_URL}spreadsheets/contacts/${params.developerUuid}`}
+                href={`${process.env.REACT_APP_URL}/spreadsheets/contacts/${params.developerUuid}`}
                 target="_blank"
                 rel="noopener noreferrer"
             >
