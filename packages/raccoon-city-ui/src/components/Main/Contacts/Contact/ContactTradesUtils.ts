@@ -15,3 +15,22 @@ export function getClientInterests(dropdowns, interests) {
         })
         .join(' ');
 }
+
+export function getAppropriateItems(items, start, stop) {
+    return items.reduce((acc, item, index) => {
+        if (index >= start && index <= stop) {
+            return [...acc, index];
+        }
+
+        return acc;
+    }, []);
+}
+
+export function searchTradesHelper(tradeItems, toSearch) {
+    return tradeItems.some((item) => {
+        const updatedItem = String(item).toLocaleLowerCase();
+        const updatedToSearch = toSearch.toLocaleLowerCase();
+
+        return updatedItem.indexOf(updatedToSearch) !== -1;
+    });
+}

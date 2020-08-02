@@ -111,3 +111,7 @@ export const TradesContainer = styled.div`
     padding: 20px 0px;
     overflow-y: auto;
 `;
+
+export const SearchContainer = styled.div`
+    margin: 10px 0px;
+`;
