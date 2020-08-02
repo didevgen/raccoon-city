@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useReducer} from 'react';
+import React, {useEffect, useRef, useReducer} from 'react';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import {Field} from 'react-final-form';
 import {GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
