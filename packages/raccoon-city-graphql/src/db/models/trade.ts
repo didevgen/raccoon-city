@@ -8,7 +8,6 @@ export interface Trade extends Document {
     tradeNumber: number;
     state: string;
     responsible: User;
-    budget: number;
     tradeSource: string;
     leadStatus: string;
     clientInterests: string[];

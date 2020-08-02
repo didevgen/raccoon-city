@@ -1,5 +1,7 @@
-import {ApolloError, ApolloServer, gql, AuthenticationError} from 'apollo-server';
+const express = require('express');
+const { ApolloServer, gql, AuthenticationError } = require('apollo-server-express');
 import {config} from 'dotenv';
+import cors from 'cors';
 import Redis from 'ioredis';
 import {logger} from './aws/logger';
 import {PUBLIC_QUERIES, WHITELISTED_QUERIES} from './constants/whitelistedQuery';
@@ -16,7 +18,9 @@ async function tradeTokenForUser(token: string) {
 }
 
 const redis = new Redis();
-
+export const app = express();
+app.use(cors());
+app.use(require('./routes/spreadsheets'));
 const server = new ApolloServer({
     typeDefs: gql`
         ${typeDefs}
@@ -71,8 +75,11 @@ const server = new ApolloServer({
         return error;
     }
 });
+const path = '/graphql';
+server.applyMiddleware({ app, path });
 const db = process.env.MONGODB_URI;
 connect({db});
-server.listen({port: process.env.PORT || 4000}).then(({url}) => {
-    logger.info(`🚀  Server ready at ${url}`);
+app.listen({port: process.env.PORT || 4000}, () => {
+    logger.info(`🚀  Server ready`);
 });
+
