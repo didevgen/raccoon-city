@@ -3,6 +3,7 @@ import {contactsToCsv} from '../services/spreadsheets/contacts/contactSpreasheet
 import {TradeModel} from '../db/models/trade';
 import {tradesToCsv} from '../services/spreadsheets/trades/tradesSpreasheetService';
 import {DeveloperModel} from '../db/models/developer';
+import {logger} from '../aws/logger';
 
 const express = require('express');
 const router = express.Router();
@@ -29,6 +30,7 @@ router.get('/spreadsheets/contacts/:developerId', async (req, res) => {
         res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
         res.send(csv);
     } catch (e) {
+        logger.error(e);
         res.status(500).send('error');
     }
 });
@@ -55,6 +57,7 @@ router.get('/spreadsheets/trades/:developerId', async (req, res) => {
         res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
         res.send(csv);
     } catch (e) {
+        logger.error(e);
         res.status(500).send('error');
     }
 });
