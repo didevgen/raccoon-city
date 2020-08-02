@@ -422,16 +422,29 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    await upsertTrade({
-                                        variables,
-                                        refetchQueries: [
+                                    let queries: any[] = [
+                                        {
+                                            query: ALL_TRADES,
+                                            variables: {
+                                                developerUuid
+                                            }
+                                        }
+                                    ];
+
+                                    if (contact) {
+                                        queries = [
                                             {
-                                                query: ALL_TRADES,
+                                                query: APPROPRIATE_TRADES,
                                                 variables: {
-                                                    developerUuid
+                                                    contactId: contact.id
                                                 }
                                             }
-                                        ]
+                                        ];
+                                    }
+
+                                    await upsertTrade({
+                                        variables,
+                                        refetchQueries: queries
                                     });
                                     onClose();
                                 }}
