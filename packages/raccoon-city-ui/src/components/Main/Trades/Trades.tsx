@@ -1,7 +1,9 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {IconButton, Typography} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import MaterialTable, {MTableToolbar} from 'material-table';
 import React, {Fragment, useEffect} from 'react';
 import {connect} from 'react-redux';
@@ -58,6 +60,15 @@ export const Trades = connect(null, (dispatch) => ({
             <Typography variant="h4" component="h4" gutterBottom>
                 Сделки
             </Typography>
+            <a
+                href={`${process.env.REACT_APP_URL}/spreadsheets/trades/${params.developerUuid}`}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <Button variant="contained" color="primary" startIcon={<GetAppIcon />}>
+                    Скачать csv
+                </Button>
+            </a>
             <MaterialTable
                 columns={[
                     {

@@ -7,7 +7,7 @@ export interface Contact extends Document {
     email: string;
     position: string;
     clientStatus: string;
-    phone: string;
+    phone: string[];
     responsible: User;
     isDeleted: boolean;
     clientSources: string;
