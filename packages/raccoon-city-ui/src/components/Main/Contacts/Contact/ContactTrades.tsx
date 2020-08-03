@@ -94,7 +94,7 @@ const ContactTrades = (props: ContactTradesProps) => {
         if (state.search && state.search !== state.prevSearch) {
             debouncedGetSearchResult(state.search);
         }
-    }, [state.search, state.prevSearch]);
+    }, [state.search, state.prevSearch, debouncedGetSearchResult]);
 
     if (dropdownsLoading || isLoadingTrade) {
         return <div>Loading</div>;

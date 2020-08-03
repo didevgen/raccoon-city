@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, Fragment} from 'react';
+import React, {useState, useRef, Fragment} from 'react';
 import ContactOneTrade from './ContactOneTrade';
 import {Waypoint} from 'react-waypoint';
 import {getAppropriateItems} from './ContactTradesUtils';
