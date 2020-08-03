@@ -12,7 +12,7 @@ import {Field, Form} from 'react-final-form';
 import {useParams} from 'react-router-dom';
 import {isRequired} from '../../../../core/validators/validators';
 import {CREATE_TRADE, UPDATE_TRADE} from '../../../../graphql/mutations/tradeMutation';
-import {ALL_TRADES, GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
+import {ALL_TRADES, GET_TRADE_DROPDOWNS, APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 import {GET_USERS} from '../../../../graphql/queries/userQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ContactInterface} from '../../../shared/types/contact.type';
@@ -422,16 +422,29 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                         variables.developerUuid = developerUuid;
                                     }
 
-                                    await upsertTrade({
-                                        variables,
-                                        refetchQueries: [
+                                    let queries: any[] = [
+                                        {
+                                            query: ALL_TRADES,
+                                            variables: {
+                                                developerUuid
+                                            }
+                                        }
+                                    ];
+
+                                    if (contact) {
+                                        queries = [
                                             {
-                                                query: ALL_TRADES,
+                                                query: APPROPRIATE_TRADES,
                                                 variables: {
-                                                    developerUuid
+                                                    contactId: contact.id
                                                 }
                                             }
-                                        ]
+                                        ];
+                                    }
+
+                                    await upsertTrade({
+                                        variables,
+                                        refetchQueries: queries
                                     });
                                     onClose();
                                 }}

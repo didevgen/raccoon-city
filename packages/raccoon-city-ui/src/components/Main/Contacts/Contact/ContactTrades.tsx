@@ -1,26 +1,70 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useRef, useReducer} from 'react';
 import {useQuery, useMutation} from '@apollo/react-hooks';
-import {Waypoint} from 'react-waypoint';
+import {Field} from 'react-final-form';
 import {GET_TRADE_DROPDOWNS} from '../../../../graphql/queries/tradeQuery';
 import {APPROPRIATE_TRADES} from '../../../../graphql/queries/tradeQuery';
 import {AddTradeButton} from '../../../shared/components/addTradeButton/AddTradeButton';
 import Trade from '../../Trades/Trade/Trade';
 import {ContactInterface} from '../../../shared/types/contact.type';
 import {DELETE_TRADE} from '../../../../graphql/mutations/tradeMutation';
-import {RootContainer, TradesContainer} from './ContactForm.styled';
-import ContactOneTrade from './ContactOneTrade';
+import {RootContainer, TradesContainer, SearchContainer} from './ContactForm.styled';
+import {Grid, TextField} from '@material-ui/core';
+import {getConstant, getAppropriateItems, searchTradesHelper} from './ContactTradesUtils';
+import useDebounce from '../../../../hooks/useDebaunce';
+import {LoadedTrades} from './LoadedTrades';
+import {SearchedTrades} from './SearchedTrades';
 
 interface ContactTradesProps {
     contact: ContactInterface;
 }
 
+export const itemsToLoad = 1;
+
+const initialState = {
+    isTradeOpen: false,
+    tradeUuid: '',
+    loadedItems: [],
+    start: 0,
+    stop: itemsToLoad - 1,
+    search: '',
+    prevSearch: '',
+    searchResult: []
+};
+
+interface Action {
+    type: string;
+    payload: any;
+}
+
+const reducer = (state, action: Action) => {
+    switch (action.type) {
+        case 'setTradeOpen':
+            return {...state, isTradeOpen: action.payload};
+        case 'setLoadedItems':
+            return {...state, loadedItems: action.payload};
+        case 'setStart':
+            return {...state, start: action.payload};
+        case 'setStop':
+            return {...state, stop: action.payload};
+        case 'setSearch':
+            return {...state, search: action.payload};
+        case 'setPrevSearch':
+            return {...state, prevSearch: action.payload};
+        case 'setSearchResult':
+            return {...state, searchResult: action.payload};
+        default:
+            return state;
+    }
+};
+
 const ContactTrades = (props: ContactTradesProps) => {
     const {contact} = props;
     const {id} = contact;
+    //@ts-ignore
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     const {data: dropdowns, loading: dropdownsLoading} = useQuery(GET_TRADE_DROPDOWNS);
     const {data: trades, loading: isLoadingTrade} = useQuery(APPROPRIATE_TRADES, {
-        fetchPolicy: 'cache-and-network',
         variables: {
             contactId: id
         }
@@ -38,24 +82,19 @@ const ContactTrades = (props: ContactTradesProps) => {
     });
 
     const editTrade = (id: string) => {
-        setTradeUuid(id);
-        setTradeOpen(true);
+        dispatch({type: 'setTradeUuid', payload: id});
+        dispatch({type: 'setTradeOpen', payload: true});
     };
 
-    const itemsToLoad = 3;
-    const [isTradeOpen, setTradeOpen] = useState(false);
-    const [tradeUuid, setTradeUuid] = useState<any>();
-    const [loadedItems, setLoadedItems] = React.useState([]);
-    const [start, setStart] = React.useState(0);
-    const [stop, setStop] = React.useState(itemsToLoad - 1);
+    const debouncedGetSearchResult = useDebounce(getSearchResult, 700);
 
-    const checkMountingRef = React.useRef<any>();
+    const checkMountingRef = useRef<any>();
 
     useEffect(() => {
-        if (start === 0 && checkMountingRef.current) {
-            loadMore();
+        if (state.search && state.search !== state.prevSearch) {
+            debouncedGetSearchResult(state.search);
         }
-    });
+    }, [state.search, state.prevSearch, debouncedGetSearchResult]);
 
     if (dropdownsLoading || isLoadingTrade) {
         return <div>Loading</div>;
@@ -64,48 +103,98 @@ const ContactTrades = (props: ContactTradesProps) => {
     const tradesToShow: any[] = trades.getContactTrades;
 
     function getNewItems() {
-        const filteredItems = tradesToShow.filter((item, index) => {
-            return index >= start && index <= stop;
-        });
+        const filteredItems = getAppropriateItems(tradesToShow, state.start, state.stop);
 
-        const newItems: any = [...loadedItems, ...filteredItems];
+        const newItems: any = [...state.loadedItems, ...filteredItems];
 
-        setLoadedItems(newItems);
+        dispatch({type: 'setLoadedItems', payload: newItems});
     }
 
     function loadMore() {
         getNewItems();
-        setStart(start + itemsToLoad);
-        setStop(stop + itemsToLoad);
+        dispatch({type: 'setStart', payload: state.start + itemsToLoad});
+        dispatch({type: 'setStop', payload: state.stop + itemsToLoad});
+    }
+
+    function getSearchResult(toSearch) {
+        dispatch({type: 'setPrevSearch', payload: toSearch});
+
+        const result = tradesToShow.filter((item) => {
+            const stringToCompare = getConstant(dropdowns, item.leadStatus, 'leadStatuses');
+
+            const tradeItems = [
+                stringToCompare,
+                item.flat.apartmentComplex,
+                item.flat.house,
+                item.tradeNumber,
+                item.flat.flatNumber
+            ];
+
+            return searchTradesHelper(tradeItems, toSearch);
+        });
+
+        dispatch({type: 'setSearchResult', payload: result});
+    }
+
+    if (state.start === 0 && checkMountingRef.current) {
+        loadMore();
     }
 
     return (
         <RootContainer>
-            <div onClick={setTradeOpen.bind(null, true)}>
+            <div onClick={() => dispatch({type: 'setTradeOpen', payload: true})}>
                 <AddTradeButton />
             </div>
+            <SearchContainer>
+                <Grid item xs={12}>
+                    <Field name="search">
+                        {(props) => {
+                            return (
+                                <TextField
+                                    name="search"
+                                    value={state.search}
+                                    onChange={(e) =>
+                                        dispatch({
+                                            type: 'setSearch',
+                                            payload: e.target.value
+                                        })
+                                    }
+                                    fullWidth
+                                    label="Поиск"
+                                    variant="outlined"
+                                />
+                            );
+                        }}
+                    </Field>
+                </Grid>
+            </SearchContainer>
             <TradesContainer ref={checkMountingRef}>
-                {loadedItems.map((i, index) => (
-                    <React.Fragment key={tradesToShow[index].id}>
-                        <ContactOneTrade
-                            dropdowns={dropdowns}
-                            item={tradesToShow[index]}
-                            editTrade={editTrade}
-                            deleteTrade={deleteTrade}
-                        />
-                        {index === loadedItems.length - 1 && stop <= tradesToShow.length && (
-                            <Waypoint onEnter={loadMore} />
-                        )}
-                    </React.Fragment>
-                ))}
+                {state.search.length === 0 ? (
+                    <LoadedTrades
+                        loadedItems={state.loadedItems}
+                        dropdowns={dropdowns}
+                        tradesToShow={tradesToShow}
+                        editTrade={editTrade}
+                        deleteTrade={deleteTrade}
+                        loadMore={loadMore}
+                        stop={state.stop}
+                    />
+                ) : (
+                    <SearchedTrades
+                        searchResult={state.searchResult}
+                        dropdowns={dropdowns}
+                        editTrade={editTrade}
+                        deleteTrade={deleteTrade}
+                    />
+                )}
             </TradesContainer>
             <Trade
-                open={isTradeOpen}
-                uuid={tradeUuid}
+                open={state.isTradeOpen}
+                uuid={state.tradeUuid}
                 contact={contact}
                 handleClose={() => {
-                    setTradeUuid(null);
-                    setTradeOpen(false);
+                    dispatch({type: 'setTradeUuid', payload: null});
+                    dispatch({type: 'setTradeOpen', payload: false});
                 }}
             />
         </RootContainer>
