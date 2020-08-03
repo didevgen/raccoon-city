@@ -40,8 +40,6 @@ const reducer = (state, action: Action) => {
     switch (action.type) {
         case 'setTradeOpen':
             return {...state, isTradeOpen: action.payload};
-
-            return {...state, tradeUuid: action.payload};
         case 'setLoadedItems':
             return {...state, loadedItems: action.payload};
         case 'setStart':
@@ -96,7 +94,7 @@ const ContactTrades = (props: ContactTradesProps) => {
         if (state.search && state.search !== state.prevSearch) {
             debouncedGetSearchResult(state.search);
         }
-    }, [state.search]);
+    }, [state.search, state.prevSearch]);
 
     if (dropdownsLoading || isLoadingTrade) {
         return <div>Loading</div>;
