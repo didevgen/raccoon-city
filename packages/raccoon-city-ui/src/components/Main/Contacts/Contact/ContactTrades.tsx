@@ -53,7 +53,7 @@ const reducer = (state, action: Action) => {
         case 'setSearchResult':
             return {...state, searchResult: action.payload};
         default:
-            throw new Error();
+            return state;
     }
 };
 
