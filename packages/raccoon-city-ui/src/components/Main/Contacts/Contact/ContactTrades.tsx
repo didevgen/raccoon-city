@@ -40,7 +40,7 @@ const reducer = (state, action: Action) => {
     switch (action.type) {
         case 'setTradeOpen':
             return {...state, isTradeOpen: action.payload};
-        case 'setTradeUuid':
+
             return {...state, tradeUuid: action.payload};
         case 'setLoadedItems':
             return {...state, loadedItems: action.payload};
@@ -90,19 +90,13 @@ const ContactTrades = (props: ContactTradesProps) => {
 
     const debouncedGetSearchResult = useDebounce(getSearchResult, 700);
 
+    const checkMountingRef = useRef<any>();
+
     useEffect(() => {
         if (state.search && state.search !== state.prevSearch) {
             debouncedGetSearchResult(state.search);
         }
-    });
-
-    const checkMountingRef = useRef<any>();
-
-    useEffect(() => {
-        if (state.start === 0 && checkMountingRef.current) {
-            loadMore();
-        }
-    });
+    }, [state.search]);
 
     if (dropdownsLoading || isLoadingTrade) {
         return <div>Loading</div>;
@@ -144,9 +138,13 @@ const ContactTrades = (props: ContactTradesProps) => {
         dispatch({type: 'setSearchResult', payload: result});
     }
 
+    if (state.start === 0 && checkMountingRef.current) {
+        loadMore();
+    }
+
     return (
         <RootContainer>
-            <div onClick={dispatch.bind(null, {type: 'setTradeOpen', payload: true})}>
+            <div onClick={() => dispatch({type: 'setTradeOpen', payload: true})}>
                 <AddTradeButton />
             </div>
             <SearchContainer>
@@ -157,7 +155,12 @@ const ContactTrades = (props: ContactTradesProps) => {
                                 <TextField
                                     name="search"
                                     value={state.search}
-                                    onChange={(e) => dispatch({type: 'setSearch', payload: e.target.value})}
+                                    onChange={(e) =>
+                                        dispatch({
+                                            type: 'setSearch',
+                                            payload: e.target.value
+                                        })
+                                    }
                                     fullWidth
                                     label="Поиск"
                                     variant="outlined"

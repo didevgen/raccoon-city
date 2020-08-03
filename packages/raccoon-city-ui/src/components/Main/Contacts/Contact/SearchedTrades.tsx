@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, Fragment} from 'react';
 import ContactOneTrade from './ContactOneTrade';
 import {Waypoint} from 'react-waypoint';
 import {getAppropriateItems} from './ContactTradesUtils';
@@ -6,12 +6,6 @@ import {itemsToLoad} from './ContactTrades';
 
 export const SearchedTrades = ({searchResult, dropdowns, editTrade, deleteTrade}) => {
     const checkMountingRef = useRef<any>();
-
-    useEffect(() => {
-        if (start === 0 && checkMountingRef.current && searchResult.length > 0) {
-            loadMore();
-        }
-    });
 
     const [loadedItems, setLoadedItems] = useState<string[]>([]);
     const [start, setStart] = useState(0);
@@ -31,14 +25,18 @@ export const SearchedTrades = ({searchResult, dropdowns, editTrade, deleteTrade}
         setStop(stop + itemsToLoad);
     }
 
+    if (start === 0 && checkMountingRef.current && searchResult.length > 0) {
+        loadMore();
+    }
+
     return (
-        <>
+        <Fragment>
             <div ref={checkMountingRef}>
                 {searchResult.length === 0
                     ? null
                     : loadedItems.map((item: any, index) =>
                           !searchResult[index] ? null : (
-                              <React.Fragment key={searchResult[item].id}>
+                              <Fragment key={searchResult[item].id}>
                                   <ContactOneTrade
                                       dropdowns={dropdowns}
                                       item={searchResult[item]}
@@ -48,10 +46,10 @@ export const SearchedTrades = ({searchResult, dropdowns, editTrade, deleteTrade}
                                   {index === loadedItems.length - 1 && stop <= searchResult.length && (
                                       <Waypoint onEnter={loadMore} />
                                   )}
-                              </React.Fragment>
+                              </Fragment>
                           )
                       )}
             </div>
-        </>
+        </Fragment>
     );
 };

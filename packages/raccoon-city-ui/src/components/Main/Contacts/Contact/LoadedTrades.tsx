@@ -4,7 +4,7 @@ import {Waypoint} from 'react-waypoint';
 
 export const LoadedTrades = ({loadedItems, tradesToShow, dropdowns, editTrade, deleteTrade, loadMore, stop}) => {
     return loadedItems.map((item: any, index) =>
-        !tradesToShow[index] ? null : (
+        tradesToShow[index] ? (
             <React.Fragment key={tradesToShow[item].id}>
                 <ContactOneTrade
                     dropdowns={dropdowns}
@@ -14,6 +14,6 @@ export const LoadedTrades = ({loadedItems, tradesToShow, dropdowns, editTrade, d
                 />
                 {index === loadedItems.length - 1 && stop <= tradesToShow.length && <Waypoint onEnter={loadMore} />}
             </React.Fragment>
-        )
+        ) : null
     );
 };
