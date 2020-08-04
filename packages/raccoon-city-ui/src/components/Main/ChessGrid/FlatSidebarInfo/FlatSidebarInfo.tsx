@@ -21,6 +21,7 @@ import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
+import {FlatSidebarModal} from './FlatSidebarModal';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -45,6 +46,12 @@ const SaleChip = styled(Chip)`
     border-radius: 0 !important;
 `;
 
+const SendRequestContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 15px;
+`;
+
 interface FlatSidebarInfoProps {
     flat: Flat;
     isPublic: boolean;
@@ -65,6 +72,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
         }
     );
     const [value, setValue] = React.useState(0);
+    const [isModalOpen, setModalOpen] = React.useState(false);
 
     if (loading || !data) {
         return <span>loading</span>;
@@ -142,6 +150,12 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
+            <SendRequestContainer>
+                <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
+                    Оставить заявку
+                </Button>
+            </SendRequestContainer>
+            {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );
 }
