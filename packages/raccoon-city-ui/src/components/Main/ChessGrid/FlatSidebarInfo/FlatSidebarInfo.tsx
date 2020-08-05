@@ -150,11 +150,13 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
-            <SendRequestContainer>
-                <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
-                    Оставить заявку
-                </Button>
-            </SendRequestContainer>
+            {!!props.isPublic && (
+                <SendRequestContainer>
+                    <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
+                        Оставить заявку
+                    </Button>
+                </SendRequestContainer>
+            )}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

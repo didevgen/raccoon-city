@@ -41,6 +41,12 @@ export const ButtonsContainer = styled.div`
     }
 `;
 
+export const RecaptchaContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 30px 0px;
+`;
+
 export function FlatSidebarModal({close, flat}) {
     const [isVerify, setVerify] = useState(false);
 
@@ -98,13 +104,13 @@ export function FlatSidebarModal({close, flat}) {
                                     )}
                                 </Field>
                             </Input>
-                            <div>
+                            <RecaptchaContainer>
                                 <Recaptcha
                                     sitekey="6LdkbboZAAAAAN21lpRJbyEv9YNj5mbg-cb37Ws_"
                                     render="explicit"
                                     verifyCallback={verifyCallback}
                                 />
-                            </div>
+                            </RecaptchaContainer>
                             <ButtonsContainer>
                                 <Button variant="outlined" color="primary" onClick={() => close(false)}>
                                     Отмена
@@ -115,8 +121,6 @@ export function FlatSidebarModal({close, flat}) {
                                     color="primary"
                                     disabled={invalid || !isVerify}
                                 >
-                                    {console.log('flat')}
-                                    {console.log(flat)}
                                     Отправить
                                 </Button>
                             </ButtonsContainer>
