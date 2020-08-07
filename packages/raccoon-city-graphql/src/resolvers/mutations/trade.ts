@@ -1,10 +1,10 @@
-import {Context} from '../../utils';
-import {Trade, TradeModel} from '../../db/models/trade';
-import {ContactModel} from '../../db/models/contact';
+import { Context } from '../../utils';
+import { Trade, TradeModel } from '../../db/models/trade';
+import { ContactModel } from '../../db/models/contact';
 
 export const tradeMutation = {
     async createTrade(parent, args, ctx: Context): Promise<Trade> {
-        const {developerUuid, trade} = args;
+        const { developerUuid, trade } = args;
         let tradeNumber = 1;
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')
@@ -20,7 +20,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: {$in: trade.newContact.phones}
+                    $elemMatch: { $in: trade.newContact.phones }
                 }
             }).exec();
 
@@ -46,11 +46,11 @@ export const tradeMutation = {
             ...trade,
             tradeNumber,
             contact,
-            developer: developerUuid
+            developer: developerUuid,
         });
     },
     async updateTrade(parent, args, ctx: Context): Promise<Trade> {
-        const {uuid, trade} = args;
+        const { uuid, trade } = args;
 
         const existingTrade = await TradeModel.findById(uuid).exec();
         let contact;
@@ -60,7 +60,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: {$in: trade.newContact.phones}
+                    $elemMatch: { $in: trade.newContact.phones }
                 }
             }).exec();
 
@@ -97,7 +97,7 @@ export const tradeMutation = {
             }
         ).exec();
     },
-    async deleteTrade(parent, {uuid}, ctx: Context) {
+    async deleteTrade(parent, { uuid }, ctx: Context) {
         await TradeModel.findOneAndUpdate(
             {
                 _id: uuid
@@ -109,5 +109,60 @@ export const tradeMutation = {
             }
         ).exec();
         return true;
+    },
+    async requestFromPublicForm(parent, args, ctx: Context) {
+        const { flat, userInfo: { name, phone, email } } = args;
+        let tradeNumber = 1;
+
+        const maxNumberTrade = await TradeModel.findOne({})
+            .sort('-tradeNumber')
+            .exec();
+        if (maxNumberTrade) {
+            tradeNumber = maxNumberTrade.tradeNumber + 1;
+        }
+
+        const contacts = await ContactModel.find({
+            isDeleted: false,
+            phones: {
+                $elemMatch: { $in: [phone] }
+            }
+        }).exec();
+
+        const length = contacts.length;
+
+        const contactInfo = {
+            name,
+            phones: [phone],
+            email: email,
+            clientStatus: "potential",
+            responsible: "-",
+            position: "default",
+            clientSources: "site",
+        }
+
+        const tradeInfo = {
+            state: "initial_contact",
+            leadStatus: "delayed",
+            clientInterests: ["single"],
+            link: "default.com",
+            visitDate: "24.5.2020",
+            nextVisitDate: "25.5.2020",
+            paymentType: "full",
+            tradeSource: "site",
+            propertyType: "flat",
+            paymentProvider: "financial_company",
+            responsible: "-",
+            flat: flat,
+            existingContact: length ? contacts[0].id : "",
+            newContact: contactInfo
+        }
+
+        return await TradeModel.create({
+            ...tradeInfo,
+            tradeNumber,
+            contact: contactInfo,
+            developer: "-",
+            isNewTrade: true,
+        });
     }
 };

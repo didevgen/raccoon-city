@@ -5,6 +5,8 @@ import Recaptcha from 'react-recaptcha';
 import {Typography, TextField, Button} from '@material-ui/core';
 import {Form, Field} from 'react-final-form';
 import {required} from '../../../../utils/validation';
+import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
+import {useMutation} from '@apollo/react-hooks';
 
 const ModalContainer = styled.div`
     position: fixed;
@@ -50,10 +52,32 @@ export const RecaptchaContainer = styled.div`
 export function FlatSidebarModal({close, flat}) {
     const [isVerify, setVerify] = useState(false);
 
-    const onSubmit = (values) => {
+    const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
+
+    const onSubmit = async (values) => {
         console.log({
-            ...flat,
-            ...values
+            flat,
+            usrInfo: {...values}
+        });
+
+        const flatUpdated = {
+            sale: flat.sale,
+            price: flat.price,
+            flatId: flat.id,
+            flatNumber: flat.flatNumber,
+            section: flat.section,
+            level: String(flat.level),
+            apartmentComplexId: flat.apartmentComplex.id,
+            apartmentComplex: flat.apartmentComplex.name,
+            house: flat.house.name,
+            houseId: flat.house.id
+        };
+
+        await makeRequest({
+            variables: {
+                flat: flatUpdated,
+                userInfo: {...values}
+            }
         });
     };
 
@@ -76,6 +100,22 @@ export function FlatSidebarModal({close, flat}) {
                                         <div>
                                             <TextField
                                                 label="Имя"
+                                                margin="normal"
+                                                fullWidth={true}
+                                                variant="outlined"
+                                                {...input}
+                                            />
+                                            {meta.error && meta.touched && <InputError>{meta.error}</InputError>}
+                                        </div>
+                                    )}
+                                </Field>
+                            </Input>
+                            <Input>
+                                <Field name="email" validate={required}>
+                                    {({input, meta}) => (
+                                        <div>
+                                            <TextField
+                                                label="Email"
                                                 margin="normal"
                                                 fullWidth={true}
                                                 variant="outlined"
