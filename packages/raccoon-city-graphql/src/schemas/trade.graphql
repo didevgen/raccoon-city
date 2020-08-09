@@ -67,6 +67,7 @@ input UserFormInput {
     name: String
     email: String
     phone: String
+    developerUuid: String
 }
 
 type Mutation {

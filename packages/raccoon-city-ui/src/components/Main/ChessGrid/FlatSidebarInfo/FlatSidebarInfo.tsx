@@ -21,7 +21,7 @@ import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
-import {FlatSidebarModal} from './FlatSidebarModal';
+import FlatSidebarModal from './FlatSidebarModal';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -157,6 +157,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </Button>
                 </SendRequestContainer>
             )}
+            {/* @ts-ignore */}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

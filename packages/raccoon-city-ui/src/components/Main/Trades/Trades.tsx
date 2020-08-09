@@ -3,6 +3,7 @@ import {IconButton, Typography} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import DeleteIcon from '@material-ui/icons/Delete';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MaterialTable, {MTableToolbar} from 'material-table';
 import React, {Fragment, useEffect} from 'react';
@@ -135,6 +136,13 @@ export const Trades = connect(null, (dispatch) => ({
                                     )}
                                 </Fragment>
                             );
+                        }
+                    },
+                    {
+                        title: 'Сделка',
+                        field: 'isNewTrade',
+                        render: (rowData: any) => {
+                            return <div style={{color: 'red'}}>{rowData.isNewTrade && <WhatshotIcon />}</div>;
                         }
                     }
                 ]}

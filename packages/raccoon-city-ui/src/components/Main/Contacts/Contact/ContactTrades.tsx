@@ -81,8 +81,12 @@ const ContactTrades = (props: ContactTradesProps) => {
         ]
     });
 
+    // ВНИМАНИЕ ЭТО КАСТЫЛЯКА
+    const [uuid, suuid] = React.useState('');
+
     const editTrade = (id: string) => {
         dispatch({type: 'setTradeUuid', payload: id});
+        suuid(id);
         dispatch({type: 'setTradeOpen', payload: true});
     };
 
@@ -100,7 +104,7 @@ const ContactTrades = (props: ContactTradesProps) => {
         return <div>Loading</div>;
     }
 
-    const tradesToShow: any[] = trades.getContactTrades;
+    const tradesToShow: any[] = trades.getContactTrades.sort((a, b) => b.isNewTrade - a.isNewTrade);
 
     function getNewItems() {
         const filteredItems = getAppropriateItems(tradesToShow, state.start, state.stop);
@@ -123,7 +127,7 @@ const ContactTrades = (props: ContactTradesProps) => {
             const stringToCompare = getConstant(dropdowns, item.leadStatus, 'leadStatuses');
 
             const tradeItems = [
-                stringToCompare,
+                stringToCompare || '',
                 item.flat.apartmentComplex,
                 item.flat.house,
                 item.tradeNumber,
@@ -190,7 +194,7 @@ const ContactTrades = (props: ContactTradesProps) => {
             </TradesContainer>
             <Trade
                 open={state.isTradeOpen}
-                uuid={state.tradeUuid}
+                uuid={uuid}
                 contact={contact}
                 handleClose={() => {
                     dispatch({type: 'setTradeUuid', payload: null});

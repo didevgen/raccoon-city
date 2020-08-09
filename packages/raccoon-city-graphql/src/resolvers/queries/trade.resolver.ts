@@ -7,6 +7,7 @@ export const tradesQuery = {
             developer: mongoose.Types.ObjectId(developerUuid),
             isDeleted: false
         })
+            .sort({ isNewTrade: -1 })
             .populate({
                 path: 'responsible'
             })

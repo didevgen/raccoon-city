@@ -1,5 +1,11 @@
 export function getConstant(dropdowns, state, appropriateConstant) {
-    return dropdowns[appropriateConstant].find(({key}) => key === state).displayName;
+    const result = dropdowns[appropriateConstant].find(({key}) => key === state);
+
+    if (!result) {
+        return null;
+    }
+
+    return result.displayName;
 }
 
 export function getClientInterests(dropdowns, interests) {

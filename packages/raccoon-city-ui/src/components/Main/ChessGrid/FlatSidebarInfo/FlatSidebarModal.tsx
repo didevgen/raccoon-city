@@ -7,6 +7,7 @@ import {Form, Field} from 'react-final-form';
 import {required} from '../../../../utils/validation';
 import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {useMutation} from '@apollo/react-hooks';
+import {withRouter, BrowserRouterProps} from 'react-router-dom';
 
 const ModalContainer = styled.div`
     position: fixed;
@@ -49,17 +50,18 @@ export const RecaptchaContainer = styled.div`
     margin: 30px 0px;
 `;
 
-export function FlatSidebarModal({close, flat}) {
+interface FlatModalProps extends BrowserRouterProps {
+    close: any;
+    flat: any;
+    match: any;
+}
+
+const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
     const [isVerify, setVerify] = useState(false);
 
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
     const onSubmit = async (values) => {
-        console.log({
-            flat,
-            usrInfo: {...values}
-        });
-
         const flatUpdated = {
             sale: flat.sale,
             price: flat.price,
@@ -76,7 +78,7 @@ export function FlatSidebarModal({close, flat}) {
         await makeRequest({
             variables: {
                 flat: flatUpdated,
-                userInfo: {...values}
+                userInfo: {...values, developerUuid: match.params.developerUuid}
             }
         });
     };
@@ -170,4 +172,7 @@ export function FlatSidebarModal({close, flat}) {
             </Modal>
         </ModalContainer>
     );
-}
+};
+
+// @ts-ignore
+export default withRouter(FlatSidebarModal);

@@ -46,7 +46,7 @@ export const tradeMutation = {
             ...trade,
             tradeNumber,
             contact,
-            developer: developerUuid,
+            developer: developerUuid
         });
     },
     async updateTrade(parent, args, ctx: Context): Promise<Trade> {
@@ -111,7 +111,10 @@ export const tradeMutation = {
         return true;
     },
     async requestFromPublicForm(parent, args, ctx: Context) {
-        const { flat, userInfo: { name, phone, email } } = args;
+        const {
+            flat,
+            userInfo: { name, phone, email, developerUuid }
+        } = args;
         let tradeNumber = 1;
 
         const maxNumberTrade = await TradeModel.findOne({})
@@ -129,40 +132,40 @@ export const tradeMutation = {
         }).exec();
 
         const length = contacts.length;
-
-        const contactInfo = {
+        let contactId: string;
+        const newContactInfo = {
             name,
             phones: [phone],
             email: email,
-            clientStatus: "potential",
-            responsible: "-",
-            position: "default",
-            clientSources: "site",
+            clientSources: 'site'
+        };
+
+        if (length) {
+            contactId = contacts[0].id;
+        } else {
+            const newContact = await ContactModel.create({
+                ...newContactInfo,
+                developer: developerUuid
+            });
+
+            contactId = newContact.id;
         }
 
         const tradeInfo = {
-            state: "initial_contact",
-            leadStatus: "delayed",
-            clientInterests: ["single"],
-            link: "default.com",
-            visitDate: "24.5.2020",
-            nextVisitDate: "25.5.2020",
-            paymentType: "full",
-            tradeSource: "site",
-            propertyType: "flat",
-            paymentProvider: "financial_company",
-            responsible: "-",
+            state: 'initial_contact',
+            leadStatus: 'delayed',
+            tradeSource: 'site',
             flat: flat,
             existingContact: length ? contacts[0].id : "",
-            newContact: contactInfo
-        }
+            newContact: length ? null : newContactInfo
+        };
 
         return await TradeModel.create({
             ...tradeInfo,
             tradeNumber,
-            contact: contactInfo,
-            developer: "-",
-            isNewTrade: true,
+            contact: contactId,
+            developer: developerUuid,
+            isNewTrade: true
         });
     }
 };
