@@ -22,6 +22,7 @@ import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
 import FlatSidebarModal from './FlatSidebarModal';
+import {BrowserRouterProps, withRouter} from 'react-router-dom';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -52,16 +53,17 @@ const SendRequestContainer = styled.div`
     padding: 0px 15px;
 `;
 
-interface FlatSidebarInfoProps {
+interface FlatSidebarInfoProps extends BrowserRouterProps {
     flat: Flat;
     isPublic: boolean;
     onFlatSelected?: (flat: Flat) => void;
+    match: any;
 }
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
-export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
+function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(
         props.isPublic ? GET_PUBLIC_FLAT_SIDEBAR_DATA : GET_FLAT_SIDEBAR_DATA,
         {
@@ -87,6 +89,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     };
 
     const flat = data.getFlatSidebarInfo;
+
     return (
         <FlatSidebarWrapper>
             <FlatTitleContainer>
@@ -157,8 +160,12 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </Button>
                 </SendRequestContainer>
             )}
-            {/* @ts-ignore */}
-            {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
+            {isModalOpen && props.match.path.split('/')[1] === 'public' && (
+                <FlatSidebarModal flat={flat} close={setModalOpen} />
+            )}
         </FlatSidebarWrapper>
     );
 }
+
+// @ts-ignore
+export default withRouter(FlatSidebarInfo);

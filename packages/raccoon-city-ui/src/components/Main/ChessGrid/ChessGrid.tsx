@@ -17,7 +17,7 @@ import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
-import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
+import FlatSidebarInfo from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
 
 const ChessGridWrapper: any = styled.div`

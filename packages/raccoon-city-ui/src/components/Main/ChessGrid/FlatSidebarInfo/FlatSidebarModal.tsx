@@ -50,6 +50,10 @@ export const RecaptchaContainer = styled.div`
     margin: 30px 0px;
 `;
 
+export const ModalTitle = styled.span`
+    text-transform: capitalize;
+`;
+
 interface FlatModalProps extends BrowserRouterProps {
     close: any;
     flat: any;
@@ -81,6 +85,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                 userInfo: {...values, developerUuid: match.params.developerUuid}
             }
         });
+
+        close(false);
     };
 
     const verifyCallback = () => {
@@ -90,7 +96,9 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
     return (
         <ModalContainer>
             <Modal>
-                <Typography>ОСТАВИТЬ ЗАЯВКУ</Typography>
+                <Typography>
+                    <ModalTitle>оставить заявку</ModalTitle>
+                </Typography>
                 <Form
                     subscription={{invalid: true}}
                     onSubmit={onSubmit}
@@ -148,7 +156,7 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                             </Input>
                             <RecaptchaContainer>
                                 <Recaptcha
-                                    sitekey="6LdkbboZAAAAAN21lpRJbyEv9YNj5mbg-cb37Ws_"
+                                    sitekey={`${process.env.REACT_APP_SITE_KEY}`}
                                     render="explicit"
                                     verifyCallback={verifyCallback}
                                 />

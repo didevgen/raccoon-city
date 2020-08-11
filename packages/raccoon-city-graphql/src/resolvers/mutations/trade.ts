@@ -141,7 +141,16 @@ export const tradeMutation = {
         };
 
         if (length) {
-            contactId = contacts[0].id;
+            const secondaryMatch = contacts.find((c) => (
+                c.email === email
+                || c.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+            ));
+
+            if (secondaryMatch) {
+                contactId = secondaryMatch.id;
+            } else {
+                contactId = contacts[0].id;
+            }
         } else {
             const newContact = await ContactModel.create({
                 ...newContactInfo,
@@ -156,7 +165,7 @@ export const tradeMutation = {
             leadStatus: 'delayed',
             tradeSource: 'site',
             flat: flat,
-            existingContact: length ? contacts[0].id : "",
+            existingContact: length ? contacts[0].id : '',
             newContact: length ? null : newContactInfo
         };
 
