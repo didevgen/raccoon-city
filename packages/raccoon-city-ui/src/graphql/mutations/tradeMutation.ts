@@ -21,3 +21,11 @@ export const DELETE_TRADE = gql`
         deleteTrade(uuid: $uuid)
     }
 `;
+
+export const FORM_REQUEST_TRADE = gql`
+    mutation requestFromPublicForm($flat: TradeFlatInput!, $userInfo: UserFormInput!) {
+        requestFromPublicForm(flat: $flat, userInfo: $userInfo) {
+            id
+        }
+    }
+`;

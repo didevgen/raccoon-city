@@ -1,10 +1,10 @@
-import {Context} from '../../utils';
-import {Trade, TradeModel} from '../../db/models/trade';
-import {ContactModel} from '../../db/models/contact';
+import { Context } from '../../utils';
+import { Trade, TradeModel } from '../../db/models/trade';
+import { ContactModel } from '../../db/models/contact';
 
 export const tradeMutation = {
     async createTrade(parent, args, ctx: Context): Promise<Trade> {
-        const {developerUuid, trade} = args;
+        const { developerUuid, trade } = args;
         let tradeNumber = 1;
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')
@@ -20,7 +20,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: {$in: trade.newContact.phones}
+                    $elemMatch: { $in: trade.newContact.phones }
                 }
             }).exec();
 
@@ -50,7 +50,7 @@ export const tradeMutation = {
         });
     },
     async updateTrade(parent, args, ctx: Context): Promise<Trade> {
-        const {uuid, trade} = args;
+        const { uuid, trade } = args;
 
         const existingTrade = await TradeModel.findById(uuid).exec();
         let contact;
@@ -60,7 +60,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: {$in: trade.newContact.phones}
+                    $elemMatch: { $in: trade.newContact.phones }
                 }
             }).exec();
 
@@ -68,11 +68,8 @@ export const tradeMutation = {
                 const secondaryMatch = contacts.find((c) => {
                     return c?.name === trade.newContact?.name || c?.email === trade.newContact?.email;
                 });
-                if (secondaryMatch) {
-                    contact = secondaryMatch.id;
-                } else {
-                    contact = contacts[0].id;
-                }
+
+                contact = secondaryMatch ? secondaryMatch.id : contacts[0].id;
             } else {
                 const newContact = await ContactModel.create({
                     ...trade.newContact,
@@ -97,7 +94,7 @@ export const tradeMutation = {
             }
         ).exec();
     },
-    async deleteTrade(parent, {uuid}, ctx: Context) {
+    async deleteTrade(parent, { uuid }, ctx: Context) {
         await TradeModel.findOneAndUpdate(
             {
                 _id: uuid
@@ -109,5 +106,67 @@ export const tradeMutation = {
             }
         ).exec();
         return true;
+    },
+    async requestFromPublicForm(parent, args, ctx: Context) {
+        const {
+            flat,
+            userInfo: { name, phone, email, developerUuid }
+        } = args;
+        let tradeNumber = 1;
+
+        const maxNumberTrade = await TradeModel.findOne({})
+            .sort('-tradeNumber')
+            .exec();
+        if (maxNumberTrade) {
+            tradeNumber = maxNumberTrade.tradeNumber + 1;
+        }
+
+        const contacts = await ContactModel.find({
+            isDeleted: false,
+            phones: {
+                $elemMatch: { $in: [phone] }
+            }
+        }).exec();
+
+        const length = contacts.length;
+        let contactId: string;
+        const newContactInfo = {
+            name,
+            phones: [phone],
+            email: email,
+            clientSources: 'site'
+        };
+
+        if (length) {
+            const secondaryMatch = contacts.find(
+                (c) => c.email === email || c.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+            );
+
+            contactId = secondaryMatch ? secondaryMatch.id : contacts[0].id;
+        } else {
+            const newContact = await ContactModel.create({
+                ...newContactInfo,
+                developer: developerUuid
+            });
+
+            contactId = newContact.id;
+        }
+
+        const tradeInfo = {
+            state: 'initial_contact',
+            leadStatus: 'delayed',
+            tradeSource: 'site',
+            flat: flat,
+            existingContact: length ? contacts[0].id : '',
+            newContact: length ? null : newContactInfo
+        };
+
+        return await TradeModel.create({
+            ...tradeInfo,
+            tradeNumber,
+            contact: contactId,
+            developer: developerUuid,
+            isNewTrade: true
+        });
     }
 };

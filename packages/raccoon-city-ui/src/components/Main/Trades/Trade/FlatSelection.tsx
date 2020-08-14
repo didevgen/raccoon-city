@@ -207,6 +207,7 @@ export function FlatSelection() {
                     filterId={'chessGridFilterContainerModal'}
                     hasSelect
                     isPublic
+                    showRequestButton={false}
                     onFlatSelected={(selectedFlat: SidebarFlat) => {
                         formApi.batch(() => {
                             formApi.change('flat', selectedFlat);

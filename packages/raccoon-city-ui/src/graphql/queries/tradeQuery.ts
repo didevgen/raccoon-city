@@ -42,6 +42,7 @@ export const ALL_TRADES = gql`
                 email
                 position
             }
+            isNewTrade
         }
     }
 `;
@@ -83,6 +84,7 @@ export const GET_TRADE = gql`
                 email
                 position
             }
+            isNewTrade
         }
     }
 `;
@@ -113,6 +115,7 @@ export const APPROPRIATE_TRADES = gql`
                 house
                 houseId
             }
+            isNewTrade
         }
     }
 `;

@@ -2,7 +2,6 @@ type Trade {
     id: String
     tradeNumber: String
     state: String
-    budget: Float
     leadStatus: String
     clientInterests: [String]
     link: String
@@ -15,6 +14,7 @@ type Trade {
     responsible: User
     flat: TradeFlat
     contact: Contact
+    isNewTrade: Boolean
 }
 
 type TradeFlat {
@@ -60,12 +60,21 @@ input TradeInput {
     flat: TradeFlatInput
     existingContact: String
     newContact: ContactInput
+    isNewTrade: Boolean
+}
+
+input UserFormInput {
+    name: String
+    email: String
+    phone: String
+    developerUuid: String
 }
 
 type Mutation {
     createTrade(developerUuid: String!, trade: TradeInput!): Trade
     updateTrade(uuid: String!, trade: TradeInput!): Trade
     deleteTrade(uuid: String!): Boolean
+    requestFromPublicForm(flat: TradeFlatInput!, userInfo: UserFormInput!): Trade
 }
 
 extend type Query {

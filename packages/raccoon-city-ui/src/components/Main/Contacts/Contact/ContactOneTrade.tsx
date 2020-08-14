@@ -8,8 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import {getConstant, getClientInterests} from './ContactTradesUtils';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 import {format} from 'date-fns';
-import {TradeTitleContainer, Bold, DeleteContainer, EditContainer} from './ContactForm.styled';
+import {TradeTitleContainer, Bold, DeleteContainer, EditContainer, NewTradeContainer} from './ContactForm.styled';
 
 interface ContactOpeTradeProps {
     dropdowns: any;
@@ -68,6 +69,12 @@ const ContactOneTrade = ({dropdowns, item, editTrade, deleteTrade}: ContactOpeTr
                         <EditIcon />
                     </IconButton>
                 </EditContainer>
+
+                {item.isNewTrade && (
+                    <NewTradeContainer>
+                        <WhatshotIcon />
+                    </NewTradeContainer>
+                )}
             </TradeTitleContainer>
         </AccordionSummary>
         <AccordionDetails>

@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 
 export const ContactFormWrapper = styled.div`
     width: 40%;
+    height: 100%;
     background-color: #fff;
     border-right: 3px solid #dbdbdb;
 `;
@@ -103,6 +104,13 @@ export const EditContainer = styled.div`
 export const DeleteContainer = styled.div`
     position: absolute;
     right: 0px;
+`;
+
+export const NewTradeContainer = styled.div`
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
+    color: red;
 `;
 
 export const TradesContainer = styled.div`

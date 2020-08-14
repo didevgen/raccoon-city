@@ -403,7 +403,8 @@ export function TradeForm({onClose, trade, contact}: TradeFormInterface) {
                                             propertyType: values.propertyType?.key,
                                             paymentProvider: values.paymentProvider?.key,
                                             flat,
-                                            responsible: values.responsible.id
+                                            responsible: values.responsible.id,
+                                            isNewTrade: false
                                         }
                                     };
 

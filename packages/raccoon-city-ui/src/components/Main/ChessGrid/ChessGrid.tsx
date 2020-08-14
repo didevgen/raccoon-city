@@ -17,7 +17,7 @@ import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
-import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
+import FlatSidebarInfo from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
 
 const ChessGridWrapper: any = styled.div`
@@ -126,76 +126,83 @@ function showMutedFlats(items, filters) {
     return items;
 }
 
-const ChessGridContent = React.memo(({filters, data, loading, error, hasSelect, isPublic, onFlatSelected}: any) => {
-    const [flatCardOpen, setFlatCardOpen] = useState(false);
-    const [selectedFlat, setSelectedFlat] = useState<Flat>();
-    if (loading) {
-        return <ChessGridWrapper>Loading</ChessGridWrapper>;
+const ChessGridContent = React.memo(
+    ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton}: any) => {
+        const [flatCardOpen, setFlatCardOpen] = useState(false);
+        const [selectedFlat, setSelectedFlat] = useState<Flat>();
+        if (loading) {
+            return <ChessGridWrapper>Loading</ChessGridWrapper>;
+        }
+
+        if (error) {
+            return <ChessGridWrapper>Error :(</ChessGridWrapper>;
+        }
+
+        if (!data) {
+            return null;
+        }
+
+        const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
+
+        return (
+            <ViewModeContext.Provider value={filters}>
+                <ChessGridWrapper hasSelect={hasSelect}>
+                    {houseFlats.map((group: FlatsInHouse) => {
+                        const {groupedFlats} = group;
+
+                        if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
+                            return null;
+                        }
+
+                        return (
+                            <Container key={group.id}>
+                                <ColumnTitle variant="h5" gutterBottom>
+                                    {group.name}
+                                </ColumnTitle>
+                                <ColumnWrapper>
+                                    {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                                        return (
+                                            <ChessGridColumn
+                                                key={item.id}
+                                                columnName={item.section}
+                                                levels={item.levels}
+                                                onSelect={(flat: Flat) => {
+                                                    setSelectedFlat(flat);
+                                                    setFlatCardOpen(true);
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                </ColumnWrapper>
+                            </Container>
+                        );
+                    })}
+
+                    <SidebarDrawer
+                        anchor="right"
+                        open={flatCardOpen}
+                        onOpen={() => {
+                            // silence
+                        }}
+                        onClose={() => {
+                            setFlatCardOpen(false);
+                            setSelectedFlat(undefined);
+                        }}
+                    >
+                        {selectedFlat && (
+                            <FlatSidebarInfo
+                                flat={selectedFlat}
+                                isPublic={isPublic}
+                                showRequestButton={showRequestButton}
+                                onFlatSelected={onFlatSelected}
+                            />
+                        )}
+                    </SidebarDrawer>
+                </ChessGridWrapper>
+            </ViewModeContext.Provider>
+        );
     }
-
-    if (error) {
-        return <ChessGridWrapper>Error :(</ChessGridWrapper>;
-    }
-
-    if (!data) {
-        return null;
-    }
-
-    const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
-
-    return (
-        <ViewModeContext.Provider value={filters}>
-            <ChessGridWrapper hasSelect={hasSelect}>
-                {houseFlats.map((group: FlatsInHouse) => {
-                    const {groupedFlats} = group;
-
-                    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
-                        return null;
-                    }
-
-                    return (
-                        <Container key={group.id}>
-                            <ColumnTitle variant="h5" gutterBottom>
-                                {group.name}
-                            </ColumnTitle>
-                            <ColumnWrapper>
-                                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
-                                    return (
-                                        <ChessGridColumn
-                                            key={item.id}
-                                            columnName={item.section}
-                                            levels={item.levels}
-                                            onSelect={(flat: Flat) => {
-                                                setSelectedFlat(flat);
-                                                setFlatCardOpen(true);
-                                            }}
-                                        />
-                                    );
-                                })}
-                            </ColumnWrapper>
-                        </Container>
-                    );
-                })}
-
-                <SidebarDrawer
-                    anchor="right"
-                    open={flatCardOpen}
-                    onOpen={() => {
-                        // silence
-                    }}
-                    onClose={() => {
-                        setFlatCardOpen(false);
-                        setSelectedFlat(undefined);
-                    }}
-                >
-                    {selectedFlat && (
-                        <FlatSidebarInfo flat={selectedFlat} isPublic={isPublic} onFlatSelected={onFlatSelected} />
-                    )}
-                </SidebarDrawer>
-            </ChessGridWrapper>
-        </ViewModeContext.Provider>
-    );
-});
+);
 
 function FilterIcon({setShownFilters, id}) {
     const elem = document.getElementById(id);
@@ -205,7 +212,7 @@ function FilterIcon({setShownFilters, id}) {
     return ReactDOM.createPortal(<ShowFilter setShownFilters={setShownFilters} />, elem);
 }
 
-export const ChessGridComponent = ({uuid, hasSelect, isPublic, onFlatSelected, filterId}) => {
+export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton, onFlatSelected, filterId}) => {
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
@@ -251,6 +258,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, onFlatSelected, f
                 error={error}
                 onFlatSelected={onFlatSelected}
                 isPublic={isPublic}
+                showRequestButton={showRequestButton}
                 data={id.length === 0 ? null : data}
             />
             {isMounted && <FilterIcon setShownFilters={setShownFilters} id={filterId} />}
@@ -261,7 +269,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, onFlatSelected, f
 export const ChessGrid = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
-}))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId}) => {
+}))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId, showRequestButton}) => {
     const params = useParams();
     const {houseUuid} = useParams();
 
@@ -276,6 +284,7 @@ export const ChessGrid = connect(null, (dispatch) => ({
             hasSelect={hasSelect}
             isPublic={isPublic}
             filterId={filterBlockId}
+            showRequestButton={showRequestButton}
             onFlatSelected={onFlatSelected}
         />
     );

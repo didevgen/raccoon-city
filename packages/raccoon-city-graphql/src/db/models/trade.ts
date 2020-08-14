@@ -33,6 +33,7 @@ export interface Trade extends Document {
     paymentProvider: string;
     developer: Developer;
     isDeleted: boolean;
+    isNewTrade: boolean;
 }
 
 const TradeFlatSchema = new Schema({
@@ -75,7 +76,8 @@ const TradeSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Developer'
         },
-        isDeleted: {type: Schema.Types.Boolean, default: false}
+        isDeleted: {type: Schema.Types.Boolean, default: false},
+        isNewTrade: {type: Schema.Types.Boolean, default: false}
     },
     {
         toJSON: {virtuals: true},
