@@ -56,6 +56,7 @@ const SendRequestContainer = styled.div`
 interface FlatSidebarInfoProps extends BrowserRouterProps {
     flat: Flat;
     isPublic: boolean;
+    showRequestButton: boolean;
     onFlatSelected?: (flat: Flat) => void;
     match: any;
 }
@@ -63,6 +64,7 @@ interface FlatSidebarInfoProps extends BrowserRouterProps {
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
+
 function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(
         props.isPublic ? GET_PUBLIC_FLAT_SIDEBAR_DATA : GET_FLAT_SIDEBAR_DATA,
@@ -75,6 +77,12 @@ function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     );
     const [value, setValue] = React.useState(0);
     const [isModalOpen, setModalOpen] = React.useState(false);
+
+    const {showRequestButton} = props;
+    let isShowButton = showRequestButton;
+    if (isShowButton === undefined) {
+        isShowButton = true;
+    }
 
     if (loading || !data) {
         return <span>loading</span>;
@@ -153,16 +161,14 @@ function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
-            {!!props.isPublic && (
+            {isShowButton && !!props.isPublic && (
                 <SendRequestContainer>
                     <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
                         Оставить заявку
                     </Button>
                 </SendRequestContainer>
             )}
-            {isModalOpen && props.match.path.split('/')[1] === 'public' && (
-                <FlatSidebarModal flat={flat} close={setModalOpen} />
-            )}
+            {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );
 }

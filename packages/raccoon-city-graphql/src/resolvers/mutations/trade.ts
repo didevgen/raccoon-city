@@ -68,11 +68,8 @@ export const tradeMutation = {
                 const secondaryMatch = contacts.find((c) => {
                     return c?.name === trade.newContact?.name || c?.email === trade.newContact?.email;
                 });
-                if (secondaryMatch) {
-                    contact = secondaryMatch.id;
-                } else {
-                    contact = contacts[0].id;
-                }
+
+                contact = secondaryMatch ? secondaryMatch.id : contacts[0].id;
             } else {
                 const newContact = await ContactModel.create({
                     ...trade.newContact,
@@ -141,16 +138,11 @@ export const tradeMutation = {
         };
 
         if (length) {
-            const secondaryMatch = contacts.find((c) => (
-                c.email === email
-                || c.name.toLocaleLowerCase() === name.toLocaleLowerCase()
-            ));
+            const secondaryMatch = contacts.find(
+                (c) => c.email === email || c.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+            );
 
-            if (secondaryMatch) {
-                contactId = secondaryMatch.id;
-            } else {
-                contactId = contacts[0].id;
-            }
+            contactId = secondaryMatch ? secondaryMatch.id : contacts[0].id;
         } else {
             const newContact = await ContactModel.create({
                 ...newContactInfo,
