@@ -18,10 +18,19 @@ input DeveloperInput {
     salesNumbers: [String]
 }
 
+input AMOInput {
+    domain: String
+    secretKey: String
+    integrationId: String
+    authCode: String
+    redirectUrl: String
+}
+
 type Mutation {
     createDeveloper(developerData: DeveloperInput!, image: Upload): Developer
     updateDeveloper(id: String!, developerData: DeveloperInput!, image: Upload): Developer
     deleteDeveloper(id: String!): Boolean
+    configureAmo(id: String!, amoConfig: AMOInput): Boolean
 }
 
 extend type Query {
@@ -29,4 +38,5 @@ extend type Query {
     getDeveloper(uuid: String!): Developer
     getApartmentComplexesByDeveloper(uuid: String!): [ApartmentComplex]
     getPublicApartmentComplexesByDeveloper(uuid: String!): [ApartmentComplex]
+    checkAmo(uuid: String!): Boolean
 }

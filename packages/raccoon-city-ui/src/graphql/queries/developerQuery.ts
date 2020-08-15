@@ -98,3 +98,9 @@ export const GET_PUBLIC_DEVELOPER_APARTMENT_COMPLEXES = gql`
         }
     }
 `;
+
+export const CHECK_AMO = gql`
+    query checkAmo($uuid: String!) {
+        checkAmo(uuid: $uuid)
+    }
+`;
