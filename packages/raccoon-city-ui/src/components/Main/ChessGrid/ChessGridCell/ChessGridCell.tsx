@@ -1,127 +1,51 @@
-import {Badge, Theme, withStyles} from '@material-ui/core';
-import Tooltip from '@material-ui/core/Tooltip';
 import React, {useContext} from 'react';
-import styled from 'styled-components';
 import {Flat} from '../../../shared/types/flat.types';
-import {ViewModeContext, ViewModeValues} from '../ChessGrid';
+import {ViewModeContext, ViewModeValues, ChessCellViewMode, cellViewModeContext} from '../ChessGrid';
+import {
+    Cell,
+    TooltipContainer,
+    PriceContainer,
+    AreaContainer,
+    NumberContainer,
+    DataContainer,
+    StyledBagde,
+    HtmlTooltip,
+    FirstInfoItem,
+    CellInfoWrapper,
+    CellInfoWrapperTop
+} from './ChessGridCell.styled';
 
-const HtmlTooltip = withStyles((theme: Theme) => ({
-    tooltip: {
-        backgroundColor: '#fff',
-        color: '#000',
-        padding: '8px',
-        boxShadow: theme.shadows[3]
-    }
-}))(Tooltip);
+interface Props {
+    flat: Flat;
+    onSelect: (flat: Flat) => void;
+}
 
-const Cell = styled.div`
-    color: #fff;
-    background-color: #4caf50;
-    font-weight: 500;
-    border-radius: 0;
-    margin: 8px;
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-
-    @media (max-width: 889px) {
-        width: 72px;
-        height: 72px;
-    }
-    &:hover {
-        cursor: pointer;
-    }
-
-    &.MUTED {
-        background-color: #9e9e9e;
-        &:hover {
-            background-color: #e0e0e0;
-        }
-        color: #000;
-    }
-
-    &.SOLD_OUT {
-        background-color: #f44336;
-        &:hover {
-            background-color: #e57373;
-        }
-    }
-
-    &.FREE {
-        background-color: #4caf50;
-        &:hover {
-            background-color: #66bb6a;
-        }
-    }
-
-    &.RESERVED,
-    &.BOOKED {
-        color: #000;
-        background-color: #ffeb3b;
-        &:hover {
-            background-color: #fff176;
-        }
-    }
-
-    &.UNAVAILABLE {
-        background-color: #9e9e9e;
-        &:hover {
-            background-color: #bdbdbd;
-        }
-    }
-
-    &.DOCUMENTS_IN_PROGRESS {
-        background-color: #00bcd4;
-        &:hover {
-            background-color: #26c6da;
-        }
-    }
-`;
-
-const TooltipContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-`;
-
-const PriceContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    min-width: 150px;
-    .Cell__price {
-        font-size: 14px;
-    }
-`;
-
-const AreaContainer = styled.div`
-    align-self: flex-end;
-`;
-
-const NumberContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const DataContainer = styled.div`
-    margin-left: 8px;
-    font-size: 12px;
-`;
-
-const StyledBagde = styled(Badge)`
-    .MuiBadge-badge {
-        top: 10px;
-        right: 10px;
-    }
-`;
-
-export const ChessGridCell = React.memo(({flat, onSelect}: {flat: Flat; onSelect: (flat: Flat) => void}) => {
+export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
     const viewContextValue = useContext<any>(ViewModeContext);
+    const cellView = useContext<any>(cellViewModeContext);
+
+    const CellViewJSX = {
+        [ChessCellViewMode.TILE]: <>{flat[viewContextValue.selectedViewMode]}</>,
+        [ChessCellViewMode.TILE_PLUS]: (
+            <>
+                <CellInfoWrapperTop>
+                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
+                    <span>
+                        {`${flat.price} грн.`}
+                        {}
+                    </span>
+                </CellInfoWrapperTop>
+                <CellInfoWrapperTop>
+                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
+                    <span>{flat.area}/м2</span>
+                </CellInfoWrapperTop>
+                <CellInfoWrapper>
+                    <span>{flat.squarePrice} - цена за м2</span>
+                </CellInfoWrapper>
+            </>
+        )
+    };
+
     return (
         <HtmlTooltip
             title={
@@ -154,8 +78,9 @@ export const ChessGridCell = React.memo(({flat, onSelect}: {flat: Flat; onSelect
                         onClick={() => {
                             onSelect(flat);
                         }}
+                        viewMode={cellView.mode}
                     >
-                        {flat[viewContextValue.selectedViewMode]}
+                        {CellViewJSX[cellView.mode] || flat[viewContextValue.selectedViewMode]}
                     </Cell>
                 </StyledBagde>
             ) : (
@@ -164,8 +89,9 @@ export const ChessGridCell = React.memo(({flat, onSelect}: {flat: Flat; onSelect
                     onClick={() => {
                         onSelect(flat);
                     }}
+                    viewMode={cellView.mode}
                 >
-                    {flat[viewContextValue.selectedViewMode]}
+                    {CellViewJSX[cellView.mode] || flat[viewContextValue.selectedViewMode]}
                 </Cell>
             )}
         </HtmlTooltip>

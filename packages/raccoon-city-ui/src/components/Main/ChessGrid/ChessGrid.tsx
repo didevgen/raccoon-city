@@ -1,10 +1,8 @@
 import {useQuery} from '@apollo/react-hooks';
-import {SwipeableDrawer, Typography} from '@material-ui/core';
-import React, {Fragment, useEffect, useReducer, useState} from 'react';
+import React, {Fragment, useEffect, useReducer, useState, useContext} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import styled from 'styled-components';
 import {
     FlatsInHouse,
     GET_GROUPED_FLATS_CHESSGRID,
@@ -19,37 +17,11 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import FlatSidebarInfo from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
-
-const ChessGridWrapper: any = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const ColumnWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const Container = styled.div`
-    background-color: #fff;
-    padding: 0 16px;
-    border-right: 1px solid #cccccc;
-    display: flex;
-    flex-direction: column;
-    align-self: flex-end;
-`;
-
-const ColumnTitle = styled(Typography)`
-    text-align: center;
-    padding: 16px 0;
-`;
-
-const SidebarDrawer = styled(SwipeableDrawer)`
-    max-width: 100vw;
-    .MuiDrawer-paper {
-        max-width: 100%;
-    }
-`;
+import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer} from './ChessGrid.styled';
+import {showMutedFlats} from './ChessGrid.utils';
+import {initialState, reducer} from './ChessGrid.reducer';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export enum ViewModeValues {
     AREA = 'area',
@@ -57,74 +29,14 @@ export enum ViewModeValues {
     NUMBER = 'flatNumber'
 }
 
+export enum ChessCellViewMode {
+    TILE = 'tile',
+    TILE_PLUS = 'tilePlus',
+    LIST = 'list'
+}
+
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
-
-const initialState = {
-    selectedViewMode: ViewModeValues.AREA,
-    selectedRoomAmount: {},
-    price: {
-        minPrice: 0,
-        maxPrice: 0
-    },
-    area: {
-        minArea: 0,
-        maxArea: 0
-    }
-};
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'mode':
-            return {...state, selectedViewMode: action.payload};
-        case 'roomAmount':
-            return {...state, selectedRoomAmount: action.payload};
-        case 'price':
-            return {...state, price: action.payload};
-        case 'area':
-            return {...state, area: action.payload};
-        case 'minMaxInit':
-            return {...state, area: action.payload.area, price: action.payload.price};
-        default:
-            throw new Error();
-    }
-}
-
-function checkRoomAmount(flat, selectedRoomAmount) {
-    if (!!selectedRoomAmount && Object.values(selectedRoomAmount).some((value) => !!value)) {
-        return (
-            selectedRoomAmount[flat.roomAmount] === true || (selectedRoomAmount['4+'] && Number(flat.roomAmount) >= 4)
-        );
-    }
-
-    return true;
-}
-
-function checkPrice(flat: Flat, price) {
-    return price.minPrice <= flat.price && flat.price <= price.maxPrice;
-}
-
-function checkArea(flat: Flat, price) {
-    return price.minArea <= flat.area && flat.area <= price.maxArea;
-}
-
-function isActive(flat: Flat, filters) {
-    return (
-        checkRoomAmount(flat, filters.selectedRoomAmount) &&
-        checkPrice(flat, filters.price) &&
-        checkArea(flat, filters.area)
-    );
-}
-
-function showMutedFlats(items, filters) {
-    items.forEach((section: GroupedFlats) => {
-        section.levels.forEach((level) => {
-            level.flats.forEach((flat) => {
-                flat.isActive = isActive(flat, filters);
-            });
-        });
-    });
-    return items;
-}
+export const cellViewModeContext = React.createContext({mode: 'tile'});
 
 const ChessGridContent = React.memo(
     ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton}: any) => {
@@ -191,6 +103,7 @@ const ChessGridContent = React.memo(
                     >
                         {selectedFlat && (
                             <FlatSidebarInfo
+                                // @ts-ignore
                                 flat={selectedFlat}
                                 isPublic={isPublic}
                                 showRequestButton={showRequestButton}
@@ -217,6 +130,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
+    const cellView = useContext<any>(cellViewModeContext);
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(QUERY, {
         fetchPolicy: 'cache-and-network',
@@ -240,6 +154,11 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
             }
         };
     }
+
+    const changeChessView = (e) => {
+        dispatch({type: 'cellViewMode', payload: e.target.value});
+    };
+
     return (
         <Fragment>
             <ChessGridFiltersDrawer
@@ -250,17 +169,34 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                 onHouseChange={onHouseChange}
                 isPublic={isPublic}
             />
-            {!isPublic && <PublicLink />}
-            <ChessGridContent
-                hasSelect={hasSelect}
-                filters={filters}
-                loading={loading}
-                error={error}
-                onFlatSelected={onFlatSelected}
-                isPublic={isPublic}
-                showRequestButton={showRequestButton}
-                data={id.length === 0 ? null : data}
-            />
+
+            <div>
+                {!isPublic && <PublicLink />}
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={filters.mode}
+                    onChange={changeChessView}
+                >
+                    <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
+                    <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
+                    <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>
+                </Select>
+            </div>
+
+            <cellViewModeContext.Provider value={filters}>
+                <ChessGridContent
+                    hasSelect={hasSelect}
+                    filters={filters}
+                    loading={loading}
+                    error={error}
+                    onFlatSelected={onFlatSelected}
+                    isPublic={isPublic}
+                    showRequestButton={showRequestButton}
+                    data={id.length === 0 ? null : data}
+                />
+            </cellViewModeContext.Provider>
+
             {isMounted && <FilterIcon setShownFilters={setShownFilters} id={filterId} />}
         </Fragment>
     );
@@ -277,7 +213,9 @@ export const ChessGrid = connect(null, (dispatch) => ({
         applyParams(params);
         applyTitle('Шахматка');
     }, [params]); // eslint-disable-line
+
     const filterBlockId = filterId || 'chessGridFilterContainer';
+
     return (
         <ChessGridComponent
             uuid={houseUuid}
