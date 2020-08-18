@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext, Fragment} from 'react';
 import {Flat} from '../../../shared/types/flat.types';
-import {ViewModeContext, ViewModeValues, ChessCellViewMode, cellViewModeContext} from '../ChessGrid';
+import {ViewModeContext, ViewModeValues, ChessCellViewMode, CellViewModeContext} from '../ChessGrid';
 import {
     Cell,
     TooltipContainer,
@@ -22,12 +22,12 @@ interface Props {
 
 export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
     const viewContextValue = useContext<any>(ViewModeContext);
-    const cellView = useContext<any>(cellViewModeContext);
+    const cellView = useContext<any>(CellViewModeContext);
 
     const CellViewJSX = {
         [ChessCellViewMode.TILE]: <>{flat[viewContextValue.selectedViewMode]}</>,
         [ChessCellViewMode.TILE_PLUS]: (
-            <>
+            <Fragment>
                 <CellInfoWrapperTop>
                     <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
                     <span>
@@ -42,7 +42,7 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                 <CellInfoWrapper>
                     <span>{flat.squarePrice} - цена за м2</span>
                 </CellInfoWrapper>
-            </>
+            </Fragment>
         )
     };
 

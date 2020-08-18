@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import React, {Fragment, useEffect, useReducer, useState, useContext} from 'react';
+import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -36,7 +36,7 @@ export enum ChessCellViewMode {
 }
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
-export const cellViewModeContext = React.createContext({mode: 'tile'});
+export const CellViewModeContext = React.createContext({mode: 'tile'});
 
 const ChessGridContent = React.memo(
     ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton}: any) => {
@@ -130,7 +130,6 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
-    const cellView = useContext<any>(cellViewModeContext);
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(QUERY, {
         fetchPolicy: 'cache-and-network',
@@ -161,14 +160,16 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
     return (
         <Fragment>
-            <ChessGridFiltersDrawer
-                filterShown={filterShown}
-                setShownFilters={setShownFilters}
-                dispatchFn={dispatch}
-                data={id.length === 0 ? null : data}
-                onHouseChange={onHouseChange}
-                isPublic={isPublic}
-            />
+            <CellViewModeContext.Provider value={filters}>
+                <ChessGridFiltersDrawer
+                    filterShown={filterShown}
+                    setShownFilters={setShownFilters}
+                    dispatchFn={dispatch}
+                    data={id.length === 0 ? null : data}
+                    onHouseChange={onHouseChange}
+                    isPublic={isPublic}
+                />
+            </CellViewModeContext.Provider>
 
             <div>
                 {!isPublic && <PublicLink />}
@@ -184,7 +185,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                 </Select>
             </div>
 
-            <cellViewModeContext.Provider value={filters}>
+            <CellViewModeContext.Provider value={filters}>
                 <ChessGridContent
                     hasSelect={hasSelect}
                     filters={filters}
@@ -195,7 +196,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     showRequestButton={showRequestButton}
                     data={id.length === 0 ? null : data}
                 />
-            </cellViewModeContext.Provider>
+            </CellViewModeContext.Provider>
 
             {isMounted && <FilterIcon setShownFilters={setShownFilters} id={filterId} />}
         </Fragment>
