@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {SwipeableDrawer, Typography} from '@material-ui/core';
+import Select from '@material-ui/core/Select';
 
 export const ChessGridWrapper: any = styled.div`
     display: flex;
@@ -30,4 +31,8 @@ export const SidebarDrawer = styled(SwipeableDrawer)`
     .MuiDrawer-paper {
         max-width: 100%;
     }
+`;
+
+export const SelectStyled = styled(Select)`
+    margin: 0px 20px;
 `;

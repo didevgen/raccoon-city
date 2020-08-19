@@ -8,7 +8,8 @@ import {
     GET_GROUPED_FLATS_CHESSGRID,
     GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
-    GroupedFlats
+    GroupedFlats,
+    GET_FLAT_LIST
 } from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
@@ -17,11 +18,11 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import FlatSidebarInfo from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
-import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer} from './ChessGrid.styled';
+import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer, SelectStyled} from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {initialState, reducer} from './ChessGrid.reducer';
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import {ChessListView} from './ChessListView/ChessListView';
 
 export enum ViewModeValues {
     AREA = 'area',
@@ -39,7 +40,7 @@ export const ViewModeContext = React.createContext({selectedViewMode: ViewModeVa
 export const CellViewModeContext = React.createContext({mode: 'tile'});
 
 const ChessGridContent = React.memo(
-    ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton}: any) => {
+    ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton, listData}: any) => {
         const [flatCardOpen, setFlatCardOpen] = useState(false);
         const [selectedFlat, setSelectedFlat] = useState<Flat>();
         if (loading) {
@@ -55,6 +56,10 @@ const ChessGridContent = React.memo(
         }
 
         const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
+
+        if (filters.mode === 'list') {
+            return <ChessListView listData={listData} filters={filters} />;
+        }
 
         return (
             <ViewModeContext.Provider value={filters}>
@@ -139,9 +144,21 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
         skip: id.length === 0
     });
 
+    const {data: listData, error: e, loading: l} = useQuery<any>(GET_FLAT_LIST, {
+        fetchPolicy: 'cache-and-network',
+        variables: {
+            uuid: id
+        },
+        skip: id.length === 0
+    });
+
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    if (l) {
+        return null;
+    }
 
     let onHouseChange;
     if (hasSelect) {
@@ -173,7 +190,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
             <div>
                 {!isPublic && <PublicLink />}
-                <Select
+                <SelectStyled
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={filters.mode}
@@ -182,7 +199,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
                     <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
                     <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>
-                </Select>
+                </SelectStyled>
             </div>
 
             <CellViewModeContext.Provider value={filters}>
@@ -195,6 +212,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     isPublic={isPublic}
                     showRequestButton={showRequestButton}
                     data={id.length === 0 ? null : data}
+                    listData={listData || []}
                 />
             </CellViewModeContext.Provider>
 

@@ -196,3 +196,22 @@ export const GET_GROUPED_FLATS = gql`
         }
     }
 `;
+
+export const GET_FLAT_LIST = gql`
+    query getFlatsList($uuid: [String]) {
+        getFlatsList(uuid: $uuid) {
+            id
+            flatNumber
+            levelAmount
+            fakeLevel
+            price
+            level
+            section
+            area
+            status
+            sale
+            squarePrice
+            roomAmount
+        }
+    }
+`;
