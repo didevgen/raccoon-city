@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import groupBy from 'ramda/src/groupBy';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
-import { Flat, FlatModel } from '../../db/models/flat';
+import {Flat, FlatModel} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
-import { Level, LevelModel } from '../../db/models/level';
-import { Section, SectionModel } from '../../db/models/section';
+import {Level, LevelModel} from '../../db/models/level';
+import {Section, SectionModel} from '../../db/models/section';
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -15,10 +15,10 @@ const groupByLevel = groupBy((flat: Flat) => {
 });
 
 export const hosueQuery = {
-    getHouses: async (parent, { apartmentComplexId }) => {
-        const data = await ApartmentComplexModel.findOne({ _id: apartmentComplexId, isDeleted: false }).populate({
+    getHouses: async (parent, {apartmentComplexId}) => {
+        const data = await ApartmentComplexModel.findOne({_id: apartmentComplexId, isDeleted: false}).populate({
             path: 'houses',
-            match: { isDeleted: false }
+            match: {isDeleted: false}
         });
         if (data) {
             return data.houses || [];
@@ -26,13 +26,13 @@ export const hosueQuery = {
             return [];
         }
     },
-    getHouse: async (parent, { uuid }) => {
+    getHouse: async (parent, {uuid}) => {
         return HouseModel.findById(uuid);
     },
-    getFlats: async (parent, { uuid }) => {
-        const data = await HouseModel.findOne({ _id: uuid, isDeleted: false }).populate({
+    getFlats: async (parent, {uuid}) => {
+        const data = await HouseModel.findOne({_id: uuid, isDeleted: false}).populate({
             path: 'flats',
-            match: { isDeleted: false }
+            match: {isDeleted: false}
         });
         if (data) {
             return data.flats || [];
@@ -40,23 +40,23 @@ export const hosueQuery = {
             return [];
         }
     },
-    getGroupedHouseData: async (parent, { uuid }) => {
+    getGroupedHouseData: async (parent, {uuid}) => {
         const house = await HouseModel.findById(uuid)
             .populate({
                 path: 'sections',
-                match: { isDeleted: false },
-                options: { sort: { sectionName: 1 } },
+                match: {isDeleted: false},
+                options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
-                    match: { isDeleted: false },
-                    options: { sort: { levelNumber: -1 } },
+                    match: {isDeleted: false},
+                    options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'flats',
-                        match: { isDeleted: false },
-                        options: { sort: { flatNumber: 1 } },
+                        match: {isDeleted: false},
+                        options: {sort: {flatNumber: 1}},
                         populate: {
                             path: 'layout',
-                            match: { isDeleted: false }
+                            match: {isDeleted: false}
                         }
                     }
                 }
@@ -89,7 +89,7 @@ export const hosueQuery = {
             })
         };
     },
-    getGroupedFlatsBySection: async (parent, { uuid }) => {
+    getGroupedFlatsBySection: async (parent, {uuid}) => {
         const houses = await HouseModel.find({
             _id: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))
@@ -97,33 +97,33 @@ export const hosueQuery = {
         })
             .populate({
                 path: 'sections',
-                match: { isDeleted: false },
-                options: { sort: { sectionName: 1 } },
+                match: {isDeleted: false},
+                options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
-                    match: { isDeleted: false },
-                    options: { sort: { levelNumber: -1 } },
+                    match: {isDeleted: false},
+                    options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'flats',
-                        match: { isDeleted: false },
-                        options: { sort: { flatNumber: 1 } },
+                        match: {isDeleted: false},
+                        options: {sort: {flatNumber: 1}},
                         populate: {
                             path: 'layout',
-                            match: { isDeleted: false }
+                            match: {isDeleted: false}
                         }
                     }
                 }
             })
             .exec();
         const [result] = await FlatModel.aggregate([
-            { $match: { house: { $in: uuid.map((item) => mongoose.Types.ObjectId(item)) }, isDeleted: false } },
+            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
                 $group: {
                     _id: null,
-                    maxPrice: { $max: '$price' },
-                    minPrice: { $min: '$price' },
-                    maxArea: { $max: '$area' },
-                    minArea: { $min: '$area' }
+                    maxPrice: {$max: '$price'},
+                    minPrice: {$min: '$price'},
+                    maxArea: {$max: '$area'},
+                    minArea: {$min: '$area'}
                 }
             }
         ]).exec();
@@ -181,7 +181,7 @@ export const hosueQuery = {
 
         return res;
     },
-    getFlatsList: async (parent, { uuid }) => {
+    getFlatsList: async (parent, {uuid}) => {
         const houses = await HouseModel.find({
             _id: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))
@@ -189,19 +189,19 @@ export const hosueQuery = {
         })
             .populate({
                 path: 'sections',
-                match: { isDeleted: false },
-                options: { sort: { sectionName: 1 } },
+                match: {isDeleted: false},
+                options: {sort: {sectionName: 1}},
                 populate: {
                     path: 'levels',
-                    match: { isDeleted: false },
-                    options: { sort: { levelNumber: -1 } },
+                    match: {isDeleted: false},
+                    options: {sort: {levelNumber: -1}},
                     populate: {
                         path: 'flats',
-                        match: { isDeleted: false },
-                        options: { sort: { flatNumber: 1 } },
+                        match: {isDeleted: false},
+                        options: {sort: {flatNumber: 1}},
                         populate: {
                             path: 'layout',
-                            match: { isDeleted: false }
+                            match: {isDeleted: false}
                         }
                     }
                 }
@@ -229,23 +229,23 @@ export const hosueQuery = {
                         flats.forEach((flat) => {
                             flatsList.push(flat);
                         });
-                    })
+                    });
                 });
             }
         });
 
         return flatsList;
     },
-    getSectionData: async (parent, { sectionId }) => {
+    getSectionData: async (parent, {sectionId}) => {
         const section = await SectionModel.findById(sectionId)
             .populate({
                 path: 'levels',
-                match: { isDeleted: false },
-                options: { sort: { levelNumber: -1 } },
+                match: {isDeleted: false},
+                options: {sort: {levelNumber: -1}},
                 populate: {
                     path: 'flats',
-                    match: { isDeleted: false },
-                    options: { sort: { flatNumber: 1 } }
+                    match: {isDeleted: false},
+                    options: {sort: {flatNumber: 1}}
                 }
             })
             .exec();
@@ -275,9 +275,9 @@ export const hosueQuery = {
             return null;
         }
     },
-    getMaxLevelInSection: async (_, { sectionId }) => {
-        const [result] = await LevelModel.find({ section: sectionId, isDeleted: false }, 'levelNumber')
-            .sort({ levelNumber: -1 })
+    getMaxLevelInSection: async (_, {sectionId}) => {
+        const [result] = await LevelModel.find({section: sectionId, isDeleted: false}, 'levelNumber')
+            .sort({levelNumber: -1})
             .limit(1)
             .exec();
         return result ? result.levelNumber : 0;

@@ -7,6 +7,7 @@ import {
     FlatsInHouse,
     GET_GROUPED_FLATS_CHESSGRID,
     GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
+    GET_PUBLIC_FLATS_LIST,
     GetGroupedFlatsBySectionQuery,
     GroupedFlats,
     GET_FLAT_LIST
@@ -16,7 +17,7 @@ import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
-import FlatSidebarInfo from './FlatSidebarInfo/FlatSidebarInfo';
+import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
 import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer, SelectStyled} from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
@@ -40,25 +41,68 @@ export const ViewModeContext = React.createContext({selectedViewMode: ViewModeVa
 export const CellViewModeContext = React.createContext({mode: 'tile'});
 
 const ChessGridContent = React.memo(
-    ({filters, data, loading, error, hasSelect, isPublic, onFlatSelected, showRequestButton, listData}: any) => {
+    ({
+        filters,
+        data,
+        loading,
+        listLoading,
+        error,
+        listError,
+        hasSelect,
+        isPublic,
+        onFlatSelected,
+        showRequestButton,
+        listData
+    }: any) => {
         const [flatCardOpen, setFlatCardOpen] = useState(false);
         const [selectedFlat, setSelectedFlat] = useState<Flat>();
-        if (loading) {
+        if (loading || listLoading) {
             return <ChessGridWrapper>Loading</ChessGridWrapper>;
         }
 
-        if (error) {
+        if (error || listError) {
             return <ChessGridWrapper>Error :(</ChessGridWrapper>;
         }
 
-        if (!data) {
+        if (!data || !listData) {
             return null;
         }
 
         const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
 
+        const selectFlat = (flat: Flat) => {
+            setSelectedFlat(flat);
+            setFlatCardOpen(true);
+        };
+
         if (filters.mode === 'list') {
-            return <ChessListView listData={listData} filters={filters} />;
+            return (
+                <Fragment>
+                    <ChessListView listData={listData} filters={filters} onSelect={selectFlat} />
+
+                    <SidebarDrawer
+                        anchor="right"
+                        open={flatCardOpen}
+                        onOpen={() => {
+                            // silence
+                        }}
+                        onClose={() => {
+                            setFlatCardOpen(false);
+                            setSelectedFlat(undefined);
+                        }}
+                    >
+                        {selectedFlat && (
+                            <FlatSidebarInfo
+                                // @ts-ignore
+                                flat={selectedFlat}
+                                isPublic={isPublic}
+                                showRequestButton={showRequestButton}
+                                onFlatSelected={onFlatSelected}
+                            />
+                        )}
+                    </SidebarDrawer>
+                </Fragment>
+            );
         }
 
         return (
@@ -83,10 +127,7 @@ const ChessGridContent = React.memo(
                                                 key={item.id}
                                                 columnName={item.section}
                                                 levels={item.levels}
-                                                onSelect={(flat: Flat) => {
-                                                    setSelectedFlat(flat);
-                                                    setFlatCardOpen(true);
-                                                }}
+                                                onSelect={selectFlat}
                                             />
                                         );
                                     })}
@@ -136,6 +177,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
+    const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(QUERY, {
         fetchPolicy: 'cache-and-network',
         variables: {
@@ -144,7 +186,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
         skip: id.length === 0
     });
 
-    const {data: listData, error: e, loading: l} = useQuery<any>(GET_FLAT_LIST, {
+    const {data: listData, error: listError, loading: listLoading} = useQuery<any>(QUERY_LIST, {
         fetchPolicy: 'cache-and-network',
         variables: {
             uuid: id
@@ -155,10 +197,6 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     useEffect(() => {
         setMounted(true);
     }, []);
-
-    if (l) {
-        return null;
-    }
 
     let onHouseChange;
     if (hasSelect) {
@@ -207,12 +245,14 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     hasSelect={hasSelect}
                     filters={filters}
                     loading={loading}
+                    listLoading={listLoading}
                     error={error}
+                    listError={listError}
                     onFlatSelected={onFlatSelected}
                     isPublic={isPublic}
                     showRequestButton={showRequestButton}
                     data={id.length === 0 ? null : data}
-                    listData={listData || []}
+                    listData={id.length === 0 ? null : listData}
                 />
             </CellViewModeContext.Provider>
 

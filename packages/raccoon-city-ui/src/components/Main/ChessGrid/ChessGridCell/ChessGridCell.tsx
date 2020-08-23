@@ -30,10 +30,7 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             <Fragment>
                 <CellInfoWrapperTop>
                     <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
-                    <span>
-                        {`${flat.price} грн.`}
-                        {}
-                    </span>
+                    <span>{`${flat.price} грн.`}</span>
                 </CellInfoWrapperTop>
                 <CellInfoWrapperTop>
                     <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>

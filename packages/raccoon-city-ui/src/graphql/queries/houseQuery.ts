@@ -133,6 +133,25 @@ export const GET_PUBLIC_GROUPED_FLATS_CHESSGRID = gql`
     }
 `;
 
+export const GET_PUBLIC_FLATS_LIST = gql`
+    query getPublicFlatsList($uuid: [String]) {
+        getPublicFlatsList(uuid: $uuid) {
+            id
+            flatNumber
+            levelAmount
+            fakeLevel
+            price
+            level
+            section
+            area
+            status
+            sale
+            squarePrice
+            roomAmount
+        }
+    }
+`;
+
 export const GET_GROUPED_FLATS_CHESSGRID = gql`
     query getGroupedFlatsBySection($uuid: [String]) {
         getGroupedFlatsBySection(uuid: $uuid) {

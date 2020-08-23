@@ -90,6 +90,7 @@ extend type Query {
     getGroupedFlatsBySection(uuid: [String]): GroupedBySectionResult
     getFlatsList(uuid: [String]): [HouseFlat]
     getPublicGroupedFlatsBySection(uuid: [String]): GroupedBySectionResult
+    getPublicFlatsList(uuid: [String]): [HouseFlat]
     getSectionData(sectionId: String!): GroupedBySectionFlat
     getFlatSidebarInfo(flatId: String!): HouseSidebarFlat
     getPublicFlatSidebarInfo(flatId: String!): HouseSidebarFlat
