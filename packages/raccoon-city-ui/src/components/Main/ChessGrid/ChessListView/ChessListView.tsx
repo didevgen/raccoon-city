@@ -1,65 +1,86 @@
 import React from 'react';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {ListContainer, TableRowContainer} from './ChessListView.styled';
+
+import {TableRowCellContainer, RowContainer, TableCellContainer, DataTable} from './ChessListView.styled';
 import {isActive} from '../ChessGrid.utils';
 import {FLAT_STATUSES} from '../../../../core/constants';
-import {FlatSidebarInfo} from '../FlatSidebarInfo/FlatSidebarInfo';
+import {List, AutoSizer} from 'react-virtualized';
 
 export class ChessListView extends React.Component<any> {
-    public shouldComponentUpdate(): boolean {
-        return false;
+    public shouldComponentUpdate(nextProps): boolean {
+        const {filters} = this.props as any;
+        const {filters: nextFilters} = nextProps;
+
+        let isRender = JSON.stringify(filters) === JSON.stringify(nextFilters);
+
+        return !isRender;
     }
 
     render() {
         const {filters, onSelect, listData} = this.props as any;
         const {getPublicFlatsList, getFlatsList} = listData;
         const flatsList = getFlatsList ? getFlatsList : getPublicFlatsList;
+        const filteredList = flatsList.filter((flat) => isActive(flat, filters));
 
         return (
             <div>
-                <TableContainer component={Paper}>
-                    <ListContainer aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="right">Секция</TableCell>
-                                <TableCell align="right">Площадь</TableCell>
-                                <TableCell align="right">№ Квартиры</TableCell>
-                                <TableCell align="right">Этаж</TableCell>
-                                <TableCell align="right">Цена</TableCell>
-                                <TableCell align="right">Кол-во комнат</TableCell>
-                                <TableCell align="right">Цена за м2</TableCell>
-                                <TableCell align="right">Статус</TableCell>
-                                <TableCell align="right">Кол-во этажей</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {flatsList
-                                .filter((flat) => isActive(flat, filters))
-                                .map((flat: any) => (
-                                    <TableRowContainer key={flat.id} onClick={() => onSelect(flat)}>
-                                        <TableCell align="right">{flat.section}</TableCell>
-                                        <TableCell align="right">{flat.area}</TableCell>
-                                        <TableCell align="right">{flat.flatNumber}</TableCell>
-                                        <TableCell align="right">{flat.level}</TableCell>
-                                        <TableCell align="right">{flat.price}</TableCell>
-                                        <TableCell align="right">{flat.roomAmount}</TableCell>
-                                        <TableCell align="right">{flat.squarePrice}</TableCell>
-                                        <TableCell align="right">
-                                            {FLAT_STATUSES.find((statuses) => statuses.value === flat.status)?.label}
-                                        </TableCell>
-                                        <TableCell align="right">{flat.levelAmount}</TableCell>
-                                    </TableRowContainer>
-                                ))}
-                        </TableBody>
-                    </ListContainer>
-                </TableContainer>
+                <div
+                    style={{
+                        display: 'flex',
+                        paddingRight: '15px',
+                        backgroundColor: '#fff'
+                    }}
+                >
+                    <TableCellContainer>Секция</TableCellContainer>
+                    <TableCellContainer>Площадь</TableCellContainer>
+                    <TableCellContainer>№ Квартиры</TableCellContainer>
+                    <TableCellContainer>Этаж</TableCellContainer>
+                    <TableCellContainer>Цена</TableCellContainer>
+                    <TableCellContainer>Кол-во комнат</TableCellContainer>
+                    <TableCellContainer>Цена за м2</TableCellContainer>
+                    <TableCellContainer>Статус</TableCellContainer>
+                    <TableCellContainer>Кол-во этажей</TableCellContainer>
+                </div>
 
-                <FlatSidebarInfo flat={flatsList[0]} isPublic={true} showRequestButton={true} />
+                <DataTable
+                    style={{
+                        width: '100%',
+                        height: '65vh'
+                    }}
+                >
+                    <AutoSizer>
+                        {({width, height}) => (
+                            <List
+                                width={width}
+                                height={height}
+                                rowHeight={50}
+                                style={{outline: 'none'}}
+                                rowCount={filteredList.length}
+                                rowRenderer={({key, index, style, parent}) => {
+                                    const flat = filteredList[index];
+
+                                    return (
+                                        <RowContainer key={key} onClick={() => onSelect(flat)} style={style}>
+                                            <TableRowCellContainer>{flat.section}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.area}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.flatNumber}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.level}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.price}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.roomAmount}</TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.squarePrice}</TableRowCellContainer>
+                                            <TableRowCellContainer>
+                                                {
+                                                    FLAT_STATUSES.find((statuses) => statuses.value === flat.status)
+                                                        ?.label
+                                                }
+                                            </TableRowCellContainer>
+                                            <TableRowCellContainer>{flat.levelAmount}</TableRowCellContainer>
+                                        </RowContainer>
+                                    );
+                                }}
+                            />
+                        )}
+                    </AutoSizer>
+                </DataTable>
             </div>
         );
     }

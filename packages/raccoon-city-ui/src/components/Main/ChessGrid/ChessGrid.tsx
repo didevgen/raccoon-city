@@ -79,28 +79,29 @@ const ChessGridContent = React.memo(
             return (
                 <Fragment>
                     <ChessListView listData={listData} filters={filters} onSelect={selectFlat} />
-
-                    <SidebarDrawer
-                        anchor="right"
-                        open={flatCardOpen}
-                        onOpen={() => {
-                            // silence
-                        }}
-                        onClose={() => {
-                            setFlatCardOpen(false);
-                            setSelectedFlat(undefined);
-                        }}
-                    >
-                        {selectedFlat && (
-                            <FlatSidebarInfo
-                                // @ts-ignore
-                                flat={selectedFlat}
-                                isPublic={isPublic}
-                                showRequestButton={showRequestButton}
-                                onFlatSelected={onFlatSelected}
-                            />
-                        )}
-                    </SidebarDrawer>
+                    {flatCardOpen && (
+                        <SidebarDrawer
+                            anchor="right"
+                            open={flatCardOpen}
+                            onOpen={() => {
+                                // silence
+                            }}
+                            onClose={() => {
+                                setFlatCardOpen(false);
+                                setSelectedFlat(undefined);
+                            }}
+                        >
+                            {selectedFlat && (
+                                <FlatSidebarInfo
+                                    // @ts-ignore
+                                    flat={selectedFlat}
+                                    isPublic={isPublic}
+                                    showRequestButton={showRequestButton}
+                                    onFlatSelected={onFlatSelected}
+                                />
+                            )}
+                        </SidebarDrawer>
+                    )}
                 </Fragment>
             );
         }
