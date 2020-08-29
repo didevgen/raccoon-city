@@ -19,7 +19,7 @@ function checkArea(flat: Flat, price) {
     return price.minArea <= flat.area && flat.area <= price.maxArea;
 }
 
-function isActive(flat: Flat, filters) {
+export function isActive(flat: Flat, filters) {
     return (
         checkRoomAmount(flat, filters.selectedRoomAmount) &&
         checkPrice(flat, filters.price) &&

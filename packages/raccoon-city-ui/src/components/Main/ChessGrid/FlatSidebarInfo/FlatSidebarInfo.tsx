@@ -22,7 +22,6 @@ import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
 import FlatSidebarModal from './FlatSidebarModal';
-import {BrowserRouterProps, withRouter} from 'react-router-dom';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -53,19 +52,18 @@ const SendRequestContainer = styled.div`
     padding: 0px 15px;
 `;
 
-interface FlatSidebarInfoProps extends BrowserRouterProps {
+interface FlatSidebarInfoProps {
     flat: Flat;
     isPublic: boolean;
     showRequestButton: boolean;
     onFlatSelected?: (flat: Flat) => void;
-    match: any;
 }
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
 
-function FlatSidebarInfo(props: FlatSidebarInfoProps) {
+export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(
         props.isPublic ? GET_PUBLIC_FLAT_SIDEBAR_DATA : GET_FLAT_SIDEBAR_DATA,
         {
@@ -172,6 +170,3 @@ function FlatSidebarInfo(props: FlatSidebarInfoProps) {
         </FlatSidebarWrapper>
     );
 }
-
-// @ts-ignore
-export default withRouter(FlatSidebarInfo);

@@ -248,5 +248,41 @@ export const flatQuery = {
         });
 
         return res;
+    },
+    getPublicFlatsList: async (parent, {uuid}) => {
+        const houses = await PublishedHouseModel.find({
+            house: {
+                $in: uuid.map((item) => mongoose.Types.ObjectId(item))
+            }
+        }).exec();
+
+        const flatsList = [];
+
+        houses.forEach((data) => {
+            if (data.sections) {
+                data.sections.forEach((section: Section) => {
+                    section.levels.map((level: Level) => {
+                        const newFlat = {
+                            level: level.levelNumber,
+                            section: section.sectionName
+                        };
+
+                        const flats = level.flats.map((flat) => {
+                            return {
+                                id: flat.id,
+                                ...flat.toObject(),
+                                ...newFlat
+                            };
+                        });
+
+                        flats.forEach((flat) => {
+                            flatsList.push(flat);
+                        });
+                    });
+                });
+            }
+        });
+
+        return flatsList;
     }
 };

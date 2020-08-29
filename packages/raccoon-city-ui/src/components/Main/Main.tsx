@@ -17,7 +17,7 @@ import {Sidebar} from './Sidebar/Sidebar';
 const Content = styled.div`
     position: relative;
     max-width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 `;
 
 const ChessGrid = lazy(() => import('./ChessGrid/ChessGrid'));
