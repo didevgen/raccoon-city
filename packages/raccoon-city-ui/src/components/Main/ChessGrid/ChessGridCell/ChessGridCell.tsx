@@ -1,6 +1,6 @@
 import React, {useContext, Fragment} from 'react';
 import {Flat} from '../../../shared/types/flat.types';
-import {ViewModeContext, ViewModeValues, ChessCellViewMode, CellViewModeContext} from '../ChessGrid';
+import {ViewModeContext, CellViewModeContext} from '../ChessGrid';
 import {
     Cell,
     TooltipContainer,
@@ -14,6 +14,7 @@ import {
     CellInfoWrapper,
     CellInfoWrapperTop
 } from './ChessGridCell.styled';
+import {ChessCellViewMode, ViewModeValues} from '../ChessEnums';
 
 interface Props {
     flat: Flat;

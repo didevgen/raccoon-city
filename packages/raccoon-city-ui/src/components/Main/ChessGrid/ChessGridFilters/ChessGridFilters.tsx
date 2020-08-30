@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React, {Fragment, useEffect, useState, useContext} from 'react';
 import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
-import {ViewModeValues} from '../ChessGrid';
+import {ViewModeValues} from '../ChessEnums';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {CellViewModeContext} from '../ChessGrid';
 

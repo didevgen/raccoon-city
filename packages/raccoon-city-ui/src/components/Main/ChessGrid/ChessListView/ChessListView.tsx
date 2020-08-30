@@ -17,9 +17,7 @@ export class ChessListView extends React.Component<any> {
 
     render() {
         const {filters, onSelect, listData} = this.props as any;
-        const {getPublicFlatsList, getFlatsList} = listData;
-        const flatsList = getFlatsList ? getFlatsList : getPublicFlatsList;
-        const filteredList = flatsList.filter((flat) => isActive(flat, filters));
+        const filteredList = listData.filter((flat) => isActive(flat, filters));
 
         return (
             <div>
@@ -44,7 +42,7 @@ export class ChessListView extends React.Component<any> {
                 <DataTable
                     style={{
                         width: '100%',
-                        height: '65vh'
+                        height: '63vh'
                     }}
                 >
                     <AutoSizer>
