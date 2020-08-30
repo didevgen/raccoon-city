@@ -24,24 +24,13 @@ import {showMutedFlats} from './ChessGrid.utils';
 import {initialState, reducer} from './ChessGrid.reducer';
 import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
-
-export enum ViewModeValues {
-    AREA = 'area',
-    ROOM = 'roomAmount',
-    NUMBER = 'flatNumber'
-}
-
-export enum ChessCellViewMode {
-    TILE = 'tile',
-    TILE_PLUS = 'tilePlus',
-    LIST = 'list'
-}
+import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
-export const CellViewModeContext = React.createContext({mode: 'tile'});
+export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
 
-const ChessGridContent = React.memo(
-    ({
+const ChessGridContent = React.memo((props: any) => {
+    const {
         filters,
         data,
         loading,
@@ -53,90 +42,38 @@ const ChessGridContent = React.memo(
         onFlatSelected,
         showRequestButton,
         listData
-    }: any) => {
-        const [flatCardOpen, setFlatCardOpen] = useState(false);
-        const [selectedFlat, setSelectedFlat] = useState<Flat>();
-        if (loading || listLoading) {
-            return <ChessGridWrapper>Loading</ChessGridWrapper>;
-        }
+    } = props;
 
-        if (error || listError) {
-            return <ChessGridWrapper>Error :(</ChessGridWrapper>;
-        }
+    const [flatCardOpen, setFlatCardOpen] = useState(false);
+    const [selectedFlat, setSelectedFlat] = useState<Flat>();
 
-        if (!data || !listData) {
-            return null;
-        }
+    if (loading || listLoading) {
+        return <ChessGridWrapper>Loading</ChessGridWrapper>;
+    }
 
-        const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
+    if (error || listError) {
+        return <ChessGridWrapper>Error :(</ChessGridWrapper>;
+    }
 
-        const selectFlat = (flat: Flat) => {
-            setSelectedFlat(flat);
-            setFlatCardOpen(true);
-        };
+    if (!data || !listData) {
+        return null;
+    }
 
-        if (filters.mode === 'list') {
-            return (
-                <Fragment>
-                    <ChessListView listData={listData} filters={filters} onSelect={selectFlat} />
-                    {flatCardOpen && (
-                        <SidebarDrawer
-                            anchor="right"
-                            open={flatCardOpen}
-                            onOpen={() => {
-                                // silence
-                            }}
-                            onClose={() => {
-                                setFlatCardOpen(false);
-                                setSelectedFlat(undefined);
-                            }}
-                        >
-                            {selectedFlat && (
-                                <FlatSidebarInfo
-                                    // @ts-ignore
-                                    flat={selectedFlat}
-                                    isPublic={isPublic}
-                                    showRequestButton={showRequestButton}
-                                    onFlatSelected={onFlatSelected}
-                                />
-                            )}
-                        </SidebarDrawer>
-                    )}
-                </Fragment>
-            );
-        }
+    const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
+    const {getPublicFlatsList, getFlatsList} = listData;
+    const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 
+    const selectFlat = (flat: Flat) => {
+        setSelectedFlat(flat);
+        setFlatCardOpen(true);
+    };
+
+    if (filters.mode === 'list') {
         return (
-            <ViewModeContext.Provider value={filters}>
-                <ChessGridWrapper hasSelect={hasSelect}>
-                    {houseFlats.map((group: FlatsInHouse) => {
-                        const {groupedFlats} = group;
+            <Fragment>
+                <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
 
-                        if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
-                            return null;
-                        }
-
-                        return (
-                            <Container key={group.id}>
-                                <ColumnTitle variant="h5" gutterBottom>
-                                    {group.name}
-                                </ColumnTitle>
-                                <ColumnWrapper>
-                                    {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
-                                        return (
-                                            <ChessGridColumn
-                                                key={item.id}
-                                                columnName={item.section}
-                                                levels={item.levels}
-                                                onSelect={selectFlat}
-                                            />
-                                        );
-                                    })}
-                                </ColumnWrapper>
-                            </Container>
-                        );
-                    })}
-
+                {flatCardOpen && (
                     <SidebarDrawer
                         anchor="right"
                         open={flatCardOpen}
@@ -158,11 +95,67 @@ const ChessGridContent = React.memo(
                             />
                         )}
                     </SidebarDrawer>
-                </ChessGridWrapper>
-            </ViewModeContext.Provider>
+                )}
+            </Fragment>
         );
     }
-);
+
+    return (
+        <ViewModeContext.Provider value={filters}>
+            <ChessGridWrapper hasSelect={hasSelect}>
+                {houseFlats.map((group: FlatsInHouse) => {
+                    const {groupedFlats} = group;
+
+                    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
+                        return null;
+                    }
+
+                    return (
+                        <Container key={group.id}>
+                            <ColumnTitle variant="h5" gutterBottom>
+                                {group.name}
+                            </ColumnTitle>
+                            <ColumnWrapper>
+                                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                                    return (
+                                        <ChessGridColumn
+                                            key={item.id}
+                                            columnName={item.section}
+                                            levels={item.levels}
+                                            onSelect={selectFlat}
+                                        />
+                                    );
+                                })}
+                            </ColumnWrapper>
+                        </Container>
+                    );
+                })}
+
+                <SidebarDrawer
+                    anchor="right"
+                    open={flatCardOpen}
+                    onOpen={() => {
+                        // silence
+                    }}
+                    onClose={() => {
+                        setFlatCardOpen(false);
+                        setSelectedFlat(undefined);
+                    }}
+                >
+                    {selectedFlat && (
+                        <FlatSidebarInfo
+                            // @ts-ignore
+                            flat={selectedFlat}
+                            isPublic={isPublic}
+                            showRequestButton={showRequestButton}
+                            onFlatSelected={onFlatSelected}
+                        />
+                    )}
+                </SidebarDrawer>
+            </ChessGridWrapper>
+        </ViewModeContext.Provider>
+    );
+});
 
 function FilterIcon({setShownFilters, id}) {
     const elem = document.getElementById(id);
@@ -175,10 +168,12 @@ function FilterIcon({setShownFilters, id}) {
 export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton, onFlatSelected, filterId}) => {
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
-    const [filters, dispatch] = useReducer(reducer, initialState);
     const [id, setId] = useState(uuid ? [uuid] : []);
+    const [filters, dispatch] = useReducer(reducer, initialState);
+
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;
+
     const {data, error, loading} = useQuery<GetGroupedFlatsBySectionQuery>(QUERY, {
         fetchPolicy: 'cache-and-network',
         variables: {
@@ -229,12 +224,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
             <div>
                 {!isPublic && <PublicLink />}
-                <SelectStyled
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={filters.mode}
-                    onChange={changeChessView}
-                >
+                <SelectStyled value={filters.mode} onChange={changeChessView}>
                     <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
                     <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
                     <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>

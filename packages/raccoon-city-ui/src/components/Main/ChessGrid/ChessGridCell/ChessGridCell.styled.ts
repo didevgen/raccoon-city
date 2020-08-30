@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components';
 import {Badge, Theme, withStyles} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
-import {ChessCellViewMode} from '../ChessGrid';
+import {ChessCellViewMode} from '../ChessEnums';
 
 const TileView = css`
     width: 56px;

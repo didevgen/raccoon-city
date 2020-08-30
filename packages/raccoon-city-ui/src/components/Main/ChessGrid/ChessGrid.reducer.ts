@@ -1,16 +1,4 @@
-// TODO refactor
-export enum ViewModeValues {
-    AREA = 'area',
-    ROOM = 'roomAmount',
-    NUMBER = 'flatNumber'
-}
-
-// TODO refactor
-export enum ChessCellViewMode {
-    TILE = 'tile',
-    TILE_PLUS = 'tilePlus',
-    LIST = 'list'
-}
+import {ViewModeValues, ChessCellViewMode} from './ChessEnums';
 
 export const initialState = {
     selectedViewMode: ViewModeValues.AREA,
