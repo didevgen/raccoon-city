@@ -88,7 +88,9 @@ type Mutation {
 extend type Query {
     getFlats(uuid: String!): [HouseFlat]
     getGroupedFlatsBySection(uuid: [String]): GroupedBySectionResult
+    getFlatsList(uuid: [String]): [HouseFlat]
     getPublicGroupedFlatsBySection(uuid: [String]): GroupedBySectionResult
+    getPublicFlatsList(uuid: [String]): [HouseFlat]
     getSectionData(sectionId: String!): GroupedBySectionFlat
     getFlatSidebarInfo(flatId: String!): HouseSidebarFlat
     getPublicFlatSidebarInfo(flatId: String!): HouseSidebarFlat

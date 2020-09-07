@@ -181,6 +181,61 @@ export const hosueQuery = {
 
         return res;
     },
+    getFlatsList: async (parent, {uuid}) => {
+        const houses = await HouseModel.find({
+            _id: {
+                $in: uuid.map((item) => mongoose.Types.ObjectId(item))
+            }
+        })
+            .populate({
+                path: 'sections',
+                match: {isDeleted: false},
+                options: {sort: {sectionName: 1}},
+                populate: {
+                    path: 'levels',
+                    match: {isDeleted: false},
+                    options: {sort: {levelNumber: -1}},
+                    populate: {
+                        path: 'flats',
+                        match: {isDeleted: false},
+                        options: {sort: {flatNumber: 1}},
+                        populate: {
+                            path: 'layout',
+                            match: {isDeleted: false}
+                        }
+                    }
+                }
+            })
+            .exec();
+
+        const flatsList = [];
+
+        houses.forEach((data) => {
+            if (data.sections) {
+                data.sections.forEach((section: Section) => {
+                    section.levels.map((level: Level) => {
+                        const newFlat = {
+                            level: level.levelNumber,
+                            section: section.sectionName
+                        };
+
+                        const flats = level.flats.map((flat) => {
+                            return {
+                                ...flat.toObject(),
+                                ...newFlat
+                            };
+                        });
+
+                        flats.forEach((flat) => {
+                            flatsList.push(flat);
+                        });
+                    });
+                });
+            }
+        });
+
+        return flatsList;
+    },
     getSectionData: async (parent, {sectionId}) => {
         const section = await SectionModel.findById(sectionId)
             .populate({

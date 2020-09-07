@@ -2,11 +2,12 @@ import {Avatar, Grid, Slider, Tooltip} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
-import {ViewModeValues} from '../ChessGrid';
+import {ViewModeValues} from '../ChessEnums';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
+import {CellViewModeContext} from '../ChessGrid';
 
 const SelectContainer = styled.div`
     display: flex;
@@ -323,6 +324,7 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
 function ViewMode({dispatch}) {
     const initialView = 'area';
     const [selected, setSelected] = useState(initialView);
+    const cellView = useContext<any>(CellViewModeContext);
 
     const isSelected = (value) => {
         return {
@@ -330,6 +332,11 @@ function ViewMode({dispatch}) {
             empty: selected !== value
         };
     };
+
+    if (cellView.mode !== 'tile') {
+        return null;
+    }
+
     return (
         <FilterItemContainer>
             <FilterTitle>Режим просмотра</FilterTitle>
