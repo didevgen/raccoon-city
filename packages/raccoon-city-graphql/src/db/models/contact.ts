@@ -11,6 +11,7 @@ export interface Contact extends Document {
     responsible: User;
     isDeleted: boolean;
     clientSources: string;
+    amoId?: string;
 }
 
 const ContactSchema: Schema = new Schema(
@@ -29,6 +30,7 @@ const ContactSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Developer'
         },
+        amoId: {type: Schema.Types.String},
         isDeleted: {type: Schema.Types.Boolean, default: false}
     },
     {

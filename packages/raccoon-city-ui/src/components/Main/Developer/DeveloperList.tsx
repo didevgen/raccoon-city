@@ -31,6 +31,9 @@ function DeveloperCard(props: DeveloperCardProps) {
                 <StyledLink to={`/developer/${props.id}/edit`}>
                     <MenuItem>Редактировать</MenuItem>
                 </StyledLink>
+                <StyledLink to={`/developer/${props.id}/amo`}>
+                    <MenuItem>AMO интеграция</MenuItem>
+                </StyledLink>
                 <Confirmation>
                     {(confirmFn: (cb: () => void) => void) => {
                         return (

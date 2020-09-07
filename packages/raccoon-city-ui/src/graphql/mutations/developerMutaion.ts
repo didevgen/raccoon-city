@@ -21,3 +21,9 @@ export const DELETE_DEVELOPER = gql`
         deleteDeveloper(id: $id)
     }
 `;
+
+export const CONFIGURE_AMO = gql`
+    mutation configureAmo($id: String!, $amoConfig: AMOInput) {
+        configureAmo(id: $id, amoConfig: $amoConfig)
+    }
+`;

@@ -1,8 +1,9 @@
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
-import {cities} from '../../constants/cities';
 import {DeveloperModel} from '../../db/models/developer';
 import {DataImageService} from '../../db/services/dataImageService';
 import {PhotosService} from '../../services/image/photos';
+import axios from 'axios';
+import {addDays} from 'date-fns';
 
 class LogoDbService implements DataImageService {
     constructor(private developerId: string) {}
@@ -73,5 +74,44 @@ export const developerMutation = {
         }
 
         return developer;
+    },
+    async configureAmo(_, {id, amoConfig}, {redis}) {
+        try {
+            const {data} = await axios.post(
+                `https://${amoConfig.domain}.amocrm.ru/oauth2/access_token`,
+                {
+                    client_id: amoConfig.integrationId,
+                    client_secret: amoConfig.secretKey,
+                    grant_type: 'authorization_code',
+                    code: amoConfig.authCode,
+                    redirect_uri: amoConfig.redirectUrl
+                },
+                {
+                    headers: {
+                        'User-Agent': 'amoCRM/oAuth Client 1.0'
+                    }
+                }
+            );
+            const {expires_in, access_token, refresh_token} = data;
+            await Promise.all([
+                redis.set(`${id}-access`, access_token, 'ex', expires_in),
+                redis.set(
+                    `${id}-amo`,
+                    JSON.stringify({
+                        refresh_token,
+                        domain: amoConfig.domain,
+                        client_id: amoConfig.integrationId,
+                        client_secret: amoConfig.secretKey,
+                        redirect_uri: amoConfig.redirectUrl,
+                        expires: addDays(new Date(), 90).toISOString()
+                    }),
+                    'ex',
+                    expires_in * 30 * 3
+                )
+            ]);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 };

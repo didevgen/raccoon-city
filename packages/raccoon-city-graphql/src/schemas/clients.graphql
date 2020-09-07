@@ -24,6 +24,7 @@ type Mutation {
     createContact(developerUuid: String!, contact: ContactInput!): Contact
     updateContact(uuid: String!, contact: ContactInput!): Contact
     deleteContact(uuid: String!): Boolean
+    syncWithAmo(developerUuid: String!): Boolean
 }
 
 extend type Query {

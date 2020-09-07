@@ -8,12 +8,31 @@ import MaterialTable, {MTableToolbar} from 'material-table';
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {DELETE_CONTACT} from '../../../graphql/mutations/contactMutation';
+import {DELETE_CONTACT, SYNC_WITH_AMO} from '../../../graphql/mutations/contactMutation';
 import {ALL_CONTACTS} from '../../../graphql/queries/contactQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import Contact from './Contact/Contact';
 
+function SyncWithAmo({developerUuid}) {
+    const [syncMutation] = useMutation(SYNC_WITH_AMO, {
+        variables: {
+            developerUuid
+        }
+    });
+    return (
+        <Button
+            variant="contained"
+            color="primary"
+            startIcon={<GetAppIcon />}
+            onClick={async () => {
+                await syncMutation();
+            }}
+        >
+            Sync
+        </Button>
+    );
+}
 export const Contacts = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
@@ -62,6 +81,7 @@ export const Contacts = connect(null, (dispatch) => ({
                     Скачать csv
                 </Button>
             </a>
+            <SyncWithAmo developerUuid={params.developerUuid} />
             <MaterialTable
                 columns={[
                     {

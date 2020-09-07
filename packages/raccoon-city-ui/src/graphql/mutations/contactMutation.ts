@@ -21,3 +21,9 @@ export const DELETE_CONTACT = gql`
         deleteContact(uuid: $uuid)
     }
 `;
+
+export const SYNC_WITH_AMO = gql`
+    mutation syncWithAmo($developerUuid: String!) {
+        syncWithAmo(developerUuid: $developerUuid)
+    }
+`;

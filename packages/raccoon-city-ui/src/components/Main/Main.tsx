@@ -13,6 +13,7 @@ import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
 import {Sidebar} from './Sidebar/Sidebar';
+import {AmoIntegration} from './Developer/AmoIntegration';
 
 const Content = styled.div`
     position: relative;
@@ -83,6 +84,9 @@ export function Main() {
                         </Route>
                         <Route exact={true} path="/developer/:developerUuid/edit">
                             <DeveloperEditForm />
+                        </Route>
+                        <Route exact={true} path="/developer/:developerUuid/amo">
+                            <AmoIntegration />
                         </Route>
                         <Route exact={true} path="/developers/:developerUuid/contacts">
                             <Contacts />

@@ -49,5 +49,8 @@ export const developerQuery = {
         });
 
         return res || [];
+    },
+    async checkAmo(_, {uuid}, {redis}) {
+        return !!(await redis.get(`${uuid}-amo`));
     }
 };

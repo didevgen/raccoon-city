@@ -17,7 +17,7 @@ async function tradeTokenForUser(token: string) {
     return userObj ? userObj : null;
 }
 
-const redis = new Redis();
+export const redis = new Redis();
 export const app = express();
 app.use(cors());
 app.use(require('./routes/spreadsheets'));
