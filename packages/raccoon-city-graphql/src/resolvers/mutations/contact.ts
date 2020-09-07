@@ -1,7 +1,7 @@
 import {Context} from '../../utils';
 import {Contact, ContactModel} from '../../db/models/contact';
 import {sendAmoGetFullRequest, sendAmoGetRequest} from '../../services/amo/amo.service';
-import {mapContacts} from '../../services/amo/amoContacts.service';
+import {mapContacts, saveContacts} from '../../services/amo/amoContacts.service';
 
 export const contactsMutation = {
     async createContact(parent, args, ctx: Context): Promise<Contact> {
@@ -39,9 +39,16 @@ export const contactsMutation = {
         return true;
     },
     async syncWithAmo(parent, {developerUuid}, {redis}) {
-        const response = await sendAmoGetRequest(developerUuid, {path: '/api/v4/contacts', params: {
-                limit: 250
-            }}, redis);
+        const response = await sendAmoGetRequest(
+            developerUuid,
+            {
+                path: '/api/v4/contacts',
+                params: {
+                    limit: 250
+                }
+            },
+            redis
+        );
         const {data} = response;
         const {_links, _embedded} = data;
         let contactArr: any[] = [..._embedded.contacts];
@@ -57,6 +64,7 @@ export const contactsMutation = {
             contactArr = contactArr.concat(_embedded.contacts);
         }
         const mapped = await mapContacts(contactArr);
+        await saveContacts(developerUuid, mapped);
         return true;
     }
 };

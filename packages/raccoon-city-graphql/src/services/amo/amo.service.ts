@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {addDays} from "date-fns";
+import {addDays} from 'date-fns';
 
 export async function getAmoData(developerId, redis) {
     const data = await redis.get(`${developerId}-amo`);
@@ -27,12 +27,11 @@ export async function sendAmoGetRequest(developerId, {path, params}, redis) {
     return axios.get(`https://${amoConfig.domain}.amocrm.ru${path}`, {
         headers: {
             'User-Agent': 'amoCRM/oAuth Client 1.0',
-            'Authorization': `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`
         },
         params
-    })
+    });
 }
-
 
 export async function sendAmoGetFullRequest(developerId, {url, params}, redis) {
     const amoConfig = await getAmoData(developerId, redis);
@@ -50,16 +49,13 @@ export async function sendAmoGetFullRequest(developerId, {url, params}, redis) {
     return axios.get(url, {
         headers: {
             'User-Agent': 'amoCRM/oAuth Client 1.0',
-            'Authorization': `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`
         },
         params
-    })
+    });
 }
 export async function getAcessToken(id, redis) {
-    const [accessToken, refreshToken] = await Promise.all([
-        redis.get(`${id}-access`),
-        redis.get(`${id}-amo`)
-    ])
+    const [accessToken, refreshToken] = await Promise.all([redis.get(`${id}-access`), redis.get(`${id}-amo`)]);
     if (accessToken) {
         return accessToken;
     }
@@ -107,5 +103,3 @@ export async function getAcessToken(id, redis) {
 
     return null;
 }
-
-
