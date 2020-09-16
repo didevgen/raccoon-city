@@ -20,7 +20,10 @@ async function tradeTokenForUser(token: string) {
 export const redis = new Redis();
 export const app = express();
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(require('./routes/spreadsheets'));
+app.use(require('./routes/amoContacts'));
 const server = new ApolloServer({
     typeDefs: gql`
         ${typeDefs}
