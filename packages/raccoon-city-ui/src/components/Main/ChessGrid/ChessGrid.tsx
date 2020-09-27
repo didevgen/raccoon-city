@@ -24,6 +24,7 @@ import {showMutedFlats} from './ChessGrid.utils';
 import {initialState, reducer} from './ChessGrid.reducer';
 import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
+import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
@@ -63,12 +64,23 @@ const ChessGridContent = React.memo((props: any) => {
     const {getPublicFlatsList, getFlatsList} = listData;
     const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 
+    console.log('houseFlats');
+    console.log(houseFlats);
+
     const selectFlat = (flat: Flat) => {
         setSelectedFlat(flat);
         setFlatCardOpen(true);
     };
 
-    if (filters.mode === 'list') {
+    if (filters.mode === ChessCellViewMode.FLOOR) {
+        return (
+            <Fragment>
+                <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} />
+            </Fragment>
+        );
+    }
+
+    if (filters.mode === ChessCellViewMode.LIST) {
         return (
             <Fragment>
                 <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
@@ -228,6 +240,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
                     <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
                     <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>
+                    <MenuItem value={ChessCellViewMode.FLOOR}>Этаж</MenuItem>
                 </SelectStyled>
             </div>
 

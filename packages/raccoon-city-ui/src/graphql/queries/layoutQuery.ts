@@ -95,3 +95,49 @@ export const GET_LEVEL_LAYOUTS = gql`
         }
     }
 `;
+
+export const GET_LEVEL_LAYOUTS_EXTENDED = gql`
+    query getLevelLayoutsToChessView($houseId: String!) {
+        getLevelLayoutsToChessView(houseId: $houseId) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
+            levels
+        }
+    }
+`;
+
+export const GET_FLATS_LAYOUTS_EXTENDED = gql`
+    query getFlatsLayoutsByIds($levelId: String, $houseId: String, $flatsIds: [String]) {
+        getFlatsLayoutsByIds(levelId: $levelId, houseId: $houseId, flatsIds: $flatsIds) {
+            flatInfo {
+                flatNumber
+                price
+                level
+                squarePrice
+                levelAmount
+                status
+                id
+                layout
+                roomAmount
+                area
+            }
+            svgInfo {
+                paths
+                viewBox {
+                    width
+                    height
+                }
+                id
+                image {
+                    downloadUrl
+                    name
+                    previewImageUrl
+                }
+            }
+        }
+    }
+`;

@@ -14,6 +14,7 @@ export interface LevelLayout extends Document {
     flatLayouts: LevelFlatLayout[];
 }
 
+// СНАЧАЛА ЭТО
 const LevelLayoutSchema: Schema = new Schema(
     {
         name: Schema.Types.String,

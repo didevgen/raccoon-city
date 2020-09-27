@@ -7,7 +7,7 @@ export const ListContainer = styled.div`
 
 export const TableRowCellContainer = styled.div`
     width: 11.111%;
-    height: 100%;
+    (height):100% ;
     display: flex;
     justify-content: center;
     align-items: center;
