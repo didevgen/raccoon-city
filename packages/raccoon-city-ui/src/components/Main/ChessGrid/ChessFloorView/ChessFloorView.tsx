@@ -1,18 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
     FloorViewContainer,
     FloorsListContainer,
     FloorContentContainer,
     FloorsListItem,
     FloorLegendInfo,
-    FloorLegendItem
+    FloorLegendItem,
+    FlatInfo
 } from './ChessFloorView.styled';
 import {Button, Select, MenuItem} from '@material-ui/core';
 import {GET_LEVEL_LAYOUTS_EXTENDED, GET_FLATS_LAYOUTS_EXTENDED} from '../../../../graphql/queries/layoutQuery';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_FLAT_SIDEBAR_DATA} from '../../../../graphql/queries/flatQuery';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
-import {getSections, getFlatsIds, getImageUrl} from './ChessFloorUtils';
+import {getSections, getFlatsIds} from './ChessFloorUtils';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats} = props;
@@ -44,32 +45,31 @@ export const ChessFloorView = (props) => {
         return null;
     }
 
-    const {getFlatsLayoutsByIds} = flatsData;
+    console.log('flatsData-------');
+    console.log(flatsData);
+
+    const {
+        getFlatsLayoutsByIds: {fullFlatsInfo, image}
+    } = flatsData;
 
     let info: any = null;
 
     function getInfo() {
-        if (!getFlatsLayoutsByIds) {
+        if (!fullFlatsInfo) {
             return;
         }
 
-        const res = getFlatsLayoutsByIds.find(({svgInfo}) => svgInfo.id === currentDataId);
+        const res = fullFlatsInfo.find(({svgInfo}) => svgInfo.id === currentDataId);
         info = res?.flatInfo;
     }
 
-    const toDraw = getFlatsLayoutsByIds.map(({svgInfo, flatInfo: {status}}) => ({...svgInfo, status}));
+    const toDraw = fullFlatsInfo.map(({svgInfo, flatInfo: {status}}) => ({...svgInfo, status}));
 
+    // TODO resolve this
     getInfo();
 
     return (
         <FloorViewContainer>
-            <div>
-                {info && (
-                    <span
-                        style={{fontSize: '20px'}}
-                    >{`Номер: ${info.flatNumber} Статус: ${info.status} Цена: ${info.price} Цена м2: ${info.squarePrice}`}</span>
-                )}
-            </div>
             <FloorLegendInfo>
                 <FloorLegendItem color="#4caf50">
                     <div></div>
@@ -125,12 +125,28 @@ export const ChessFloorView = (props) => {
                     })}
                 </FloorsListContainer>
                 <FloorContentContainer>
+                    <FlatInfo>
+                        {info ? (
+                            <>
+                                <span>{`№${info.flatNumber}`}</span>
+                                <span>{`Статус: ${info.status}`}</span>
+                                <span>{`Цена: ${info.price}`}</span>
+                                <span>{`М2: ${info.area}`}</span>
+                                <span>{`Цена м2: ${info.squarePrice}`}</span>
+                                <span>{`Комнат: ${info.roomAmount}`}</span>
+                                <span>{`Этажей: ${info.levelAmount}`}</span>
+                            </>
+                        ) : (
+                            <span>Наведите на квартиру</span>
+                        )}
+                    </FlatInfo>
                     <div>
-                        {flatsData.getFlatsLayoutsByIds.length && (
+                        {fullFlatsInfo.length && (
                             <LayoutView
                                 isLarge={true}
+                                onSelect={onSelect}
                                 levelLayouts={toDraw}
-                                mainImage={getImageUrl(data, currentFloor)}
+                                floorImage={image}
                                 setCurrentDataId={setCurrentDataId}
                             />
                         )}

@@ -62,10 +62,19 @@ type svgInfo {
     image: PreviewImage
 }
 
-type res {
+type FloorViewData {
     flatLayout: flatLayout
     flatInfo: flatInfo
     svgInfo: svgInfo
+}
+
+type FloorViewImage {
+    previewImageUrl: String
+}
+
+type FloorViewInfo {
+    image: FloorViewImage
+    fullFlatsInfo: [FloorViewData]
 }
 
 type HouseSidebarFlatLevelLayouts1 {
@@ -78,9 +87,7 @@ type HouseSidebarFlatLevelLayouts1 {
 type Query {
     getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
     getLevelLayoutFlatLayouts(levelLayoutId: String): [LevelLayoutFlatLayout]
-    getFlatsLayoutsByIds(
-        levelId: String, houseId: String, flatsIds: [String]
-    ): [res]
+    getFlatsLayoutsByIds(levelId: String, houseId: String, flatsIds: [String]): FloorViewInfo
 }
 
 type Mutation {

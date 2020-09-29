@@ -113,29 +113,34 @@ export const GET_LEVEL_LAYOUTS_EXTENDED = gql`
 export const GET_FLATS_LAYOUTS_EXTENDED = gql`
     query getFlatsLayoutsByIds($levelId: String, $houseId: String, $flatsIds: [String]) {
         getFlatsLayoutsByIds(levelId: $levelId, houseId: $houseId, flatsIds: $flatsIds) {
-            flatInfo {
-                flatNumber
-                price
-                level
-                squarePrice
-                levelAmount
-                status
-                id
-                layout
-                roomAmount
-                area
+            image {
+                previewImageUrl
             }
-            svgInfo {
-                paths
-                viewBox {
-                    width
-                    height
+            fullFlatsInfo {
+                flatInfo {
+                    flatNumber
+                    price
+                    level
+                    squarePrice
+                    levelAmount
+                    status
+                    id
+                    layout
+                    roomAmount
+                    area
                 }
-                id
-                image {
-                    downloadUrl
-                    name
-                    previewImageUrl
+                svgInfo {
+                    paths
+                    viewBox {
+                        width
+                        height
+                    }
+                    id
+                    image {
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
                 }
             }
         }

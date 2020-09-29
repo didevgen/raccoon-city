@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import groupBy from 'ramda/src/groupBy';
-import { Flat, FlatModel } from '../../db/models/flat';
-import { LevelFlatLayout, LevelFlatLayoutModel } from '../../db/models/levelFlatLayout';
-import { SinglePreviewImage } from '../../types/shared';
+import {Flat, FlatModel} from '../../db/models/flat';
+import {LevelFlatLayout, LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
+import {SinglePreviewImage} from '../../types/shared';
 import HouseModel from '../../db/models/house';
-import { Section } from '../../db/models/section';
-import { Level } from '../../db/models/level';
-import { PublishedHouseModel } from '../../db/models/publishedHouse';
+import {Section} from '../../db/models/section';
+import {Level} from '../../db/models/level';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
@@ -28,29 +28,29 @@ export interface FlatLevelLayouts {
 }
 
 export const flatQuery = {
-    getFlatSidebarInfo: async (parent, { flatId }) => {
-        const flat = await FlatModel.findOne({ _id: flatId, isDeleted: false })
+    getFlatSidebarInfo: async (parent, {flatId}) => {
+        const flat = await FlatModel.findOne({_id: flatId, isDeleted: false})
             .populate({
                 path: 'layout',
-                match: { isDeleted: false }
+                match: {isDeleted: false}
             })
             .populate({
                 path: 'section',
-                match: { isDeleted: false }
+                match: {isDeleted: false}
             })
             .populate({
                 path: 'level',
-                match: { isDeleted: false }
+                match: {isDeleted: false}
             })
             .populate({
                 path: 'house',
-                match: { isDeleted: false },
+                match: {isDeleted: false},
                 populate: {
                     path: 'apartmentComplex',
-                    match: { isDeleted: false },
+                    match: {isDeleted: false},
                     populate: {
                         path: 'developer',
-                        match: { isDeleted: false }
+                        match: {isDeleted: false}
                     }
                 }
             })
@@ -76,7 +76,7 @@ export const flatQuery = {
         })
             .populate({
                 path: 'levelLayout',
-                match: { isDeleted: false }
+                match: {isDeleted: false}
             })
             .exec();
 
@@ -84,7 +84,7 @@ export const flatQuery = {
             const newFlat: FlatInfo = flatObj as FlatInfo;
             const result = groupByLevelLayout(levelFlatLayouts);
 
-            console.log("result");
+            console.log('result');
             console.log(result);
 
             newFlat.levelLayouts = Object.keys(result).map((key) => {
@@ -106,7 +106,7 @@ export const flatQuery = {
 
         return flatObj;
     },
-    getPublicFlatSidebarInfo: async (parent, { flatId }) => {
+    getPublicFlatSidebarInfo: async (parent, {flatId}) => {
         const [house] = await PublishedHouseModel.aggregate([
             {
                 $unwind: '$sections'
@@ -117,7 +117,7 @@ export const flatQuery = {
             {
                 $unwind: '$sections.levels.flats'
             },
-            { $match: { 'sections.levels.flats._id': mongoose.Types.ObjectId(flatId) } }
+            {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}}
         ]).exec();
 
         if (!house) {
@@ -172,7 +172,7 @@ export const flatQuery = {
             });
         return flat;
     },
-    getPublicGroupedFlatsBySection: async (parent, { uuid }) => {
+    getPublicGroupedFlatsBySection: async (parent, {uuid}) => {
         const houses = await PublishedHouseModel.find({
             house: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))
@@ -180,7 +180,7 @@ export const flatQuery = {
         }).exec();
 
         const [result] = await PublishedHouseModel.aggregate([
-            { $match: { house: { $in: uuid.map((item) => mongoose.Types.ObjectId(item)) }, isDeleted: false } },
+            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
                 $unwind: '$sections'
             },
@@ -193,10 +193,10 @@ export const flatQuery = {
             {
                 $group: {
                     _id: null,
-                    maxPrice: { $max: '$sections.levels.flats.price' },
-                    minPrice: { $min: '$sections.levels.flats.price' },
-                    maxArea: { $max: '$sections.levels.flats.area' },
-                    minArea: { $min: '$sections.levels.flats.area' }
+                    maxPrice: {$max: '$sections.levels.flats.price'},
+                    minPrice: {$min: '$sections.levels.flats.price'},
+                    maxArea: {$max: '$sections.levels.flats.area'},
+                    minArea: {$min: '$sections.levels.flats.area'}
                 }
             }
         ]).exec();
@@ -255,7 +255,7 @@ export const flatQuery = {
 
         return res;
     },
-    getPublicFlatsList: async (parent, { uuid }) => {
+    getPublicFlatsList: async (parent, {uuid}) => {
         const houses = await PublishedHouseModel.find({
             house: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))

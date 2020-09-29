@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-import { Document, Schema } from 'mongoose';
-import { FlatStatus } from '../../types/flat/flat';
-import { House } from './house';
-import { HouseLayout } from './houseLayout';
-import { Level } from './level';
-import { Section } from './section';
+import {Document, Schema} from 'mongoose';
+import {FlatStatus} from '../../types/flat/flat';
+import {House} from './house';
+import {HouseLayout} from './houseLayout';
+import {Level} from './level';
+import {Section} from './section';
 
 export interface Flat extends Document {
     flatNumber: string;
@@ -23,9 +23,9 @@ export interface Flat extends Document {
 
 const FlatSchema: Schema = new Schema(
     {
-        flatNumber: { type: Schema.Types.String },
-        price: { type: Schema.Types.Number },
-        sale: { type: Schema.Types.Number },
+        flatNumber: {type: Schema.Types.String},
+        price: {type: Schema.Types.Number},
+        sale: {type: Schema.Types.Number},
         level: {
             type: Schema.Types.ObjectId,
             ref: 'Level'
@@ -34,11 +34,11 @@ const FlatSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Section'
         },
-        area: { type: Schema.Types.Number },
-        status: { type: Schema.Types.String },
-        roomAmount: { type: Schema.Types.String },
-        squarePrice: { type: Schema.Types.String },
-        isDeleted: { type: Schema.Types.Boolean, default: false },
+        area: {type: Schema.Types.Number},
+        status: {type: Schema.Types.String},
+        roomAmount: {type: Schema.Types.String},
+        squarePrice: {type: Schema.Types.String},
+        isDeleted: {type: Schema.Types.Boolean, default: false},
         house: {
             type: Schema.Types.ObjectId,
             ref: 'House'
@@ -47,11 +47,11 @@ const FlatSchema: Schema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'HouseLayout'
         },
-        levelAmount: { type: Schema.Types.Number, default: 1 }
+        levelAmount: {type: Schema.Types.Number, default: 1}
     },
     {
-        toJSON: { virtuals: true },
-        toObject: { virtuals: true }
+        toJSON: {virtuals: true},
+        toObject: {virtuals: true}
     }
 );
 

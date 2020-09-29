@@ -50,6 +50,11 @@ export const FloorsListItem = styled.p`
 export const FloorContentContainer = styled.div`
     width: 87%;
     padding: 50px;
+    position: relative;
+
+    img {
+        width: 100%;
+    }
 `;
 
 export const FloorLegendInfo = styled.div`
@@ -161,4 +166,21 @@ export const RoomAmount = styled.div<any>`
 export const Area = styled.div<any>`
     width: 80%;
     background-color: ${getAreaBackground};
+`;
+
+export const FlatInfo = styled.div`
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 1px 1px 5px rgba(1, 1, 1, 0.2);
+    display: flex;
+    justify-content: space-around;
+
+    span {
+        font-size: 18px;
+    }
 `;
