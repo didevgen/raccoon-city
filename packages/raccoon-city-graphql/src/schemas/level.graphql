@@ -77,17 +77,11 @@ type FloorViewInfo {
     fullFlatsInfo: [FloorViewData]
 }
 
-type HouseSidebarFlatLevelLayouts1 {
-    id: String
-    image: SinglePreviewImage
-    paths: [String]
-    viewBox: ViewBox
-}
-
 type Query {
     getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
     getLevelLayoutFlatLayouts(levelLayoutId: String): [LevelLayoutFlatLayout]
     getFlatsLayoutsByIds(levelId: String, houseId: String, flatsIds: [String]): FloorViewInfo
+    getPublishedFlatsLayoutByHouseId(houseId: String, sectionId: String, levelId: String): FloorViewInfo
 }
 
 type Mutation {

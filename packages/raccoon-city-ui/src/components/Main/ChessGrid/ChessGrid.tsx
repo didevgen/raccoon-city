@@ -75,7 +75,32 @@ const ChessGridContent = React.memo((props: any) => {
     if (filters.mode === ChessCellViewMode.FLOOR) {
         return (
             <Fragment>
-                <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} />
+                <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} isPublic={isPublic} />
+
+                {/* TODO refactor this repeat code*/}
+                {flatCardOpen && (
+                    <SidebarDrawer
+                        anchor="right"
+                        open={flatCardOpen}
+                        onOpen={() => {
+                            // silence
+                        }}
+                        onClose={() => {
+                            setFlatCardOpen(false);
+                            setSelectedFlat(undefined);
+                        }}
+                    >
+                        {selectedFlat && (
+                            <FlatSidebarInfo
+                                // @ts-ignore
+                                flat={selectedFlat}
+                                isPublic={isPublic}
+                                showRequestButton={showRequestButton}
+                                onFlatSelected={onFlatSelected}
+                            />
+                        )}
+                    </SidebarDrawer>
+                )}
             </Fragment>
         );
     }
@@ -85,6 +110,7 @@ const ChessGridContent = React.memo((props: any) => {
             <Fragment>
                 <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
 
+                {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
                     <SidebarDrawer
                         anchor="right"
@@ -143,6 +169,7 @@ const ChessGridContent = React.memo((props: any) => {
                     );
                 })}
 
+                {/* TODO refactor this repeat code*/}
                 <SidebarDrawer
                     anchor="right"
                     open={flatCardOpen}

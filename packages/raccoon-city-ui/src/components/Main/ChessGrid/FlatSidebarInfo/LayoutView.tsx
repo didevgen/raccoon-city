@@ -45,7 +45,7 @@ interface LayoutViewProps {
     isLarge?: boolean;
     setCurrentDataId?: any;
     floorImage?: string;
-    onSelect: any;
+    onSelect?: any;
 }
 
 function attachSvg(container: string) {
@@ -62,6 +62,9 @@ function fillExistingLayouts(
     setCurrentDataId?: any,
     onSelect?: any
 ) {
+    console.log('lol');
+    console.log(info);
+
     if (info) {
         info.forEach((item, i) => {
             let pathParsed = JSON.parse(paths[i]);
@@ -82,8 +85,9 @@ function fillExistingLayouts(
                 setCurrentDataId(e.target.getAttribute('data-uid'));
             });
             path.on('click', (e) => {
-                console.log('CLICKED');
-                // onSelect();
+                console.log(onSelect);
+                console.log(item.flatInfo);
+                onSelect(item.flatInfo);
             });
         });
 
@@ -110,7 +114,6 @@ function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCu
 
     useEffect(() => {
         svgRef.current = attachSvg(`#img-container__${index}`);
-
         if (svgRef && svgRef.current) {
             fillExistingLayouts(svgRef.current, paths, viewBox, info, setCurrentDataId, onSelect);
         }
@@ -136,10 +139,9 @@ export function LayoutView(props: LayoutViewProps) {
     if (isLarge) {
         updatedFloor.viewBox = levelLayouts[0].viewBox;
         updatedFloor.paths = levelLayouts.reduce((acc: any, item: any) => [...acc, ...item.paths], []);
-        updatedFloor.info = levelLayouts.reduce(
-            (acc: any, item: any) => [...acc, {id: item.id, status: item.status}],
-            []
-        );
+        updatedFloor.info = levelLayouts.reduce((acc: any, item: any) => {
+            return [...acc, {id: item.id, status: item.status, flatInfo: item.flatInfo}];
+        }, []);
     }
 
     return (

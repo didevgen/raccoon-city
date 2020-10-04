@@ -3,8 +3,7 @@ import {Level} from '../../db/models/level';
 import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
-import {FlatModel} from '../../db/models/flat';
-import {LevelModel} from '../../db/models/level';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
 export const levelQuery = {
     async getLevelLayouts(_, {houseId}) {
@@ -68,23 +67,21 @@ export const levelQuery = {
     async getLevelLayoutsToChessView(_, {houseId}) {
         const houseLayouts = await LevelLayoutModel.find({
             house: houseId,
-            isDeleted: false,
+            isDeleted: false
         });
         const houseResult: any[] = await Promise.all(houseLayouts);
 
         return houseResult;
     },
-    async getFlatsLayoutsByIds(_, {
-        levelId,
-        houseId,
-        flatsIds
-    }) {
+    async getFlatsLayoutsByIds(_, {levelId, houseId, flatsIds}) {
+        // REMOVE
         const layoutDbResponse: any = await LevelLayoutModel.findOne({
             house: houseId,
             levels: {$in: levelId},
             isDeleted: false
         }).exec();
 
+        // REMOVE
         const house: any = await HouseModel.findOne({_id: houseId, isDeleted: false})
             .populate({
                 path: 'layouts',
@@ -105,6 +102,40 @@ export const levelQuery = {
                 }
             })
             .exec();
+
+        // TODO USE THIS
+        // const levelTest: any = await LevelModel.findOne({
+        //     _id: levelId,
+        //     isDeleted: false,
+        // })
+        //     .populate({
+        //         path: 'layouts',
+        //         match: {
+        //             isDeleted: false
+        //         }
+        //     })
+        //     .populate({
+        //         path: 'flats',
+        //         match: {
+        //             isDeleted: false
+        //         }
+        //     })
+        //     .exec();
+
+        // TODO USE THIS
+        // const levelTestFlatIds = levelTest.flats.map(({id}) => id);
+
+        // const levelFlatsLayoutsTest = await LevelFlatLayoutModel.find({
+        //     flatLayout: {$in: levelTestFlatIds},
+        //     isDeleted: false,
+        // })
+        //     .populate({
+        //         path: 'flatLayout',
+        //         match: {
+        //             isDeleted: false
+        //         }
+        //     })
+        //     .exec();
 
         if (!house) {
             return [];
@@ -206,13 +237,92 @@ export const levelQuery = {
             return [...acc];
         }, []);
 
-        console.log("STEP LAST");
-
         return {
             image: {
                 previewImageUrl: layoutDbResponse?.image?.previewImageUrl
             },
             fullFlatsInfo
+        };
+    },
+    async getPublishedFlatsLayoutByHouseId(_, {
+        houseId,
+        sectionId,
+        levelId,
+    }) {
+        const publishedHouse: any = await PublishedHouseModel.findOne({
+            _id: houseId,
+            isDeleted: false
+        }).exec();
+
+        const {layouts, levelLayouts, sections} = publishedHouse;
+
+        // GET FLATS INFO
+        const appropriateSection = (
+            sections.find(({_id}) => String(_id) === String(sectionId))
+        );
+        const flats = (
+            appropriateSection.levels.find(({_id}) => String(_id) === String(levelId))
+        );
+
+        if (!flats) {
+            return [];
+        }
+
+        const {flats: flatsInfo} = flats;
+
+        const levelLayout = levelLayouts.find(({levels}) => {
+            return levels.some((level) => String(level) === String(levelId));
+        });
+
+        if (!levelLayout) {
+            return [];
+        }
+
+        const tmpArray = [];
+        layouts.forEach((item) => {
+            levelLayout.flatLayouts.forEach((flatLayout) => {
+                if (String(flatLayout.flatLayout) === String(item._id)) {
+                    tmpArray.push({
+                        layout: item,
+                        flatLayout: flatLayout,
+                    });
+                }
+            });
+        })
+
+        const fullFlatsInfo = [];
+        tmpArray.forEach((tempItem) => {
+            tempItem.layout.flats.forEach((flatId) => {
+                flatsInfo.forEach((flatInfo) => {
+                    if (String(flatInfo._id) === String(flatId)) {
+                        const paths = tempItem.flatLayout.path.map((path) => String(path));
+                        fullFlatsInfo.push({
+                            svgInfo: {
+                                paths,
+                                id: String(tempItem.flatLayout._id),
+                                flatLayout: [""],
+                                viewBox: {
+                                    width: tempItem.flatLayout.viewBox.width,
+                                    height: tempItem.flatLayout.viewBox.height,
+                                },
+                                image: {},
+                            },
+                            flatInfo,
+                        });
+                    }
+                });
+            });
+        });
+
+        if (!levelLayout) {
+            return [];
+        }
+
+        return {
+            fullFlatsInfo,
+            image: {
+                previewImageUrl: levelLayout.image.previewImageUrl
+            },
         };
     }
 };

@@ -1,4 +1,8 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
+import {useQuery} from '@apollo/react-hooks';
+import {Button, Select, MenuItem} from '@material-ui/core';
+import {GET_PUBLISHED_FLATS_EXTENDED, GET_FLATS_LAYOUTS_EXTENDED} from '../../../../graphql/queries/layoutQuery';
+import {getSections, getFlatsIds, getInfo} from './ChessFloorUtils';
 import {
     FloorViewContainer,
     FloorsListContainer,
@@ -8,65 +12,78 @@ import {
     FloorLegendItem,
     FlatInfo
 } from './ChessFloorView.styled';
-import {Button, Select, MenuItem} from '@material-ui/core';
-import {GET_LEVEL_LAYOUTS_EXTENDED, GET_FLATS_LAYOUTS_EXTENDED} from '../../../../graphql/queries/layoutQuery';
-import {useQuery} from '@apollo/react-hooks';
-import {GET_FLAT_SIDEBAR_DATA} from '../../../../graphql/queries/flatQuery';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
-import {getSections, getFlatsIds} from './ChessFloorUtils';
 
 export const ChessFloorView = (props) => {
-    const {onSelect, houseFlats} = props;
+    const {onSelect, houseFlats, isPublic} = props;
     const {groupedFlats} = houseFlats[0];
 
     const [sections] = useState(getSections(groupedFlats));
     const [currentSection, setCurrentSection] = useState(Object.keys(sections)[0]);
-    const [currentFloor, setCurrentFloor] = useState(sections[currentSection].levels[0].id);
+    const [currentLevel, setCurrentLevel] = useState(sections[currentSection].levels[0].id);
     const [currentDataId, setCurrentDataId] = useState('');
 
-    const {data, loading, error} = useQuery(GET_LEVEL_LAYOUTS_EXTENDED, {
+    const publicVariables = {
+        houseId: houseFlats[0].id,
+        sectionId: currentSection,
+        levelId: currentLevel
+    };
+
+    const variables = {
+        levelId: currentLevel,
+        houseId: houseFlats[0].id,
+        flatsIds: getFlatsIds(groupedFlats, currentSection, currentLevel)
+    };
+
+    const FLAT_LAYOUTS_QUERY = isPublic ? GET_PUBLISHED_FLATS_EXTENDED : GET_FLATS_LAYOUTS_EXTENDED;
+
+    const queryVariables = isPublic ? publicVariables : variables;
+
+    const {data: flatsData, loading: flatsLoading, error: flatsError} = useQuery(FLAT_LAYOUTS_QUERY, {
         variables: {
-            houseId: houseFlats[0].id,
-            levelLayoutId: currentFloor
+            ...queryVariables
         },
         fetchPolicy: 'cache-and-network'
     });
 
-    const {data: flatsData, loading: flatsLoading, error: flatsError} = useQuery(GET_FLATS_LAYOUTS_EXTENDED, {
-        variables: {
-            levelId: currentFloor,
-            houseId: houseFlats[0].id,
-            flatsIds: getFlatsIds(groupedFlats, currentSection, currentFloor)
-        },
-        fetchPolicy: 'cache-and-network'
-    });
-
-    if (loading || flatsLoading) {
-        return null;
+    if (flatsLoading) {
+        return <div>Loading...</div>;
     }
 
-    console.log('flatsData-------');
+    if (flatsError) {
+        return <div>Error...</div>;
+    }
+
+    // TODO type this
+    let fullFlatsInfo: any = [];
+    let image: any = {};
+
+    if (isPublic) {
+        const {
+            getPublishedFlatsLayoutByHouseId: {fullFlatsInfo: info, image: img}
+        } = flatsData;
+        fullFlatsInfo = info || [];
+        image = img;
+    } else {
+        const {
+            getFlatsLayoutsByIds: {fullFlatsInfo: info, image: img}
+        } = flatsData;
+        fullFlatsInfo = info;
+        image = img;
+    }
+
+    console.log('flatsData');
     console.log(flatsData);
 
-    const {
-        getFlatsLayoutsByIds: {fullFlatsInfo, image}
-    } = flatsData;
+    // TODO type this
+    let info: any = isPublic ? getInfo(fullFlatsInfo, currentDataId) : getInfo(fullFlatsInfo, currentDataId);
 
-    let info: any = null;
-
-    function getInfo() {
-        if (!fullFlatsInfo) {
-            return;
-        }
-
-        const res = fullFlatsInfo.find(({svgInfo}) => svgInfo.id === currentDataId);
-        info = res?.flatInfo;
-    }
-
-    const toDraw = fullFlatsInfo.map(({svgInfo, flatInfo: {status}}) => ({...svgInfo, status}));
-
-    // TODO resolve this
-    getInfo();
+    // TODO refactor this (may be utils)
+    const toDraw = fullFlatsInfo.map(({svgInfo, flatInfo}) => ({
+        ...svgInfo,
+        status: flatInfo.status,
+        flatInfo
+    }));
 
     return (
         <FloorViewContainer>
@@ -116,7 +133,7 @@ export const ChessFloorView = (props) => {
                             <FloorsListItem
                                 key={id}
                                 onClick={() => {
-                                    setCurrentFloor(id);
+                                    setCurrentLevel(id);
                                 }}
                             >
                                 {`Этаж ${level}`}
