@@ -244,11 +244,7 @@ export const levelQuery = {
             fullFlatsInfo
         };
     },
-    async getPublishedFlatsLayoutByHouseId(_, {
-        houseId,
-        sectionId,
-        levelId,
-    }) {
+    async getPublishedFlatsLayoutByHouseId(_, {houseId, sectionId, levelId}) {
         const publishedHouse: any = await PublishedHouseModel.findOne({
             _id: houseId,
             isDeleted: false
@@ -257,12 +253,8 @@ export const levelQuery = {
         const {layouts, levelLayouts, sections} = publishedHouse;
 
         // GET FLATS INFO
-        const appropriateSection = (
-            sections.find(({_id}) => String(_id) === String(sectionId))
-        );
-        const flats = (
-            appropriateSection.levels.find(({_id}) => String(_id) === String(levelId))
-        );
+        const appropriateSection = sections.find(({_id}) => String(_id) === String(sectionId));
+        const flats = appropriateSection.levels.find(({_id}) => String(_id) === String(levelId));
 
         if (!flats) {
             return [];
@@ -284,11 +276,11 @@ export const levelQuery = {
                 if (String(flatLayout.flatLayout) === String(item._id)) {
                     tmpArray.push({
                         layout: item,
-                        flatLayout: flatLayout,
+                        flatLayout: flatLayout
                     });
                 }
             });
-        })
+        });
 
         const fullFlatsInfo = [];
         tmpArray.forEach((tempItem) => {
@@ -300,14 +292,14 @@ export const levelQuery = {
                             svgInfo: {
                                 paths,
                                 id: String(tempItem.flatLayout._id),
-                                flatLayout: [""],
+                                flatLayout: [''],
                                 viewBox: {
                                     width: tempItem.flatLayout.viewBox.width,
-                                    height: tempItem.flatLayout.viewBox.height,
+                                    height: tempItem.flatLayout.viewBox.height
                                 },
-                                image: {},
+                                image: {}
                             },
-                            flatInfo,
+                            flatInfo
                         });
                     }
                 });
@@ -322,7 +314,7 @@ export const levelQuery = {
             fullFlatsInfo,
             image: {
                 previewImageUrl: levelLayout.image.previewImageUrl
-            },
+            }
         };
     }
 };

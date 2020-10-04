@@ -79,6 +79,7 @@ function fillExistingLayouts(
                 .stroke({color: '#3f51b5', width: 3})
                 .addClass('SVG--highlighted');
 
+            // eslint-disable-next-line no-useless-computed-key
             path.attr({x: 20, y: 60, ['data-uid']: item.id});
 
             path.on('mouseover', (e) => {
