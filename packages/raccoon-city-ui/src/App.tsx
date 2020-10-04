@@ -12,6 +12,7 @@ import rootReducer from './redux/reducers/rootReducer';
 
 const Main = lazy(() => import('./components/Main/Main'));
 const Public = lazy(() => import('./components/Public/Public'));
+const ApartmentComplexLayout = lazy(() => import('./components/Main/ApartmentComplexLayout/ApartmentComplexLayout'));
 
 const store = createStore(rootReducer);
 const App: React.FC = () => {
@@ -24,6 +25,9 @@ const App: React.FC = () => {
                             <Switch>
                                 <Route path="/login">
                                     <Login />
+                                </Route>
+                                <Route path="/public/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/layout/:layoutUuid">
+                                    <ApartmentComplexLayout />
                                 </Route>
                                 <Route path="/public">
                                     <Public />

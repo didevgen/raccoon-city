@@ -1,4 +1,4 @@
-import mongoose, {mongo} from 'mongoose';
+import mongoose from 'mongoose';
 import {S3ImageUploader} from '../../aws/s3ImageUploader';
 import {FlatModel} from '../../db/models/flat';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
@@ -6,6 +6,7 @@ import {LayoutDbService} from '../../db/services/layoutDbService';
 import {FlatLayoutImageServiceFactory} from '../../services/image/flatLayoutImageServiceFactory';
 import {LayoutImageService} from '../../services/image/layout';
 import {Context} from '../../utils';
+import {ApartmentComplexLayoutModel} from '../../db/models/apartmentComplexLayout';
 
 export const layoutMutation = {
     async createLayout(parent, args) {
@@ -107,5 +108,114 @@ export const layoutMutation = {
         }
 
         return null;
+    },
+    async createApartmentComplexLayout(parent, args) {
+        const {uuid, name, file} = args;
+        if (uuid) {
+            const layout = await ApartmentComplexLayoutModel.create({
+                name,
+                apartmentComplex: uuid
+            });
+            await new LayoutImageService(
+                new S3ImageUploader(layout.id),
+                new LayoutDbService(layout, ApartmentComplexLayoutModel)
+            ).addImage(await file);
+
+            return layout;
+        }
+
+        return null;
+    },
+    async editApartmentComplexLayout(parent, args) {
+        const {uuid, name, file} = args;
+        if (uuid) {
+            const layout = await ApartmentComplexLayoutModel.findOneAndUpdate(
+                {
+                    _id: mongoose.Types.ObjectId(uuid)
+                },
+                {
+                    $set: {
+                        name
+                    }
+                }
+            );
+
+            if (file) {
+                await new LayoutImageService(
+                    new S3ImageUploader(uuid),
+                    new LayoutDbService(layout, ApartmentComplexLayoutModel)
+                ).addImage(await file);
+            }
+
+            return layout;
+        }
+
+        return null;
+    },
+    async deleteApartmentComplexLayout(parent, {uuid}, ctx: Context) {
+        await ApartmentComplexLayoutModel.findOneAndUpdate({_id: uuid}, {$set: {isDeleted: true}}).exec();
+        return true;
+    },
+    async assignHouseToApartmentComplexLayout(parent, {layoutId, houseId, path, viewBox}) {
+        const layout = await ApartmentComplexLayoutModel.findById(layoutId).exec();
+        if (!layout) {
+            return false;
+        }
+
+        const apartmentComplexLayout = layout.toObject();
+        const assignedHouse = apartmentComplexLayout.layouts.find(layout => {
+            return layout.house.toString() === houseId;
+        });
+
+        if (assignedHouse) {
+            apartmentComplexLayout.layouts = apartmentComplexLayout.layouts.map(l => {
+                if (l === assignedHouse) {
+                    return Object.assign(assignedHouse, {path, viewBox, house: houseId});
+                }
+
+                return l;
+            })
+        } else {
+            apartmentComplexLayout.layouts.push({
+                house: houseId,
+                path,
+                viewBox
+            })
+        }
+
+        await ApartmentComplexLayoutModel.findOneAndUpdate(
+            {
+                _id: mongoose.Types.ObjectId(layoutId)
+            },
+            {
+                $set: {
+                    ...apartmentComplexLayout
+                }
+            }
+        );
+
+        return true;
+    },
+    async deleteHouseFromApartmentComplexLayout(parent, {layoutId, houseId}) {
+        const layout = await ApartmentComplexLayoutModel.findById(layoutId).exec();
+        if (!layout) {
+            return false;
+        }
+
+        const apartmentComplexLayout = layout.toObject();
+        apartmentComplexLayout.layouts = apartmentComplexLayout.layouts.filter(l => {
+            return l.house.toString() !== houseId;
+        });
+        await ApartmentComplexLayoutModel.findOneAndUpdate(
+            {
+                _id: mongoose.Types.ObjectId(layoutId)
+            },
+            {
+                $set: {
+                    ...apartmentComplexLayout
+                }
+            }
+        );
+        return true;
     }
 };

@@ -11,6 +11,7 @@ code {
 }
 
 .SVG--highlighted {
+    &.active,
     &:hover {
         fill: #73859f;
         cursor: pointer;

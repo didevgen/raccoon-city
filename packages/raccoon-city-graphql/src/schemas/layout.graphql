@@ -17,6 +17,19 @@ type FlatLayout {
     images: FlatLauoutImages
 }
 
+type ApartmentComplexLayoutSVG {
+    path: [String]
+    viewBox: ViewBox
+    house: House
+}
+
+type ApartmentComplexLayout {
+    id: String
+    name: String
+    image: SinglePreviewImage
+    layouts: [ApartmentComplexLayoutSVG]
+}
+
 type Mutation {
     createLayout(houseId: String!, file: Upload!, name: String!): BaseLayout
     editLayout(uuid: String!, file: Upload, name: String!): BaseLayout
@@ -27,6 +40,9 @@ type Mutation {
     deleteFlatLayoutImage(mode: String!, uuid: String!, imageId: String!): String
     deleteFlatLayout(uuid: String!): Boolean
     deleteLevelLayout(uuid: String!): Boolean
+    createApartmentComplexLayout(uuid: String!, file: Upload!, name: String!): BaseLayout
+    editApartmentComplexLayout(uuid: String!, file: Upload, name: String!): BaseLayout
+    deleteApartmentComplexLayout(uuid: String!): Boolean
 }
 
 type LevelLayoutChess {
@@ -38,6 +54,8 @@ type LevelLayoutChess {
 
 type Query {
     getFlatLayouts(houseId: String!): [FlatLayout]
+    getApartmentComplexLayouts(uuid: String!): [ApartmentComplexLayout]
+    getApartmentComplexLayout(uuid: String!): ApartmentComplexLayout
     getFlatLayout(layoutId: String!): FlatLayout
     getLevelLayouts(houseId: String!): [LevelLayout]
     getLevelLayoutsToChessView(houseId: String!): [LevelLayoutChess]

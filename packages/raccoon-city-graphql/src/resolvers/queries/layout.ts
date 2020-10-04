@@ -2,6 +2,7 @@ import HouseModel from '../../db/models/house';
 import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {Level} from '../../db/models/level';
 import {Section} from '../../db/models/section';
+import {ApartmentComplexLayoutModel} from '../../db/models/apartmentComplexLayout';
 
 export const layoutQuery = {
     async getFlatLayouts(_, {houseId}) {
@@ -79,5 +80,15 @@ export const layoutQuery = {
         } else {
             return [];
         }
-    }
+    },
+    async getApartmentComplexLayouts(_, {uuid}) {
+        return ApartmentComplexLayoutModel.find({apartmentComplex: uuid, isDeleted: false}).populate({
+            path: 'layouts.house'
+        });
+    },
+    async getApartmentComplexLayout(_, {uuid}) {
+        return ApartmentComplexLayoutModel.findOne({_id: uuid, isDeleted: false}).populate({
+            path: 'layouts.house'
+        });
+    },
 };

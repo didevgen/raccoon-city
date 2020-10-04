@@ -9,7 +9,7 @@ export interface LevelFlatLayout extends Document {
     flatLayout: HouseLayout;
 }
 
-const ViewBoxSchema = new Schema({
+export const ViewBoxSchema = new Schema({
     width: {type: Schema.Types.Number},
     height: {type: Schema.Types.Number}
 });

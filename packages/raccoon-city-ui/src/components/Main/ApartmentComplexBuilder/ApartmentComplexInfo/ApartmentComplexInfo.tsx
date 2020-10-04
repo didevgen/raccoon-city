@@ -14,6 +14,7 @@ import {Fragment, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
+import styled from 'styled-components';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
@@ -21,12 +22,12 @@ import {StyledNavLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {HouseList} from '../../HouseList/HouseList';
 import {ApartmentComplexData} from './ApartmentComplexData/ApartmentComplexData';
+import {ApartmentComplexHistory} from './ApartmentComplexHistory/ApartmentComplexHistory';
 import {ApartmentComplexImport} from './ApartmentComplexImport/ApartmentComplexImport';
+import {ApartmentComplexLayoutEditor} from './ApartmentComplexLayoutEditor/ApartmentComplexLayoutEditor';
 import {MainApartmentComplexImages} from './MainApartmentComplexImages/MainApartmentComplexImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import styled from 'styled-components';
-import {ApartmentComplexHistory} from './ApartmentComplexHistory/ApartmentComplexHistory';
 
 const StyledPaper = styled(Paper)`
     display: flex;
@@ -129,6 +130,11 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Дома" />
                                     </ListItem>
                                 </StyledNavLink>
+                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/layout`}>
+                                    <ListItem button={true}>
+                                        <ListItemText primary="Разметка ЖК" />
+                                    </ListItem>
+                                </StyledNavLink>
                                 <StyledNavLink activeClassName="Mui-selected" to={`${url}/import`}>
                                     <ListItem button={true}>
                                         <ListItemText primary="Импорт помещений" />
@@ -179,6 +185,9 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                 </Route>
                                 <Route path={`${path}/history`}>
                                     <ApartmentComplexHistory />
+                                </Route>
+                                <Route path={`${path}/layout`}>
+                                    <ApartmentComplexLayoutEditor />
                                 </Route>
                             </Switch>
                         </div>

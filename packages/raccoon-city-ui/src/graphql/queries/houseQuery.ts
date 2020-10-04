@@ -234,3 +234,18 @@ export const GET_FLAT_LIST = gql`
         }
     }
 `;
+
+export const PUBLISHED_HOUSE_LIST = gql`
+    query getPublishedHouses($uuid: String!) {
+        getPublishedHouses(uuid: $uuid) {
+            id
+            name
+            images {
+                CHESS_GRID {
+                    uuid
+                    downloadUrl
+                }
+            }
+        }
+    }
+`;
