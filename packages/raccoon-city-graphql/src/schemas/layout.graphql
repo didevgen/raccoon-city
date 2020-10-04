@@ -45,11 +45,19 @@ type Mutation {
     deleteApartmentComplexLayout(uuid: String!): Boolean
 }
 
+type LevelLayoutChess {
+    id: String
+    name: String
+    image: SinglePreviewImage
+    levels: [String]
+}
+
 type Query {
     getFlatLayouts(houseId: String!): [FlatLayout]
     getApartmentComplexLayouts(uuid: String!): [ApartmentComplexLayout]
     getApartmentComplexLayout(uuid: String!): ApartmentComplexLayout
     getFlatLayout(layoutId: String!): FlatLayout
     getLevelLayouts(houseId: String!): [LevelLayout]
+    getLevelLayoutsToChessView(houseId: String!): [LevelLayoutChess]
     getChessGridLayout(houseId: String!, layoutId: String!): [GroupedBySectionFlat]
 }

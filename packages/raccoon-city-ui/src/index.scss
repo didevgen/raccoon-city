@@ -18,6 +18,10 @@ code {
     }
 }
 
+.SVG--123 {
+    background-color: #000;
+}
+
 .SVG__circle--highlighted {
     &:hover {
         fill: #ef9a9a;
@@ -43,6 +47,7 @@ code {
 .text-crossed {
     text-decoration: line-through;
 }
+
 /*#root {
     .MuiFab-primary, .MuiButton-containedPrimary {
         color: #fff;
@@ -58,4 +63,3 @@ code {
         border: 1px solid rgba(55, 72, 92, 0.5);
     }
 }*/
-

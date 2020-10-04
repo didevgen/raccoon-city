@@ -27,9 +27,61 @@ input ViewBoxInput {
     height: Int
 }
 
+type s {
+    res: String
+}
+
+type flatLayout {
+    id: String
+    name: String
+    images: ApartmentComplexImage
+    image: SinglePreviewImage
+}
+
+type flatInfo {
+    levelAmount: Int
+    flatNumber: String
+    price: Int
+    level: String
+    section: String
+    area: Float
+    status: String
+    roomAmount: String
+    sale: Int
+    house: String
+    squarePrice: String
+    layout: String
+    id: String
+}
+
+type svgInfo {
+    paths: [String]
+    flatLayout: [String]
+    viewBox: ViewBox
+    id: String
+    image: PreviewImage
+}
+
+type FloorViewData {
+    flatLayout: flatLayout
+    flatInfo: flatInfo
+    svgInfo: svgInfo
+}
+
+type FloorViewImage {
+    previewImageUrl: String
+}
+
+type FloorViewInfo {
+    image: FloorViewImage
+    fullFlatsInfo: [FloorViewData]
+}
+
 type Query {
     getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
     getLevelLayoutFlatLayouts(levelLayoutId: String): [LevelLayoutFlatLayout]
+    getFlatsLayoutsByIds(levelId: String, houseId: String, flatsIds: [String]): FloorViewInfo
+    getPublishedFlatsLayoutByHouseId(houseId: String, sectionId: String, levelId: String): FloorViewInfo
 }
 
 type Mutation {

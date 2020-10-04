@@ -96,6 +96,95 @@ export const GET_LEVEL_LAYOUTS = gql`
     }
 `;
 
+export const GET_LEVEL_LAYOUTS_EXTENDED = gql`
+    query getLevelLayoutsToChessView($houseId: String!) {
+        getLevelLayoutsToChessView(houseId: $houseId) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
+            levels
+        }
+    }
+`;
+
+export const GET_PUBLISHED_FLATS_EXTENDED = gql`
+    query getPublishedFlatsLayoutByHouseId($houseId: String, $sectionId: String, $levelId: String) {
+        getPublishedFlatsLayoutByHouseId(houseId: $houseId, sectionId: $sectionId, levelId: $levelId) {
+            image {
+                previewImageUrl
+            }
+            fullFlatsInfo {
+                flatInfo {
+                    flatNumber
+                    price
+                    level
+                    squarePrice
+                    levelAmount
+                    status
+                    id
+                    layout
+                    roomAmount
+                    area
+                }
+                svgInfo {
+                    paths
+                    viewBox {
+                        width
+                        height
+                    }
+                    id
+                    image {
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const GET_FLATS_LAYOUTS_EXTENDED = gql`
+    query getFlatsLayoutsByIds($levelId: String, $houseId: String, $flatsIds: [String]) {
+        getFlatsLayoutsByIds(levelId: $levelId, houseId: $houseId, flatsIds: $flatsIds) {
+            image {
+                previewImageUrl
+            }
+            fullFlatsInfo {
+                flatInfo {
+                    flatNumber
+                    price
+                    level
+                    squarePrice
+                    levelAmount
+                    status
+                    id
+                    layout
+                    roomAmount
+                    area
+                }
+                svgInfo {
+                    paths
+                    viewBox {
+                        width
+                        height
+                    }
+                    id
+                    image {
+                        downloadUrl
+                        name
+                        previewImageUrl
+                    }
+                }
+            }
+        }
+    }
+`;
+
+
 export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
     query getApartmentComplexLayouts($uuid: String!) {
         getApartmentComplexLayouts(uuid: $uuid) {

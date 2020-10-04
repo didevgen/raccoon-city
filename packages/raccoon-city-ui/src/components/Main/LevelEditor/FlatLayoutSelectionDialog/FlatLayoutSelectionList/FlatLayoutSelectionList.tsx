@@ -32,6 +32,10 @@ export function FlatLayoutSelectionList(props: FlatLayoutSelectionListProps) {
         <LayoutContainer>
             <Grid container={true} spacing={2}>
                 {data.getFlatLayouts.map((layout: HouseLayout) => {
+                    if (!layout.image) {
+                        return <div>Загрузите изображания</div>;
+                    }
+
                     return (
                         <Grid item={true} xs={12} md={3} key={layout.id}>
                             <FlatLayoutCard
