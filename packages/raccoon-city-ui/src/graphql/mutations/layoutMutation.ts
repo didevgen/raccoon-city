@@ -144,3 +144,12 @@ export const ASSIGN_HOUSE_TO_APARTMENT_COMPLEX_LAYOUT = gql`
         assignHouseToApartmentComplexLayout(layoutId: $layoutId, houseId: $houseId, path: $path, viewBox: $viewBox)
     }
 `;
+
+export const APARTMENT_COMPLEX_DELETE_AREA = gql`
+    mutation deleteHouseFromApartmentComplexLayout(
+        $layoutId: String!
+        $houseId: String!
+    ) {
+        deleteHouseFromApartmentComplexLayout(layoutId: $layoutId, houseId: $houseId)
+    }
+`;

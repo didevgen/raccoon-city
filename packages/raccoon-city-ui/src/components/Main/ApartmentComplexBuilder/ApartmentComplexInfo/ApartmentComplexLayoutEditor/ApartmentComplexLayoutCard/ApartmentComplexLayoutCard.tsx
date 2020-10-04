@@ -14,9 +14,9 @@ import {GET_APARTMENT_COMPLEX_LAYOUTS} from '../../../../../../graphql/queries/l
 import {Confirmation} from '../../../../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../../../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia} from '../../../../../shared/components/styled';
+import {ApartmentComplexLayout} from '../../../../../shared/types/layout.types';
 import {LayoutDialog} from '../../../../Images/LayoutDialog/LayoutDialog';
 import {ApartmentComplexLayoutSelectionDialog} from '../ApartmentComplexLayoutSelectionDialog/ApartmentComplexLayoutSelectionDialog';
-import {ApartmentComplexLayout} from '../../../../../shared/types/layout.types';
 
 export interface ApartmentComplexLayoutCardProps {
     id: string;

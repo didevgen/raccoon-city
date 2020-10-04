@@ -45,6 +45,10 @@ type Mutation {
         path: [String]
         viewBox: ViewBoxInput
     ): Boolean
+    deleteHouseFromApartmentComplexLayout(
+        layoutId: String!
+        houseId: String!
+    ): Boolean
 }
 
 extend type Query {

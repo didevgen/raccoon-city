@@ -195,5 +195,27 @@ export const layoutMutation = {
         );
 
         return true;
+    },
+    async deleteHouseFromApartmentComplexLayout(parent, {layoutId, houseId}) {
+        const layout = await ApartmentComplexLayoutModel.findById(layoutId).exec();
+        if (!layout) {
+            return false;
+        }
+
+        const apartmentComplexLayout = layout.toObject();
+        apartmentComplexLayout.layouts = apartmentComplexLayout.layouts.filter(l => {
+            return l.house.toString() !== houseId;
+        });
+        await ApartmentComplexLayoutModel.findOneAndUpdate(
+            {
+                _id: mongoose.Types.ObjectId(layoutId)
+            },
+            {
+                $set: {
+                    ...apartmentComplexLayout
+                }
+            }
+        );
+        return true;
     }
 };

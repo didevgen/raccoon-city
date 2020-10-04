@@ -12,6 +12,7 @@ import {useParams} from 'react-router-dom';
 import {ASSIGN_HOUSE_TO_APARTMENT_COMPLEX_LAYOUT} from '../../../../../../graphql/mutations/layoutMutation';
 import {GET_APARTMENT_COMPLEX_LAYOUTS} from '../../../../../../graphql/queries/layoutQuery';
 import {ApartmentComplexLayout} from '../../../../../shared/types/layout.types';
+import {ApartmentComplexSelectionPreviewDialog} from '../ApartmentComplexSelectionPreviewDialog/ApartmentComplexSelectionPreviewDialog';
 import {PublishedHouseSelectionDialog} from '../PublishedHouseSelectionDialog/PublishedHouseSelectionDialog';
 import {LayoutSelection} from './LayoutSelection';
 
@@ -38,6 +39,8 @@ export function ApartmentComplexLayoutSelectionDialog(props: ApartmentComplexLay
     const {apartmentComplexUuid} = useParams();
     const [open, setOpen] = React.useState(false);
     const [houseDialogOpen, setHouseDialogOpen] = useState(false);
+    const [layoutDialogOpen, setLayoutDialogOpen] = useState(false);
+    const [selectedHouse, setSelectedHouse] = useState<any>(null);
     const [selectionProps, setSelectionProps] = useState<any>({});
     const [assignHouse] = useMutation(ASSIGN_HOUSE_TO_APARTMENT_COMPLEX_LAYOUT);
     const handleClickOpen = () => {
@@ -75,7 +78,10 @@ export function ApartmentComplexLayoutSelectionDialog(props: ApartmentComplexLay
                         setHouseDialogOpen(true);
                         setSelectionProps({path, imageSize});
                     }}
-                    onLayoutSelected={() => {}}
+                    onLayoutSelected={(layout) => {
+                        setSelectedHouse(layout);
+                        setLayoutDialogOpen(true);
+                    }}
                 />
                 <PublishedHouseSelectionDialog
                     onLayoutSelected={async (house) => {
@@ -105,6 +111,12 @@ export function ApartmentComplexLayoutSelectionDialog(props: ApartmentComplexLay
                     }}
                     open={houseDialogOpen}
                     setOpen={setHouseDialogOpen}
+                />
+                <ApartmentComplexSelectionPreviewDialog
+                    layout={props.layout}
+                    open={layoutDialogOpen}
+                    selectedHouse={selectedHouse}
+                    setOpen={setLayoutDialogOpen}
                 />
             </Dialog>
         </Fragment>

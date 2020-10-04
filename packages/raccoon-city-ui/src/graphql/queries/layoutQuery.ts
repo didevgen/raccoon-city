@@ -108,6 +108,13 @@ export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
             layouts {
                 house {
                     id
+                    name
+                    images {
+                        CHESS_GRID {
+                            uuid
+                            downloadUrl
+                        }
+                    }
                 }
                 path
                 viewBox {
@@ -118,3 +125,4 @@ export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
         }
     }
 `;
+
