@@ -86,4 +86,9 @@ export const layoutQuery = {
             path: 'layouts.house'
         });
     },
+    async getApartmentComplexLayout(_, {uuid}) {
+        return ApartmentComplexLayoutModel.findOne({_id: uuid, isDeleted: false}).populate({
+            path: 'layouts.house'
+        });
+    },
 };

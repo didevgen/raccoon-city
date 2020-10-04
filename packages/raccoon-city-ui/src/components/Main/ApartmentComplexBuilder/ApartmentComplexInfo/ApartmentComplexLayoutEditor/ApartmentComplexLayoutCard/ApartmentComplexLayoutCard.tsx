@@ -4,8 +4,9 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../../../core/constants';
+import {AUTH_APP} from '../../../../../../graphql/mutations/authMutation';
 import {
     DELETE_APARTMENT_COMPLEX_LAYOUT,
     EDIT_APARTMENT_COMPLEX_LAYOUT
@@ -29,6 +30,7 @@ export interface ApartmentComplexLayoutCardProps {
 export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProps) {
     const {apartmentComplexUuid, developerUuid} = useParams();
     const [open, setOpen] = React.useState(false);
+    const [auth] = useMutation(AUTH_APP);
     const mutation = useMutation(EDIT_APARTMENT_COMPLEX_LAYOUT, {
         refetchQueries: [
             {
@@ -88,13 +90,26 @@ export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProp
                     }}
                 </Confirmation>
             </CardHeaderWithMenu>
-            <CardActionArea>
-                <Link to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}`}>
-                    <StyledCardMedia image={props.previewImage || apartmentComplexDefaultImage} title={props.name} />
-                    <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p" />
-                    </CardContent>
-                </Link>
+            <CardActionArea
+                onClick={async () => {
+                    const res = await auth({
+                        variables: {
+                            apiKey: process.env.REACT_APP_API_KEY
+                        }
+                    });
+                    const token = res?.data?.authApp?.token;
+                    if (token) {
+                        window.open(
+                            `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/layout/${props.id}?authToken=${token}`,
+                            '_blank'
+                        );
+                    }
+                }}
+            >
+                <StyledCardMedia image={props.previewImage || apartmentComplexDefaultImage} title={props.name} />
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p" />
+                </CardContent>
             </CardActionArea>
             <LayoutDialog
                 isEdit={true}

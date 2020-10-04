@@ -126,3 +126,32 @@ export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
     }
 `;
 
+export const GET_APARTMENT_COMPLEX_LAYOUT = gql`
+    query getApartmentComplexLayout($uuid: String!) {
+        getApartmentComplexLayout(uuid: $uuid) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
+            layouts {
+                house {
+                    id
+                    name
+                    images {
+                        CHESS_GRID {
+                            uuid
+                            downloadUrl
+                        }
+                    }
+                }
+                path
+                viewBox {
+                    width
+                    height
+                }
+            }
+        }
+    }
+`;

@@ -48,6 +48,7 @@ type Mutation {
 type Query {
     getFlatLayouts(houseId: String!): [FlatLayout]
     getApartmentComplexLayouts(uuid: String!): [ApartmentComplexLayout]
+    getApartmentComplexLayout(uuid: String!): ApartmentComplexLayout
     getFlatLayout(layoutId: String!): FlatLayout
     getLevelLayouts(houseId: String!): [LevelLayout]
     getChessGridLayout(houseId: String!, layoutId: String!): [GroupedBySectionFlat]

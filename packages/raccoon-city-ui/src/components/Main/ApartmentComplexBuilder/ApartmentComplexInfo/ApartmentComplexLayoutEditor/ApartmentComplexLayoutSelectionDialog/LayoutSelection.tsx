@@ -1,8 +1,8 @@
 import {Circle, Path, PathArray, PathCommand, SVG, Svg} from '@svgdotjs/svg.js';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 
-const POINT_RADIUS = 15;
+const POINT_RADIUS = 8;
 
 const ImageContainer = styled.div<any>`
     width: ${(props: any) => props.width}px;
@@ -73,6 +73,7 @@ function handleClickOnCircle(draw: Svg, mouseEvent: MouseEvent) {
 
 interface DrawingOptions {
     onSelected: (path: Path) => void;
+    drawingRef: any;
 }
 
 function initDrawing(draw: Svg, options: DrawingOptions) {
@@ -94,6 +95,7 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
         if (circleToRemove) {
             circleToRemove.remove();
             if (circles.length === 0) {
+                options.drawingRef.current = null;
                 initialCircle = null;
             }
         }
@@ -103,6 +105,7 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
         const circle = handleClickOnCircle(draw, mouseEvent);
         circles.push(circle);
         if (!initialCircle) {
+            options.drawingRef.current = true;
             initialCircle = drawInitialCircle(circle, (initCircle) => {
                 const newCoordinate: PathCommand = ['L', initCircle.cx(), initCircle.cy()];
                 coordinates.push(newCoordinate);
@@ -129,6 +132,7 @@ function initDrawing(draw: Svg, options: DrawingOptions) {
             path = draw.path(['M', mouseEvent.offsetX, mouseEvent.offsetY]).stroke({color: '#3f51b5', width: 3});
             paths.push(path);
         } else {
+            options.drawingRef.current = true;
             const newCircle = drawCircle(circle);
             const [, x, y] = coordinates[coordinates.length - 1];
             const newCoordinate: PathCommand = ['L', newCircle.cx(), newCircle.cy()];
@@ -149,7 +153,7 @@ interface ItemWithPath {
     path: string;
 }
 
-function fillExistingLayouts(svgItem: Svg, layouts: ItemWithPath[], onClickFn: (layout: any) => void) {
+function fillExistingLayouts(svgItem: Svg, layouts: ItemWithPath[], onClickFn: (event: any, layout: any) => void) {
     const pathArray: Path[] = [];
     layouts.forEach((item) => {
         const path = svgItem
@@ -158,9 +162,7 @@ function fillExistingLayouts(svgItem: Svg, layouts: ItemWithPath[], onClickFn: (
             .stroke({color: '#3f51b5', width: 3})
             .addClass('SVG--highlighted')
             .on('click', (event: Event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                onClickFn(item);
+                onClickFn(event, item);
             });
         pathArray.push(path);
     });
@@ -168,12 +170,14 @@ function fillExistingLayouts(svgItem: Svg, layouts: ItemWithPath[], onClickFn: (
 
 export function LayoutSelection({imageUrl, onPathClosed, layouts, onLayoutSelected}) {
     const svgRef = useRef<Svg>();
+    const drawingRef = useRef<any>();
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
     const [path, setPath] = useState<any>(null);
 
     useEffect(() => {
         svgRef.current = attachSvg('#img-container');
         initDrawing(svgRef.current, {
+            drawingRef,
             onSelected: (svgPath) => {
                 setPath(svgPath);
             }
@@ -186,8 +190,12 @@ export function LayoutSelection({imageUrl, onPathClosed, layouts, onLayoutSelect
         if (svgRef && svgRef.current && layouts) {
             svgRef.current.clear();
             setPath(null);
-            fillExistingLayouts(svgRef.current, layouts, (layout) => {
-                onLayoutSelected(layout);
+            fillExistingLayouts(svgRef.current, layouts, (event, layout) => {
+                if (!drawingRef.current) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onLayoutSelected(layout);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -196,6 +204,7 @@ export function LayoutSelection({imageUrl, onPathClosed, layouts, onLayoutSelect
     useEffect(() => {
         if (path !== null) {
             onPathClosed(path, imageSize);
+            drawingRef.current = null;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);
