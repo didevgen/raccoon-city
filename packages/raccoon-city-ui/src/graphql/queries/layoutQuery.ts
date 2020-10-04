@@ -95,3 +95,26 @@ export const GET_LEVEL_LAYOUTS = gql`
         }
     }
 `;
+
+export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
+    query getApartmentComplexLayouts($uuid: String!) {
+        getApartmentComplexLayouts(uuid: $uuid) {
+            id
+            name
+            image {
+                downloadUrl
+                previewImageUrl
+            }
+            layouts {
+                house {
+                    id
+                }
+                path
+                viewBox {
+                    width
+                    height
+                }
+            }
+        }
+    }
+`;

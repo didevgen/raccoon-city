@@ -109,3 +109,38 @@ export const DELETE_IMAGE = gql`
         deleteFlatLayoutImage(mode: $mode, uuid: $uuid, imageId: $imageId)
     }
 `;
+
+export const CREATE_APARTMENT_COMPLEX_LAYOUT = gql`
+    mutation createApartmentComplexLayout($uuid: String!, $file: Upload!, $name: String!) {
+        createApartmentComplexLayout(uuid: $uuid, file: $file, name: $name) {
+            id
+            name
+        }
+    }
+`;
+
+export const EDIT_APARTMENT_COMPLEX_LAYOUT = gql`
+    mutation editApartmentComplexLayout($uuid: String!, $file: Upload, $name: String!) {
+        editApartmentComplexLayout(uuid: $uuid, file: $file, name: $name) {
+            id
+            name
+        }
+    }
+`;
+
+export const DELETE_APARTMENT_COMPLEX_LAYOUT = gql`
+    mutation deleteApartmentComplexLayout($uuid: String!) {
+        deleteApartmentComplexLayout(uuid: $uuid)
+    }
+`;
+
+export const ASSIGN_HOUSE_TO_APARTMENT_COMPLEX_LAYOUT = gql`
+    mutation assignHouseToApartmentComplexLayout(
+        $layoutId: String!
+        $houseId: String!
+        $path: [String]
+        $viewBox: ViewBoxInput
+    ) {
+        assignHouseToApartmentComplexLayout(layoutId: $layoutId, houseId: $houseId, path: $path, viewBox: $viewBox)
+    }
+`;

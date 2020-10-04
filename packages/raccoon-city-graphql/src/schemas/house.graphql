@@ -39,10 +39,17 @@ type Mutation {
     deleteLevel(levelId: String!): Boolean
     deleteSection(sectionId: String!): Boolean
     reorderLevels(sectionId: String!, oldIndex: Int!, newIndex: Int!): Boolean
+    assignHouseToApartmentComplexLayout(
+        layoutId: String!
+        houseId: String!
+        path: [String]
+        viewBox: ViewBoxInput
+    ): Boolean
 }
 
 extend type Query {
     getHouses(apartmentComplexId: String!): [House]
+    getPublishedHouses(uuid: String!): [House]
     getGroupedHouseData(uuid: String!): GroupedBySectionHouseResult
     getHouse(uuid: String!): House
     getMaxLevelInSection(sectionId: String!): Int

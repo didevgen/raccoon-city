@@ -5,6 +5,7 @@ import {Flat, FlatModel} from '../../db/models/flat';
 import HouseModel from '../../db/models/house';
 import {Level, LevelModel} from '../../db/models/level';
 import {Section, SectionModel} from '../../db/models/section';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -281,5 +282,16 @@ export const hosueQuery = {
             .limit(1)
             .exec();
         return result ? result.levelNumber : 0;
-    }
+    },
+    getPublishedHouses: async (parent, {uuid}) => {
+        const result = await PublishedHouseModel.find({
+            apartmentComplex: uuid,
+            isDeleted: false
+        }).exec();
+        if (result) {
+            return result || [];
+        } else {
+            return [];
+        }
+    },
 };
