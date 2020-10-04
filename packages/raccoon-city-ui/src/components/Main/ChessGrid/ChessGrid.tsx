@@ -24,6 +24,7 @@ import {showMutedFlats} from './ChessGrid.utils';
 import {initialState, reducer} from './ChessGrid.reducer';
 import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
+import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
@@ -63,16 +64,53 @@ const ChessGridContent = React.memo((props: any) => {
     const {getPublicFlatsList, getFlatsList} = listData;
     const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 
+    console.log('houseFlats');
+    console.log(houseFlats);
+
     const selectFlat = (flat: Flat) => {
         setSelectedFlat(flat);
         setFlatCardOpen(true);
     };
 
-    if (filters.mode === 'list') {
+    if (filters.mode === ChessCellViewMode.FLOOR) {
+        return (
+            <Fragment>
+                <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} isPublic={isPublic} />
+
+                {/* TODO refactor this repeat code*/}
+                {flatCardOpen && (
+                    <SidebarDrawer
+                        anchor="right"
+                        open={flatCardOpen}
+                        onOpen={() => {
+                            // silence
+                        }}
+                        onClose={() => {
+                            setFlatCardOpen(false);
+                            setSelectedFlat(undefined);
+                        }}
+                    >
+                        {selectedFlat && (
+                            <FlatSidebarInfo
+                                // @ts-ignore
+                                flat={selectedFlat}
+                                isPublic={isPublic}
+                                showRequestButton={showRequestButton}
+                                onFlatSelected={onFlatSelected}
+                            />
+                        )}
+                    </SidebarDrawer>
+                )}
+            </Fragment>
+        );
+    }
+
+    if (filters.mode === ChessCellViewMode.LIST) {
         return (
             <Fragment>
                 <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
 
+                {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
                     <SidebarDrawer
                         anchor="right"
@@ -131,6 +169,7 @@ const ChessGridContent = React.memo((props: any) => {
                     );
                 })}
 
+                {/* TODO refactor this repeat code*/}
                 <SidebarDrawer
                     anchor="right"
                     open={flatCardOpen}
@@ -228,6 +267,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
                     <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
                     <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>
+                    <MenuItem value={ChessCellViewMode.FLOOR}>Этаж</MenuItem>
                 </SelectStyled>
             </div>
 

@@ -39,7 +39,7 @@ function mapCustomFieldsToContact(amoContact) {
     });
 
     if (phone) {
-        result.phones = phone.values.map(item => item.value);
+        result.phones = phone.values.map((item) => item.value);
     }
 
     if (email) {
@@ -110,11 +110,15 @@ function mapWebHookContact(amoContact) {
     }
 
     if (clientStatus) {
-        result.clientStatus = ClientStatuses.find(source => source.displayName === clientStatus?.values[0]?.value)?.key;
+        result.clientStatus = ClientStatuses.find(
+            (source) => source.displayName === clientStatus?.values[0]?.value
+        )?.key;
     }
 
     if (clientSource) {
-        result.clientSources = ClientSources.find(source => source.displayName === clientSource?.values[0]?.value)?.key;
+        result.clientSources = ClientSources.find(
+            (source) => source.displayName === clientSource?.values[0]?.value
+        )?.key;
     }
 
     return result;
@@ -129,7 +133,7 @@ export async function saveContacts(developerUuid, contacts) {
     const existingAmoSet = new Map();
     existingContacts.forEach((c) => {
         existingAmoSet.set(c.amoId, c);
-    })
+    });
 
     const contactsToUpdate = [];
     contacts.forEach((newContact) => {
@@ -142,19 +146,25 @@ export async function saveContacts(developerUuid, contacts) {
         }
     });
 
-    await Promise.all(contactsToUpdate.map(contact => {
-        return ContactModel.update({
-            developer: mongoose.Types.ObjectId(developerUuid),
-            isDeleted: false,
-            amoId: contact.amoId
-        }, {
-            $set: {
-                ...contact
-            }
-        }, {
-            upsert: true
+    await Promise.all(
+        contactsToUpdate.map((contact) => {
+            return ContactModel.update(
+                {
+                    developer: mongoose.Types.ObjectId(developerUuid),
+                    isDeleted: false,
+                    amoId: contact.amoId
+                },
+                {
+                    $set: {
+                        ...contact
+                    }
+                },
+                {
+                    upsert: true
+                }
+            );
         })
-    }));
+    );
 }
 
 export async function mapContacts(amoContacts = []) {

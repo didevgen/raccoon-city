@@ -7,5 +7,6 @@ export enum ViewModeValues {
 export enum ChessCellViewMode {
     TILE = 'tile',
     TILE_PLUS = 'tilePlus',
-    LIST = 'list'
+    LIST = 'list',
+    FLOOR = 'floor'
 }

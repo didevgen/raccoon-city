@@ -29,9 +29,17 @@ type Mutation {
     deleteLevelLayout(uuid: String!): Boolean
 }
 
+type LevelLayoutChess {
+    id: String
+    name: String
+    image: SinglePreviewImage
+    levels: [String]
+}
+
 type Query {
     getFlatLayouts(houseId: String!): [FlatLayout]
     getFlatLayout(layoutId: String!): FlatLayout
     getLevelLayouts(houseId: String!): [LevelLayout]
+    getLevelLayoutsToChessView(houseId: String!): [LevelLayoutChess]
     getChessGridLayout(houseId: String!, layoutId: String!): [GroupedBySectionFlat]
 }

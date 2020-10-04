@@ -20,6 +20,10 @@ export function FlatLayoutList() {
     }
 
     return data.getFlatLayouts.map((layout: HouseLayout) => {
+        if (!layout.image) {
+            return <div>Загрузите изображания</div>;
+        }
+
         return (
             <Grid item={true} xs={12} md={3} key={layout.id}>
                 <Grid container justify="center">
