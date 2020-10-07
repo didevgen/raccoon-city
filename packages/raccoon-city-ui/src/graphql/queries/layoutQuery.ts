@@ -110,7 +110,7 @@ export const GET_LEVEL_LAYOUTS_EXTENDED = gql`
     }
 `;
 
-export const GET_PUBLISHED_FLATS_EXTENDED = gql`
+export const GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
     query getPublishedFlatsLayoutByHouseId($houseId: String, $sectionId: String, $levelId: String) {
         getPublishedFlatsLayoutByHouseId(houseId: $houseId, sectionId: $sectionId, levelId: $levelId) {
             image {
@@ -147,9 +147,9 @@ export const GET_PUBLISHED_FLATS_EXTENDED = gql`
     }
 `;
 
-export const GET_FLATS_LAYOUTS_EXTENDED = gql`
-    query getFlatsLayoutsByIds($levelId: String, $houseId: String, $flatsIds: [String]) {
-        getFlatsLayoutsByIds(levelId: $levelId, houseId: $houseId, flatsIds: $flatsIds) {
+export const GET_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
+    query getFlatsLayoutsByIds($levelId: String) {
+        getFlatsLayoutsByIds(levelId: $levelId) {
             image {
                 previewImageUrl
             }
@@ -183,7 +183,6 @@ export const GET_FLATS_LAYOUTS_EXTENDED = gql`
         }
     }
 `;
-
 
 export const GET_APARTMENT_COMPLEX_LAYOUTS = gql`
     query getApartmentComplexLayouts($uuid: String!) {

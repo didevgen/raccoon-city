@@ -62,9 +62,6 @@ function fillExistingLayouts(
     setCurrentDataId?: any,
     onSelect?: any
 ) {
-    console.log('lol');
-    console.log(info);
-
     if (info) {
         info.forEach((item, i) => {
             let pathParsed = JSON.parse(paths[i]);
@@ -86,8 +83,6 @@ function fillExistingLayouts(
                 setCurrentDataId(e.target.getAttribute('data-uid'));
             });
             path.on('click', (e) => {
-                console.log(onSelect);
-                console.log(item.flatInfo);
                 onSelect(item.flatInfo);
             });
         });

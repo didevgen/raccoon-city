@@ -27,10 +27,6 @@ input ViewBoxInput {
     height: Int
 }
 
-type s {
-    res: String
-}
-
 type flatLayout {
     id: String
     name: String
@@ -41,13 +37,13 @@ type flatLayout {
 type flatInfo {
     levelAmount: Int
     flatNumber: String
-    price: Int
+    price: Float
     level: String
     section: String
     area: Float
     status: String
     roomAmount: String
-    sale: Int
+    sale: Float
     house: String
     squarePrice: String
     layout: String
@@ -56,7 +52,6 @@ type flatInfo {
 
 type svgInfo {
     paths: [String]
-    flatLayout: [String]
     viewBox: ViewBox
     id: String
     image: PreviewImage
@@ -80,7 +75,7 @@ type FloorViewInfo {
 type Query {
     getSelectedLevelLayouts(levelLayoutId: String, houseId: String!): [GroupedBySectionLevels]
     getLevelLayoutFlatLayouts(levelLayoutId: String): [LevelLayoutFlatLayout]
-    getFlatsLayoutsByIds(levelId: String, houseId: String, flatsIds: [String]): FloorViewInfo
+    getFlatsLayoutsByIds(levelId: String): FloorViewInfo
     getPublishedFlatsLayoutByHouseId(houseId: String, sectionId: String, levelId: String): FloorViewInfo
 }
 

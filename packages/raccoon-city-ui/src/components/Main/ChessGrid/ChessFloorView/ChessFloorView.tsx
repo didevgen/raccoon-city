@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import {Button, Select, MenuItem} from '@material-ui/core';
-import {GET_PUBLISHED_FLATS_EXTENDED, GET_FLATS_LAYOUTS_EXTENDED} from '../../../../graphql/queries/layoutQuery';
-import {getSections, getFlatsIds, getInfo} from './ChessFloorUtils';
+import {Select, MenuItem} from '@material-ui/core';
+import {
+    GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS,
+    GET_FLATS_INFO_WITH_SVG_LAYOUTS
+} from '../../../../graphql/queries/layoutQuery';
+import {getSections, getInfo, getFlatsToDraw} from './ChessFloorUtils';
 import {
     FloorViewContainer,
     FloorsListContainer,
@@ -13,6 +16,7 @@ import {
     FlatInfo
 } from './ChessFloorView.styled';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
+import {FLAT_STATUSES} from '../../../../core/constants';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic} = props;
@@ -30,12 +34,10 @@ export const ChessFloorView = (props) => {
     };
 
     const variables = {
-        levelId: currentLevel,
-        houseId: houseFlats[0].id,
-        flatsIds: getFlatsIds(groupedFlats, currentSection, currentLevel)
+        levelId: currentLevel
     };
 
-    const FLAT_LAYOUTS_QUERY = isPublic ? GET_PUBLISHED_FLATS_EXTENDED : GET_FLATS_LAYOUTS_EXTENDED;
+    const FLAT_LAYOUTS_QUERY = isPublic ? GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS : GET_FLATS_INFO_WITH_SVG_LAYOUTS;
 
     const queryVariables = isPublic ? publicVariables : variables;
 
@@ -58,33 +60,29 @@ export const ChessFloorView = (props) => {
     let fullFlatsInfo: any = [];
     let image: any = {};
 
+    // TODO think about this
     if (isPublic) {
         const {
             getPublishedFlatsLayoutByHouseId: {fullFlatsInfo: info, image: img}
         } = flatsData;
+
         fullFlatsInfo = info || [];
         image = img;
     } else {
         const {
             getFlatsLayoutsByIds: {fullFlatsInfo: info, image: img}
         } = flatsData;
+
         fullFlatsInfo = info;
         image = img;
     }
 
-    console.log('flatsData');
-    console.log(flatsData);
-
     // TODO type this
-    let info: any = isPublic ? getInfo(fullFlatsInfo, currentDataId) : getInfo(fullFlatsInfo, currentDataId);
+    let info: any = getInfo(fullFlatsInfo, currentDataId);
 
-    // TODO refactor this (may be utils)
-    const toDraw = fullFlatsInfo.map(({svgInfo, flatInfo}) => ({
-        ...svgInfo,
-        status: flatInfo.status,
-        flatInfo
-    }));
+    const flatsToDraw = getFlatsToDraw(fullFlatsInfo);
 
+    // TODO may be divide
     return (
         <FloorViewContainer>
             <FloorLegendInfo>
@@ -119,10 +117,6 @@ export const ChessFloorView = (props) => {
                             );
                         })}
                     </Select>
-
-                    <Button variant="outlined" color="primary">
-                        Подробнее
-                    </Button>
                 </div>
             </FloorLegendInfo>
 
@@ -146,23 +140,27 @@ export const ChessFloorView = (props) => {
                         {info ? (
                             <>
                                 <span>{`№${info.flatNumber}`}</span>
-                                <span>{`Статус: ${info.status}`}</span>
+                                <span>
+                                    {`Статус: ${
+                                        FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label
+                                    }`}
+                                </span>
                                 <span>{`Цена: ${info.price}`}</span>
                                 <span>{`М2: ${info.area}`}</span>
                                 <span>{`Цена м2: ${info.squarePrice}`}</span>
                                 <span>{`Комнат: ${info.roomAmount}`}</span>
-                                <span>{`Этажей: ${info.levelAmount}`}</span>
+                                <span>{`Кол-во уровней: ${info.levelAmount}`}</span>
                             </>
                         ) : (
                             <span>Наведите на квартиру</span>
                         )}
                     </FlatInfo>
                     <div>
-                        {fullFlatsInfo.length && (
+                        {Boolean(fullFlatsInfo.length) && (
                             <LayoutView
                                 isLarge={true}
                                 onSelect={onSelect}
-                                levelLayouts={toDraw}
+                                levelLayouts={flatsToDraw}
                                 floorImage={image}
                                 setCurrentDataId={setCurrentDataId}
                             />
