@@ -11,7 +11,7 @@ export const initialState = {
         minArea: 0,
         maxArea: 0
     },
-    mode: ChessCellViewMode.FLOOR
+    mode: ChessCellViewMode.TILE
 };
 
 export function reducer(state, action) {

@@ -64,9 +64,6 @@ const ChessGridContent = React.memo((props: any) => {
     const {getPublicFlatsList, getFlatsList} = listData;
     const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 
-    console.log('houseFlats');
-    console.log(houseFlats);
-
     const selectFlat = (flat: Flat) => {
         setSelectedFlat(flat);
         setFlatCardOpen(true);
