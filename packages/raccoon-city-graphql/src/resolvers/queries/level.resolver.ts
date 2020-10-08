@@ -1,5 +1,5 @@
 import HouseModel from '../../db/models/house';
-import {Level} from '../../db/models/level';
+import {Level, LevelModel} from '../../db/models/level';
 import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
@@ -73,130 +73,36 @@ export const levelQuery = {
 
         return houseResult;
     },
-    async getFlatsLayoutsByIds(_, {levelId, houseId, flatsIds}) {
-        // REMOVE
-        const layoutDbResponse: any = await LevelLayoutModel.findOne({
-            house: houseId,
-            levels: {$in: levelId},
-            isDeleted: false
-        }).exec();
-
-        // REMOVE
-        const house: any = await HouseModel.findOne({_id: houseId, isDeleted: false})
+    async getFlatsLayoutsByIds(_, {levelId}) {
+        const level: any = await LevelModel.findOne({
+            _id: levelId,
+            isDeleted: false,
+        })
             .populate({
                 path: 'layouts',
-                match: {
-                    isDeleted: false
-                }
-            })
-            .populate({
-                path: 'levelLayouts',
-                match: {
-                    isDeleted: false
-                }
+                match: {isDeleted: false}
             })
             .populate({
                 path: 'flats',
-                match: {
-                    isDeleted: false
-                }
+                match: {isDeleted: false}
             })
             .exec();
 
-        // TODO USE THIS
-        // const levelTest: any = await LevelModel.findOne({
-        //     _id: levelId,
-        //     isDeleted: false,
-        // })
-        //     .populate({
-        //         path: 'layouts',
-        //         match: {
-        //             isDeleted: false
-        //         }
-        //     })
-        //     .populate({
-        //         path: 'flats',
-        //         match: {
-        //             isDeleted: false
-        //         }
-        //     })
-        //     .exec();
+        const {flats, layouts: levelLayout} = level;
 
-        // TODO USE THIS
-        // const levelTestFlatIds = levelTest.flats.map(({id}) => id);
-
-        // const levelFlatsLayoutsTest = await LevelFlatLayoutModel.find({
-        //     flatLayout: {$in: levelTestFlatIds},
-        //     isDeleted: false,
-        // })
-        //     .populate({
-        //         path: 'flatLayout',
-        //         match: {
-        //             isDeleted: false
-        //         }
-        //     })
-        //     .exec();
-
-        if (!house) {
+        if (!flats) {
             return [];
         }
 
-        const {flats, layouts, levelLayouts} = house;
-
-        if (!flats || !layouts) {
-            return [];
-        }
-
-        const appropriateFlats = flats.filter(({id}) => {
-            return flatsIds.some((flatId) => flatId === id);
-        });
-
-        const updatedFlats = layouts.reduce((acc, flatLayout) => {
-            const {flats} = flatLayout;
-            let isFlatConsist = false;
-            let flatInfo = null;
-
-            if (!flats.length) {
-                return [...acc];
-            }
-
-            flats.forEach((flatId) => {
-                appropriateFlats.forEach((flat) => {
-                    if (String(flatId) === String(flat.id)) {
-                        console.log(flatId, flat.id);
-
-                        flatInfo = flat;
-                        isFlatConsist = true;
-                    }
-                });
-            });
-
-            if (isFlatConsist) {
-                return [
-                    ...acc,
-                    {
-                        flatLayout: {
-                            id: flatLayout.id,
-                            name: flatLayout.name,
-                            images: flatLayout.images,
-                            image: flatLayout.image
-                        },
-                        flatInfo
-                    }
-                ];
-            }
-
-            return [...acc];
+        const flatIds = flats.reduce((acc, {layout}) => {
+            return !layout
+                ? [...acc]
+                : [...acc, String(layout)];
         }, []);
 
-        const levelLayoutId = levelLayouts.find(({levels}) => {
-            return levels.find((level) => String(level) === String(levelId));
-        });
-
-        const levelFlatsLayouts = await LevelFlatLayoutModel.find({
-            flatLayout: {$in: updatedFlats.map(({flatLayout: {id}}) => String(id))},
+        const flatSvgLayouts = await LevelFlatLayoutModel.find({
+            flatLayout: {$in: flatIds},
             isDeleted: false,
-            levelLayout: levelLayoutId
         })
             .populate({
                 path: 'flatLayout',
@@ -206,42 +112,54 @@ export const levelQuery = {
             })
             .exec();
 
-        const fullFlatsInfo = updatedFlats.reduce((acc, flat) => {
-            const {flatLayout} = flat;
+        if (!flatSvgLayouts) {
+            return [];
+        }
 
-            const svgInfo = levelFlatsLayouts.find(({flatLayout: {id}}) => {
-                console.log(id, flatLayout.id, id === flatLayout.id);
+        if (!flats || !levelLayout) {
+            return [];
+        }
 
-                return id === flatLayout.id;
+        const fullFlatsInfo = flats.reduce((acc, flatInfo) => {
+            const {_id: flatId} = flatInfo;
+
+            const svgInfo = flatSvgLayouts.find((svgInfo) => {
+                const {flatLayout} = svgInfo;
+
+                if (!flatLayout) {
+                    return false;
+                }
+
+                return flatLayout.flats.some((flatIdInSvgInfo) => {
+                    return String(flatIdInSvgInfo) === String(flatId);
+                });
             });
 
-            if (svgInfo) {
-                const {path, viewBox, id}: any = svgInfo;
-
-                const paths = path.map((path) => String(path));
-
-                return [
-                    ...acc,
-                    {
-                        ...flat,
-                        svgInfo: {
-                            paths,
-                            viewBox,
-                            id,
-                            image: flatLayout.image
-                        }
-                    }
-                ];
+            if (!svgInfo) {
+                return [...acc];
             }
 
-            return [...acc];
+            const {_id: id, path, viewBox: {width, height}} = svgInfo as any;
+
+            return [...acc, {
+                flatInfo,
+                svgInfo: {
+                    id: String(id),
+                    paths: path.map((path) => String(path)),
+                    viewBox: {width, height}
+                },
+            }];
         }, []);
+
+        const levelUrl = levelLayout.find((levelLayout) => {
+            return levelLayout.levels.some((id) => String(id) === String(levelId));;
+        });
 
         return {
             image: {
-                previewImageUrl: layoutDbResponse?.image?.previewImageUrl
+                previewImageUrl: levelUrl?.image?.previewImageUrl || "",
             },
-            fullFlatsInfo
+            fullFlatsInfo,
         };
     },
     async getPublishedFlatsLayoutByHouseId(_, {houseId, sectionId, levelId}) {
@@ -252,7 +170,6 @@ export const levelQuery = {
 
         const {layouts, levelLayouts, sections} = publishedHouse;
 
-        // GET FLATS INFO
         const appropriateSection = sections.find(({_id}) => String(_id) === String(sectionId));
         const flats = appropriateSection.levels.find(({_id}) => String(_id) === String(levelId));
 
@@ -270,43 +187,48 @@ export const levelQuery = {
             return [];
         }
 
-        const tmpArray = [];
-        layouts.forEach((item) => {
-            levelLayout.flatLayouts.forEach((flatLayout) => {
-                if (String(flatLayout.flatLayout) === String(item._id)) {
-                    tmpArray.push({
-                        layout: item,
-                        flatLayout: flatLayout
-                    });
+        const flatsInfoWithLayouts = layouts.reduce((acc, layout) => {
+            const {flatLayouts} = levelLayout;
+            const {_id: layoutId} = layout;
+
+            const flatLayout = flatLayouts.find((item) => {
+                return String(item.flatLayout) === String(layoutId)
+            });
+
+            return !flatLayout
+                ? [...acc]
+                : [...acc, {layout, flatLayout}];
+        }, []);
+
+        const fullFlatsInfo = flatsInfoWithLayouts.reduce((acc, tempItem) => {
+            const {layout: {flats}, flatLayout} = tempItem;
+            const {_id, path, viewBox: {width, height}} = flatLayout;
+            let flatInfo = null;
+
+            flats.forEach((flatId) => {
+                // TODO use find instead for
+                for (let i = 0; i < flatsInfo.length; i++) {
+                    if (String(flatsInfo[i].id) === String(flatId)) {
+                        flatInfo = flatsInfo[i];
+
+                        break;
+                    }
                 }
             });
-        });
 
-        const fullFlatsInfo = [];
-        tmpArray.forEach((tempItem) => {
-            tempItem.layout.flats.forEach((flatId) => {
-                flatsInfo.forEach((flatInfo) => {
-                    if (String(flatInfo._id) === String(flatId)) {
-                        const paths = tempItem.flatLayout.path.map((path) => String(path));
-                        fullFlatsInfo.push({
-                            svgInfo: {
-                                paths,
-                                id: String(tempItem.flatLayout._id),
-                                flatLayout: [''],
-                                viewBox: {
-                                    width: tempItem.flatLayout.viewBox.width,
-                                    height: tempItem.flatLayout.viewBox.height
-                                },
-                                image: {}
-                            },
-                            flatInfo
-                        });
-                    }
-                });
-            });
-        });
+            return !flatInfo
+                ? [...acc]
+                : [...acc, {
+                    flatInfo,
+                    svgInfo: {
+                        paths: path.map((path) => String(path)),
+                        id: String(_id),
+                        viewBox: {width, height},
+                    },
+                }];
+        }, []);
 
-        if (!levelLayout) {
+        if (!levelLayout || !fullFlatsInfo.length) {
             return [];
         }
 
