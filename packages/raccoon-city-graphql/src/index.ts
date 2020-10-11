@@ -90,7 +90,7 @@ if (process.env.NODE_ENV === 'production') {
         key: fs.readFileSync(Path.resolve(__dirname, '../../../certs/cert.key')),
         cert: fs.readFileSync(Path.resolve(__dirname, '../../../certs/cert.pem')),
     };
-    https.createServer(options, app).listen({port: process.env.PORT || 4000}, () => {
+    https.createServer(options, app).listen({port: 443}, () => {
         logger.info(`🚀 Prod Server ready`);
     });
 } else {
