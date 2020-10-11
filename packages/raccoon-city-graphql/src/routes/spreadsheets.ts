@@ -35,6 +35,10 @@ router.get('/spreadsheets/contacts/:developerId', async (req, res) => {
     }
 });
 
+router.get('/healthcheck', async (req, res) => {
+    res.status(200).send('connected');
+});
+
 router.get('/spreadsheets/trades/:developerId', async (req, res) => {
     try {
         const developerId = req.params.developerId;
