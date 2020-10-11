@@ -76,7 +76,7 @@ export const levelQuery = {
     async getFlatsLayoutsByIds(_, {levelId}) {
         const level: any = await LevelModel.findOne({
             _id: levelId,
-            isDeleted: false
+            isDeleted: false,
         })
             .populate({
                 path: 'layouts',
@@ -95,12 +95,14 @@ export const levelQuery = {
         }
 
         const flatIds = flats.reduce((acc, {layout}) => {
-            return !layout ? [...acc] : [...acc, String(layout)];
+            return !layout
+                ? [...acc]
+                : [...acc, String(layout)];
         }, []);
 
         const flatSvgLayouts = await LevelFlatLayoutModel.find({
             flatLayout: {$in: flatIds},
-            isDeleted: false
+            isDeleted: false,
         })
             .populate({
                 path: 'flatLayout',
@@ -137,34 +139,27 @@ export const levelQuery = {
                 return [...acc];
             }
 
-            const {
-                _id: id,
-                path,
-                viewBox: {width, height}
-            } = svgInfo as any;
+            const {_id: id, path, viewBox: {width, height}} = svgInfo as any;
 
-            return [
-                ...acc,
-                {
-                    flatInfo,
-                    svgInfo: {
-                        id: String(id),
-                        paths: path.map((path) => String(path)),
-                        viewBox: {width, height}
-                    }
-                }
-            ];
+            return [...acc, {
+                flatInfo,
+                svgInfo: {
+                    id: String(id),
+                    paths: path.map((path) => String(path)),
+                    viewBox: {width, height}
+                },
+            }];
         }, []);
 
         const levelUrl = levelLayout.find((levelLayout) => {
-            return levelLayout.levels.some((id) => String(id) === String(levelId));
+            return levelLayout.levels.some((id) => String(id) === String(levelId));;
         });
 
         return {
             image: {
-                previewImageUrl: levelUrl?.image?.previewImageUrl || ''
+                previewImageUrl: levelUrl?.image?.previewImageUrl || "",
             },
-            fullFlatsInfo
+            fullFlatsInfo,
         };
     },
     async getPublishedFlatsLayoutByHouseId(_, {houseId, sectionId, levelId}) {
@@ -179,7 +174,12 @@ export const levelQuery = {
         const flats = appropriateSection.levels.find(({_id}) => String(_id) === String(levelId));
 
         if (!flats) {
-            return [];
+            return {
+                fullFlatsInfo: [],
+                image: {
+                    previewImageUrl: "",
+                }
+            }
         }
 
         const {flats: flatsInfo} = flats;
@@ -189,7 +189,12 @@ export const levelQuery = {
         });
 
         if (!levelLayout) {
-            return [];
+            return {
+                fullFlatsInfo: [],
+                image: {
+                    previewImageUrl: levelLayout?.image.previewImageUrl
+                }
+            };
         }
 
         const flatsInfoWithLayouts = layouts.reduce((acc, layout) => {
@@ -197,22 +202,17 @@ export const levelQuery = {
             const {_id: layoutId} = layout;
 
             const flatLayout = flatLayouts.find((item) => {
-                return String(item.flatLayout) === String(layoutId);
+                return String(item.flatLayout) === String(layoutId)
             });
 
-            return !flatLayout ? [...acc] : [...acc, {layout, flatLayout}];
+            return !flatLayout
+                ? [...acc]
+                : [...acc, {layout, flatLayout}];
         }, []);
 
         const fullFlatsInfo = flatsInfoWithLayouts.reduce((acc, tempItem) => {
-            const {
-                layout: {flats},
-                flatLayout
-            } = tempItem;
-            const {
-                _id,
-                path,
-                viewBox: {width, height}
-            } = flatLayout;
+            const {layout: {flats}, flatLayout} = tempItem;
+            const {_id, path, viewBox: {width, height}} = flatLayout;
             let flatInfo = null;
 
             flats.forEach((flatId) => {
@@ -228,21 +228,23 @@ export const levelQuery = {
 
             return !flatInfo
                 ? [...acc]
-                : [
-                      ...acc,
-                      {
-                          flatInfo,
-                          svgInfo: {
-                              paths: path.map((path) => String(path)),
-                              id: String(_id),
-                              viewBox: {width, height}
-                          }
-                      }
-                  ];
+                : [...acc, {
+                    flatInfo,
+                    svgInfo: {
+                        paths: path.map((path) => String(path)),
+                        id: String(_id),
+                        viewBox: {width, height},
+                    },
+                }];
         }, []);
 
         if (!levelLayout || !fullFlatsInfo.length) {
-            return [];
+            return {
+                fullFlatsInfo: [],
+                image: {
+                    previewImageUrl: levelLayout?.image.previewImageUrl
+                }
+            };
         }
 
         return {

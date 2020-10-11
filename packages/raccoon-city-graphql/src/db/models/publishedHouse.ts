@@ -1,6 +1,11 @@
 import * as mongoose from 'mongoose';
 import {Schema} from 'mongoose';
-import {imagesSchema, KeyDisplayNameSchema, simpleImageSchema, SinglePreviewImageSchema} from './shared';
+import {
+    imagesSchema,
+    KeyDisplayNameSchema,
+    simpleImageSchema,
+    SinglePreviewImageSchema
+} from './shared';
 
 const PublishedHouseLayoutSchema = new Schema({
     name: Schema.Types.String,

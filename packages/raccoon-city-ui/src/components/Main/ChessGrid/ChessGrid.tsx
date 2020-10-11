@@ -26,9 +26,23 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
+import styled from 'styled-components';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
+
+export const CustomSidebarDrawer = styled(SidebarDrawer)`
+    /* color: #e84f1D;
+    border: 1px solid #e84f1D; */
+
+    .MuiAppBar-colorPrimary {
+        background-color: #e84f1d;
+    }
+
+    .PrivateTabIndicator-colorSecondary-42 {
+        background-color: #fff;
+    }
+`;
 
 const ChessGridContent = React.memo((props: any) => {
     const {
@@ -48,6 +62,8 @@ const ChessGridContent = React.memo((props: any) => {
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
 
+    const SideBar = isPublic ? CustomSidebarDrawer : SidebarDrawer;
+
     if (loading || listLoading) {
         return <ChessGridWrapper>Loading</ChessGridWrapper>;
     }
@@ -64,9 +80,6 @@ const ChessGridContent = React.memo((props: any) => {
     const {getPublicFlatsList, getFlatsList} = listData;
     const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 
-    console.log('houseFlats');
-    console.log(houseFlats);
-
     const selectFlat = (flat: Flat) => {
         setSelectedFlat(flat);
         setFlatCardOpen(true);
@@ -79,7 +92,7 @@ const ChessGridContent = React.memo((props: any) => {
 
                 {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
-                    <SidebarDrawer
+                    <SideBar
                         anchor="right"
                         open={flatCardOpen}
                         onOpen={() => {
@@ -99,7 +112,7 @@ const ChessGridContent = React.memo((props: any) => {
                                 onFlatSelected={onFlatSelected}
                             />
                         )}
-                    </SidebarDrawer>
+                    </SideBar>
                 )}
             </Fragment>
         );
@@ -112,7 +125,7 @@ const ChessGridContent = React.memo((props: any) => {
 
                 {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
-                    <SidebarDrawer
+                    <SideBar
                         anchor="right"
                         open={flatCardOpen}
                         onOpen={() => {
@@ -132,7 +145,7 @@ const ChessGridContent = React.memo((props: any) => {
                                 onFlatSelected={onFlatSelected}
                             />
                         )}
-                    </SidebarDrawer>
+                    </SideBar>
                 )}
             </Fragment>
         );
@@ -170,7 +183,7 @@ const ChessGridContent = React.memo((props: any) => {
                 })}
 
                 {/* TODO refactor this repeat code*/}
-                <SidebarDrawer
+                <SideBar
                     anchor="right"
                     open={flatCardOpen}
                     onOpen={() => {
@@ -190,7 +203,7 @@ const ChessGridContent = React.memo((props: any) => {
                             onFlatSelected={onFlatSelected}
                         />
                     )}
-                </SidebarDrawer>
+                </SideBar>
             </ChessGridWrapper>
         </ViewModeContext.Provider>
     );

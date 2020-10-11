@@ -1,8 +1,20 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {FloorLegendItem} from '../ChessFloorView.styled';
+import styled from 'styled-components';
+
+const FlatStatusesBarContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 35px 10px;
+    margin-bottom: 20px;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+`;
 
 export const FlatStatusesBar = () => (
-    <Fragment>
+    <FlatStatusesBarContainer>
         <FloorLegendItem color="#4caf50">
             <div></div>
             <span>Свободно</span>
@@ -23,5 +35,5 @@ export const FlatStatusesBar = () => (
             <div></div>
             <span>Недоступно</span>
         </FloorLegendItem>
-    </Fragment>
+    </FlatStatusesBarContainer>
 );
