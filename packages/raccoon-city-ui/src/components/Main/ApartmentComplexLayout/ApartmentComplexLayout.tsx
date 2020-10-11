@@ -1,9 +1,12 @@
 import {useQuery} from '@apollo/react-hooks';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import {Path, SVG, Svg} from '@svgdotjs/svg.js';
+import Cookies from 'js-cookie';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router';
+import {Redirect} from 'react-router-dom';
 import styled from 'styled-components';
+import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
 
 const ImageContainer = styled.div`
@@ -145,12 +148,21 @@ export default function ApartmentComplexLayout() {
             document.querySelector(`#${imageId} .active`)?.classList.remove('active');
         }
     }, [hoveredHouse]); // eslint-disable-line
+
     const {loading, error, data} = useQuery(GET_APARTMENT_COMPLEX_LAYOUT, {
         variables: {
             uuid: layoutUuid
         },
         fetchPolicy: 'cache-and-network'
     });
+
+    const params = new URLSearchParams(window.location.search);
+    const authToken = params.get('authToken');
+    if (authToken) {
+        Cookies.set(API_TOKEN, authToken, {expires: 365});
+    } else {
+        return <Redirect to="/login" />;
+    }
 
     if (loading || error) {
         return null;
