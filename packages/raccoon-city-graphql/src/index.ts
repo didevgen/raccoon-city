@@ -9,9 +9,6 @@ import connect from './db/mongoose.client';
 import {prisma} from './generated/prisma-client';
 import resolvers from './resolvers';
 import {default as typeDefs} from './schemas';
-import https from 'https';
-import Path from 'path';
-import fs from 'fs';
 config();
 
 async function tradeTokenForUser(token: string) {
@@ -85,17 +82,7 @@ server.applyMiddleware({app, path});
 const db = process.env.MONGODB_URI;
 connect({db});
 
-if (process.env.NODE_ENV === 'production') {
-    const options = {
-        key: fs.readFileSync(Path.resolve(__dirname, '../../../certs/cert.key')),
-        cert: fs.readFileSync(Path.resolve(__dirname, '../../../certs/cert.pem')),
-    };
-    https.createServer(options, app).listen({port: 443}, () => {
-        logger.info(`🚀 Prod Server ready`);
-    });
-} else {
-    app.listen({port: process.env.PORT || 4000}, () => {
-        logger.info(`🚀  Server ready`);
-    });
-}
+app.listen({port: process.env.PORT || 4000}, () => {
+    logger.info(`🚀  Server ready`);
+});
 
