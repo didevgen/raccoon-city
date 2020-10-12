@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import {Select, MenuItem} from '@material-ui/core';
 import {
     GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS,
     GET_FLATS_INFO_WITH_SVG_LAYOUTS
@@ -11,12 +10,15 @@ import {
     FloorsListContainer,
     FloorContentContainer,
     FloorsListItem,
+    LevelSelectMobile,
     FloorLegendInfo,
-    FloorLegendItem,
-    FlatInfo
+    WarningContainer,
+    WarningContainerColumn
 } from './ChessFloorView.styled';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
-import {FLAT_STATUSES} from '../../../../core/constants';
+import {CustomSelector} from './FloorViewsParts/CustomSelector';
+import {FlatStatusesBar} from './FloorViewsParts/FlatStatusesBar';
+import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic} = props;
@@ -82,91 +84,91 @@ export const ChessFloorView = (props) => {
 
     const flatsToDraw = getFlatsToDraw(fullFlatsInfo);
 
-    // TODO may be divide
+    let contentView: any = null;
+
+    if (!image?.previewImageUrl) {
+        contentView = (
+            <WarningContainer>
+                <p>К этому этажу не привязана планировка</p>
+            </WarningContainer>
+        );
+    } else {
+        contentView = (
+            <WarningContainerColumn>
+                <p>На этом этаже нет планировок квартир</p>
+                <img src={image?.previewImageUrl} alt="level url" />
+            </WarningContainerColumn>
+        );
+    }
+
+    if (fullFlatsInfo.length) {
+        contentView = (
+            <LayoutView
+                isLarge={true}
+                onSelect={onSelect}
+                levelLayouts={flatsToDraw}
+                floorImage={image}
+                setCurrentDataId={setCurrentDataId}
+            />
+        );
+    }
+
+    const currentValueTest = (sectionId) => {
+        setCurrentSection(sectionId);
+        const {levels} = sections[sectionId];
+
+        if (!levels.length) {
+            return;
+        }
+
+        setCurrentLevel(levels[0].id);
+    };
+
     return (
         <FloorViewContainer>
-            <FloorLegendInfo>
-                <FloorLegendItem color="#4caf50">
-                    <div></div>
-                    <span>Свободно</span>
-                </FloorLegendItem>
-                <FloorLegendItem color="#ffeb3b">
-                    <div></div>
-                    <span>Резерв / Забронировано</span>
-                </FloorLegendItem>
-                <FloorLegendItem color="#f44336">
-                    <div></div>
-                    <span>Продано</span>
-                </FloorLegendItem>
-                <FloorLegendItem color="#00bcd4">
-                    <div></div>
-                    <span>Оформление документов</span>
-                </FloorLegendItem>
-                <FloorLegendItem color="#9e9e9e">
-                    <div></div>
-                    <span>Недоступно</span>
-                </FloorLegendItem>
+            <FlatStatusesBar />
 
-                <div style={{marginLeft: 'auto'}}>
-                    <Select value={currentSection} style={{marginRight: '20px'}}>
-                        {Object.values(sections).map((item: any) => {
-                            return (
-                                <MenuItem key={item.id} value={item.id} onClick={() => setCurrentSection(item.id)}>
-                                    {`Подъезд ${item.section}`}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </div>
+            <FloorLegendInfo>
+                <CustomSelector
+                    currentValue={currentSection}
+                    setValue={currentValueTest}
+                    isPublic={isPublic}
+                    items={Object.values(sections)}
+                    itemName="Подъезд"
+                    keyToShow="section"
+                />
+
+                <LevelSelectMobile>
+                    <CustomSelector
+                        currentValue={currentLevel}
+                        setValue={setCurrentLevel}
+                        isPublic={isPublic}
+                        items={sections[currentSection].levels}
+                        itemName="Этаж"
+                        keyToShow="level"
+                    />
+                </LevelSelectMobile>
+
+                <FlatInfoBar info={info} />
             </FloorLegendInfo>
 
             <div style={{display: 'flex'}}>
                 <FloorsListContainer>
-                    {sections[currentSection].levels.map(({id, level}, index) => {
+                    {sections[currentSection].levels.map(({id, level}) => {
                         return (
                             <FloorsListItem
                                 key={id}
                                 onClick={() => {
                                     setCurrentLevel(id);
                                 }}
+                                isPublic={isPublic}
                             >
                                 {`Этаж ${level}`}
                             </FloorsListItem>
                         );
                     })}
                 </FloorsListContainer>
-                <FloorContentContainer>
-                    <FlatInfo>
-                        {info ? (
-                            <>
-                                <span>{`№${info.flatNumber}`}</span>
-                                <span>
-                                    {`Статус: ${
-                                        FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label
-                                    }`}
-                                </span>
-                                <span>{`Цена: ${info.price}`}</span>
-                                <span>{`М2: ${info.area}`}</span>
-                                <span>{`Цена м2: ${info.squarePrice}`}</span>
-                                <span>{`Комнат: ${info.roomAmount}`}</span>
-                                <span>{`Кол-во уровней: ${info.levelAmount}`}</span>
-                            </>
-                        ) : (
-                            <span>Наведите на квартиру</span>
-                        )}
-                    </FlatInfo>
-                    <div>
-                        {Boolean(fullFlatsInfo.length) && (
-                            <LayoutView
-                                isLarge={true}
-                                onSelect={onSelect}
-                                levelLayouts={flatsToDraw}
-                                floorImage={image}
-                                setCurrentDataId={setCurrentDataId}
-                            />
-                        )}
-                    </div>
-                </FloorContentContainer>
+                <FloorContentContainer>{contentView}</FloorContentContainer>
             </div>
         </FloorViewContainer>
     );

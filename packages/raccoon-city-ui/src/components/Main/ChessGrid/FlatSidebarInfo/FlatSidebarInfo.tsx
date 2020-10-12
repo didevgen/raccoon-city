@@ -63,6 +63,16 @@ const StyledTab = styled(Tab)`
     min-width: 48px !important;
 `;
 
+export const ButtonsContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+
+    .MuiButton-outlinedPrimary {
+        color: #e84f1d;
+        border: 1px solid #e84f1d;
+    }
+`;
+
 export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const {data, loading, error} = useQuery<GetFlatSidebarDataQuery>(
         props.isPublic ? GET_PUBLIC_FLAT_SIDEBAR_DATA : GET_FLAT_SIDEBAR_DATA,
@@ -160,11 +170,13 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
             {isShowButton && !!props.isPublic && (
-                <SendRequestContainer>
-                    <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
-                        Оставить заявку
-                    </Button>
-                </SendRequestContainer>
+                <ButtonsContainer>
+                    <SendRequestContainer>
+                        <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
+                            Оставить заявку
+                        </Button>
+                    </SendRequestContainer>
+                </ButtonsContainer>
             )}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
