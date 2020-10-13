@@ -159,7 +159,7 @@ export default function ApartmentComplexLayout() {
     const params = new URLSearchParams(window.location.search);
     const authToken = params.get('authToken');
     if (authToken) {
-        Cookies.set(API_TOKEN, authToken, {expires: 365});
+        Cookies.set(API_TOKEN, authToken, {expires: 365, sameSite: 'nonef'});
     } else {
         return <Redirect to="/login" />;
     }
