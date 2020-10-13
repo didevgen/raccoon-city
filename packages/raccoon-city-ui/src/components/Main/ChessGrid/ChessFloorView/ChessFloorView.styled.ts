@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 import {FlatStatus} from '../../../shared/types/flat.types';
+import {Select} from '@material-ui/core';
 
 export const FloorViewContainer = styled.div`
     margin-top: 10px;
     min-height: 75vh;
-    background-color: #fff;
-    box-shadow: 1px 1px 10px rgba(1, 1, 1, 0.4);
     border-radius: 4px;
     overflow: hidden;
 `;
 
 export const FloorsListContainer = styled.div`
-    width: 13%;
+    width: 10%;
     max-height: 70vh;
     overflow-y: auto;
 
@@ -31,29 +30,36 @@ export const FloorsListContainer = styled.div`
     &::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+    @media only screen and (max-width: 500px) {
+        display: none;
+    }
 `;
 
-export const FloorsListItem = styled.p`
+export const FloorsListItem = styled.p<{isPublic: boolean}>`
     width: 100%;
     padding: 5px 0px;
     text-align: center;
     transition: 0.3s;
-    border-bottom: 2px solid #fff;
     cursor: pointer;
 
     &:hover {
-        color: #3f51b5;
-        border-bottom-color: #3f51b5;
+        color: ${({isPublic}) => (isPublic ? '#E84F1D' : '#3f51b5')};
     }
 `;
 
 export const FloorContentContainer = styled.div`
     width: 87%;
-    padding: 50px;
+    padding: 10px;
     position: relative;
 
     img {
         width: 100%;
+    }
+
+    @media only screen and (max-width: 500px) {
+        display: flex;
+        flex-direction: column;
     }
 `;
 
@@ -61,7 +67,13 @@ export const FloorLegendInfo = styled.div`
     display: flex;
     padding: 10px 35px 10px;
     margin-bottom: 10px;
-    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    justify-content: space-between;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+        padding: 10px 0;
+    }
 `;
 
 export const FloorLegendItem = styled.div<{color: string}>`
@@ -169,18 +181,70 @@ export const Area = styled.div<any>`
 `;
 
 export const FlatInfo = styled.div`
-    position: absolute;
-    top: 0;
-    left: 10px;
-    right: 10px;
     padding: 5px 10px;
-    border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 1px 1px 5px rgba(1, 1, 1, 0.2);
+    border-radius: 10px;
+    background-color: transparent;
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    max-width: 60%;
+    min-width: 60%;
+    border: 1px solid #000;
 
     span {
-        font-size: 18px;
+        font-size: 15px;
     }
+
+    @media only screen and (max-width: 500px) {
+        display: none;
+    }
+`;
+
+export const LevelSelectMobile = styled.div`
+    display: none;
+    width: 100%;
+
+    @media only screen and (max-width: 500px) {
+        display: block;
+    }
+`;
+
+export const CustomSelect = styled(Select)<any>`
+    min-width: 100%;
+    border: 2px solid ${({isPublic}) => (isPublic ? '#e84f1d' : '#3f51b5')};
+    border-radius: 10px;
+`;
+
+export const SelectWrapper = styled.div<any>`
+    margin: 5px 0;
+
+    .MuiSelect-root {
+        padding: 5px 10px;
+    }
+
+    .MuiInput-underline::after {
+        content: none !important;
+        border-bottom: none !important;
+    }
+
+    .MuiInput-underline::before {
+        content: none !important;
+        border-bottom: none !important;
+    }
+
+    svg {
+        fill: ${({isPublic}) => (isPublic ? '#e84f1d' : '#3f51b5')};
+    }
+`;
+
+export const WarningContainer: any = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4em;
+    text-align: center;
+`;
+
+export const WarningContainerColumn = styled(WarningContainer)`
+    flex-direction: column;
 `;
