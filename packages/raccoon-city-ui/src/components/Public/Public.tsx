@@ -32,7 +32,7 @@ export function Public() {
     const params = new URLSearchParams(window.location.search);
     const authToken = params.get('authToken');
     if (authToken) {
-        Cookies.set(API_TOKEN, authToken, {expires: 365, sameSite: 'none'});
+        Cookies.set(API_TOKEN, authToken, {expires: 365});
     } else {
         return <Redirect to="/login" />;
     }
