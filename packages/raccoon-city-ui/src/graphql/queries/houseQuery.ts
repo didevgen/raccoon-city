@@ -6,6 +6,7 @@ export const HOUSE_LIST = gql`
         getHouses(apartmentComplexId: $apartmentComplexId) {
             id
             name
+            publishedDate
             images {
                 CHESS_GRID {
                     uuid

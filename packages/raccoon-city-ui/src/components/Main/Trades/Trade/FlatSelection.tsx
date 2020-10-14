@@ -182,7 +182,7 @@ export function FlatSelection() {
                                         value={props.input.value}
                                         onChange={props.input.onChange}
                                         fullWidth
-                                        label="Этаж"
+                                        label="Квартира"
                                         variant="outlined"
                                     />
                                 );

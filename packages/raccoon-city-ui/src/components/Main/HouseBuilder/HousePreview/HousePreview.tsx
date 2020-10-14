@@ -3,7 +3,8 @@ import {CardActionArea} from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import React, {Fragment} from 'react';
 import {useParams} from 'react-router';
 import {Link} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../core/constants';
@@ -34,7 +35,23 @@ export function HousePreview(props: HousePreviewProps) {
     const image = house.images.CHESS_GRID ? house.images.CHESS_GRID.downloadUrl : apartmentComplexDefaultImage;
     return (
         <StyledCard>
-            <CardHeaderWithMenu title={house.name}>
+            <CardHeaderWithMenu
+                title={
+                    <Fragment>
+                        {!!house.publishedDate && (
+                            <SupervisedUserCircleIcon
+                                style={{
+                                    fontSize: 24,
+                                    color: 'rgb(76, 175, 80)',
+                                    verticalAlign: 'middle',
+                                    marginRight: 8
+                                }}
+                            />
+                        )}
+                        <span>{house.name}</span>
+                    </Fragment>
+                }
+            >
                 <StyledLink
                     to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${house.id}`}
                 >
