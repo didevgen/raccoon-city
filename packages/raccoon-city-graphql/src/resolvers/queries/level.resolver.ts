@@ -8,9 +8,9 @@ import {PublishedHouseModel} from '../../db/models/publishedHouse';
 const convertPathsToString = (path) => {
     const converted = path.map((pathItem) => String(pathItem));
 
-    console.log("converted");
+    console.log('converted');
     console.log(converted);
-    console.log("path");
+    console.log('path');
     console.log(path);
 
     return converted;
@@ -250,16 +250,16 @@ export const levelQuery = {
             return !flatInfo
                 ? [...acc]
                 : [
-                    ...acc,
-                    {
-                        flatInfo,
-                        svgInfo: {
-                            paths: convertPathsToString(path),
-                            id: String(_id),
-                            viewBox: {width, height}
-                        }
-                    }
-                ];
+                      ...acc,
+                      {
+                          flatInfo,
+                          svgInfo: {
+                              paths: convertPathsToString(path),
+                              id: String(_id),
+                              viewBox: {width, height}
+                          }
+                      }
+                  ];
         }, []);
 
         if (!levelLayout || !fullFlatsInfo.length) {
