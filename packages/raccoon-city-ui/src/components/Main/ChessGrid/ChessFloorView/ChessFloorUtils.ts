@@ -1,3 +1,5 @@
+import {FlatInfoInterface, FullFlatInfoInterface} from './ChessFloor.interfaces';
+
 export const getSections = (groupedFlats) => {
     return groupedFlats.reduce((acc, section) => {
         const {id} = section;
@@ -6,15 +8,18 @@ export const getSections = (groupedFlats) => {
     }, {});
 };
 
-export function getInfo(fullFlatsInfo, currentDataId: string) {
+export function getInfo(fullFlatsInfo: FullFlatInfoInterface[], currentDataId: string): FlatInfoInterface | null {
     if (!fullFlatsInfo) {
-        // TODO change null to another value
         return null;
     }
 
-    const res = fullFlatsInfo.find(({svgInfo}) => svgInfo.id === currentDataId);
+    const info = fullFlatsInfo.find(({svgInfo}) => svgInfo.id === currentDataId);
 
-    return res?.flatInfo;
+    if (!info) {
+        return null;
+    }
+
+    return info.flatInfo;
 }
 
 export function getFlatsToDraw(flatsInfo) {

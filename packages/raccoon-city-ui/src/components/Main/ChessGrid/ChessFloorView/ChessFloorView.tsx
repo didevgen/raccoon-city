@@ -19,6 +19,7 @@ import {LayoutView} from '../FlatSidebarInfo/LayoutView';
 import {CustomSelector} from './FloorViewsParts/CustomSelector';
 import {FlatStatusesBar} from './FloorViewsParts/FlatStatusesBar';
 import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
+import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic} = props;
@@ -58,11 +59,9 @@ export const ChessFloorView = (props) => {
         return <div>Error...</div>;
     }
 
-    // TODO type this
-    let fullFlatsInfo: any = [];
-    let image: any = {};
+    let fullFlatsInfo: FullFlatInfoInterface[] | [] = [];
+    let image: LevelImageUrlInterface;
 
-    // TODO think about this
     if (isPublic) {
         const {
             getPublishedFlatsLayoutByHouseId: {fullFlatsInfo: info, image: img}
@@ -79,8 +78,7 @@ export const ChessFloorView = (props) => {
         image = img;
     }
 
-    // TODO type this
-    let info: any = getInfo(fullFlatsInfo, currentDataId);
+    const info = getInfo(fullFlatsInfo, currentDataId);
 
     const flatsToDraw = getFlatsToDraw(fullFlatsInfo);
 

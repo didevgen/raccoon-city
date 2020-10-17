@@ -3,6 +3,7 @@ import {Svg, SVG} from '@svgdotjs/svg.js';
 import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import {SinglePreviewImage} from '../../../shared/types/layout.types';
+import {LevelImageUrlInterface} from '../ChessFloorView/ChessFloor.interfaces';
 
 const ImageContainer = styled.div<any>`
     max-width: 320px;
@@ -43,9 +44,9 @@ interface LayoutViewProps {
         viewBox: {width: number; height: number};
     }>;
     isLarge?: boolean;
-    setCurrentDataId?: any;
-    floorImage?: string;
+    floorImage?: LevelImageUrlInterface;
     onSelect?: any;
+    setCurrentDataId?: any;
 }
 
 function attachSvg(container: string) {

@@ -5,5 +5,6 @@ export const PUBLIC_QUERIES = [
     'getPublicGroupedFlatsBySection',
     'getPublicFlatSidebarInfo',
     'getPublicFlatsList',
-    'getApartmentComplexLayout'
+    'getApartmentComplexLayout',
+    'getPublishedFlatsLayoutByHouseId'
 ];
