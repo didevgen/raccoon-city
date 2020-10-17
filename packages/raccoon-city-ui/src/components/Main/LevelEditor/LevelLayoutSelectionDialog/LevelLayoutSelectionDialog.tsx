@@ -64,7 +64,7 @@ export function LevelLayoutSelectionDialog(props: LevelLayoutSelectionDialogProp
                         <Typography variant="h6" className={classes.title}>
                             Выбор планировок
                         </Typography>
-                        <Button autoFocus color="inherit" variant="contained" onClick={handleClose}>
+                        <Button autoFocus color="secondary" variant="contained" onClick={handleClose}>
                             Сохранить
                         </Button>
                     </Toolbar>

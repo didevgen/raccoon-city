@@ -72,7 +72,7 @@ export function LevelEditorDialog(props: LevelEditorDialogProps) {
                         <Typography variant="h6" className={classes.title}>
                             Выбор этажей
                         </Typography>
-                        <Button disabled={!dirty} autoFocus color="inherit" variant="contained" onClick={handleSave}>
+                        <Button disabled={!dirty} autoFocus color="secondary" variant="contained" onClick={handleSave}>
                             Сохранить
                         </Button>
                     </Toolbar>
