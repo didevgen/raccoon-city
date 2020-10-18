@@ -8,11 +8,6 @@ import {PublishedHouseModel} from '../../db/models/publishedHouse';
 const convertPathsToString = (path) => {
     const converted = path.map((pathItem) => String(pathItem));
 
-    console.log('converted');
-    console.log(converted);
-    console.log('path');
-    console.log(path);
-
     return converted;
 };
 
