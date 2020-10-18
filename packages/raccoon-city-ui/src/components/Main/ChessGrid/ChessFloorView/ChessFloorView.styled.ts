@@ -209,13 +209,13 @@ export const LevelSelectMobile = styled.div`
     }
 `;
 
-export const CustomSelect = styled(Select)<any>`
+export const CustomSelect = styled(Select)<{isPublic: boolean}>`
     min-width: 100%;
     border: 2px solid ${({isPublic}) => (isPublic ? '#e84f1d' : '#3f51b5')};
     border-radius: 10px;
 `;
 
-export const SelectWrapper = styled.div<any>`
+export const SelectWrapper = styled.div<{isPublic: boolean}>`
     margin: 5px 0;
 
     .MuiSelect-root {
@@ -247,4 +247,8 @@ export const WarningContainer: any = styled.div`
 
 export const WarningContainerColumn = styled(WarningContainer)`
     flex-direction: column;
+`;
+
+export const FloorContainer = styled.div`
+    display: flex;
 `;

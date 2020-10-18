@@ -13,7 +13,8 @@ import {
     LevelSelectMobile,
     FloorLegendInfo,
     WarningContainer,
-    WarningContainerColumn
+    WarningContainerColumn,
+    FloorContainer
 } from './ChessFloorView.styled';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
 import {CustomSelector} from './FloorViewsParts/CustomSelector';
@@ -150,7 +151,7 @@ export const ChessFloorView = (props) => {
                 <FlatInfoBar info={info} />
             </FloorLegendInfo>
 
-            <div style={{display: 'flex'}}>
+            <FloorContainer>
                 <FloorsListContainer>
                     {sections[currentSection].levels.map(({id, level}) => {
                         return (
@@ -167,7 +168,7 @@ export const ChessFloorView = (props) => {
                     })}
                 </FloorsListContainer>
                 <FloorContentContainer>{contentView}</FloorContentContainer>
-            </div>
+            </FloorContainer>
         </FloorViewContainer>
     );
 };
