@@ -17,7 +17,6 @@ import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
-import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 import {PublicLink} from './PublicLink/PublicLink';
 import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer, SelectStyled} from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
@@ -26,15 +25,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
+import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
 
 export const CustomSidebarDrawer = styled(SidebarDrawer)`
-    /* color: #e84f1D;
-    border: 1px solid #e84f1D; */
-
     .MuiAppBar-colorPrimary {
         background-color: #e84f1d;
     }
@@ -89,30 +86,17 @@ const ChessGridContent = React.memo((props: any) => {
         return (
             <Fragment>
                 <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} isPublic={isPublic} />
-
-                {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
-                    <SideBar
-                        anchor="right"
-                        open={flatCardOpen}
-                        onOpen={() => {
-                            // silence
-                        }}
-                        onClose={() => {
-                            setFlatCardOpen(false);
-                            setSelectedFlat(undefined);
-                        }}
-                    >
-                        {selectedFlat && (
-                            <FlatSidebarInfo
-                                // @ts-ignore
-                                flat={selectedFlat}
-                                isPublic={isPublic}
-                                showRequestButton={showRequestButton}
-                                onFlatSelected={onFlatSelected}
-                            />
-                        )}
-                    </SideBar>
+                    <ChessSideBar
+                        SideBar={SideBar}
+                        selectedFlat={selectedFlat}
+                        isPublic={isPublic}
+                        showRequestButton={showRequestButton}
+                        onFlatSelected={onFlatSelected}
+                        setFlatCardOpen={setFlatCardOpen}
+                        setSelectedFlat={setSelectedFlat}
+                        flatCardOpen={flatCardOpen}
+                    />
                 )}
             </Fragment>
         );
@@ -123,29 +107,17 @@ const ChessGridContent = React.memo((props: any) => {
             <Fragment>
                 <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
 
-                {/* TODO refactor this repeat code*/}
                 {flatCardOpen && (
-                    <SideBar
-                        anchor="right"
-                        open={flatCardOpen}
-                        onOpen={() => {
-                            // silence
-                        }}
-                        onClose={() => {
-                            setFlatCardOpen(false);
-                            setSelectedFlat(undefined);
-                        }}
-                    >
-                        {selectedFlat && (
-                            <FlatSidebarInfo
-                                // @ts-ignore
-                                flat={selectedFlat}
-                                isPublic={isPublic}
-                                showRequestButton={showRequestButton}
-                                onFlatSelected={onFlatSelected}
-                            />
-                        )}
-                    </SideBar>
+                    <ChessSideBar
+                        SideBar={SideBar}
+                        selectedFlat={selectedFlat}
+                        isPublic={isPublic}
+                        showRequestButton={showRequestButton}
+                        onFlatSelected={onFlatSelected}
+                        setFlatCardOpen={setFlatCardOpen}
+                        setSelectedFlat={setSelectedFlat}
+                        flatCardOpen={flatCardOpen}
+                    />
                 )}
             </Fragment>
         );
@@ -182,28 +154,18 @@ const ChessGridContent = React.memo((props: any) => {
                     );
                 })}
 
-                {/* TODO refactor this repeat code*/}
-                <SideBar
-                    anchor="right"
-                    open={flatCardOpen}
-                    onOpen={() => {
-                        // silence
-                    }}
-                    onClose={() => {
-                        setFlatCardOpen(false);
-                        setSelectedFlat(undefined);
-                    }}
-                >
-                    {selectedFlat && (
-                        <FlatSidebarInfo
-                            // @ts-ignore
-                            flat={selectedFlat}
-                            isPublic={isPublic}
-                            showRequestButton={showRequestButton}
-                            onFlatSelected={onFlatSelected}
-                        />
-                    )}
-                </SideBar>
+                {flatCardOpen && (
+                    <ChessSideBar
+                        SideBar={SideBar}
+                        selectedFlat={selectedFlat}
+                        isPublic={isPublic}
+                        showRequestButton={showRequestButton}
+                        onFlatSelected={onFlatSelected}
+                        setFlatCardOpen={setFlatCardOpen}
+                        setSelectedFlat={setSelectedFlat}
+                        flatCardOpen={flatCardOpen}
+                    />
+                )}
             </ChessGridWrapper>
         </ViewModeContext.Provider>
     );

@@ -5,6 +5,12 @@ import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 
+const convertPathsToString = (path) => {
+    const converted = path.map((pathItem) => String(pathItem));
+
+    return converted;
+};
+
 export const levelQuery = {
     async getLevelLayouts(_, {houseId}) {
         return LevelLayoutModel.find({house: houseId, isDeleted: false}).populate('levels');
@@ -149,7 +155,7 @@ export const levelQuery = {
                     flatInfo,
                     svgInfo: {
                         id: String(id),
-                        paths: path.map((path) => String(path)),
+                        paths: convertPathsToString(path),
                         viewBox: {width, height}
                     }
                 }
@@ -243,7 +249,7 @@ export const levelQuery = {
                       {
                           flatInfo,
                           svgInfo: {
-                              paths: path.map((path) => String(path)),
+                              paths: convertPathsToString(path),
                               id: String(_id),
                               viewBox: {width, height}
                           }
