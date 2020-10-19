@@ -20,7 +20,7 @@ import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/Chess
 import {PublicLink} from './PublicLink/PublicLink';
 import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer, SelectStyled} from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
-import {initialState, reducer} from './ChessGrid.reducer';
+import {getInitialState, reducer} from './ChessGrid.reducer';
 import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessFloorView} from './ChessFloorView/ChessFloorView';
@@ -183,7 +183,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [id, setId] = useState(uuid ? [uuid] : []);
-    const [filters, dispatch] = useReducer(reducer, initialState);
+    const [filters, dispatch] = useReducer(reducer, getInitialState(isPublic));
 
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;

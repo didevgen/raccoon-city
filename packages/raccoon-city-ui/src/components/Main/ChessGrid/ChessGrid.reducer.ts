@@ -1,6 +1,6 @@
 import {ViewModeValues, ChessCellViewMode} from './ChessEnums';
 
-export const initialState = {
+export const getInitialState = (isPublic: boolean) => ({
     selectedViewMode: ViewModeValues.AREA,
     selectedRoomAmount: {},
     price: {
@@ -11,8 +11,8 @@ export const initialState = {
         minArea: 0,
         maxArea: 0
     },
-    mode: ChessCellViewMode.TILE
-};
+    mode: isPublic ? ChessCellViewMode.FLOOR : ChessCellViewMode.TILE
+});
 
 export function reducer(state, action) {
     switch (action.type) {

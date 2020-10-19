@@ -28,7 +28,7 @@ export const ChessFloorView = (props) => {
 
     const [sections] = useState(getSections(groupedFlats));
     const [currentSection, setCurrentSection] = useState(Object.keys(sections)[0]);
-    const [currentLevel, setCurrentLevel] = useState(sections[currentSection].levels[0].id);
+    const [currentLevel, setCurrentLevel] = useState(sections[currentSection]?.levels[0].id);
     const [currentDataId, setCurrentDataId] = useState('');
 
     const publicVariables = {
@@ -126,7 +126,6 @@ export const ChessFloorView = (props) => {
     return (
         <FloorViewContainer>
             <FlatStatusesBar />
-
             <FloorLegendInfo>
                 <CustomSelector
                     currentValue={currentSection}

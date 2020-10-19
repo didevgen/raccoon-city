@@ -14,7 +14,7 @@ export interface ApartmentComplexLayout extends Document {
         house: House;
         viewBox: any;
         path: string[];
-    }[]
+}[]
 }
 
 const ApartmentComplexSvgSchema: Schema = new Schema(
