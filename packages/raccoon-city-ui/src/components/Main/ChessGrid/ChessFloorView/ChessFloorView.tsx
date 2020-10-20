@@ -13,12 +13,14 @@ import {
     LevelSelectMobile,
     FloorLegendInfo,
     WarningContainer,
-    WarningContainerColumn
+    WarningContainerColumn,
+    FloorContainer
 } from './ChessFloorView.styled';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
 import {CustomSelector} from './FloorViewsParts/CustomSelector';
 import {FlatStatusesBar} from './FloorViewsParts/FlatStatusesBar';
 import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
+import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic} = props;
@@ -26,7 +28,7 @@ export const ChessFloorView = (props) => {
 
     const [sections] = useState(getSections(groupedFlats));
     const [currentSection, setCurrentSection] = useState(Object.keys(sections)[0]);
-    const [currentLevel, setCurrentLevel] = useState(sections[currentSection].levels[0].id);
+    const [currentLevel, setCurrentLevel] = useState(sections[currentSection]?.levels[0].id);
     const [currentDataId, setCurrentDataId] = useState('');
 
     const publicVariables = {
@@ -58,11 +60,9 @@ export const ChessFloorView = (props) => {
         return <div>Error...</div>;
     }
 
-    // TODO type this
-    let fullFlatsInfo: any = [];
-    let image: any = {};
+    let fullFlatsInfo: FullFlatInfoInterface[] | [] = [];
+    let image: LevelImageUrlInterface;
 
-    // TODO think about this
     if (isPublic) {
         const {
             getPublishedFlatsLayoutByHouseId: {fullFlatsInfo: info, image: img}
@@ -79,8 +79,7 @@ export const ChessFloorView = (props) => {
         image = img;
     }
 
-    // TODO type this
-    let info: any = getInfo(fullFlatsInfo, currentDataId);
+    const info = getInfo(fullFlatsInfo, currentDataId);
 
     const flatsToDraw = getFlatsToDraw(fullFlatsInfo);
 
@@ -127,7 +126,6 @@ export const ChessFloorView = (props) => {
     return (
         <FloorViewContainer>
             <FlatStatusesBar />
-
             <FloorLegendInfo>
                 <CustomSelector
                     currentValue={currentSection}
@@ -152,7 +150,7 @@ export const ChessFloorView = (props) => {
                 <FlatInfoBar info={info} />
             </FloorLegendInfo>
 
-            <div style={{display: 'flex'}}>
+            <FloorContainer>
                 <FloorsListContainer>
                     {sections[currentSection].levels.map(({id, level}) => {
                         return (
@@ -169,7 +167,7 @@ export const ChessFloorView = (props) => {
                     })}
                 </FloorsListContainer>
                 <FloorContentContainer>{contentView}</FloorContentContainer>
-            </div>
+            </FloorContainer>
         </FloorViewContainer>
     );
 };

@@ -13,9 +13,10 @@ import {withRouter, BrowserRouterProps} from 'react-router-dom';
 const ModalContainer = styled.div`
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 3.5%;
+    transform: translateY(-50%);
     z-index: 1001px;
+    box-shadow: 1px 1px 10px rgba(1, 1, 1, 0.5);
 
     @media only screen and (max-width: 500px) {
         width: 90%;
@@ -25,11 +26,7 @@ const ModalContainer = styled.div`
 const Modal = styled.div`
     padding: 30px;
     background-color: #fff;
-    width: 450px;
-
-    @media only screen and (max-width: 500px) {
-        width: 100%;
-    }
+    max-width: 320px;
 `;
 
 export const Input = styled.div`

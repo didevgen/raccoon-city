@@ -14,7 +14,7 @@ export interface ApartmentComplexLayout extends Document {
         house: House;
         viewBox: any;
         path: string[];
-    }[]
+    }[];
 }
 
 const ApartmentComplexSvgSchema: Schema = new Schema(
@@ -28,12 +28,13 @@ const ApartmentComplexSvgSchema: Schema = new Schema(
         house: {
             type: Schema.Types.ObjectId,
             ref: 'PublishedHouse'
-        },
-    }, {
+        }
+    },
+    {
         toJSON: {virtuals: true},
         toObject: {virtuals: true}
     }
-)
+);
 
 const ApartmentComplexLayoutSchema: Schema = new Schema(
     {
@@ -51,4 +52,7 @@ const ApartmentComplexLayoutSchema: Schema = new Schema(
         toObject: {virtuals: true}
     }
 );
-export const ApartmentComplexLayoutModel = mongoose.model<ApartmentComplexLayout>('ApartmentComplexLayout', ApartmentComplexLayoutSchema);
+export const ApartmentComplexLayoutModel = mongoose.model<ApartmentComplexLayout>(
+    'ApartmentComplexLayout',
+    ApartmentComplexLayoutSchema
+);
