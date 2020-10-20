@@ -71,8 +71,9 @@ function fillExistingLayouts(
                 setHoveredHouse(null);
             })
             .on('click', () => {
-                history.push(
-                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`
+                window.open(
+                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
+                    '_blank'
                 );
             });
         pathArray.push(path);
@@ -83,7 +84,7 @@ function ImageWithSvg({url, imageId, layouts, setHoveredHouse}) {
     const svgRef = useRef<Svg>();
     const history = useHistory();
     const location = useLocation();
-    const {apartmentComplexUuid, developerUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams() as any;
 
     useEffect(() => {
         svgRef.current = attachSvg(`#${imageId}`);
@@ -113,18 +114,18 @@ function debounce(fn, interval) {
 }
 
 function HouseIcon({house, setHoveredItem, hoveredItem}) {
-    const history = useHistory();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const authToken = params.get('authToken');
-    const {apartmentComplexUuid, developerUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams() as any;
     const handler = useCallback(debounce(setHoveredItem, 100), []);
     return (
         <HouseIconContainer
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
-                history.push(
-                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`
+                window.open(
+                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
+                    '_blank'
                 );
             }}
             onMouseEnter={() => handler(house)}
@@ -137,7 +138,7 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
 }
 
 export default function ApartmentComplexLayout() {
-    const {layoutUuid} = useParams();
+    const {layoutUuid} = useParams() as any;
     const imageId = `apartment-complex-layout-${layoutUuid}`;
 
     const [hoveredHouse, setHoveredHouse] = useState<any>(null);
