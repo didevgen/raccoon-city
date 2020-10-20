@@ -125,6 +125,7 @@ const PublishedHouseSchema: Schema = new Schema(
         beginDate: {type: Schema.Types.String},
         squarePrice: {type: Schema.Types.Number},
         parking: {type: Schema.Types.Boolean},
+        order: {type: Schema.Types.Number, default: 0},
         endDate: {type: Schema.Types.String},
         isDeleted: {type: Schema.Types.Boolean, default: false},
         images: {

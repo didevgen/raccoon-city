@@ -1,12 +1,8 @@
 import arrayMove from 'array-move';
-import omit from 'ramda/src/omit';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {FlatModel} from '../../db/models/flat';
 import HouseModel, {House} from '../../db/models/house';
-import {HouseLayoutModel} from '../../db/models/houseLayout';
 import {LevelModel} from '../../db/models/level';
-import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
-import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {SectionModel} from '../../db/models/section';
 import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFactory';
 import {HouseDataInputArgs} from '../../types/house';

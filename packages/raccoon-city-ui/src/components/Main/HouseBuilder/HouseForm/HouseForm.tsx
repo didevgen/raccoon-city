@@ -185,6 +185,21 @@ export function HouseForm(outerProps: HouseFormProps) {
                                     />
                                 )}
                             </Field>
+                            <Field name="order">
+                                {(props) => (
+                                    <TextField
+                                        label="Порядок сортировки"
+                                        margin="normal"
+                                        inputProps={{min: '0', step: '1'}}
+                                        type="number"
+                                        name={props.input.name}
+                                        value={props.input.value}
+                                        onChange={props.input.onChange}
+                                        fullWidth={true}
+                                        variant="outlined"
+                                    />
+                                )}
+                            </Field>
                             <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
                                 {(props) => {
                                     return (

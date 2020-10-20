@@ -66,6 +66,7 @@ export const HOUSE_DATA = gql`
             id
             name
             parking
+            order
             price
         }
     }

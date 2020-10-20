@@ -31,6 +31,7 @@ const HouseSchema: Schema = new Schema(
         price: {type: Schema.Types.Number, required: true},
         beginDate: {type: Schema.Types.String},
         squarePrice: {type: Schema.Types.Number},
+        order: {type: Schema.Types.Number, default: 0},
         parking: {type: Schema.Types.Boolean},
         endDate: {type: Schema.Types.String},
         isDeleted: {type: Schema.Types.Boolean, default: false},

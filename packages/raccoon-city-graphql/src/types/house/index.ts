@@ -8,4 +8,5 @@ export interface HouseDataInputArgs {
     price: number;
     beginDate: string;
     endDate: string;
+    order: number;
 }

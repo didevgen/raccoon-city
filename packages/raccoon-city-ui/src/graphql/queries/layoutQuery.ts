@@ -227,6 +227,7 @@ export const GET_APARTMENT_COMPLEX_LAYOUT = gql`
                 house {
                     id
                     name
+                    order
                     images {
                         CHESS_GRID {
                             uuid

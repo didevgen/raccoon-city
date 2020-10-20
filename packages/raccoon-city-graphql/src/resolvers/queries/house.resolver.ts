@@ -19,7 +19,8 @@ export const hosueQuery = {
     getHouses: async (parent, {apartmentComplexId}) => {
         const data = await ApartmentComplexModel.findOne({_id: apartmentComplexId, isDeleted: false}).populate({
             path: 'houses',
-            match: {isDeleted: false}
+            match: {isDeleted: false},
+            options: { sort: { 'order': 'asc' }}
         });
         if (data) {
             return data.houses || [];

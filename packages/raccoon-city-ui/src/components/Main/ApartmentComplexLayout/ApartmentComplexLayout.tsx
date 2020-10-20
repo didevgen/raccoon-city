@@ -173,7 +173,7 @@ export default function ApartmentComplexLayout() {
             <HouseChooseContainer>
                 {data.getApartmentComplexLayout.layouts
                     .sort((a, b) => {
-                        return a.house.name.localeCompare(b.house.name);
+                        return a.house.order - b.house.order;
                     })
                     .map((layout) => {
                         return (
