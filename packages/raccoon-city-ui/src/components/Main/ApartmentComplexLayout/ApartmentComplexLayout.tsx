@@ -10,7 +10,6 @@ import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
 
 const ImageContainer = styled.div`
-    height: 100vh;
     display: flex;
 `;
 
@@ -171,16 +170,20 @@ export default function ApartmentComplexLayout() {
     return (
         <Fragment>
             <HouseChooseContainer>
-                {data.getApartmentComplexLayout.layouts.map((layout) => {
-                    return (
-                        <HouseIcon
-                            key={layout.house.id}
-                            house={layout.house}
-                            hoveredItem={hoveredHouse}
-                            setHoveredItem={setHoveredHouse}
-                        />
-                    );
-                })}
+                {data.getApartmentComplexLayout.layouts
+                    .sort((a, b) => {
+                        return a.house.name.localeCompare(b.house.name);
+                    })
+                    .map((layout) => {
+                        return (
+                            <HouseIcon
+                                key={layout.house.id}
+                                house={layout.house}
+                                hoveredItem={hoveredHouse}
+                                setHoveredItem={setHoveredHouse}
+                            />
+                        );
+                    })}
             </HouseChooseContainer>
             <ImageContainer>
                 <ImageWithSvg
