@@ -17,6 +17,7 @@ const LayoutImage = styled.div<any>`
     flex: 1;
     background: url(${(props: any) => props.url}) no-repeat center;
     background-size: contain;
+    max-height: calc(100vh - 100px);
 `;
 
 const HouseChooseContainer = styled.div`
