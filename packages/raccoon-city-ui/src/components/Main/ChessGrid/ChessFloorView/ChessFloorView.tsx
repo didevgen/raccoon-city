@@ -21,6 +21,7 @@ import {CustomSelector} from './FloorViewsParts/CustomSelector';
 import {FlatStatusesBar} from './FloorViewsParts/FlatStatusesBar';
 import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
 import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
+import {ChessGridAnimation} from '../ChessGridAnimation/ChessGridAnimation';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic} = props;
@@ -53,7 +54,7 @@ export const ChessFloorView = (props) => {
     });
 
     if (flatsLoading) {
-        return <div>Loading...</div>;
+        return <ChessGridAnimation />;
     }
 
     if (flatsError) {

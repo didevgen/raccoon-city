@@ -27,6 +27,7 @@ import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
+import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -62,7 +63,7 @@ const ChessGridContent = React.memo((props: any) => {
     const SideBar = isPublic ? CustomSidebarDrawer : SidebarDrawer;
 
     if (loading || listLoading) {
-        return <ChessGridWrapper>Loading</ChessGridWrapper>;
+        return <ChessGridAnimation />;
     }
 
     if (error || listError) {
