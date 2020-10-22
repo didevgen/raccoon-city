@@ -6,44 +6,42 @@ export const ListContainer = styled.div`
 `;
 
 export const TableRowCellContainer = styled.div`
-    width: 11.111%;
+    width: calc(100% / 9);
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 16px;
-    border-right: 1px solid #3f51b5;
+    padding: 16px;
+    border-right: 1px solid #e0e0e0;
 `;
 
 export const RowContainer = styled.div`
     display: flex;
+    background-color: white;
     justify-content: space-around;
     transition: all 0.3s;
     cursor: pointer;
-    border-bottom: 1px solid #3f51b5;
+    border-bottom: 1px solid #e0e0e0;
 
     &:hover {
-        background-color: #3f51b5;
-        color: #fff;
+        background-color: rgba(232, 79, 29, 0.2);
     }
 `;
 
 export const Header = styled.div`
     display: flex;
-    padding-right: 15px;
-    border-bottom: 1px solid #3f51b5;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
 `;
 
 export const TableCellContainer = styled.div`
-    width: 11.111%;
-    border-right: 1px solid #3f51b5;
+    width: calc(100% / 9);
+    border-right: 1px solid #e0e0e0;
     display: flex;
     justify-content: center;
-    padding: 10px 0px;
+    padding: 8px 0;
 `;
 
 export const DataTable = styled.div`
-    background-color: #fff;
-    margin-top: 5px;
-    padding: 10px 0px;
+    padding: 0;
 `;

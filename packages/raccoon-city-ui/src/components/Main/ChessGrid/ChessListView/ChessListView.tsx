@@ -1,33 +1,38 @@
 import React from 'react';
 
-import {TableRowCellContainer, RowContainer, TableCellContainer, DataTable} from './ChessListView.styled';
-import {isActive} from '../ChessGrid.utils';
+import {AutoSizer, List} from 'react-virtualized';
+import styled from 'styled-components';
 import {FLAT_STATUSES} from '../../../../core/constants';
-import {List, AutoSizer} from 'react-virtualized';
+import {isActive} from '../ChessGrid.utils';
+import {DataTable, Header, RowContainer, TableCellContainer, TableRowCellContainer} from './ChessListView.styled';
+
+const ListViewBox = styled.div`
+    overflow-x: scroll;
+    min-width: 900px;
+    margin-top: 16px;
+`;
+
+const StyledDataTable = styled(DataTable)`
+    height: 75vh;
+`;
 
 export class ChessListView extends React.Component<any> {
     public shouldComponentUpdate(nextProps): boolean {
         const {filters} = this.props as any;
         const {filters: nextFilters} = nextProps;
 
-        let isRender = JSON.stringify(filters) === JSON.stringify(nextFilters);
+        const isRender = JSON.stringify(filters) === JSON.stringify(nextFilters);
 
         return !isRender;
     }
 
-    render() {
+    public render() {
         const {filters, onSelect, listData} = this.props as any;
         const filteredList = listData.filter((flat) => isActive(flat, filters));
 
         return (
-            <div>
-                <div
-                    style={{
-                        display: 'flex',
-                        paddingRight: '15px',
-                        backgroundColor: '#fff'
-                    }}
-                >
+            <ListViewBox>
+                <Header>
                     <TableCellContainer>Секция</TableCellContainer>
                     <TableCellContainer>Площадь</TableCellContainer>
                     <TableCellContainer>№ Квартиры</TableCellContainer>
@@ -37,20 +42,15 @@ export class ChessListView extends React.Component<any> {
                     <TableCellContainer>Цена за м2</TableCellContainer>
                     <TableCellContainer>Статус</TableCellContainer>
                     <TableCellContainer>Кол-во этажей</TableCellContainer>
-                </div>
+                </Header>
 
-                <DataTable
-                    style={{
-                        width: '100%',
-                        height: '63vh'
-                    }}
-                >
+                <StyledDataTable>
                     <AutoSizer>
                         {({width, height}) => (
                             <List
                                 width={width}
                                 height={height}
-                                rowHeight={50}
+                                rowHeight={80}
                                 style={{outline: 'none'}}
                                 rowCount={filteredList.length}
                                 rowRenderer={({key, index, style, parent}) => {
@@ -78,8 +78,8 @@ export class ChessListView extends React.Component<any> {
                             />
                         )}
                     </AutoSizer>
-                </DataTable>
-            </div>
+                </StyledDataTable>
+            </ListViewBox>
         );
     }
 }
