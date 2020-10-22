@@ -170,6 +170,13 @@ function FlatTable({flat}: SidebarPdfInfoProps) {
     );
 }
 
+const makeHttps = (url?: string) => {
+    if (!url) {
+        return url;
+    }
+
+    return url.replace('http://', 'https://');
+};
 const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
     const status = FLAT_STATUSES.find((item) => item.value === flat.status);
     return (
@@ -177,7 +184,7 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
             <Page size="A4" style={styles.page}>
                 {flat.developer.logo && (
                     <ImageWrapper>
-                        <Logo src={flat.developer.logo.downloadUrl} />
+                        <Logo src={makeHttps(flat.developer.logo.downloadUrl)} />
                     </ImageWrapper>
                 )}
                 <Text style={styles.title}>ЖК {flat.apartmentComplex.name}</Text>
@@ -185,7 +192,7 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
                 <Text style={styles.status}>{status?.label}</Text>
                 {flat.layout && (
                     <ImageWrapper>
-                        <StyledImage src={flat.layout?.image.previewImageUrl} />
+                        <StyledImage src={makeHttps(flat.layout?.image.previewImageUrl)} />
                     </ImageWrapper>
                 )}
                 <FlatTable flat={flat} />

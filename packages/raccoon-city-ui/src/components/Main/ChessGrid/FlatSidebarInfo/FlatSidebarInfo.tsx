@@ -17,11 +17,12 @@ import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {Flat} from '../../../shared/types/flat.types';
 import {FlatSidebarData} from './FlatSidebarData';
+import FlatSidebarModal from './FlatSidebarModal';
+import {FlatSidebarSkeleton} from './FlatSidebarSkeleton/FlatSidebarSkeleton';
 import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
-import FlatSidebarModal from './FlatSidebarModal';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -93,7 +94,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     }
 
     if (loading || !data) {
-        return <span>loading</span>;
+        return <FlatSidebarSkeleton />;
     }
 
     if (error) {
