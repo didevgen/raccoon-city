@@ -10,6 +10,7 @@ import {HOUSE_LIST} from '../../../graphql/queries/houseQuery';
 import {FabButtonContainer, StyledFab, StyledLink} from '../../shared/components/styled';
 import {House} from '../../shared/types/house.types';
 import {HousePreview} from '../HouseBuilder/HousePreview/HousePreview';
+import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
 
 const EmptyHouseWrapper = styled.div`
     display: flex;
@@ -88,7 +89,7 @@ export function HouseList() {
     });
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <CardSkeleton />;
     }
     if (error || !data) {
         return <p>Error :(</p>;

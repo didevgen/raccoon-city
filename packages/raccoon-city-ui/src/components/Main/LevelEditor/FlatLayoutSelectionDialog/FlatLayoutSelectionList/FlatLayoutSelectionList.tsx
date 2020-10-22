@@ -4,6 +4,7 @@ import React from 'react';
 import {useParams} from 'react-router';
 import styled from 'styled-components';
 import {GET_LAYOUTS} from '../../../../../graphql/queries/layoutQuery';
+import {CardSkeleton} from '../../../../shared/components/skeletons/CardSkeleton';
 import {HouseLayout} from '../../../../shared/types/layout.types';
 import {FlatLayoutCard} from '../FlatLayoutCard/FlatLayoutCard';
 
@@ -23,6 +24,10 @@ export function FlatLayoutSelectionList(props: FlatLayoutSelectionListProps) {
         },
         fetchPolicy: 'cache-and-network'
     });
+
+    if (loading) {
+        return <CardSkeleton />;
+    }
 
     if (loading || error) {
         return null;

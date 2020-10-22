@@ -9,6 +9,7 @@ import {setRouteParams, setTitle} from '../../../redux/actions';
 import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentComplex.types';
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
+import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -46,7 +47,7 @@ export const ApartmentComplexList = connect(null, (dispatch) => ({
         }
     );
     if (loading) {
-        return <p>Loading...</p>;
+        return <CardSkeleton />;
     }
     if (error) {
         return <p>Error :(</p>;

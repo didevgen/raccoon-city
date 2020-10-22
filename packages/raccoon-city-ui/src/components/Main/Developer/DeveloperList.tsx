@@ -16,6 +16,7 @@ import {AddButton} from '../../shared/components/buttons/AddButton';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
+import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
 
 export interface DeveloperCardProps {
     id: string;
@@ -109,7 +110,7 @@ export const DeveloperList = connect(null, (dispatch) => ({
         fetchPolicy: 'cache-and-network'
     });
     if (loading) {
-        return <span>Loading</span>;
+        return <CardSkeleton />;
     }
 
     if (error || !data) {

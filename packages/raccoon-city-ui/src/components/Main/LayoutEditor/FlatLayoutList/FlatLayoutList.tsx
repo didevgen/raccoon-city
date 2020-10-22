@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import {useParams} from 'react-router';
 import {GET_LAYOUTS} from '../../../../graphql/queries/layoutQuery';
+import {CardSkeleton} from '../../../shared/components/skeletons/CardSkeleton';
 import {HouseLayout} from '../../../shared/types/layout.types';
 import {FlatLayoutCard} from '../FlatLayoutCard/FlatLayoutCard';
 
@@ -15,7 +16,11 @@ export function FlatLayoutList() {
         fetchPolicy: 'cache-and-network'
     });
 
-    if (loading || error) {
+    if (loading) {
+        return <CardSkeleton />;
+    }
+
+    if (error) {
         return null;
     }
 
