@@ -2,7 +2,7 @@ import {useQuery} from '@apollo/react-hooks';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import {Path, SVG, Svg} from '@svgdotjs/svg.js';
 import Cookies from 'js-cookie';
-import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router';
 import {Redirect} from 'react-router-dom';
 import styled from 'styled-components';
