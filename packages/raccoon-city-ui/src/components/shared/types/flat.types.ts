@@ -33,6 +33,7 @@ export interface Flat {
     section: string;
     area: number;
     squarePrice: number;
+    squarePriceSale?: number;
     status: FlatStatus;
     roomAmount: string;
     belongsToLayout?: boolean;

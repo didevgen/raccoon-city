@@ -29,7 +29,8 @@ const PublishedFlatSchema = new Schema({
     area: {type: Schema.Types.Number},
     status: {type: Schema.Types.String},
     roomAmount: {type: Schema.Types.String},
-    squarePrice: {type: Schema.Types.String},
+    squarePrice: {type: Schema.Types.Number},
+    squarePriceSale: {type: Schema.Types.Number},
     isDeleted: {type: Schema.Types.Boolean, default: false},
     levelAmount: {type: Schema.Types.Number, default: 1},
     level: {

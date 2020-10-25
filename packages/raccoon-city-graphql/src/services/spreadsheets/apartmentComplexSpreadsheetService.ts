@@ -37,6 +37,7 @@ export class ApartmentComplexSpreadsheetService {
                     status,
                     roomAmount,
                     squarePrice,
+                    squarePriceSale,
                     levelAmount
                 } = resultItem;
                 if (house && flatNumber && price && level && section && status) {
@@ -50,6 +51,7 @@ export class ApartmentComplexSpreadsheetService {
                         status,
                         roomAmount,
                         squarePrice,
+                        squarePriceSale,
                         levelAmount,
                         sale
                     });

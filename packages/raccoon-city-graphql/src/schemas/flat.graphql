@@ -8,7 +8,8 @@ type HouseFlat {
     area: Float
     status: String
     roomAmount: String
-    squarePrice: String
+    squarePrice: Float
+    squarePriceSale: Float
     layout: BaseLayout
     levelAmount: Int
     fakeLevel: Boolean
@@ -32,7 +33,8 @@ type HouseSidebarFlat {
     area: Float
     status: String
     roomAmount: String
-    squarePrice: String
+    squarePrice: Float
+    squarePriceSale: Float
     layout: BaseLayout
     house: House
     apartmentComplex: ApartmentComplex
@@ -50,7 +52,8 @@ input HouseFlatInput {
     section: String
     area: Float
     status: String
-    squarePrice: String
+    squarePrice: Float
+    squarePriceSale: Float
     roomAmount: String
 }
 

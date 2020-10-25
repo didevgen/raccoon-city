@@ -113,7 +113,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 <Typography variant="h5" gutterBottom>
                     Квартира № {flat.flatNumber}
                 </Typography>
-                {!!flat.sale && <SaleChip label="Акция" color="secondary" />}
+                {!!flat.squarePriceSale && <SaleChip label="Акция" color="secondary" />}
             </FlatTitleContainer>
             {props.onFlatSelected && (
                 <Button

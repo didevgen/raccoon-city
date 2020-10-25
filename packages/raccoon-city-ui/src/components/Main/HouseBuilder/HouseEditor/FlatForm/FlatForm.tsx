@@ -44,7 +44,9 @@ function toGraphqlFlat(flat: Flat): Flat {
         price: Number(flat.price),
         sale: !!flat.sale ? Number(flat.sale) : undefined,
         levelAmount: Number(flat.levelAmount),
-        roomAmount: flat.roomAmount
+        roomAmount: flat.roomAmount,
+        squarePrice: Number(flat.squarePrice),
+        squarePriceSale: !!flat.squarePriceSale ? Number(flat.squarePriceSale) : undefined
     });
 }
 
@@ -135,10 +137,10 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                         </Field>
                                     </Grid>
                                     <Grid item={true} xs={6}>
-                                        <Field name="price" validate={isRequiredAndIsNumber}>
+                                        <Field name="squarePrice" validate={isRequiredAndIsNumber}>
                                             {({input, meta, ...rest}) => (
                                                 <TextField
-                                                    label="Цена"
+                                                    label="Цена м²"
                                                     margin="normal"
                                                     {...input}
                                                     {...rest}
@@ -151,10 +153,10 @@ export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}
                                         </Field>
                                     </Grid>
                                     <Grid item={true} xs={6}>
-                                        <Field name="sale" validate={notRequiredAndIsNumber}>
+                                        <Field name="squarePriceSale" validate={notRequiredAndIsNumber}>
                                             {({input, meta, ...rest}) => (
                                                 <TextField
-                                                    label="Акционная цена"
+                                                    label="Акционная цена м²"
                                                     margin="normal"
                                                     {...input}
                                                     {...rest}

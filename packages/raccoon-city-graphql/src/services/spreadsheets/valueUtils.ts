@@ -22,13 +22,13 @@ export function transofrmValue(value: string, field: string | number): any {
         return isNaN(result) ? 1 : result;
     }
 
-    if (field === 'price' || field === 'area') {
+    if (field === 'price' || field === 'area' || field === 'squarePrice') {
         const valueWithoutSpaces = value.replace(/\s/g, '').replace(/,/g, '.');
         const result = Number(valueWithoutSpaces);
         return isNaN(result) ? 0 : result;
     }
 
-    if (field === 'sale') {
+    if (field === 'squarePriceSale') {
         const valueWithoutSpaces = value.replace(/\s/g, '').replace(/,/g, '.');
         const result = Number(valueWithoutSpaces);
         return isNaN(result) ? undefined : result;

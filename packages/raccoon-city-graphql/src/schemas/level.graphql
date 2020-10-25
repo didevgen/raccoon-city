@@ -45,7 +45,8 @@ type flatInfo {
     roomAmount: String
     sale: Float
     house: String
-    squarePrice: String
+    squarePrice: Float
+    squarePriceSale: Float
     layout: String
     id: String
 }

@@ -122,6 +122,7 @@ export const GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
                     price
                     level
                     squarePrice
+                    squarePriceSale
                     levelAmount
                     status
                     id
@@ -159,6 +160,7 @@ export const GET_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
                     price
                     level
                     squarePrice
+                    squarePriceSale
                     levelAmount
                     status
                     id

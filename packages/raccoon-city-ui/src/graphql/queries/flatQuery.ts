@@ -24,6 +24,8 @@ export const GET_SECTION = gql`
                     status
                     roomAmount
                     sale
+                    squarePrice
+                    squarePriceSale
                 }
             }
         }
@@ -68,6 +70,7 @@ export const GET_FLAT_SIDEBAR_DATA = gql`
             roomAmount
             sale
             squarePrice
+            squarePriceSale
             apartmentComplex {
                 id
                 name
@@ -143,6 +146,7 @@ export const GET_PUBLIC_FLAT_SIDEBAR_DATA = gql`
             roomAmount
             sale
             squarePrice
+            squarePriceSale
             apartmentComplex {
                 id
                 name

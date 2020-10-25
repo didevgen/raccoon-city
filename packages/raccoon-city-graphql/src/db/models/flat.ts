@@ -14,7 +14,8 @@ export interface Flat extends Document {
     area: number;
     status: FlatStatus;
     roomAmount: string;
-    squarePrice: string;
+    squarePrice: number;
+    squarePriceSale: number;
     house: House;
     layout: HouseLayout;
     levelAmount: number;
@@ -37,7 +38,8 @@ const FlatSchema: Schema = new Schema(
         area: {type: Schema.Types.Number},
         status: {type: Schema.Types.String},
         roomAmount: {type: Schema.Types.String},
-        squarePrice: {type: Schema.Types.String},
+        squarePrice: {type: Schema.Types.Number},
+        squarePriceSale: {type: Schema.Types.Number},
         isDeleted: {type: Schema.Types.Boolean, default: false},
         house: {
             type: Schema.Types.ObjectId,

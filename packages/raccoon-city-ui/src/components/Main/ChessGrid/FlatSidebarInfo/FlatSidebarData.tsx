@@ -36,26 +36,30 @@ interface FlatSidebarDataProps {
     flat: Flat;
 }
 
+function FlatPriceInfoItem({flat}) {
+    const price = flat.area * flat.squarePrice;
+    const salePrice = flat.area * (flat.squarePriceSale || -1);
+
+    if (salePrice < 0) {
+        return <span>{price.toFixed(2)}</span>;
+    }
+
+    return (
+        <Fragment>
+            <FlatPrice>{price.toFixed(2)}</FlatPrice>
+            <FlatSale>{salePrice.toFixed(2)}</FlatSale>
+        </Fragment>
+    );
+}
+
 export function FlatSidebarData(props: FlatSidebarDataProps) {
     const {flat} = props;
     const flatStatus = FLAT_STATUSES.find((statuses) => statuses.value === flat.status);
     return (
         <div>
             <FlatInfoItem label="Номер квартиры" value={flat.flatNumber} />
-            <FlatInfoItem
-                label="Цена"
-                value={
-                    flat.sale ? (
-                        <Fragment>
-                            <FlatPrice>{flat.price}</FlatPrice>
-                            <FlatSale>{flat.sale}</FlatSale>
-                        </Fragment>
-                    ) : (
-                        flat.price
-                    )
-                }
-            />
-            <FlatInfoItem label="Цена м2" value={flat.squarePrice} />
+            <FlatInfoItem label="Цена" value={<FlatPriceInfoItem flat={flat} />} />
+            <FlatInfoItem label="Цена м2" value={flat.squarePriceSale || flat.squarePrice} />
             <FlatInfoItem label="Этаж" value={flat.level} />
             <FlatInfoItem label="Количество уровней" value={flat.levelAmount} />
             <FlatInfoItem label="Подъезд" value={flat.section} />

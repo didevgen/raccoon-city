@@ -28,6 +28,10 @@ export const headerKeys = [
         headerValue: 'squarePrice'
     },
     {
+        csvKeys: ['Акция, м2'],
+        headerValue: 'squarePriceSale'
+    },
+    {
         csvKeys: ['Статус'],
         headerValue: 'status'
     },
@@ -38,10 +42,6 @@ export const headerKeys = [
     {
         csvKeys: ['Уровни'],
         headerValue: 'levelAmount'
-    },
-    {
-        csvKeys: ['Акция'],
-        headerValue: 'sale'
     }
 ];
 

@@ -133,6 +133,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
         const flatUpdated = {
             sale: flat.sale,
             price: flat.price,
+            squarePrice: flat.squarePrice,
+            squarePriceSale: flat.squarePriceSale,
             flatId: flat.id,
             flatNumber: flat.flatNumber,
             section: flat.section,

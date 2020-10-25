@@ -126,6 +126,7 @@ export const GET_PUBLIC_GROUPED_FLATS_CHESSGRID = gql`
                             status
                             sale
                             squarePrice
+                            squarePriceSale
                             roomAmount
                         }
                     }
@@ -149,6 +150,7 @@ export const GET_PUBLIC_FLATS_LIST = gql`
             status
             sale
             squarePrice
+            squarePriceSale
             roomAmount
         }
     }
@@ -182,6 +184,7 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
                             status
                             sale
                             squarePrice
+                            squarePriceSale
                             roomAmount
                         }
                     }
@@ -208,6 +211,7 @@ export const GET_GROUPED_FLATS = gql`
                         area
                         status
                         squarePrice
+                        squarePriceSale
                         sale
                         roomAmount
                         levelAmount
@@ -232,6 +236,7 @@ export const GET_FLAT_LIST = gql`
             status
             sale
             squarePrice
+            squarePriceSale
             roomAmount
         }
     }

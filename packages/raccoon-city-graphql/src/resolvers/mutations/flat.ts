@@ -116,6 +116,7 @@ export const flatMutation = {
         const result = {
             ...previousFlat.toObject(),
             ...flat,
+            squarePriceSale: flat.squarePriceSale,
             section: previousFlat.section.id,
             level: previousFlat.level.id,
             house: previousFlat.house
