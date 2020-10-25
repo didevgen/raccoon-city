@@ -11,6 +11,8 @@ import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery
 
 const ImageContainer = styled.div`
     display: flex;
+    height: 100%;
+    max-height: calc(100vh - 100px);
 `;
 
 const LayoutImage = styled.div<any>`
@@ -38,6 +40,9 @@ const HouseIconContainer = styled.div`
     }
 `;
 
+const LayoutContainer = styled.div`
+    height: 100vh;
+`;
 function attachSvg(container: string) {
     return SVG()
         .addTo(container)
@@ -170,7 +175,7 @@ export default function ApartmentComplexLayout() {
     }
 
     return (
-        <Fragment>
+        <LayoutContainer>
             <HouseChooseContainer>
                 {data.getApartmentComplexLayout.layouts
                     .sort((a, b) => {
@@ -195,6 +200,6 @@ export default function ApartmentComplexLayout() {
                     layouts={data.getApartmentComplexLayout.layouts}
                 />
             </ImageContainer>
-        </Fragment>
+        </LayoutContainer>
     );
 }
