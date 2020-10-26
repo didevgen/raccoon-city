@@ -46,7 +46,13 @@ function CreateLayout({uuid, mutation}: NewLayoutProps) {
             >
                 <AddIcon />
             </StyledFab>
-            <LayoutDialog mutation={mutation} setOpen={setOpen} open={open} params={{uuid}} />
+            <LayoutDialog
+                mutation={mutation}
+                setOpen={setOpen}
+                open={open}
+                params={{uuid}}
+                ratio={['1280x720', '1600x900', '1920x1080', '...']}
+            />
         </ButtonContainer>
     );
 }

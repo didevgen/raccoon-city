@@ -26,6 +26,7 @@ export interface LayoutDialog {
         uuid: string;
         name?: string;
     };
+    ratio?: string[];
     isEdit?: boolean;
     mutation: MutationTuple<any, any>;
 }
@@ -59,7 +60,8 @@ function ChangeImage({onDrop}) {
     );
 }
 
-export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutation}: LayoutDialog) {
+export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutation, ratio}: LayoutDialog) {
+    console.log(ratio);
     const [image, setImage] = useState<any>();
     const [name, setName] = useState<any>(params.name);
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
@@ -99,7 +101,7 @@ export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutat
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">{isEdit ? 'Редактировать' : 'Добавить изображение'}</DialogTitle>
             <DialogContent>
-                {!previewUrl && <StyledDropzone onDrop={handleDrop} />}
+                {!previewUrl && <StyledDropzone ratio={ratio} onDrop={handleDrop} />}
                 {previewUrl && (
                     <Fragment>
                         <ChangeImage onDrop={handleDrop} />

@@ -9,12 +9,18 @@ export function StyledDropzone(props: any) {
             props.onDrop(acceptedFiles[0]);
         }
     });
-
     return (
         <div className="container">
             <DropzoneContainer {...getRootProps({isDragActive, isDragAccept, isDragReject})}>
                 <input {...getInputProps()} />
-                <p>Drag 'n' drop some files here, or click to select files</p>
+                {props.ratio ? (
+                    <p>
+                        Нажмите или перенесите изображение сюда. Предпочтительные размеры изображений:{' '}
+                        {props.ratio.join(', ')}
+                    </p>
+                ) : (
+                    <p>Нажмите или перенесите изображение сюда</p>
+                )}
             </DropzoneContainer>
         </div>
     );

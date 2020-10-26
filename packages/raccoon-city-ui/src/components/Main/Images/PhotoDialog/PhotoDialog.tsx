@@ -22,6 +22,7 @@ export interface ImageDialogProps {
     setOpen: (state: boolean) => void;
     open: boolean;
     downloadLink?: string;
+    ratio?: string[];
     params: {
         uuid: string;
         mode: ImageType;
@@ -37,7 +38,7 @@ const StyledImage = styled.img`
     max-width: 100%;
 `;
 
-export function PhotoDialog({setOpen, open, params, downloadLink, mutation}: ImageDialogProps) {
+export function PhotoDialog({setOpen, open, params, downloadLink, mutation, ratio}: ImageDialogProps) {
     const [image, setImage] = useState<any>();
     const [name, setName] = useState<any>();
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
@@ -85,7 +86,7 @@ export function PhotoDialog({setOpen, open, params, downloadLink, mutation}: Ima
         <Dialog open={open} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
             <DialogTitle id="form-dialog-title">Добавить изображение</DialogTitle>
             <DialogContent>
-                {!previewUrl && <StyledDropzone onDrop={handleDrop} />}
+                {!previewUrl && <StyledDropzone onDrop={handleDrop} ratio={ratio} />}
                 {previewUrl && (
                     <Fragment>
                         <EditorContainer>

@@ -120,6 +120,7 @@ export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProp
                 </CardContent>
             </CardActionArea>
             <LayoutDialog
+                ratio={['1280x720', '1600x900', '1920x1080', '...']}
                 isEdit={true}
                 mutation={mutation}
                 downloadLink={props.imageUrl}
