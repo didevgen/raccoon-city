@@ -77,10 +77,11 @@ function fillExistingLayouts(
             })
             .on('click', () => {
                 // @ts-ignore
-                if (window.parent && window.parent.showComplexModal) {
+                if (window.parent) {
                     // @ts-ignore
-                    window.parent.showComplexModal(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`
+                    window.parent.postMessage(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
+                        '*'
                     );
                 } else {
                     window.open(
@@ -137,10 +138,11 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
                 // @ts-ignore
-                if (window.parent && window.parent.showComplexModal) {
+                if (window.parent && window.parent) {
                     // @ts-ignore
-                    window.parent.showComplexModal(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`
+                    window.parent.postMessage(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
+                        '*'
                     );
                 } else {
                     window.open(
