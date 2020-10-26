@@ -100,7 +100,7 @@ export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProp
                     const token = res?.data?.authApp?.token;
                     if (token) {
                         // @ts-ignore
-                        if (window.parent) {
+                        if (window.location !== window.parent.location) {
                             // @ts-ignore
                             window.parent.postMessage(
                                 `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/layout/${props.id}?authToken=${token}`,

@@ -77,7 +77,7 @@ function fillExistingLayouts(
             })
             .on('click', () => {
                 // @ts-ignore
-                if (window.parent) {
+                if (window.location !== window.parent.location) {
                     // @ts-ignore
                     window.parent.postMessage(
                         `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
@@ -138,7 +138,7 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
                 // @ts-ignore
-                if (window.parent && window.parent) {
+                if (window.location !== window.parent.location) {
                     // @ts-ignore
                     window.parent.postMessage(
                         `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,

@@ -16,7 +16,7 @@ export function StyledDropzone(props: any) {
                 {props.ratio ? (
                     <p>
                         Нажмите или перенесите изображение сюда. Предпочтительные размеры изображений:{' '}
-                        {props.ratio.join(', ')}
+                        <b>{props.ratio.join(', ')}</b>
                     </p>
                 ) : (
                     <p>Нажмите или перенесите изображение сюда</p>

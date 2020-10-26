@@ -61,7 +61,6 @@ function ChangeImage({onDrop}) {
 }
 
 export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutation, ratio}: LayoutDialog) {
-    console.log(ratio);
     const [image, setImage] = useState<any>();
     const [name, setName] = useState<any>(params.name);
     const [previewUrl, setPreviewUrl] = useState(downloadLink);
