@@ -76,10 +76,18 @@ function fillExistingLayouts(
                 setHoveredHouse(null);
             })
             .on('click', () => {
-                window.open(
-                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
-                    '_blank'
-                );
+                // @ts-ignore
+                if (window.parent && window.parent.showComplexModal) {
+                    // @ts-ignore
+                    window.parent.showComplexModal(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`
+                    );
+                } else {
+                    window.open(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
+                        '_blank'
+                    );
+                }
             });
         pathArray.push(path);
     });
@@ -128,10 +136,18 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         <HouseIconContainer
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
-                window.open(
-                    `/public/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
-                    '_blank'
-                );
+                // @ts-ignore
+                if (window.parent && window.parent.showComplexModal) {
+                    // @ts-ignore
+                    window.parent.showComplexModal(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`
+                    );
+                } else {
+                    window.open(
+                        `${process.env.REACT_APP_PUBLIC_BASE_URL}developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
+                        '_blank'
+                    );
+                }
             }}
             onMouseEnter={() => handler(house)}
             onMouseLeave={() => handler(null)}

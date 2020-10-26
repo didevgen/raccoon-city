@@ -99,10 +99,18 @@ export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProp
                     });
                     const token = res?.data?.authApp?.token;
                     if (token) {
-                        window.open(
-                            `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/layout/${props.id}?authToken=${token}`,
-                            '_blank'
-                        );
+                        // @ts-ignore
+                        if (window.parent && window.parent.showComplexModal) {
+                            // @ts-ignore
+                            window.parent.showComplexModal(
+                                `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/layout/${props.id}?authToken=${token}`
+                            );
+                        } else {
+                            window.open(
+                                `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/layout/${props.id}?authToken=${token}`,
+                                '_blank'
+                            );
+                        }
                     }
                 }}
             >
