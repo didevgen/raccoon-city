@@ -1,16 +1,20 @@
 import React from 'react';
+import {ChessCellViewMode} from './ChessEnums';
 import {FlatSidebarInfo} from './FlatSidebarInfo/FlatSidebarInfo';
 
 interface ChessSideBarProps {
     SideBar: any;
     flatCardOpen: boolean;
     isPublic: boolean;
-
+    houseId: string;
     selectedFlat: any;
     showRequestButton: any;
     onFlatSelected: any;
     setFlatCardOpen: any;
     setSelectedFlat: any;
+    setSavedFlat: any;
+    viewMode: ChessCellViewMode;
+    currentLevel?: string;
 }
 
 export const ChessSideBar = ({
@@ -21,7 +25,11 @@ export const ChessSideBar = ({
     showRequestButton,
     onFlatSelected,
     setFlatCardOpen,
-    setSelectedFlat
+    setSelectedFlat,
+    houseId,
+    viewMode,
+    currentLevel,
+    setSavedFlat
 }: ChessSideBarProps) => {
     return (
         <SideBar
@@ -42,6 +50,10 @@ export const ChessSideBar = ({
                     isPublic={isPublic}
                     showRequestButton={showRequestButton}
                     onFlatSelected={onFlatSelected}
+                    houseId={houseId}
+                    setSavedFlat={setSavedFlat}
+                    viewMode={viewMode}
+                    currentLevel={currentLevel}
                 />
             )}
         </SideBar>

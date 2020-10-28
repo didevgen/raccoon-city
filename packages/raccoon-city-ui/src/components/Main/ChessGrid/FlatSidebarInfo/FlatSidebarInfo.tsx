@@ -16,6 +16,7 @@ import {
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
 import {Flat} from '../../../shared/types/flat.types';
+import {ChessCellViewMode} from '../ChessEnums';
 import {FlatSidebarData} from './FlatSidebarData';
 import FlatSidebarModal from './FlatSidebarModal';
 import {FlatSidebarSkeleton} from './FlatSidebarSkeleton/FlatSidebarSkeleton';
@@ -55,9 +56,13 @@ const SendRequestContainer = styled.div`
 
 interface FlatSidebarInfoProps {
     flat: Flat;
+    houseId: string;
+    viewMode: ChessCellViewMode;
     isPublic: boolean;
     showRequestButton: boolean;
     onFlatSelected?: (flat: Flat) => void;
+    currentLevel?: string;
+    setSavedFlat: any;
 }
 
 const StyledTab = styled(Tab)`
@@ -153,7 +158,15 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                {value === 0 && <FlatSidebarData flat={flat} />}
+                {value === 0 && (
+                    <FlatSidebarData
+                        houseId={props.houseId}
+                        flat={flat}
+                        viewMode={props.viewMode}
+                        currentLevel={props.currentLevel}
+                        setSavedFlat={props.setSavedFlat}
+                    />
+                )}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 {value === 1 && <ImageViewVR images={flat.layout?.images?.VR} mode={ImageType.VR} />}
@@ -179,6 +192,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </SendRequestContainer>
                 </ButtonsContainer>
             )}
+            {/*@ts-ignore*/}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

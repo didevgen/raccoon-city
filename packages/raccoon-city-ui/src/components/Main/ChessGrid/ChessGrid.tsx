@@ -32,7 +32,7 @@ import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
 
-export const CustomSidebarDrawer = styled(SidebarDrawer)`
+export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
     .MuiAppBar-colorPrimary {
         background-color: #e84f1d;
     }
@@ -54,11 +54,15 @@ const ChessGridContent = React.memo((props: any) => {
         isPublic,
         onFlatSelected,
         showRequestButton,
-        listData
+        listData,
+        houseId,
+        setSavedFlat,
+        savedFlat
     } = props;
 
     const [flatCardOpen, setFlatCardOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
+    const [currentLevel, setCurrentLevel] = useState<string>();
 
     const SideBar = isPublic ? CustomSidebarDrawer : SidebarDrawer;
 
@@ -86,7 +90,13 @@ const ChessGridContent = React.memo((props: any) => {
     if (filters.mode === ChessCellViewMode.FLOOR) {
         return (
             <Fragment>
-                <ChessFloorView filters={filters} onSelect={selectFlat} houseFlats={houseFlats} isPublic={isPublic} />
+                <ChessFloorView
+                    setCurrentLevel={setCurrentLevel}
+                    filters={filters}
+                    onSelect={selectFlat}
+                    houseFlats={houseFlats}
+                    isPublic={isPublic}
+                />
                 {flatCardOpen && (
                     <ChessSideBar
                         SideBar={SideBar}
@@ -97,6 +107,10 @@ const ChessGridContent = React.memo((props: any) => {
                         setFlatCardOpen={setFlatCardOpen}
                         setSelectedFlat={setSelectedFlat}
                         flatCardOpen={flatCardOpen}
+                        houseId={houseId}
+                        setSavedFlat={setSavedFlat}
+                        viewMode={filters.mode}
+                        currentLevel={currentLevel}
                     />
                 )}
             </Fragment>
@@ -118,6 +132,9 @@ const ChessGridContent = React.memo((props: any) => {
                         setFlatCardOpen={setFlatCardOpen}
                         setSelectedFlat={setSelectedFlat}
                         flatCardOpen={flatCardOpen}
+                        houseId={houseId}
+                        setSavedFlat={setSavedFlat}
+                        viewMode={filters.mode}
                     />
                 )}
             </Fragment>
@@ -147,6 +164,7 @@ const ChessGridContent = React.memo((props: any) => {
                                             columnName={item.section}
                                             levels={item.levels}
                                             onSelect={selectFlat}
+                                            savedFlat={savedFlat}
                                         />
                                     );
                                 })}
@@ -165,6 +183,9 @@ const ChessGridContent = React.memo((props: any) => {
                         setFlatCardOpen={setFlatCardOpen}
                         setSelectedFlat={setSelectedFlat}
                         flatCardOpen={flatCardOpen}
+                        houseId={houseId}
+                        setSavedFlat={setSavedFlat}
+                        viewMode={filters.mode}
                     />
                 )}
             </ChessGridWrapper>
@@ -185,6 +206,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const [filters, dispatch] = useReducer(reducer, getInitialState(isPublic));
+    const [savedFlat, setSavedFlat] = useState<any>();
 
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;
@@ -260,6 +282,9 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     showRequestButton={showRequestButton}
                     data={id.length === 0 ? null : data}
                     listData={id.length === 0 ? null : listData}
+                    houseId={id}
+                    setSavedFlat={setSavedFlat}
+                    savedFlat={savedFlat}
                 />
             </CellViewModeContext.Provider>
 
@@ -273,7 +298,7 @@ export const ChessGrid = connect(null, (dispatch) => ({
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId, showRequestButton}) => {
     const params = useParams();
-    const {houseUuid} = useParams();
+    const {houseUuid} = useParams() as any;
 
     useEffect(() => {
         applyParams(params);

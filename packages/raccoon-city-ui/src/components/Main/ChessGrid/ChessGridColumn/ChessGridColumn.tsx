@@ -34,6 +34,13 @@ interface ChessGridColumnProps {
         flats: Flat[];
     }>;
     onSelect: (flat: Flat) => void;
+    savedFlat: any;
+}
+
+function getFlatStatus(levels, levelToFind, flatNumberToFind) {
+    return levels
+        .find(({level}) => level === levelToFind)
+        ?.flats.find(({flatNumber}) => flatNumber === flatNumberToFind);
 }
 
 export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
@@ -42,7 +49,31 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
         nextState: Readonly<{}>,
         nextContext: any
     ): boolean {
-        return false;
+        const {savedFlat, columnName, levels} = this.props;
+
+        if (!savedFlat || !columnName || !levels) {
+            return false;
+        }
+
+        const {section, level, flatNumber} = savedFlat;
+        const {columnName: nextColumnName, levels: nextLevels} = nextProps;
+
+        if (!section || !level || !flatNumber) {
+            return false;
+        }
+
+        if (nextColumnName !== section && columnName !== section) {
+            return false;
+        }
+
+        const flats = getFlatStatus(levels, level, flatNumber);
+        const nextFlats = getFlatStatus(nextLevels, level, flatNumber);
+
+        if (!nextFlats?.status || !flats?.status) {
+            return false;
+        }
+
+        return nextFlats?.status === flats?.status;
     }
 
     public render() {

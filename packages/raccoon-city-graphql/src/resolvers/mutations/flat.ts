@@ -122,6 +122,14 @@ export const flatMutation = {
         };
         return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, result);
     },
+    updateFlatStatus: async (parent, {flatId, flatStatus}) => {
+        await FlatModel.findOneAndUpdate({
+            _id: flatId,
+            isDeleted: false
+        }, {status: String(flatStatus)});
+
+        return true;
+    },
     async createFlat(parent, args, ctx: Context) {
         const flat = args.flat;
         const newFlat = await handleSection(flat, null, args.houseGuid);

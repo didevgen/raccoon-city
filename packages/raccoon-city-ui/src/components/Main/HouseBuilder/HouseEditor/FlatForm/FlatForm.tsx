@@ -53,7 +53,7 @@ function shouldShowDialog(levelNumber: number, maxLevelNumber: number) {
 }
 
 export function FlatFormDialog({open, setOpen, flat, isNew, maxLevel, sectionId}: FlatFormDialogProps) {
-    const {houseUuid: uuid} = useParams();
+    const {houseUuid: uuid} = useParams() as any;
     const [updateFlat] = useMutation(UPDATE_FLAT);
     const [createFlat] = useMutation(CREATE_FLAT);
     const handleClose = () => {

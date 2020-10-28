@@ -28,7 +28,7 @@ export interface ApartmentComplexLayoutCardProps {
 }
 
 export function ApartmentComplexLayoutCard(props: ApartmentComplexLayoutCardProps) {
-    const {apartmentComplexUuid, developerUuid} = useParams();
+    const {apartmentComplexUuid, developerUuid} = useParams() as any;
     const [open, setOpen] = React.useState(false);
     const [auth] = useMutation(AUTH_APP);
     const mutation = useMutation(EDIT_APARTMENT_COMPLEX_LAYOUT, {

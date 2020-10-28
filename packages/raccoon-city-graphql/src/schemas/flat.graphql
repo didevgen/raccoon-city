@@ -81,6 +81,7 @@ type GroupedBySectionResult {
 }
 type Mutation {
     updateFlat(flat: HouseFlatInput): HouseFlat
+    updateFlatStatus(flatId: String, flatStatus: String): Boolean
     createFlat(houseGuid: String, flat: HouseFlatInput): HouseFlat
     deleteFlat(uuid: String): Boolean
 }

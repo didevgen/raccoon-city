@@ -12,8 +12,8 @@ interface CustomSelectorProps {
 }
 
 export const CustomSelector = ({currentValue, setValue, isPublic, items, itemName, keyToShow}: CustomSelectorProps) => (
-    <SelectWrapper {...{isPublic}}>
-        <CustomSelect {...{isPublic}} value={currentValue}>
+    <SelectWrapper isPublic={isPublic}>
+        <CustomSelect isPublic={isPublic} value={currentValue}>
             {items.map((item: any) => {
                 return (
                     <MenuItem key={item.id} value={item.id} onClick={() => setValue(item.id)}>

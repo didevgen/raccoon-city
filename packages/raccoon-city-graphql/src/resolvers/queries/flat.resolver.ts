@@ -84,9 +84,6 @@ export const flatQuery = {
             const newFlat: FlatInfo = flatObj as FlatInfo;
             const result = groupByLevelLayout(levelFlatLayouts);
 
-            console.log('result');
-            console.log(result);
-
             newFlat.levelLayouts = Object.keys(result).map((key) => {
                 const item = result[key];
                 const levelLayout = item[0].levelLayout;
@@ -290,5 +287,5 @@ export const flatQuery = {
         });
 
         return flatsList;
-    }
+    },
 };
