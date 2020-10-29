@@ -15,6 +15,12 @@ export const UPDATE_FLAT = gql`
     }
 `;
 
+export const UPDATE_FLAT_STATUS = gql`
+    mutation updateFlatStatus($flatId: String, $flatStatus: String) {
+        updateFlatStatus(flatId: $flatId, flatStatus: $flatStatus)
+    }
+`;
+
 export const CREATE_FLAT = gql`
     mutation createFlat($houseGuid: String, $flat: HouseFlatInput) {
         createFlat(houseGuid: $houseGuid, flat: $flat) {

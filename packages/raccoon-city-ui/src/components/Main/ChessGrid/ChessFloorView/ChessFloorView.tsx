@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {
     GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS,
@@ -24,7 +24,7 @@ import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interf
 import {ChessGridAnimation} from '../ChessGridAnimation/ChessGridAnimation';
 
 export const ChessFloorView = (props) => {
-    const {onSelect, houseFlats, isPublic} = props;
+    const {onSelect, houseFlats, isPublic, setCurrentLevel: handleCurrentLevelChange} = props;
     const {groupedFlats} = houseFlats[0];
 
     const [sections] = useState(getSections(groupedFlats));
@@ -41,6 +41,10 @@ export const ChessFloorView = (props) => {
     const variables = {
         levelId: currentLevel
     };
+
+    useEffect(() => {
+        handleCurrentLevelChange(currentLevel);
+    }, [currentLevel, handleCurrentLevelChange]);
 
     const FLAT_LAYOUTS_QUERY = isPublic ? GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS : GET_FLATS_INFO_WITH_SVG_LAYOUTS;
 

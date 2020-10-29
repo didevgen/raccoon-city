@@ -111,6 +111,7 @@ function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCu
 
     useEffect(() => {
         svgRef.current = attachSvg(`#img-container__${index}`);
+
         if (svgRef && svgRef.current) {
             fillExistingLayouts(svgRef.current, paths, viewBox, info, setCurrentDataId, onSelect);
         }

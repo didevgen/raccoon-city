@@ -135,51 +135,6 @@ export const getBorderColor = (props) => {
     return `${borderColor} ${borderColor} transparent transparent`;
 };
 
-export const getRoomAmountBackground = (props) => {
-    const {status} = props;
-
-    return Colors[status].main;
-};
-
-export const getAreaBackground = (props) => {
-    const {status} = props;
-
-    return Colors[status].second;
-};
-
-export const FlatLabelContainer = styled.div<any>`
-    display: inline-flex;
-    width: 95px;
-    text-align: center;
-    border-radius: 2px;
-    position: relative;
-    z-index: 10;
-
-    &::before {
-        content: '';
-        display: block;
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        top: 100%;
-        left: 0px;
-        border-style: solid;
-        border-width: 3px;
-        border-color: ${getBorderColor};
-    }
-`;
-
-export const RoomAmount = styled.div<any>`
-    width: 20%;
-    background-color: ${getRoomAmountBackground};
-    color: #fff;
-`;
-
-export const Area = styled.div<any>`
-    width: 80%;
-    background-color: ${getAreaBackground};
-`;
-
 export const FlatInfo = styled.div`
     padding: 5px 10px;
     border-radius: 10px;
