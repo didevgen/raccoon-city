@@ -30,7 +30,7 @@ export function FlatLayoutList() {
         }
 
         return (
-            <Grid item={true} xs={12} md={3} key={layout.id}>
+            <Grid item={true} xs={12} md={4} key={layout.id}>
                 <Grid container justify="center">
                     <FlatLayoutCard name={layout.name} id={layout.id} imageUrl={layout.image.previewImageUrl} />
                 </Grid>
