@@ -70,7 +70,7 @@ export function LayoutEditor() {
 
     return (
         <Grid container={true} spacing={3} alignItems="center">
-            <Grid item={true} xs={12} md={3}>
+            <Grid item={true} xs={12} md={4}>
                 <CreateLayout mutation={mutation} uuid={uuid} />
             </Grid>
             <FlatLayoutList />
