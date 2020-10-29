@@ -70,6 +70,7 @@ export function LayoutDialog({setOpen, open, params, isEdit, downloadLink, mutat
 
     const handleClose = () => {
         setImage(undefined);
+        setName('');
         if (!isEdit) {
             setPreviewUrl(undefined);
         }
