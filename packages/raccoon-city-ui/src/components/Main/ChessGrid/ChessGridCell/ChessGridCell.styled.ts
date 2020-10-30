@@ -9,9 +9,10 @@ const TileView = css`
 `;
 
 const TileViewPlus = css`
-    width: 145px;
+    width: 202px;
     height: auto;
     flex-direction: column;
+    justify-contett: space-between;
     padding: 5px;
 `;
 
@@ -29,6 +30,7 @@ const getCellView = (props) => {
 export const CellInfoWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    width: 100%;
 `;
 
 // @ts-ignore
@@ -37,7 +39,7 @@ export const CellInfoWrapperTop = styled(CellInfoWrapper)`
 `;
 
 export const FirstInfoItem = styled.span`
-    padding-right: 10px;
+    padding: 0 2px;
 `;
 
 export const HtmlTooltip = withStyles((theme: Theme) => ({
@@ -51,7 +53,7 @@ export const HtmlTooltip = withStyles((theme: Theme) => ({
 
 export const Cell = styled.div<{viewMode?: string}>`
     color: #fff;
-    background-color: #4caf50;
+    background-color: #3ab71e;
     font-weight: 500;
     border-radius: 0;
     margin: 8px;
@@ -84,7 +86,7 @@ export const Cell = styled.div<{viewMode?: string}>`
     }
 
     &.SOLD_OUT {
-        background-color: #f44336;
+        background-color: #e84f1d;
         &:hover {
             background-color: #e57373;
         }

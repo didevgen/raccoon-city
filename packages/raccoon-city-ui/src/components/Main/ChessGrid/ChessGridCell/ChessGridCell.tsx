@@ -44,15 +44,15 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         [ChessCellViewMode.TILE_PLUS]: (
             <Fragment>
                 <CellInfoWrapperTop>
-                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
+                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
                     <ReducedPrice flat={flat} />
                 </CellInfoWrapperTop>
                 <CellInfoWrapperTop>
-                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
-                    <span>{flat.area}/м2</span>
+                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
+                    <span>1м2 - {flat.squarePriceSale || flat.squarePrice} грн</span>
                 </CellInfoWrapperTop>
                 <CellInfoWrapper>
-                    <span>{flat.squarePriceSale || flat.squarePrice} - цена за м2</span>
+                    <span>{flat.area}м2</span>
                 </CellInfoWrapper>
             </Fragment>
         )
@@ -69,18 +69,17 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                         <div className="Cell__price">
                             <ReducedPrice flat={flat} />
                         </div>
+                        {<div>1 м2 - {flat.squarePriceSale || flat.squarePrice}</div>}
                     </PriceContainer>
                     <DataContainer>
+                        <NumberContainer>
+                            <div>№{flat.flatNumber}</div>
+                        </NumberContainer>
                         {viewContextValue.selectedViewMode === ViewModeValues.ROOM ? (
                             <AreaContainer>{flat.area}м2</AreaContainer>
                         ) : (
                             <AreaContainer>Комнат: {flat.roomAmount}</AreaContainer>
                         )}
-
-                        <NumberContainer>
-                            <div>№{flat.flatNumber}</div>
-                            {<div>{flat.squarePriceSale || flat.squarePrice} - цена за м2</div>}
-                        </NumberContainer>
                     </DataContainer>
                 </TooltipContainer>
             }
