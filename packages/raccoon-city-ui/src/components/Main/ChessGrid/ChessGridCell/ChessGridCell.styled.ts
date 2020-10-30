@@ -123,6 +123,11 @@ export const Cell = styled.div<{viewMode?: string}>`
     }
 `;
 
+export const PreviewCell = styled(Cell)`
+    width: 40px;
+    height: 40px;
+`;
+
 export const TooltipContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -148,11 +153,24 @@ export const NumberContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-right: 10px;
 `;
 
 export const DataContainer = styled.div`
     margin-left: 8px;
     font-size: 12px;
+    display: flex;
+    justify-content: flex-start;
+`;
+
+export const PriceAndAmountContainer = styled.div`
+    margin-left: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    align-self: stretch;
+    padding: 10px 0;
 `;
 
 export const StyledBagde = styled(Badge)`
