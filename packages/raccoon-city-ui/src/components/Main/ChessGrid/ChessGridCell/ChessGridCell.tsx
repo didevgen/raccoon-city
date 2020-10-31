@@ -1,6 +1,6 @@
 import React, {Fragment, useContext} from 'react';
 import {Flat} from '../../../shared/types/flat.types';
-import {ChessCellViewMode, ViewModeValues} from '../ChessEnums';
+import {ChessCellViewMode} from '../ChessEnums';
 import {CellViewModeContext, ViewModeContext} from '../ChessGrid';
 import {
     AreaContainer,
@@ -13,7 +13,9 @@ import {
     NumberContainer,
     PriceContainer,
     StyledBagde,
-    TooltipContainer
+    TooltipContainer,
+    PriceAndAmountContainer,
+    PreviewCell
 } from './ChessGridCell.styled';
 
 interface Props {
@@ -63,23 +65,19 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             title={
                 <TooltipContainer>
                     <PriceContainer>
-                        <Cell className={flat.status}>
-                            {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
-                        </Cell>
-                        <div className="Cell__price">
-                            <ReducedPrice flat={flat} />
-                        </div>
-                        {<div>1 м2 - {flat.squarePriceSale || flat.squarePrice}</div>}
+                        <PreviewCell className={flat.status}>{flat.roomAmount}</PreviewCell>
+                        <PriceAndAmountContainer>
+                            <div className="Cell__price">
+                                <ReducedPrice flat={flat} />
+                            </div>
+                            <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>
+                        </PriceAndAmountContainer>
                     </PriceContainer>
                     <DataContainer>
                         <NumberContainer>
                             <div>№{flat.flatNumber}</div>
                         </NumberContainer>
-                        {viewContextValue.selectedViewMode === ViewModeValues.ROOM ? (
-                            <AreaContainer>{flat.area}м2</AreaContainer>
-                        ) : (
-                            <AreaContainer>Комнат: {flat.roomAmount}</AreaContainer>
-                        )}
+                        <AreaContainer>{flat.area}м2</AreaContainer>
                     </DataContainer>
                 </TooltipContainer>
             }
