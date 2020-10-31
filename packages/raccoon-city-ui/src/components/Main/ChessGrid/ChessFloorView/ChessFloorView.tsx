@@ -18,13 +18,14 @@ import {
 } from './ChessFloorView.styled';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
 import {CustomSelector} from './FloorViewsParts/CustomSelector';
-import {FlatStatusesBar} from './FloorViewsParts/FlatStatusesBar';
 import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
 import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
 import {ChessGridAnimation} from '../ChessGridAnimation/ChessGridAnimation';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic, setCurrentLevel: handleCurrentLevelChange} = props;
+
+    // TODO handle error if houseFlats[0] === undefined
     const {groupedFlats} = houseFlats[0];
 
     const [sections] = useState(getSections(groupedFlats));
@@ -130,7 +131,6 @@ export const ChessFloorView = (props) => {
 
     return (
         <FloorViewContainer>
-            <FlatStatusesBar />
             <FloorLegendInfo>
                 <CustomSelector
                     currentValue={currentSection}

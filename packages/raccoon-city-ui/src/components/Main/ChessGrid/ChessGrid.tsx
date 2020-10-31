@@ -28,6 +28,8 @@ import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
+import {FlatStatusesBar} from './FlatStatusesBar';
+import {FloorViewContainer} from './ChessFloorView/ChessFloorView.styled';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -90,6 +92,7 @@ const ChessGridContent = React.memo((props: any) => {
     if (filters.mode === ChessCellViewMode.FLOOR) {
         return (
             <Fragment>
+                <FlatStatusesBar houseId={houseId} />
                 <ChessFloorView
                     setCurrentLevel={setCurrentLevel}
                     filters={filters}
@@ -206,7 +209,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const [filters, dispatch] = useReducer(reducer, getInitialState(isPublic));
-    const [savedFlat, setSavedFlat] = useState<any>();
+    const [savedFlat, setSavedFlat] = useState();
 
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;
@@ -298,7 +301,7 @@ export const ChessGrid = connect(null, (dispatch) => ({
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId, showRequestButton}) => {
     const params = useParams();
-    const {houseUuid} = useParams() as any;
+    const {houseUuid} = useParams();
 
     useEffect(() => {
         applyParams(params);

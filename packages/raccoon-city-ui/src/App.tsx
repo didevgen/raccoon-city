@@ -9,6 +9,7 @@ import {createStore} from 'redux';
 import {Login} from './components/Authentication/Login/Login';
 import {client} from './core/apollo/client';
 import rootReducer from './redux/reducers/rootReducer';
+import GlobalStyle from './globalStyles';
 
 const Main = lazy(() => import('./components/Main/Main'));
 const Public = lazy(() => import('./components/Public/Public'));
@@ -18,6 +19,7 @@ const store = createStore(rootReducer);
 const App: React.FC = () => {
     return (
         <ApolloProvider client={client}>
+            <GlobalStyle />
             <Provider store={store}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                     <Router basename={process.env.PUBLIC_URL}>

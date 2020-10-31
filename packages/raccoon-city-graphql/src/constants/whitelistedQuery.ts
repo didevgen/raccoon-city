@@ -2,6 +2,7 @@ export const WHITELISTED_QUERIES = ['login', 'createUser', 'authorizeAmo', 'getP
     'getPublicGroupedFlatsBySection',
     'getPublicFlatSidebarInfo',
     'getPublicFlatsList',
+    'countPublicFlats',
     'getApartmentComplexLayout',
     'getPublishedFlatsLayoutByHouseId'];
 
@@ -10,6 +11,7 @@ export const PUBLIC_QUERIES = [
     'getPublicGroupedFlatsBySection',
     'getPublicFlatSidebarInfo',
     'getPublicFlatsList',
+    'countPublicFlats',
     'getApartmentComplexLayout',
     'getPublishedFlatsLayoutByHouseId'
 ];

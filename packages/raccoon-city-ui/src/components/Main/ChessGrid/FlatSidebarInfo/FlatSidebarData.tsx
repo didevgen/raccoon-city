@@ -44,6 +44,7 @@ interface FlatSidebarDataProps {
     viewMode: ChessCellViewMode;
     currentLevel?: string;
     setSavedFlat: any;
+    isPublic: boolean;
 }
 
 function FlatPriceInfoItem({flat}) {
@@ -63,7 +64,7 @@ function FlatPriceInfoItem({flat}) {
 }
 
 export function FlatSidebarData(props: FlatSidebarDataProps) {
-    const {flat, houseId, viewMode, currentLevel, setSavedFlat} = props;
+    const {flat, houseId, viewMode, currentLevel, setSavedFlat, isPublic} = props;
     const [updateFlatStatus] = useMutation(UPDATE_FLAT_STATUS);
     const flatStatus = FLAT_STATUSES.find((statuses) => statuses.value === flat.status);
     const [status, setStatus] = useState(flatStatus?.label);
@@ -115,40 +116,44 @@ export function FlatSidebarData(props: FlatSidebarDataProps) {
             <FlatInfoItem label="Подъезд" value={flat.section} />
             <FlatInfoItem label="Количество комнат" value={flat.roomAmount} />
             <FlatInfoItem label="Площадь" value={flat.area} />
-            <FlatInfoItem
-                label="Статус"
-                value={
-                    <Select value={status}>
-                        {FLAT_STATUSES.map((item) => {
-                            return (
-                                <MenuItem
-                                    key={item.label}
-                                    value={item.label}
-                                    onClick={async () => {
-                                        handleFlatStatusChange(item.label);
-                                        await updateFlatStatus({
-                                            variables: {
-                                                flatId: flat.id,
-                                                flatStatus: item.value
-                                            },
-                                            refetchQueries: [
-                                                {
-                                                    query: QUERY[viewMode].query,
-                                                    variables: {
-                                                        ...QUERY[viewMode].variables
+            {isPublic ? (
+                <FlatInfoItem label="Статус" value={FLAT_STATUSES.find(({value}) => flat.status === value)?.label} />
+            ) : (
+                <FlatInfoItem
+                    label="Статус"
+                    value={
+                        <Select value={status}>
+                            {FLAT_STATUSES.map((item) => {
+                                return (
+                                    <MenuItem
+                                        key={item.label}
+                                        value={item.label}
+                                        onClick={async () => {
+                                            handleFlatStatusChange(item.label);
+                                            await updateFlatStatus({
+                                                variables: {
+                                                    flatId: flat.id,
+                                                    flatStatus: item.value
+                                                },
+                                                refetchQueries: [
+                                                    {
+                                                        query: QUERY[viewMode].query,
+                                                        variables: {
+                                                            ...QUERY[viewMode].variables
+                                                        }
                                                     }
-                                                }
-                                            ]
-                                        });
-                                    }}
-                                >
-                                    {item.label}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                }
-            />
+                                                ]
+                                            });
+                                        }}
+                                    >
+                                        {item.label}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                    }
+                />
+            )}
         </div>
     );
 }

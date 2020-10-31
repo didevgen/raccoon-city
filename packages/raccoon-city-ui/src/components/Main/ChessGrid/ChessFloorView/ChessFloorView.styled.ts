@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {FlatStatus} from '../../../shared/types/flat.types';
 import {Select} from '@material-ui/core';
 
 export const FloorViewContainer = styled.div`
@@ -38,7 +37,7 @@ export const FloorsListContainer = styled.div`
 
 export const FloorsListItem = styled.p<{isPublic: boolean}>`
     width: 100%;
-    padding: 5px 0px;
+    padding: 5px 0;
     text-align: center;
     transition: 0.3s;
     cursor: pointer;
@@ -69,6 +68,7 @@ export const FloorLegendInfo = styled.div`
     margin-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
     justify-content: space-between;
+    font-family: 'TT Norms', sans-serif;
 
     @media only screen and (max-width: 500px) {
         flex-direction: column;
@@ -76,64 +76,25 @@ export const FloorLegendInfo = styled.div`
     }
 `;
 
-export const FloorLegendItem = styled.div<{color: string}>`
+export const FloorLegendItem = styled.div`
     margin-right: 20px;
     display: flex;
     align-items: center;
+    padding: 5px 0;
 
     span {
         color: #a6a6a6;
         font-weight: 600;
         padding-left: 5px;
     }
-
-    div {
-        width: 15px;
-        height: 15px;
-        background-color: ${({color}) => color};
-        border-radius: 3px;
-    }
 `;
 
-const Colors = {
-    [FlatStatus.FREE]: {
-        main: '#4caf50',
-        second: '#66bb6a',
-        border: '#345e35'
-    },
-    [FlatStatus.SOLD_OUT]: {
-        main: '#f44336',
-        second: '#e57373',
-        border: '#822b24'
-    },
-    [FlatStatus.UNAVAILABLE]: {
-        main: '#9e9e9e',
-        second: '#bdbdbd',
-        border: '#575757'
-    },
-    [FlatStatus.DOCUMENTS_IN_PROGRESS]: {
-        main: '#00bcd4',
-        second: '#26c6da',
-        border: '#016f7d'
-    },
-    [FlatStatus.RESERVED]: {
-        main: '#ffeb3b',
-        second: '#fff176',
-        border: '#918621'
-    },
-    [FlatStatus.BOOKED]: {
-        main: '#ffeb3b',
-        second: '#fff176',
-        border: '#918621'
-    }
-};
-
-export const getBorderColor = (props) => {
-    const {status} = props;
-    const borderColor = Colors[status].border;
-
-    return `${borderColor} ${borderColor} transparent transparent`;
-};
+export const FloorLegendIcon = styled.div<{color: string}>`
+    width: 15px;
+    height: 15px;
+    background-color: ${({color}) => color};
+    border-radius: 3px;
+`;
 
 export const FlatInfo = styled.div`
     padding: 5px 10px;
@@ -206,4 +167,71 @@ export const WarningContainerColumn = styled(WarningContainer)`
 
 export const FloorContainer = styled.div`
     display: flex;
+`;
+
+export const FlatStatusesBarContainer = styled.div`
+    position: relative;
+    width: 30px;
+`;
+
+export const StatusesIcon = styled.div`
+    position: relative;
+    width: 30px;
+    height: 30px;
+
+    span {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1002;
+        border-radius: 50%;
+        border: 1px solid #e84f1d;
+        color: #e84f1d;
+        font-size: 10px;
+        width: 15px;
+        height: 15px;
+    }
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+    }
+
+    &:before {
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        background-color: #4caf50;
+    }
+
+    &:after {
+        bottom: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: #ffeb3b;
+    }
+`;
+
+export const StatusesTooltip = styled.div`
+    position: absolute;
+    top: 15px;
+    left: calc(100% + 20px);
+    background-color: #fafafa;
+    width: 350px;
+    padding: 15px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    z-index: 1000;
+    visibility: hidden;
+
+    ${StatusesIcon}:hover + & {
+        visibility: visible;
+    }
 `;
