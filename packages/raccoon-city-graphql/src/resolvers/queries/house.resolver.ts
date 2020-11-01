@@ -135,8 +135,8 @@ export const hosueQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = result.maxPrice;
-            minPrice = result.minPrice;
+            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
+            minPrice = Number(String(result.minPrice).replace(',', '.'));
             maxArea = result.maxArea;
             minArea = result.minArea;
         }
