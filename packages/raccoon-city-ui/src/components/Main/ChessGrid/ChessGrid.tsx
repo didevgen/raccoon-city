@@ -26,7 +26,6 @@ import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/Chess
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
-import {FlatStatusesBar} from './FlatStatusesBar';
 import {PublicLink} from './PublicLink/PublicLink';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});

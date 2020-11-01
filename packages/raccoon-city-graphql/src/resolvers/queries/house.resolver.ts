@@ -20,7 +20,7 @@ export const hosueQuery = {
         const data = await ApartmentComplexModel.findOne({_id: apartmentComplexId, isDeleted: false}).populate({
             path: 'houses',
             match: {isDeleted: false},
-            options: { sort: { 'order': 'asc' }}
+            options: {sort: {order: 'asc'}}
         });
         if (data) {
             return data.houses || [];
@@ -294,5 +294,5 @@ export const hosueQuery = {
         } else {
             return [];
         }
-    },
+    }
 };
