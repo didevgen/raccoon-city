@@ -1,15 +1,16 @@
-import {Avatar, Grid, Slider, Tooltip} from '@material-ui/core';
+import {Avatar, Grid, Slider, Tooltip, useMediaQuery, useTheme} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
-import React, {Fragment, useEffect, useState, useContext} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessEnums';
-import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {CellViewModeContext} from '../ChessGrid';
+import {ChessGridHouseSelect} from './ChessGridHouseSelect';
+import {ViewModeFilters} from './ViewModeFilters';
 
-const SelectContainer = styled.div`
+export const SelectContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,22 +28,33 @@ const SelectContainer = styled.div`
 const StyledAvatar = styled(Avatar)`
     margin: 0 4px;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
 
     &.active {
-        background-color: #1976d2;
+        background-color: #e84f1d;
+        border: 1px solid #e84f1d;
         color: #fff;
     }
 
     &.empty {
         background-color: transparent;
-        border: 1px solid #1976d2;
-        color: #1976d2;
+        border: 1px solid #828282;
+        color: #828282;
 
         &:hover {
-            background-color: #1976d2;
+            background-color: #e84f1d;
             color: #fff;
+            border: 1px solid #e84f1d;
             transition: all 200ms linear;
         }
+    }
+
+    &.MuiAvatar-root {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        border-radius: 5px;
     }
 `;
 
@@ -51,7 +63,7 @@ const RoomContainer = styled.div`
     justify-content: space-between;
 `;
 
-const FilterItemContainer = styled.div`
+export const FilterItemContainer = styled.div`
     margin: 0 16px;
 `;
 
@@ -61,7 +73,7 @@ const LeftInputGrid = styled(Grid)`
 `;
 const RangeContainer = styled(FilterItemContainer)``;
 
-const FilterTitle = styled.div`
+export const FilterTitle = styled.div`
     text-align: center;
     margin-bottom: 8px;
 `;
@@ -80,7 +92,7 @@ const RangeInput = styled(Input)``;
 
 const roomFilters = [{value: 'КН'}, {value: 'П'}, {value: '1'}, {value: '2'}, {value: '3'}, {value: '4+'}];
 
-function RoomAmountFilter({dispatch}) {
+export function RoomAmountFilter({dispatch}) {
     const [selected, setSelected] = useState({});
 
     return (
@@ -95,6 +107,7 @@ function RoomAmountFilter({dispatch}) {
                     });
                     return (
                         <StyledAvatar
+                            variant="square"
                             key={item.value}
                             className={avatarClasses}
                             onClick={() => {
@@ -116,9 +129,12 @@ function RoomAmountFilter({dispatch}) {
     );
 }
 
-function PriceFilter({minPrice, maxPrice, dispatch, data}) {
+export function PriceFilter({minPrice, maxPrice, dispatch, data}) {
     const [min, setMin] = useState(minPrice);
     const [max, setMax] = useState(maxPrice);
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
     useEffect(() => {
         dispatch({
             type: 'price',
@@ -136,7 +152,7 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
         <RangeContainer>
             <FilterTitle>Стоимость</FilterTitle>
             <Grid container spacing={2} alignItems="center">
-                <LeftInputGrid item xs={3}>
+                <LeftInputGrid item xs={3} md={6}>
                     <RangeInput
                         className="LeftInput"
                         value={min}
@@ -162,33 +178,35 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
                         }}
                     />
                 </LeftInputGrid>
-                <Grid item xs={6}>
-                    <Slider
-                        value={[min, max]}
-                        ValueLabelComponent={ValueLabelComponent}
-                        aria-labelledby="discrete-slider-custom"
-                        step={10}
-                        min={minPrice}
-                        max={maxPrice}
-                        valueLabelDisplay="auto"
-                        onChange={(e, value) => {
-                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
-                            setMin(minPriceRes);
-                            setMax(maxPriceRes);
-                        }}
-                        onChangeCommitted={(e, value) => {
-                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
-                            dispatch({
-                                type: 'price',
-                                payload: {
-                                    minPrice: minPriceRes,
-                                    maxPrice: maxPriceRes
-                                }
-                            });
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={3}>
+                {matches && (
+                    <Grid item xs={6}>
+                        <Slider
+                            value={[min, max]}
+                            ValueLabelComponent={ValueLabelComponent}
+                            aria-labelledby="discrete-slider-custom"
+                            step={10}
+                            min={minPrice}
+                            max={maxPrice}
+                            valueLabelDisplay="auto"
+                            onChange={(e, value) => {
+                                const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                                setMin(minPriceRes);
+                                setMax(maxPriceRes);
+                            }}
+                            onChangeCommitted={(e, value) => {
+                                const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                                dispatch({
+                                    type: 'price',
+                                    payload: {
+                                        minPrice: minPriceRes,
+                                        maxPrice: maxPriceRes
+                                    }
+                                });
+                            }}
+                        />
+                    </Grid>
+                )}
+                <Grid item xs={3} md={6}>
                     <RangeInput
                         value={max}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,9 +236,11 @@ function PriceFilter({minPrice, maxPrice, dispatch, data}) {
     );
 }
 
-function AreaFilter({maxArea, minArea, dispatch, data}) {
+export function AreaFilter({maxArea, minArea, dispatch, data}) {
     const [min, setMin] = useState(minArea);
     const [max, setMax] = useState(maxArea);
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         dispatch({
@@ -239,7 +259,7 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
         <RangeContainer>
             <FilterTitle>Площадь</FilterTitle>
             <Grid container spacing={2} alignItems="center">
-                <LeftInputGrid item xs={3}>
+                <LeftInputGrid item xs={3} md={6}>
                     <RangeInput
                         className="LeftInput"
                         value={min}
@@ -265,33 +285,35 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
                         }}
                     />
                 </LeftInputGrid>
-                <Grid item xs={6}>
-                    <Slider
-                        value={[min, max]}
-                        ValueLabelComponent={ValueLabelComponent}
-                        aria-labelledby="discrete-slider-custom"
-                        step={10}
-                        min={minArea}
-                        max={maxArea}
-                        valueLabelDisplay="auto"
-                        onChange={(e, value) => {
-                            const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
-                            setMin(minPriceRes);
-                            setMax(maxPriceRes);
-                        }}
-                        onChangeCommitted={(e, value) => {
-                            const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
-                            dispatch({
-                                type: 'area',
-                                payload: {
-                                    minArea: minAreaRes,
-                                    maxArea: maxAreaRes
-                                }
-                            });
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={3}>
+                {matches && (
+                    <Grid item xs={6}>
+                        <Slider
+                            value={[min, max]}
+                            ValueLabelComponent={ValueLabelComponent}
+                            aria-labelledby="discrete-slider-custom"
+                            step={10}
+                            min={minArea}
+                            max={maxArea}
+                            valueLabelDisplay="auto"
+                            onChange={(e, value) => {
+                                const [minPriceRes, maxPriceRes] = Array.isArray(value) ? value : [];
+                                setMin(minPriceRes);
+                                setMax(maxPriceRes);
+                            }}
+                            onChangeCommitted={(e, value) => {
+                                const [minAreaRes, maxAreaRes] = Array.isArray(value) ? value : [];
+                                dispatch({
+                                    type: 'area',
+                                    payload: {
+                                        minArea: minAreaRes,
+                                        maxArea: maxAreaRes
+                                    }
+                                });
+                            }}
+                        />
+                    </Grid>
+                )}
+                <Grid item xs={3} md={6}>
                     <RangeInput
                         value={max}
                         onBlur={() => {
@@ -321,7 +343,7 @@ function AreaFilter({maxArea, minArea, dispatch, data}) {
     );
 }
 
-function ViewMode({dispatch}) {
+export function ViewMode({dispatch}) {
     const initialView = 'area';
     const [selected, setSelected] = useState(initialView);
     const cellView = useContext<any>(CellViewModeContext);
@@ -382,9 +404,10 @@ function ViewMode({dispatch}) {
     );
 }
 
-interface ChessGridFiltersProps {
+export interface ChessGridFiltersProps {
     dispatchFn: (param: {type: string; payload: any}) => void;
     onHouseChange?: (house: House[]) => void;
+    filters: any;
     data: any;
     isPublic: boolean;
 }
@@ -414,7 +437,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                 <ViewMode dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={4}>
                             <Grid container justify="center" direction="row">
                                 <Grid item xs={12} md={6}>
                                     <PriceFilter
@@ -432,6 +455,11 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                         data={data}
                                     />
                                 </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <Grid container justify="center">
+                                <ViewModeFilters mode={props.filters.mode} dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>
                     </Fragment>

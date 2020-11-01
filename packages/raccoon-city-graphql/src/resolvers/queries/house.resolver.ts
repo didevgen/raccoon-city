@@ -122,8 +122,8 @@ export const hosueQuery = {
             {
                 $group: {
                     _id: null,
-                    maxPrice: {$max: '$price'},
-                    minPrice: {$min: '$price'},
+                    maxPrice: {$max: '$squarePrice'},
+                    minPrice: {$min: '$squarePrice'},
                     maxArea: {$max: '$area'},
                     minArea: {$min: '$area'}
                 }

@@ -1,3 +1,4 @@
+import {useMediaQuery, useTheme} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -29,6 +30,9 @@ const StyledAppBar = styled(AppBar)`
 
 export function Public() {
     const drawerStyles = useStyles();
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
     const params = new URLSearchParams(window.location.search);
     const authToken = params.get('authToken');
     if (authToken) {
@@ -39,7 +43,7 @@ export function Public() {
     return (
         <div className={drawerStyles.root}>
             <CssBaseline />
-            <div className={drawerStyles.root}>
+            <div className={drawerStyles.root} style={{display: matches ? 'block' : 'none'}}>
                 <StyledAppBar position="fixed">
                     <Toolbar>
                         <FilterContainer id="chessGridFilterContainer" />

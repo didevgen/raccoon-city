@@ -3,31 +3,30 @@ import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import styled from 'styled-components';
 import {
     FlatsInHouse,
+    GET_FLAT_LIST,
     GET_GROUPED_FLATS_CHESSGRID,
-    GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GET_PUBLIC_FLATS_LIST,
+    GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
-    GroupedFlats,
-    GET_FLAT_LIST
+    GroupedFlats
 } from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
+import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
+import {ChessFloorView} from './ChessFloorView/ChessFloorView';
+import {getInitialState, reducer} from './ChessGrid.reducer';
+import {ChessGridWrapper, ColumnTitle, ColumnWrapper, Container, SidebarDrawer} from './ChessGrid.styled';
+import {showMutedFlats} from './ChessGrid.utils';
+import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
-import {PublicLink} from './PublicLink/PublicLink';
-import {ChessGridWrapper, ColumnWrapper, Container, ColumnTitle, SidebarDrawer, SelectStyled} from './ChessGrid.styled';
-import {showMutedFlats} from './ChessGrid.utils';
-import {getInitialState, reducer} from './ChessGrid.reducer';
-import MenuItem from '@material-ui/core/MenuItem';
 import {ChessListView} from './ChessListView/ChessListView';
-import {ChessFloorView} from './ChessFloorView/ChessFloorView';
-import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 import {ChessSideBar} from './ChessSideBar';
-import styled from 'styled-components';
-import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
+import {PublicLink} from './PublicLink/PublicLink';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -242,14 +241,11 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
         };
     }
 
-    const changeChessView = (e) => {
-        dispatch({type: 'cellViewMode', payload: e.target.value});
-    };
-
     return (
         <Fragment>
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridFiltersDrawer
+                    filters={filters}
                     filterShown={filterShown}
                     setShownFilters={setShownFilters}
                     dispatchFn={dispatch}
@@ -259,15 +255,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                 />
             </CellViewModeContext.Provider>
 
-            <div>
-                {!isPublic && <PublicLink />}
-                <SelectStyled value={filters.mode} onChange={changeChessView}>
-                    <MenuItem value={ChessCellViewMode.TILE}>Плитка</MenuItem>
-                    <MenuItem value={ChessCellViewMode.TILE_PLUS}>Плитка+</MenuItem>
-                    <MenuItem value={ChessCellViewMode.LIST}>Список</MenuItem>
-                    <MenuItem value={ChessCellViewMode.FLOOR}>Этаж</MenuItem>
-                </SelectStyled>
-            </div>
+            <div>{!isPublic && <PublicLink />}</div>
 
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridContent

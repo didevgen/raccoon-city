@@ -190,8 +190,8 @@ export const flatQuery = {
             {
                 $group: {
                     _id: null,
-                    maxPrice: {$max: '$sections.levels.flats.price'},
-                    minPrice: {$min: '$sections.levels.flats.price'},
+                    maxPrice: {$max: '$sections.levels.flats.squarePrice'},
+                    minPrice: {$min: '$sections.levels.flats.squarePrice'},
                     maxArea: {$max: '$sections.levels.flats.area'},
                     minArea: {$min: '$sections.levels.flats.area'}
                 }

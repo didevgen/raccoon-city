@@ -12,7 +12,7 @@ function checkRoomAmount(flat, selectedRoomAmount) {
 }
 
 function checkPrice(flat: Flat, price) {
-    return price.minPrice <= flat.price && flat.price <= price.maxPrice;
+    return price.minPrice <= flat.squarePrice && flat.squarePrice <= price.maxPrice;
 }
 
 function checkArea(flat: Flat, price) {
