@@ -1,10 +1,15 @@
-export const WHITELISTED_QUERIES = ['login', 'createUser', 'authorizeAmo', 'getPublicApartmentComplexesByDeveloper',
+export const WHITELISTED_QUERIES = [
+    'login',
+    'createUser',
+    'authorizeAmo',
+    'getPublicApartmentComplexesByDeveloper',
     'getPublicGroupedFlatsBySection',
     'getPublicFlatSidebarInfo',
     'getPublicFlatsList',
     'countPublicFlats',
     'getApartmentComplexLayout',
-    'getPublishedFlatsLayoutByHouseId'];
+    'getPublishedFlatsLayoutByHouseId'
+];
 
 export const PUBLIC_QUERIES = [
     'getPublicApartmentComplexesByDeveloper',

@@ -90,12 +90,8 @@ type Mutation {
 }
 
 type CountedFlats {
-    UNAVAILABLE: Int
-    SOLD_OUT: Int
-    RESERVED: Int
-    DOCUMENTS_IN_PROGRESS: Int
-    BOOKED: Int
-    FREE: Int
+    label: String
+    count: Int
 }
 
 extend type Query {
@@ -107,5 +103,5 @@ extend type Query {
     getSectionData(sectionId: String!): GroupedBySectionFlat
     getFlatSidebarInfo(flatId: String!): HouseSidebarFlat
     getPublicFlatSidebarInfo(flatId: String!): HouseSidebarFlat
-    countPublicFlats(uuid: String!): CountedFlats
+    countPublicFlats(uuid: String!): [CountedFlats]
 }

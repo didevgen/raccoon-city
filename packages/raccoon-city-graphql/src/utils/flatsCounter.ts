@@ -1,27 +1,45 @@
 export interface CountedFlats {
-    UNAVAILABLE: number;
-    SOLD_OUT: number;
-    RESERVED: number;
-    DOCUMENTS_IN_PROGRESS: number;
-    BOOKED: number;
-    FREE: number;
+    label: string;
+    count: number;
 }
 
-const zeroValues = {
-    UNAVAILABLE: 0,
-    SOLD_OUT: 0,
-    RESERVED: 0,
-    DOCUMENTS_IN_PROGRESS: 0,
-    BOOKED: 0,
-    FREE: 0,
-};
+type FlatsToCount = {status: string; [key: string]: any}[];
 
-type FlatsToCount = {status: string, [key: string]: any}[];
+export function countFlatsByStatus(flats: FlatsToCount): CountedFlats[] {
+    const countedFlats: CountedFlats[] = [
+        {
+            label: "UNAVAILABLE",
+            count: 0,
+        },
+        {
+            label: "SOLD_OUT",
+            count: 0,
+        },
+        {
+            label: "RESERVED",
+            count: 0,
+        },
+        {
+            label: "DOCUMENTS_IN_PROGRESS",
+            count: 0,
+        },
+        {
+            label: "BOOKED",
+            count: 0,
+        },
+        {
+            label: "FREE",
+            count: 0,
+        }
+    ];
 
-export function countFlatsByStatus(flats: FlatsToCount): CountedFlats {
-    const countedFlats = {...zeroValues};
-
-    flats.forEach(({status}) => countedFlats[status] += 1);
+    flats.forEach(({status}) => {
+        countedFlats.forEach((item) => {
+            if (item.label === status) {
+                item.count += 1;
+            }
+        })
+    });
 
     return countedFlats;
 }

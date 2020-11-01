@@ -7,7 +7,7 @@ import {Section} from '../../db/models/section';
 import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
-import {countFlatsByStatus} from "../../utils/flatsCounter";
+import {countFlatsByStatus} from '../../utils/flatsCounter';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -131,9 +131,9 @@ export const flatQuery = {
 
         let flat = house.sections.levels.flats;
 
-        const { squarePrice } = flat as {squarePrice: string};
+        const {squarePrice} = flat as {squarePrice: string};
         if (isNaN(Number(squarePrice))) {
-            flat.squarePrice = squarePrice.replace(",", ".");
+            flat.squarePrice = squarePrice.replace(',', '.');
         }
 
         flat.id = flatId;
@@ -304,12 +304,16 @@ export const flatQuery = {
             if (data.sections) {
                 data.sections.forEach((section: Section) => {
                     section.levels.map(({flats}: Level) => {
-                        flats.forEach(({status}) => flatsStatuses.push({status}))
+                        flats.forEach(({status}) => flatsStatuses.push({status}));
                     });
                 });
             }
         });
 
-        return {...countFlatsByStatus(flatsStatuses)};
+        const countedStatuses = countFlatsByStatus(flatsStatuses);
+
+        console.log(countedStatuses);
+
+        return countedStatuses;
     }
 };

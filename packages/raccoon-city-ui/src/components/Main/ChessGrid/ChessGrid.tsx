@@ -29,7 +29,6 @@ import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
 import {FlatStatusesBar} from './FlatStatusesBar';
-import {FloorViewContainer} from './ChessFloorView/ChessFloorView.styled';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});

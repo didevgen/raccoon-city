@@ -260,12 +260,8 @@ export const PUBLISHED_HOUSE_LIST = gql`
 export const COUNT_PUBLIC_FLAT_STATUSES = gql`
     query countPublicFlats($uuid: String!) {
         countPublicFlats(uuid: $uuid) {
-            UNAVAILABLE
-            SOLD_OUT
-            RESERVED
-            DOCUMENTS_IN_PROGRESS
-            BOOKED
-            FREE
+            label
+            count
         }
     }
 `;
