@@ -165,6 +165,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                         viewMode={props.viewMode}
                         currentLevel={props.currentLevel}
                         setSavedFlat={props.setSavedFlat}
+                        isPublic={props.isPublic}
                     />
                 )}
             </TabPanel>
@@ -183,7 +184,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
-            {isShowButton && !!props.isPublic && (
+            {isShowButton && props.isPublic && (
                 <ButtonsContainer>
                     <SendRequestContainer>
                         <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
@@ -192,7 +193,6 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </SendRequestContainer>
                 </ButtonsContainer>
             )}
-            {/*@ts-ignore*/}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

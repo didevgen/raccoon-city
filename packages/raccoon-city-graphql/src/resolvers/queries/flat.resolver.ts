@@ -3,11 +3,11 @@ import groupBy from 'ramda/src/groupBy';
 import {Flat, FlatModel} from '../../db/models/flat';
 import {LevelFlatLayout, LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {SinglePreviewImage} from '../../types/shared';
-import HouseModel from '../../db/models/house';
 import {Section} from '../../db/models/section';
 import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
+import {countFlatsByStatus} from '../../utils/flatsCounter';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -130,6 +130,11 @@ export const flatQuery = {
             .exec();
 
         let flat = house.sections.levels.flats;
+
+        const {squarePrice} = flat as {squarePrice: string};
+        if (isNaN(Number(squarePrice))) {
+            flat.squarePrice = squarePrice.replace(',', '.');
+        }
 
         flat.id = flatId;
         flat.section = house.sections.sectionName as any;
@@ -288,4 +293,23 @@ export const flatQuery = {
 
         return flatsList;
     },
+    countPublicFlats: async (parent, {uuid}) => {
+        const house = await PublishedHouseModel.find({
+            house: uuid
+        }).exec();
+
+        const flatsStatuses = [];
+
+        house.forEach((data) => {
+            if (data.sections) {
+                data.sections.forEach((section: Section) => {
+                    section.levels.map(({flats}: Level) => {
+                        flats.forEach(({status}) => flatsStatuses.push({status}));
+                    });
+                });
+            }
+        });
+
+        return countFlatsByStatus(flatsStatuses);
+    }
 };

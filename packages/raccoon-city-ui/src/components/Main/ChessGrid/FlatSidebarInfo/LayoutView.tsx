@@ -63,6 +63,8 @@ function fillExistingLayouts(
     setCurrentDataId?: any,
     onSelect?: any
 ) {
+    console.log('info');
+    console.log(info);
     if (info) {
         info.forEach((item, i) => {
             let pathParsed = JSON.parse(paths[i]);
@@ -93,12 +95,13 @@ function fillExistingLayouts(
 
     paths.forEach((pathValue) => {
         let pathParsed = JSON.parse(pathValue);
+        const isInfoExist = info ? info.status : null;
 
         svgItem
             .viewbox(0, 0, viewBox.width, viewBox.height)
             .path(pathParsed)
             .fill({
-                color: info.status ? 'red' : '#000',
+                color: isInfoExist ? 'red' : '#000',
                 opacity: 0.5
             })
             .stroke({color: '#3f51b5', width: 3})
