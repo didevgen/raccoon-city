@@ -68,7 +68,7 @@ export const FloorLegendInfo = styled.div`
     margin-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
     justify-content: space-between;
-    font-family: 'TT Norms', sans-serif;
+    font-family: 'TTNorms', sans-serif;
 
     @media only screen and (max-width: 500px) {
         flex-direction: column;
@@ -81,9 +81,10 @@ export const FloorLegendItem = styled.div`
     display: flex;
     align-items: center;
     padding: 5px 0;
+    font-family: 'TTNorms', sans-serif;
 
     span {
-        color: #a6a6a6;
+        color: #000;
         font-weight: 600;
         padding-left: 5px;
     }
@@ -224,12 +225,18 @@ export const StatusesTooltip = styled.div`
     top: 15px;
     left: calc(100% + 20px);
     background-color: #fafafa;
-    width: 350px;
+    width: 400px;
     padding: 15px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
     z-index: 1000;
     visibility: hidden;
+
+    p {
+        font-family: 'TTNorms', sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+    }
 
     ${StatusesIcon}:hover + & {
         visibility: visible;

@@ -26,8 +26,6 @@ export const FlatStatusesBar = ({houseId}) => {
 
     const {countPublicFlats} = data;
 
-    console.log(countPublicFlats);
-
     let allFlats = 0;
     const updatedValues = countPublicFlats.reduce((acc, {label, count}) => {
         allFlats += count;
@@ -52,7 +50,7 @@ export const FlatStatusesBar = ({houseId}) => {
                     <span>{`Резерв\\Забронировано ${updatedValues['RESERVED']}\\${updatedValues['BOOKED']}`}</span>
                 </FloorLegendItem>
                 <FloorLegendItem>
-                    <FloorLegendIcon color="#f44336" />
+                    <FloorLegendIcon color="#e84f1d" />
                     <span>{`Продано ${updatedValues['SOLD_OUT']}`}</span>
                 </FloorLegendItem>
                 <FloorLegendItem>
