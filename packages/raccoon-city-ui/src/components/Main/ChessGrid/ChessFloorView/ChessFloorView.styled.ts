@@ -173,6 +173,12 @@ export const FloorContainer = styled.div`
 export const FlatStatusesBarContainer = styled.div`
     position: relative;
     width: 30px;
+
+    @media (max-width: 750px) {
+        display: flex;
+        justify-content: center;
+        width: 95%;
+    }
 `;
 
 export const StatusesIcon = styled.div`
@@ -240,5 +246,13 @@ export const StatusesTooltip = styled.div`
 
     ${StatusesIcon}:hover + & {
         visibility: visible;
+    }
+
+    @media (max-width: 750px) {
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: 40px;
+        padding: 15px 8px;
     }
 `;

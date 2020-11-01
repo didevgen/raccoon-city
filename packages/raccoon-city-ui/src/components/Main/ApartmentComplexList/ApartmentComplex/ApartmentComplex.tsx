@@ -19,7 +19,7 @@ export interface ApartmentComplexProps {
 }
 
 export function ApartmentComplex(props: ApartmentComplexProps) {
-    const {developerUuid} = useParams as any;
+    const {developerUuid} = useParams() as any;
     const [deleteMutation] = useMutation(DELETE_APARTMENT_COMPLEX, {
         refetchQueries: [
             {

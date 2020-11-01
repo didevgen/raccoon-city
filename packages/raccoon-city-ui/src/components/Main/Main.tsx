@@ -19,6 +19,7 @@ const Content = styled.div`
     position: relative;
     max-width: 100%;
     overflow-y: auto;
+    min-height: 100vh;
 `;
 
 const ChessGrid = lazy(() => import('./ChessGrid/ChessGrid'));

@@ -1,3 +1,4 @@
+import {useMediaQuery, useTheme} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,29 +27,34 @@ interface HeaderProps {
 
 export const Header = connect((state) => ({
     title: state.route.title
-}))(({open, handleDrawerOpen, drawerStyles}: HeaderProps & any) => (
-    <div className={drawerStyles.root}>
-        <StyledAppBar
-            position="fixed"
-            className={clsx(drawerStyles.appBar, {
-                [drawerStyles.appBarShift]: open
-            })}
-        >
-            <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(drawerStyles.menuButton, {
-                        [drawerStyles.hide]: open
-                    })}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <AppBreadcrumbs />
-                <FilterContainer id="chessGridFilterContainer" />
-            </Toolbar>
-        </StyledAppBar>
-    </div>
-));
+}))(({open, handleDrawerOpen, drawerStyles}: HeaderProps & any) => {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (
+        <div className={drawerStyles.root}>
+            <StyledAppBar
+                position="fixed"
+                className={clsx(drawerStyles.appBar, {
+                    [drawerStyles.appBarShift]: open
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(drawerStyles.menuButton, {
+                            [drawerStyles.hide]: open
+                        })}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <AppBreadcrumbs />
+                    <FilterContainer id="chessGridFilterContainer" style={{display: matches ? 'block' : 'none'}} />
+                </Toolbar>
+            </StyledAppBar>
+        </div>
+    );
+});

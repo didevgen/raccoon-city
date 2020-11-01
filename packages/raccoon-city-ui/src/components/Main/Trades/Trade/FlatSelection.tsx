@@ -6,7 +6,7 @@ import {Field, useField, useForm} from 'react-final-form';
 import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {SidebarFlat} from '../../../../graphql/queries/flatQuery';
-import {ChessGrid} from '../../ChessGrid/ChessGrid';
+import ChessGrid from '../../ChessGrid/ChessGrid';
 
 const StyledGrid = styled(Grid)`
     margin-bottom: 8px !important;

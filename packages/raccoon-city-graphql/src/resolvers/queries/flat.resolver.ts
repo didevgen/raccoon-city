@@ -195,8 +195,8 @@ export const flatQuery = {
             {
                 $group: {
                     _id: null,
-                    maxPrice: {$max: '$sections.levels.flats.price'},
-                    minPrice: {$min: '$sections.levels.flats.price'},
+                    maxPrice: {$max: '$sections.levels.flats.squarePrice'},
+                    minPrice: {$min: '$sections.levels.flats.squarePrice'},
                     maxArea: {$max: '$sections.levels.flats.area'},
                     minArea: {$min: '$sections.levels.flats.area'}
                 }
@@ -208,8 +208,8 @@ export const flatQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = result.maxPrice;
-            minPrice = result.minPrice;
+            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
+            minPrice = Number(String(result.minPrice).replace(',', '.'));
             maxArea = result.maxArea;
             minArea = result.minArea;
         }
@@ -310,10 +310,6 @@ export const flatQuery = {
             }
         });
 
-        const countedStatuses = countFlatsByStatus(flatsStatuses);
-
-        console.log(countedStatuses);
-
-        return countedStatuses;
+        return countFlatsByStatus(flatsStatuses);
     }
 };

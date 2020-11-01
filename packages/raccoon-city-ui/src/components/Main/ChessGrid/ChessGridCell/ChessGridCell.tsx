@@ -1,6 +1,6 @@
 import React, {Fragment, useContext} from 'react';
 import {Flat} from '../../../shared/types/flat.types';
-import {ChessCellViewMode, ViewModeValues} from '../ChessEnums';
+import {ChessCellViewMode} from '../ChessEnums';
 import {CellViewModeContext, ViewModeContext} from '../ChessGrid';
 import {
     AreaContainer,
@@ -13,7 +13,9 @@ import {
     NumberContainer,
     PriceContainer,
     StyledBagde,
-    TooltipContainer
+    TooltipContainer,
+    PriceAndAmountContainer,
+    PreviewCell
 } from './ChessGridCell.styled';
 
 interface Props {
@@ -44,15 +46,15 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         [ChessCellViewMode.TILE_PLUS]: (
             <Fragment>
                 <CellInfoWrapperTop>
-                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
+                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
                     <ReducedPrice flat={flat} />
                 </CellInfoWrapperTop>
                 <CellInfoWrapperTop>
-                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
-                    <span>{flat.area}/м2</span>
+                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
+                    <span>1м2 - {flat.squarePriceSale || flat.squarePrice} грн</span>
                 </CellInfoWrapperTop>
                 <CellInfoWrapper>
-                    <span>{flat.squarePriceSale || flat.squarePrice} - цена за м2</span>
+                    <span>{flat.area}м2</span>
                 </CellInfoWrapper>
             </Fragment>
         )
@@ -63,24 +65,19 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             title={
                 <TooltipContainer>
                     <PriceContainer>
-                        <Cell className={flat.status}>
-                            {viewContextValue.selectedViewMode === ViewModeValues.AREA ? flat.area : flat.roomAmount}
-                        </Cell>
-                        <div className="Cell__price">
-                            <ReducedPrice flat={flat} />
-                        </div>
+                        <PreviewCell className={flat.status}>{flat.roomAmount}</PreviewCell>
+                        <PriceAndAmountContainer>
+                            <div className="Cell__price">
+                                <ReducedPrice flat={flat} />
+                            </div>
+                            <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>
+                        </PriceAndAmountContainer>
                     </PriceContainer>
                     <DataContainer>
-                        {viewContextValue.selectedViewMode === ViewModeValues.ROOM ? (
-                            <AreaContainer>{flat.area}м2</AreaContainer>
-                        ) : (
-                            <AreaContainer>Комнат: {flat.roomAmount}</AreaContainer>
-                        )}
-
                         <NumberContainer>
                             <div>№{flat.flatNumber}</div>
-                            {<div>{flat.squarePriceSale || flat.squarePrice} - цена за м2</div>}
                         </NumberContainer>
+                        <AreaContainer>{flat.area}м2</AreaContainer>
                     </DataContainer>
                 </TooltipContainer>
             }

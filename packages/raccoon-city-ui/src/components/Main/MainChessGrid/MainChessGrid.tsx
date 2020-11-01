@@ -1,5 +1,5 @@
 import React from 'react';
-import {ChessGrid} from '../ChessGrid/ChessGrid';
+import ChessGrid from '../ChessGrid/ChessGrid';
 
 export function MainChessGrid() {
     return <ChessGrid hasSelect />;

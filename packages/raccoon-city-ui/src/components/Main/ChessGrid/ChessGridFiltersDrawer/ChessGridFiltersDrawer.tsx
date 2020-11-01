@@ -2,6 +2,7 @@ import {IconButton, SvgIcon, SwipeableDrawer, useMediaQuery, useTheme} from '@ma
 import React from 'react';
 import styled from 'styled-components';
 import {ChessGridFilters} from '../ChessGridFilters/ChessGridFilters';
+import {ChessGridDesktopFilters} from '../ChessGridFilters/ChessGridDesktopFilters';
 
 const StyledDrawer = styled(SwipeableDrawer)`
     .MuiDrawer-paper {
@@ -72,6 +73,9 @@ export function ChessGridFiltersDrawer({setShownFilters, filterShown, ...props}:
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
+    if (!matches) {
+        return <ChessGridDesktopFilters {...props} />;
+    }
     return (
         <StyledDrawer
             onOpen={() => {
