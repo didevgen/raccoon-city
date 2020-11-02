@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import MuiPhoneNumber from 'material-ui-phone-number';
+import Select from '@appgeist/react-select-material-ui';
 import Recaptcha from 'react-recaptcha';
 import {Typography, TextField, Button} from '@material-ui/core';
 import {Form, Field} from 'react-final-form';
@@ -9,6 +10,13 @@ import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {useMutation} from '@apollo/react-hooks';
 import CloseIcon from '@material-ui/icons/Close';
 import {withRouter, BrowserRouterProps} from 'react-router-dom';
+
+const optionsValue = [
+    {value: 1, label: 'Купить квартиру'},
+    {value: 2, label: 'Купить КН'},
+    {value: 3, label: 'Оформить документы'},
+    {value: 4, label: 'Консультация'}
+];
 
 const ModalContainer = styled.div`
     position: fixed;
@@ -37,7 +45,7 @@ export const InputError = styled.div`
     margin-bottom: -10px;
     padding-top: 5px;
     font-size: 12px;
-    color: #d73c2a;
+    color: #e84f1d;
     text-align: center;
 `;
 
@@ -68,6 +76,13 @@ export const ModalTitle = styled.span`
 export const CustomInput = styled(Input)`
     padding-bottom: 15px;
 
+    .MuiInputBase-root {
+        height: 35px;
+    }
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: #e84f1d;
+    }
+
     .MuiOutlinedInput.Mui-focused .MuiOutlinedInput-notchedOutline {
         border-color: #e84f1d;
     }
@@ -75,6 +90,9 @@ export const CustomInput = styled(Input)`
     .MuiFormLabel-root {
         font-size: 15px;
         color: #000;
+    }
+    .MuiFormLabel-root.Mui-focused {
+        color: #e84f1d;
     }
 
     .MuiOutlinedInput-notchedOutline {
@@ -187,22 +205,6 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                 </Field>
                             </CustomInput>
                             <CustomInput>
-                                <Field name="email" validate={required}>
-                                    {({input, meta}) => (
-                                        <div>
-                                            <TextField
-                                                label="Email"
-                                                margin="normal"
-                                                fullWidth={true}
-                                                variant="outlined"
-                                                {...input}
-                                            />
-                                            {meta.error && meta.touched && <InputError>{meta.error}</InputError>}
-                                        </div>
-                                    )}
-                                </Field>
-                            </CustomInput>
-                            <CustomInput>
                                 <Field name="phone" validate={required}>
                                     {({input, meta}) => (
                                         <div>
@@ -214,6 +216,27 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                                 label={'Телефон'}
                                                 variant="outlined"
                                                 {...input}
+                                            />
+                                            {meta.error && meta.touched && <InputError>{meta.error}</InputError>}
+                                        </div>
+                                    )}
+                                </Field>
+                            </CustomInput>
+                            <CustomInput>
+                                <Field name="reason" validate={required}>
+                                    {({input, meta}) => (
+                                        <div>
+                                            <Select
+                                                {...input}
+                                                id="reason"
+                                                label="Причина обращения"
+                                                options={optionsValue}
+                                                name={input.name}
+                                                value={input.value}
+                                                onChange={(e) => {
+                                                    input.onChange(e); //final-form's onChange
+                                                }}
+                                                isClearable={true}
                                             />
                                             {meta.error && meta.touched && <InputError>{meta.error}</InputError>}
                                         </div>
