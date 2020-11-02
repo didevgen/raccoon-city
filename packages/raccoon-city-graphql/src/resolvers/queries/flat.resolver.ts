@@ -231,7 +231,9 @@ export const flatQuery = {
                         return {
                             id: section.id,
                             section: section.sectionName,
-                            levels: section.levels.map((level: Level) => {
+                            levels: section.levels.sort((level1, level2) => {
+                                return level2.levelNumber - level1.levelNumber;
+                            }).map((level: Level) => {
                                 const newFlat = {
                                     level: level.levelNumber,
                                     section: section.sectionName
