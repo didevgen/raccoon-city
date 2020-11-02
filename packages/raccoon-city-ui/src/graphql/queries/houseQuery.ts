@@ -256,3 +256,12 @@ export const PUBLISHED_HOUSE_LIST = gql`
         }
     }
 `;
+
+export const COUNT_PUBLIC_FLAT_STATUSES = gql`
+    query countPublicFlats($uuid: String!) {
+        countPublicFlats(uuid: $uuid) {
+            label
+            count
+        }
+    }
+`;

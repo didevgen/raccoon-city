@@ -3,7 +3,6 @@ import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import styled from 'styled-components';
 import {
     FlatsInHouse,
     GET_FLAT_LIST,
@@ -26,6 +25,7 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
+import styled from 'styled-components';
 import {PublicLink} from './PublicLink/PublicLink';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
@@ -205,7 +205,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     const [filterShown, setShownFilters] = useState(!!hasSelect);
     const [id, setId] = useState(uuid ? [uuid] : []);
     const [filters, dispatch] = useReducer(reducer, getInitialState(isPublic));
-    const [savedFlat, setSavedFlat] = useState<any>();
+    const [savedFlat, setSavedFlat] = useState();
 
     const QUERY = isPublic ? GET_PUBLIC_GROUPED_FLATS_CHESSGRID : GET_GROUPED_FLATS_CHESSGRID;
     const QUERY_LIST = isPublic ? GET_PUBLIC_FLATS_LIST : GET_FLAT_LIST;
@@ -252,6 +252,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
                     data={id.length === 0 ? null : data}
                     onHouseChange={onHouseChange}
                     isPublic={isPublic}
+                    houseId={id}
                 />
             </CellViewModeContext.Provider>
 
@@ -281,12 +282,12 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     );
 };
 
-export const ChessGrid = connect(null, (dispatch) => ({
+const ChessGrid = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId, showRequestButton}) => {
     const params = useParams();
-    const {houseUuid} = useParams() as any;
+    const {houseUuid} = useParams();
 
     useEffect(() => {
         applyParams(params);

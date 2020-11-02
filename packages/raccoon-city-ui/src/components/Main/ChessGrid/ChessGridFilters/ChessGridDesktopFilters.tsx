@@ -11,12 +11,24 @@ import {
 } from './ChessGridFilters';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
+import {FlatStatusesBar} from '../FlatStatusesBar';
 
 const DesktopFilterWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 100%;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+`;
+
+const FlatStatusesBarWrapper = styled.div`
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
 `;
 
 const RangeContainer = styled.div``;
@@ -35,6 +47,9 @@ export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
             )}
             {hasPrices && (
                 <DesktopFilterWrapper>
+                    <FlatStatusesBarWrapper>
+                        <FlatStatusesBar houseId={props.houseId} />
+                    </FlatStatusesBarWrapper>
                     <RoomAmountFilter dispatch={props.dispatchFn} />
                     <RangeContainer>
                         <PriceFilter

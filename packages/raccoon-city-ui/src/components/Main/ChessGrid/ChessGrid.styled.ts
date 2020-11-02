@@ -34,5 +34,5 @@ export const SidebarDrawer = styled(SwipeableDrawer)`
 `;
 
 export const SelectStyled = styled(Select)`
-    margin: 0px 20px;
+    margin: 0 20px;
 `;

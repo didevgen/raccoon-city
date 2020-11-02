@@ -9,6 +9,7 @@ import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
+import {FlatStatusesBar} from '../FlatStatusesBar';
 
 export const SelectContainer = styled.div`
     display: flex;
@@ -64,6 +65,7 @@ const RoomContainer = styled.div`
 `;
 
 export const FilterItemContainer = styled.div`
+    font-family: 'TTNorms', sans-serif;
     margin: 0 16px;
 `;
 
@@ -410,6 +412,7 @@ export interface ChessGridFiltersProps {
     filters: any;
     data: any;
     isPublic: boolean;
+    houseId: string[];
 }
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
@@ -427,6 +430,11 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                 )}
                 {hasPrices && (
                     <Fragment>
+                        <Grid item xs={12} md={2}>
+                            <Grid container justify="center">
+                                <FlatStatusesBar houseId={props.houseId} />
+                            </Grid>
+                        </Grid>
                         <Grid item xs={12} md={4}>
                             <Grid container justify="center">
                                 <RoomAmountFilter dispatch={props.dispatchFn} />
@@ -447,7 +455,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                         dispatch={props.dispatchFn}
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6}>
+                                <Grid item xs={12} md={4}>
                                     <AreaFilter
                                         maxArea={data.maxArea}
                                         minArea={data.minArea}

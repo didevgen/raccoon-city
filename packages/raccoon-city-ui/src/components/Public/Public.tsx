@@ -7,7 +7,7 @@ import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import styled from 'styled-components';
 import {API_TOKEN} from '../../core/constants';
-import {ChessGrid} from '../Main/ChessGrid/ChessGrid';
+import ChessGrid from '../Main/ChessGrid/ChessGrid';
 import {useStyles} from '../Main/drawerStyles';
 
 const Content = styled.div`
