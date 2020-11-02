@@ -231,26 +231,28 @@ export const flatQuery = {
                         return {
                             id: section.id,
                             section: section.sectionName,
-                            levels: section.levels.sort((level1, level2) => {
-                                return level2.levelNumber - level1.levelNumber;
-                            }).map((level: Level) => {
-                                const newFlat = {
-                                    level: level.levelNumber,
-                                    section: section.sectionName
-                                };
-                                const flats = level.flats.map((flat) => {
-                                    return {
-                                        id: flat.id,
-                                        ...flat.toObject(),
-                                        ...newFlat
+                            levels: section.levels
+                                .sort((level1, level2) => {
+                                    return level2.levelNumber - level1.levelNumber;
+                                })
+                                .map((level: Level) => {
+                                    const newFlat = {
+                                        level: level.levelNumber,
+                                        section: section.sectionName
                                     };
-                                });
-                                return {
-                                    id: level.id,
-                                    level: level.levelNumber,
-                                    flats
-                                };
-                            })
+                                    const flats = level.flats.map((flat) => {
+                                        return {
+                                            id: flat.id,
+                                            ...flat.toObject(),
+                                            ...newFlat
+                                        };
+                                    });
+                                    return {
+                                        id: level.id,
+                                        level: level.levelNumber,
+                                        flats
+                                    };
+                                })
                         };
                     })
                 });
