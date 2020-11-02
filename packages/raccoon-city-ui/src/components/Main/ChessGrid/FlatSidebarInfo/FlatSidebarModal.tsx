@@ -163,8 +163,6 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
             houseId: flat.house.id
         };
 
-        console.log(values);
-
         await makeRequest({
             variables: {
                 flat: flatUpdated,
@@ -230,6 +228,7 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                         <div>
                                             <Select
                                                 {...input}
+                                                id="reason"
                                                 label="Причина обращения"
                                                 options={optionsValue}
                                                 name={input.name}
