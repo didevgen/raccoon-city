@@ -9,7 +9,7 @@ import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
-import {ViewModeFiltersMobile} from './ViewModeFilters';
+import {ViewModeFilters} from './ViewModeFilters';
 import {FlatStatusesBar} from '../FlatStatusesBar';
 
 export const SelectContainer = styled.div`
@@ -505,7 +505,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                         </Grid>
                         <Grid item xs={12} md={2}>
                             <Grid container justify="center">
-                                <ViewModeFiltersMobile mode={props.filters.mode} dispatch={props.dispatchFn} />
+                                <ViewModeFilters mode={props.filters.mode} dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>
                     </Fragment>
