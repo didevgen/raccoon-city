@@ -1,6 +1,6 @@
 import {Avatar, Grid, Slider, Tooltip, useMediaQuery, useTheme} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
-import HomeIcon from '@material-ui/icons/Home';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import classNames from 'classnames';
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
@@ -54,8 +54,16 @@ const StyledAvatar = styled(Avatar)`
     &.MuiAvatar-root {
         width: 30px;
         height: 30px;
-        font-size: 12px;
+        font-size: 14px;
+        font-weight: 300;
         border-radius: 5px;
+    }
+`;
+
+const ViewModeAvatar = styled(StyledAvatar)`
+    &.MuiAvatar-root {
+        font-size: 20px;
+        font-weight: 400;
     }
 `;
 
@@ -66,6 +74,7 @@ const RoomContainer = styled.div`
 
 export const FilterItemContainer = styled.div`
     font-family: 'TTNorms', sans-serif;
+    font-weight: 700;
     margin: 0 16px;
 `;
 
@@ -73,7 +82,34 @@ const LeftInputGrid = styled(Grid)`
     display: flex;
     justify-content: flex-end;
 `;
-const RangeContainer = styled(FilterItemContainer)``;
+const RangeContainer = styled(FilterItemContainer)`
+    padding: 30px 0;
+`;
+
+const CustomSlider = styled(Slider)`
+    &.MuiSlider-root {
+        color: #e84f1d;
+    }
+
+    .MuiSlider-rail {
+        height: 5px;
+        color: #c4c4c4;
+    }
+
+    .MuiSlider-track {
+        height: 5px;
+    }
+
+    .MuiSlider-thumb {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+    }
+`;
+
+const DimensionSpan = styled.span`
+    font-size: 0.7em;
+`;
 
 export const FilterTitle = styled.div`
     text-align: center;
@@ -90,7 +126,12 @@ function ValueLabelComponent(props) {
     );
 }
 
-const RangeInput = styled(Input)``;
+const RangeInput = styled(Input)`
+    border: 0.5px solid #828282;
+    border-radius: 5px;
+    padding-left: 5px;
+    text-align: center;
+`;
 
 const roomFilters = [{value: 'КН'}, {value: 'П'}, {value: '1'}, {value: '2'}, {value: '3'}, {value: '4+'}];
 
@@ -152,37 +193,13 @@ export function PriceFilter({minPrice, maxPrice, dispatch, data}) {
     }, [minPrice, maxPrice, data]);
     return (
         <RangeContainer>
-            <FilterTitle>Стоимость</FilterTitle>
+            <FilterTitle>
+                Стоимость <DimensionSpan>грн/м2</DimensionSpan>
+            </FilterTitle>
             <Grid container spacing={2} alignItems="center">
-                <LeftInputGrid item xs={3} md={6}>
-                    <RangeInput
-                        className="LeftInput"
-                        value={min}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            const val = event.target.value === '' ? '' : Number(event.target.value);
-                            setMin(val);
-                        }}
-                        onBlur={() => {
-                            dispatch({
-                                type: 'price',
-                                payload: {
-                                    minPrice: min,
-                                    maxPrice: max
-                                }
-                            });
-                        }}
-                        inputProps={{
-                            step: 10,
-                            min: minPrice,
-                            max: maxPrice,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider'
-                        }}
-                    />
-                </LeftInputGrid>
                 {matches && (
-                    <Grid item xs={6}>
-                        <Slider
+                    <Grid item xs={12}>
+                        <CustomSlider
                             value={[min, max]}
                             ValueLabelComponent={ValueLabelComponent}
                             aria-labelledby="discrete-slider-custom"
@@ -208,30 +225,58 @@ export function PriceFilter({minPrice, maxPrice, dispatch, data}) {
                         />
                     </Grid>
                 )}
-                <Grid item xs={3} md={6}>
-                    <RangeInput
-                        value={max}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            const val = event.target.value === '' ? '' : Number(event.target.value);
-                            setMax(val);
-                        }}
-                        onBlur={() => {
-                            dispatch({
-                                type: 'price',
-                                payload: {
-                                    minPrice: min,
-                                    maxPrice: max
-                                }
-                            });
-                        }}
-                        inputProps={{
-                            step: 10,
-                            min: minPrice,
-                            max: maxPrice,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider'
-                        }}
-                    />
+                <Grid container justify="center" spacing={2} item>
+                    <LeftInputGrid item xs={3} md={6}>
+                        <RangeInput
+                            className="LeftInput"
+                            value={min}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                const val = event.target.value === '' ? '' : Number(event.target.value);
+                                setMin(val);
+                            }}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'price',
+                                    payload: {
+                                        minPrice: min,
+                                        maxPrice: max
+                                    }
+                                });
+                            }}
+                            inputProps={{
+                                step: 10,
+                                min: minPrice,
+                                max: maxPrice,
+                                type: 'number',
+                                'aria-labelledby': 'input-slider'
+                            }}
+                        />
+                    </LeftInputGrid>
+                    <Grid item xs={3} md={6}>
+                        <RangeInput
+                            value={max}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                const val = event.target.value === '' ? '' : Number(event.target.value);
+                                setMax(val);
+                            }}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'price',
+                                    payload: {
+                                        minPrice: min,
+                                        maxPrice: max
+                                    }
+                                });
+                            }}
+                            inputProps={{
+                                step: 10,
+                                min: minPrice,
+                                max: maxPrice,
+                                type: 'number',
+                                'aria-labelledby': 'input-slider'
+                            }}
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </RangeContainer>
@@ -259,37 +304,13 @@ export function AreaFilter({maxArea, minArea, dispatch, data}) {
     }, [maxArea, minArea, data]);
     return (
         <RangeContainer>
-            <FilterTitle>Площадь</FilterTitle>
-            <Grid container spacing={2} alignItems="center">
-                <LeftInputGrid item xs={3} md={6}>
-                    <RangeInput
-                        className="LeftInput"
-                        value={min}
-                        onBlur={() => {
-                            dispatch({
-                                type: 'area',
-                                payload: {
-                                    minArea: min,
-                                    maxArea: max
-                                }
-                            });
-                        }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            const val = event.target.value === '' ? '' : Number(event.target.value);
-                            setMin(val);
-                        }}
-                        inputProps={{
-                            step: 10,
-                            min: minArea,
-                            max: maxArea,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider'
-                        }}
-                    />
-                </LeftInputGrid>
+            <FilterTitle>
+                Площадь <DimensionSpan>м2</DimensionSpan>
+            </FilterTitle>
+            <Grid container spacing={2} alignItems="center" justify="center">
                 {matches && (
-                    <Grid item xs={6}>
-                        <Slider
+                    <Grid item xs={12}>
+                        <CustomSlider
                             value={[min, max]}
                             ValueLabelComponent={ValueLabelComponent}
                             aria-labelledby="discrete-slider-custom"
@@ -315,30 +336,58 @@ export function AreaFilter({maxArea, minArea, dispatch, data}) {
                         />
                     </Grid>
                 )}
-                <Grid item xs={3} md={6}>
-                    <RangeInput
-                        value={max}
-                        onBlur={() => {
-                            dispatch({
-                                type: 'area',
-                                payload: {
-                                    minArea: min,
-                                    maxArea: max
-                                }
-                            });
-                        }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            const val = event.target.value === '' ? '' : Number(event.target.value);
-                            setMax(val);
-                        }}
-                        inputProps={{
-                            step: 10,
-                            min: minArea,
-                            max: maxArea,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider'
-                        }}
-                    />
+                <Grid container justify="center" spacing={2} item>
+                    <LeftInputGrid item xs={3} md={6}>
+                        <RangeInput
+                            className="LeftInput"
+                            value={min}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'area',
+                                    payload: {
+                                        minArea: min,
+                                        maxArea: max
+                                    }
+                                });
+                            }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                const val = event.target.value === '' ? '' : Number(event.target.value);
+                                setMin(val);
+                            }}
+                            inputProps={{
+                                step: 10,
+                                min: minArea,
+                                max: maxArea,
+                                type: 'number',
+                                'aria-labelledby': 'input-slider'
+                            }}
+                        />
+                    </LeftInputGrid>
+                    <Grid item xs={3} md={6}>
+                        <RangeInput
+                            value={max}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'area',
+                                    payload: {
+                                        minArea: min,
+                                        maxArea: max
+                                    }
+                                });
+                            }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                const val = event.target.value === '' ? '' : Number(event.target.value);
+                                setMax(val);
+                            }}
+                            inputProps={{
+                                step: 10,
+                                min: minArea,
+                                max: maxArea,
+                                type: 'number',
+                                'aria-labelledby': 'input-slider'
+                            }}
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </RangeContainer>
@@ -365,7 +414,7 @@ export function ViewMode({dispatch}) {
         <FilterItemContainer>
             <FilterTitle>Режим просмотра</FilterTitle>
             <RoomContainer>
-                <StyledAvatar
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.ROOM)})}
                     onClick={() => {
                         setSelected(ViewModeValues.ROOM);
@@ -375,9 +424,9 @@ export function ViewMode({dispatch}) {
                         });
                     }}
                 >
-                    <HomeIcon />
-                </StyledAvatar>
-                <StyledAvatar
+                    <ApartmentIcon />
+                </ViewModeAvatar>
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.AREA)})}
                     onClick={() => {
                         setSelected(ViewModeValues.AREA);
@@ -388,8 +437,8 @@ export function ViewMode({dispatch}) {
                     }}
                 >
                     М²
-                </StyledAvatar>
-                <StyledAvatar
+                </ViewModeAvatar>
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.NUMBER)})}
                     onClick={() => {
                         setSelected(ViewModeValues.NUMBER);
@@ -400,7 +449,7 @@ export function ViewMode({dispatch}) {
                     }}
                 >
                     №
-                </StyledAvatar>
+                </ViewModeAvatar>
             </RoomContainer>
         </FilterItemContainer>
     );
@@ -440,11 +489,6 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                 <RoomAmountFilter dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} md={2}>
-                            <Grid container justify="center">
-                                <ViewMode dispatch={props.dispatchFn} />
-                            </Grid>
-                        </Grid>
                         <Grid item xs={12} md={4}>
                             <Grid container justify="center" direction="row">
                                 <Grid item xs={12} md={6}>
@@ -463,6 +507,11 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                         data={data}
                                     />
                                 </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <Grid container justify="center">
+                                <ViewMode dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>
                         <Grid item xs={12} md={2}>
