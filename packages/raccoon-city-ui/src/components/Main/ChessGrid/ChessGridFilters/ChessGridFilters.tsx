@@ -80,21 +80,26 @@ const RangeContainer = styled(FilterItemContainer)`
     padding: 30px 0;
 `;
 
-const CustomSlider = withStyles((theme: Theme) => ({
-    root: {color: '#e84f1d', height: 8},
-    thumb: {
-        height: 15,
-        width: 15,
-        borderRadius: 3
-    },
-    track: {
-        height: 5
-    },
-    rail: {
-        color: '#C4C4C4',
-        height: 5
+const CustomSlider = styled(Slider)`
+    &.MuiSlider-root {
+        color: #e84f1d;
     }
-}))(Slider);
+
+    .MuiSlider-rail {
+        height: 5px;
+        color: #c4c4c4;
+    }
+
+    .MuiSlider-track {
+        height: 5px;
+    }
+
+    .MuiSlider-thumb {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+    }
+`;
 
 const DimensionSpan = styled.span`
     font-size: 0.7em;
