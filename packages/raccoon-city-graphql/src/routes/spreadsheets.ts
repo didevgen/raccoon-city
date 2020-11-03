@@ -4,6 +4,9 @@ import {TradeModel} from '../db/models/trade';
 import {tradesToCsv} from '../services/spreadsheets/trades/tradesSpreasheetService';
 import {DeveloperModel} from '../db/models/developer';
 import {logger} from '../aws/logger';
+import HouseModel from '../db/models/house';
+import {apartmentComplexToCsv, houseToCsv} from '../services/spreadsheets/house/houseSpreadsheetService';
+import ApartmentComplexModel from '../db/models/apartmentComplex';
 
 const express = require('express');
 const router = express.Router();
@@ -57,6 +60,86 @@ router.get('/spreadsheets/trades/:developerId', async (req, res) => {
             .exec();
         const csv = `\uFEFF${tradesToCsv(trades)}`;
         const fileName = encodeURIComponent(`${developer.name}-trades.csv`);
+        res.setHeader('Content-type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
+        res.send(csv);
+    } catch (e) {
+        logger.error(e);
+        res.status(500).send('error');
+    }
+});
+
+router.get('/spreadsheets/house/:houseId', async (req, res) => {
+    try {
+        const houseId = req.params.houseId;
+        if (!houseId) {
+            return res.status(400).send('No houseId');
+        }
+        const house = await HouseModel.findById(houseId).populate({
+            path: 'flats',
+            match: {
+                isDeleted: false
+            },
+            populate: [{
+                path: 'level',
+                match: {
+                    isDeleted: false
+                }
+            }, {
+                path: 'section',
+                match: {
+                    isDeleted: false
+                }
+            }]
+        }).exec();
+        if (!house) {
+            return res.status(404).send('No house');
+        }
+        const csv = `\uFEFF${houseToCsv(house)}`;
+        const fileName = encodeURIComponent(`${house.name}.csv`);
+        res.setHeader('Content-type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
+        res.send(csv);
+    } catch (e) {
+        logger.error(e);
+        res.status(500).send('error');
+    }
+});
+
+router.get('/spreadsheets/apartmentComplex/:apartmentComplexId', async (req, res) => {
+    try {
+        const apartmentComplexId = req.params.apartmentComplexId;
+        if (!apartmentComplexId) {
+            return res.status(400).send('No apartmentComplexId');
+        }
+        const apartmentComplex = await ApartmentComplexModel.findById(apartmentComplexId).populate({
+            path: 'houses',
+            match: {
+                isDeleted: false
+            },
+            populate: {
+                path: 'flats',
+                match: {
+                    isDeleted: false
+                },
+                populate: [{
+                    path: 'level',
+                    match: {
+                        isDeleted: false
+                    }
+                }, {
+                    path: 'section',
+                    match: {
+                        isDeleted: false
+                    }
+                }]
+            }
+        }).exec();
+        if (!apartmentComplex) {
+            return res.status(404).send('No Apartment Complex');
+        }
+        const csv = `\uFEFF${apartmentComplexToCsv(apartmentComplex)}`;
+        const fileName = encodeURIComponent(`${apartmentComplex.name}.csv`);
         res.setHeader('Content-type', 'text/csv; charset=utf-8');
         res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
         res.send(csv);
