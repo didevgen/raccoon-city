@@ -8,6 +8,10 @@ export const complexClasses = [
         displayName: 'Эконом+'
     },
     {
+        key: 'comfort',
+        displayName: 'Комфорт'
+    },
+    {
         key: 'premium',
         displayName: 'Премиум'
     },
