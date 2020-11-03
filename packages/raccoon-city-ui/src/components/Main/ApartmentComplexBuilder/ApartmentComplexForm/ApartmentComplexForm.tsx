@@ -366,24 +366,6 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                 </Field>
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
-                                                <Field name="price" validate={required}>
-                                                    {(props) => (
-                                                        <TextField
-                                                            label="Цена за м2"
-                                                            inputProps={{min: '0', step: '1'}}
-                                                            type="number"
-                                                            placeholder="Placeholder"
-                                                            margin="normal"
-                                                            fullWidth={true}
-                                                            name={props.input.name}
-                                                            value={props.input.value}
-                                                            onChange={props.input.onChange}
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </Grid>
-                                            <Grid item={true} xs={12} md={6}>
                                                 <Field name="beginDate" validate={required}>
                                                     {(props) => (
                                                         <DatePicker

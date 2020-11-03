@@ -19,4 +19,4 @@ export const complexClasses = [
         key: 'business',
         displayName: 'Бизнес'
     }
-]
+];
