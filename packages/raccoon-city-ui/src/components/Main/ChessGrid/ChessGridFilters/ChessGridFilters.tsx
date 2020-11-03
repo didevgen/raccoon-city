@@ -1,5 +1,4 @@
 import {Avatar, Grid, Slider, Tooltip, useMediaQuery, useTheme} from '@material-ui/core';
-import {withStyles, Theme} from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import classNames from 'classnames';
