@@ -149,3 +149,19 @@ export function ViewModeFilters({mode, dispatch}) {
         </FilterItemContainer>
     );
 }
+
+export function ViewModeFiltersMobile({mode, dispatch}) {
+    const onClick = (e) => {
+        dispatch({type: 'cellViewMode', payload: e});
+    };
+
+    return (
+        <FilterItemContainer>
+            <FilterTitle>Отображение</FilterTitle>
+            <ViewModeContainer>
+                <ChessGridIcon value={mode} onClick={onClick} />
+                <LevelIcon value={mode} onClick={onClick} />
+            </ViewModeContainer>
+        </FilterItemContainer>
+    );
+}
