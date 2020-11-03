@@ -55,9 +55,16 @@ const StyledAvatar = styled(Avatar)`
     &.MuiAvatar-root {
         width: 30px;
         height: 30px;
+        font-size: 14px;
+        font-weight: 300;
+        border-radius: 5px;
+    }
+`;
+
+const ViewModeAvatar = styled(StyledAvatar)`
+    &.MuiAvatar-root {
         font-size: 20px;
         font-weight: 400;
-        border-radius: 5px;
     }
 `;
 
@@ -408,7 +415,7 @@ export function ViewMode({dispatch}) {
         <FilterItemContainer>
             <FilterTitle>Режим просмотра</FilterTitle>
             <RoomContainer>
-                <StyledAvatar
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.ROOM)})}
                     onClick={() => {
                         setSelected(ViewModeValues.ROOM);
@@ -419,8 +426,8 @@ export function ViewMode({dispatch}) {
                     }}
                 >
                     <ApartmentIcon />
-                </StyledAvatar>
-                <StyledAvatar
+                </ViewModeAvatar>
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.AREA)})}
                     onClick={() => {
                         setSelected(ViewModeValues.AREA);
@@ -431,8 +438,8 @@ export function ViewMode({dispatch}) {
                     }}
                 >
                     М²
-                </StyledAvatar>
-                <StyledAvatar
+                </ViewModeAvatar>
+                <ViewModeAvatar
                     className={classNames({...isSelected(ViewModeValues.NUMBER)})}
                     onClick={() => {
                         setSelected(ViewModeValues.NUMBER);
@@ -443,7 +450,7 @@ export function ViewMode({dispatch}) {
                     }}
                 >
                     №
-                </StyledAvatar>
+                </ViewModeAvatar>
             </RoomContainer>
         </FilterItemContainer>
     );
