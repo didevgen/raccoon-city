@@ -382,7 +382,7 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                 </Field>
                                             </Grid>
                                             <Grid item={true} xs={12} md={6}>
-                                                <Field name="endDate" validate={required}>
+                                                <Field name="endDate">
                                                     {(props) => (
                                                         <DatePicker
                                                             views={['year', 'month']}
