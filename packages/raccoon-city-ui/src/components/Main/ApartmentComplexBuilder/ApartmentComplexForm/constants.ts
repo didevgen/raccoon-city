@@ -186,6 +186,10 @@ export const propertyClasses = [
         displayName: 'Эконом+'
     },
     {
+        key: 'comfort',
+        displayName: 'Комфорт'
+    },
+    {
         key: 'premium',
         displayName: 'Премиум'
     },
