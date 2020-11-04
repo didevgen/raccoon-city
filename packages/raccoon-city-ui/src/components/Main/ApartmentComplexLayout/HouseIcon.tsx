@@ -17,6 +17,7 @@ const HouseIconContainer = styled.div`
 
 const HouseNameDiv = styled.div`
     font-size: 1.5vw;
+    text-align: center;
 `;
 
 function debounce(fn, interval) {
