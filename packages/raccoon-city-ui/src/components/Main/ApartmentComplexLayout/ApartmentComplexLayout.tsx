@@ -1,13 +1,13 @@
 import {useQuery} from '@apollo/react-hooks';
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import {Path, SVG, Svg} from '@svgdotjs/svg.js';
 import Cookies from 'js-cookie';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router';
 import {Redirect} from 'react-router-dom';
 import styled from 'styled-components';
 import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
+import HouseIcons from './HouseIcons';
 
 const ImageContainer = styled.div`
     display: flex;
@@ -22,27 +22,10 @@ const LayoutImage = styled.div<any>`
     max-height: calc(100vh - 100px);
 `;
 
-const HouseChooseContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-bottom: 16px;
-`;
-
-const HouseIconContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px;
-    &:hover,
-    &.active {
-        color: #e84f1d !important;
-        cursor: pointer;
-    }
-`;
-
 const LayoutContainer = styled.div`
     height: 100vh;
 `;
+
 function attachSvg(container: string) {
     return SVG()
         .addTo(container)
@@ -115,51 +98,6 @@ function ImageWithSvg({url, imageId, layouts, setHoveredHouse}) {
     return <LayoutImage id={imageId} url={url} alt={'layout image'} />;
 }
 
-function debounce(fn, interval) {
-    let timer;
-    return function debounced(...args) {
-        clearTimeout(timer);
-        // @ts-ignore
-        const that = this;
-        timer = setTimeout(function callOriginalFn() {
-            fn.apply(that, args);
-        }, interval);
-    };
-}
-
-function HouseIcon({house, setHoveredItem, hoveredItem}) {
-    const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    const authToken = params.get('authToken');
-    const {apartmentComplexUuid, developerUuid} = useParams() as any;
-    const handler = useCallback(debounce(setHoveredItem, 100), []);
-    return (
-        <HouseIconContainer
-            className={hoveredItem?.id === house?.id ? 'active' : ''}
-            onClick={() => {
-                // @ts-ignore
-                if (window.location !== window.parent.location) {
-                    // @ts-ignore
-                    window.parent.postMessage(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
-                        '*'
-                    );
-                } else {
-                    window.open(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${house.id}?authToken=${authToken}`,
-                        '_blank'
-                    );
-                }
-            }}
-            onMouseEnter={() => handler(house)}
-            onMouseLeave={() => handler(null)}
-        >
-            <ApartmentIcon fontSize="large" />
-            <div>{house.name}</div>
-        </HouseIconContainer>
-    );
-}
-
 export default function ApartmentComplexLayout() {
     const {layoutUuid} = useParams() as any;
     const imageId = `apartment-complex-layout-${layoutUuid}`;
@@ -191,25 +129,9 @@ export default function ApartmentComplexLayout() {
     if (loading || error) {
         return null;
     }
-
     return (
         <LayoutContainer>
-            <HouseChooseContainer>
-                {data.getApartmentComplexLayout.layouts
-                    .sort((a, b) => {
-                        return a.house.order - b.house.order;
-                    })
-                    .map((layout) => {
-                        return (
-                            <HouseIcon
-                                key={layout.house.id}
-                                house={layout.house}
-                                hoveredItem={hoveredHouse}
-                                setHoveredItem={setHoveredHouse}
-                            />
-                        );
-                    })}
-            </HouseChooseContainer>
+            <HouseIcons data={data} hoveredHouse={hoveredHouse} setHoveredHouse={setHoveredHouse} />
             <ImageContainer>
                 <ImageWithSvg
                     imageId={imageId}
