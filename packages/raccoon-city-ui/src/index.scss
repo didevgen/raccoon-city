@@ -11,6 +11,7 @@ code {
 }
 
 .SVG--highlighted {
+
     &.active,
     &:hover {
         fill: #73859f;
@@ -63,3 +64,40 @@ code {
         border: 1px solid rgba(55, 72, 92, 0.5);
     }
 }*/
+
+// TODO use styled component instead this
+.slick-next-arrow,
+.slick-prev-arrow {
+    width: 35px !important;
+    height: 35px !important;
+    background-color: #E84F1D !important;
+    position: absolute;
+    top: calc(100% - 5px) !important;
+    transform: translateY(-100%) !important;
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+}
+
+.slick-next-arrow {
+    right: 0 !important;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.slick-prev-arrow {
+    left: 0 !important;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.slick-next::before {
+    content: none;
+    display: none;
+
+}
+
+.slick-prev::before {
+    content: none;
+    display: none;
+}

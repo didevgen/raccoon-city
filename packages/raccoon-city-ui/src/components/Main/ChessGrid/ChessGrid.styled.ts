@@ -5,6 +5,15 @@ import Select from '@material-ui/core/Select';
 export const ChessGridWrapper: any = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    min-width: 700px;
+    margin-top: 20px;
+
+    @media only screen and (max-width: 600px) {
+        min-width: 320px;
+        overflow-x: auto;
+        background-color: #fff;
+    }
 `;
 
 export const ColumnWrapper = styled.div`
@@ -19,6 +28,16 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-self: flex-end;
+    width: 100%;
+`;
+
+export const ColumnAndSectionBarWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+    }
 `;
 
 export const ColumnTitle = styled(Typography)`

@@ -100,7 +100,7 @@ export const ChessFloorView = (props) => {
     } else {
         contentView = (
             <WarningContainerColumn>
-                <p>На этом этаже нет планировок квартир</p>
+                <p>На этом этаже нет отмеченных планировок квартир</p>
                 <img src={image?.previewImageUrl} alt="level url" />
             </WarningContainerColumn>
         );

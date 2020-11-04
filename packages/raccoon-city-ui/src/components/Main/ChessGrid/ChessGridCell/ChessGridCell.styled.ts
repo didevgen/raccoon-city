@@ -8,11 +8,16 @@ const TileView = css`
     height: 56px;
 `;
 
+const TileViewMobile = css`
+    width: 35px;
+    height: 35px;
+`;
+
 const TileViewPlus = css`
     width: 202px;
     height: auto;
     flex-direction: column;
-    justify-contett: space-between;
+    justify-content: space-between;
     padding: 5px;
 `;
 
@@ -73,6 +78,11 @@ export const Cell = styled.div<{viewMode?: string}>`
         width: 72px;
         height: 72px;
     }
+
+    @media only screen and (max-width: 600px) {
+        ${TileViewMobile}
+    }
+
     &:hover {
         cursor: pointer;
     }
