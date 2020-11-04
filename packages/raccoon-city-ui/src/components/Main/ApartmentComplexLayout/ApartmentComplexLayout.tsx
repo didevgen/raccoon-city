@@ -59,7 +59,6 @@ function fillExistingLayouts(
                 setHoveredHouse(null);
             })
             .on('click', () => {
-                console.log('qwe');
                 // @ts-ignore
                 if (window.location !== window.parent.location) {
                     // @ts-ignore
