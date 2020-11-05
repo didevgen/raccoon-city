@@ -1,29 +1,29 @@
-import React, {useState} from 'react';
-import {
-    SectionBarContainer,
-    SliderContainer,
-    SideBarImage,
-    SideBarVRImage,
-    TabPanelContainer,
-    AppBarContainer,
-    CustomSlider,
-    CloseBarContainer
-} from './SectionBar.styled';
 import {useQuery} from '@apollo/react-hooks';
-import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
-import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
-import {useParams} from 'react-router';
 import {AppBar} from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import {ApartmentComplexData} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexData/ApartmentComplexData';
-import 'slick-carousel/slick/slick.css';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import CloseIcon from '@material-ui/icons/Close';
+import React, {useState} from 'react';
+import {useParams} from 'react-router';
 import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
+import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
+import {ApartmentComplexData} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexData/ApartmentComplexData';
 import {TabPanel} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {SidebarVRDialog} from '../FlatSidebarInfo/SidebarVRDialog';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import CloseIcon from '@material-ui/icons/Close';
+import {
+    AppBarContainer,
+    CloseBarContainer,
+    CustomSlider,
+    SectionBarContainer,
+    SideBarImage,
+    SideBarVRImage,
+    SliderContainer,
+    TabPanelContainer
+} from './SectionBar.styled';
 
 function SampleNextArrow(props) {
     const {className, style, onClick} = props;

@@ -129,12 +129,16 @@ export const AppBarContainer = styled.div`
 `;
 
 export const CloseBarContainer = styled.div`
-    display: flex;
+    display: none;
     justify-content: flex-end;
     margin-top: 10px;
 
     .MuiSvgIcon-root {
         fill: #e84f1d;
         font-size: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        display: flex;
     }
 `;

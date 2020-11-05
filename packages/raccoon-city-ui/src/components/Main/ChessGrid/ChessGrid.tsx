@@ -21,12 +21,12 @@ import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {getInitialState, reducer} from './ChessGrid.reducer';
 import {
     ChessGridWrapper,
+    ColumnAndSectionBarWrapper,
     ColumnWrapper,
     Container,
-    SidebarDrawer,
-    ColumnAndSectionBarWrapper,
+    InfoIcon,
     MobileInformation,
-    InfoIcon
+    SidebarDrawer
 } from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
@@ -34,9 +34,9 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
+import {FlatStatusesBar} from './FlatStatusesBar';
 import {PublicLink} from './PublicLink/PublicLink';
 import {SectionBar} from './SectionBar/SectionBar';
-import {FlatStatusesBar} from './FlatStatusesBar';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
