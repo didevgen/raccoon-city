@@ -24,7 +24,7 @@ const FormBlock = styled.div`
     padding: 16px;
 `;
 
-const LogoInput = styled(DropzoneContainer)`
+const LogoInput = styled<any>(DropzoneContainer)`
     width: 320px;
     height: 320px;
     justify-content: center;
