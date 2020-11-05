@@ -24,7 +24,9 @@ import {
     ColumnWrapper,
     Container,
     SidebarDrawer,
-    ColumnAndSectionBarWrapper
+    ColumnAndSectionBarWrapper,
+    MobileInformation,
+    InfoIcon
 } from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
@@ -35,6 +37,7 @@ import {ChessSideBar} from './ChessSideBar';
 import styled from 'styled-components';
 import {PublicLink} from './PublicLink/PublicLink';
 import {SectionBar} from './SectionBar/SectionBar';
+import {FlatStatusesBar} from './FlatStatusesBar';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -149,9 +152,11 @@ const ChessGridContent = React.memo((props: any) => {
 
     return (
         <ViewModeContext.Provider value={filters}>
-            <div>
-                <div onClick={() => setSideBarOpen(true)}>info</div>
-            </div>
+            <MobileInformation>
+                <FlatStatusesBar houseId={houseId} />
+                <InfoIcon onClick={() => setSideBarOpen(true)} />
+            </MobileInformation>
+
             {chessViews[filters.mode]}
 
             {flatCardOpen && (
@@ -226,6 +231,10 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
     return (
         <Fragment>
+            <div>
+                <h1>ЖК Хрущёвский Дом №1 Секция 4</h1>
+            </div>
+
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridFiltersDrawer
                     filters={filters}

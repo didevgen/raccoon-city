@@ -11,7 +11,6 @@ code {
 }
 
 .SVG--highlighted {
-
     &.active,
     &:hover {
         fill: #73859f;
@@ -70,7 +69,7 @@ code {
 .slick-prev-arrow {
     width: 35px !important;
     height: 35px !important;
-    background-color: #E84F1D !important;
+    background-color: #e84f1d !important;
     position: absolute;
     top: calc(100% - 5px) !important;
     transform: translateY(-100%) !important;
@@ -94,7 +93,6 @@ code {
 .slick-next::before {
     content: none;
     display: none;
-
 }
 
 .slick-prev::before {

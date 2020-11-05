@@ -55,3 +55,28 @@ export const SidebarDrawer = styled(SwipeableDrawer)`
 export const SelectStyled = styled(Select)`
     margin: 0 20px;
 `;
+
+export const MobileInformation = styled.div`
+    display: none;
+
+    @media only screen and (max-width: 600px) {
+        display: flex;
+        justify-content: flex-start;
+    }
+`;
+
+export const InfoIcon = styled.div`
+    border: 1px solid #e84f1d;
+    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+        content: 'i';
+        font-size: 15px;
+        color: #e84f1d;
+    }
+`;
