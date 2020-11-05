@@ -37,7 +37,15 @@ const StyledCarousel = styled(Carousel)`
         line-height: 30px;
     }
 
-    .kjvGFn:hover {
+    .rec-arrow:disabled:hover {
+        background-color: #c4c4c4;
+    }
+
+    .rec-arrow:enabled {
+        background-color: #c4c4c4;
+    }
+
+    .rec-arrow:enabled:hover {
         background-color: #e84f1d;
     }
 `;
