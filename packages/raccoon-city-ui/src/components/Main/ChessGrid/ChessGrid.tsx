@@ -21,7 +21,6 @@ import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {getInitialState, reducer} from './ChessGrid.reducer';
 import {
     ChessGridWrapper,
-    ColumnTitle,
     ColumnWrapper,
     Container,
     SidebarDrawer,
