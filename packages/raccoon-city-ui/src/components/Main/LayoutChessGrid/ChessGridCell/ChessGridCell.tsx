@@ -5,6 +5,7 @@ import React from 'react';
 import {createSelectable, TSelectableItemProps} from 'react-selectable-fast/lib';
 import styled from 'styled-components';
 import {Flat} from '../../../shared/types/flat.types';
+import {useSelectedViewMode} from '../../LayoutEditor/ChessGridDialog/ChessGridDialog';
 
 const HtmlTooltip = withStyles((theme: Theme) => ({
     tooltip: {
@@ -20,18 +21,22 @@ interface Props {
 }
 
 const Cell = styled.div<Props>`
+    box-sizing: border-box;
     position: relative;
     color: #fff;
     background-color: #4caf50;
     border-radius: 0;
+    padding: 1px;
     margin: ${(p) => (p.isSelected || p.isSelecting ? '4px' : '10px')};
-    width: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
-    height: ${(p) => (p.isSelected || p.isSelecting ? '36px' : '24px')};
+    width: ${(p) => (p.isSelected || p.isSelecting ? '40px' : '32px')};
+    height: ${(p) => (p.isSelected || p.isSelecting ? '40px' : '32px')};
     transition: all 100ms linear;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
+    font-size: 10px;
+    font-weight: 700;
     &:hover {
         cursor: pointer;
     }
@@ -112,6 +117,7 @@ const StyledIcon = styled.div`
 `;
 
 export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}: {flat: Flat} & TSelectableItemProps) {
+    const selectedViewMode = useSelectedViewMode().selectedViewMode;
     return (
         <HtmlTooltip
             title={
@@ -124,14 +130,18 @@ export function ChessGridCellItem({flat, selectableRef, isSelected, isSelecting}
                         <AreaContainer>{flat.area}м2</AreaContainer>
                         <NumberContainer>
                             <div>{flat.flatNumber}</div>
-                            <div>1м2 - 15.000</div>
+                            <div>1м2 - {Math.round(flat.price / flat.area)}</div>
                         </NumberContainer>
                     </DataContainer>
                 </TooltipContainer>
             }
         >
             <Cell ref={selectableRef} isSelected={isSelected} isSelecting={isSelecting} className={flat.status}>
-                {flat.roomAmount}
+                {selectedViewMode === 'flatNumber'
+                    ? flat.flatNumber
+                    : selectedViewMode === 'area'
+                    ? flat.area
+                    : flat.roomAmount}
                 {!flat.belongsToLayout && flat.hasLayout && (
                     <StyledIcon>
                         <HomeIcon style={{fontSize: 14}} color="primary" />
