@@ -56,11 +56,6 @@ function getTableRows(props: ApartmentComplexType) {
             value: props.address
         },
         {
-            key: 'price',
-            label: 'Цена за м2',
-            value: props.price
-        },
-        {
             key: 'beginDate',
             label: 'Начало строительства',
             value: format(parseISO(props.beginDate), 'MM yyyy', {

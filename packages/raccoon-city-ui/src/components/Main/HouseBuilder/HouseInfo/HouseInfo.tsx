@@ -170,6 +170,13 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Планировка квартир" />
                                     </ListItem>
                                 </StyledLink>
+                                <ListItem
+                                    button
+                                    component="a"
+                                    href={`${process.env.REACT_APP_URL}/spreadsheets/house/${uuid}`}
+                                >
+                                    <ListItemText primary="Скачать в csv" />
+                                </ListItem>
                                 <PublishHouse uuid={uuid} />
                             </List>
                         </StyledPaper>

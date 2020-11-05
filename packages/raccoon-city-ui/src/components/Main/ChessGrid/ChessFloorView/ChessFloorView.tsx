@@ -1,26 +1,26 @@
-import React, {useState, useEffect} from 'react';
 import {useQuery} from '@apollo/react-hooks';
+import React, {useEffect, useState} from 'react';
 import {
-    GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS,
-    GET_FLATS_INFO_WITH_SVG_LAYOUTS
+    GET_FLATS_INFO_WITH_SVG_LAYOUTS,
+    GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS
 } from '../../../../graphql/queries/layoutQuery';
-import {getSections, getInfo, getFlatsToDraw} from './ChessFloorUtils';
-import {
-    FloorViewContainer,
-    FloorsListContainer,
-    FloorContentContainer,
-    FloorsListItem,
-    LevelSelectMobile,
-    FloorLegendInfo,
-    WarningContainer,
-    WarningContainerColumn,
-    FloorContainer
-} from './ChessFloorView.styled';
+import {ChessGridAnimation} from '../ChessGridAnimation/ChessGridAnimation';
 import {LayoutView} from '../FlatSidebarInfo/LayoutView';
+import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
+import {getFlatsToDraw, getInfo, getSections} from './ChessFloorUtils';
+import {
+    FloorContainer,
+    FloorContentContainer,
+    FloorLegendInfo,
+    FloorsListContainer,
+    FloorsListItem,
+    FloorViewContainer,
+    LevelSelectMobile,
+    WarningContainer,
+    WarningContainerColumn
+} from './ChessFloorView.styled';
 import {CustomSelector} from './FloorViewsParts/CustomSelector';
 import {FlatInfoBar} from './FloorViewsParts/FlatInfoBar';
-import {FullFlatInfoInterface, LevelImageUrlInterface} from './ChessFloor.interfaces';
-import {ChessGridAnimation} from '../ChessGridAnimation/ChessGridAnimation';
 
 export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic, setCurrentLevel: handleCurrentLevelChange} = props;

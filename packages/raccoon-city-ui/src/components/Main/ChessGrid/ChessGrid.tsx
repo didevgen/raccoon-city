@@ -3,6 +3,7 @@ import React, {Fragment, useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import styled from 'styled-components';
 import {
     FlatsInHouse,
     GET_FLAT_LIST,
@@ -34,7 +35,6 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
-import styled from 'styled-components';
 import {PublicLink} from './PublicLink/PublicLink';
 import {SectionBar} from './SectionBar/SectionBar';
 import {FlatStatusesBar} from './FlatStatusesBar';
@@ -90,6 +90,11 @@ const ChessGridContent = React.memo((props: any) => {
     }
 
     const houseFlats: FlatsInHouse[] = data?.getGroupedFlatsBySection.houseFlats;
+
+    if (!houseFlats || houseFlats.length === 0) {
+        return null;
+    }
+
     const {getPublicFlatsList, getFlatsList} = listData;
     const listFlats: Flat[] = getFlatsList ? getFlatsList : getPublicFlatsList;
 

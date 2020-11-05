@@ -145,6 +145,13 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="История обновлений" />
                                     </ListItem>
                                 </StyledNavLink>
+                                <ListItem
+                                    button
+                                    component="a"
+                                    href={`${process.env.REACT_APP_URL}/spreadsheets/apartmentComplex/${apartmentComplexUuid}`}
+                                >
+                                    <ListItemText primary="Скачать в csv" />
+                                </ListItem>
                             </List>
                         </StyledPaper>
                     </Grid>

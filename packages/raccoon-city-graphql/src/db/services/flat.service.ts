@@ -20,7 +20,7 @@ function spreadsheetFlatToFlat(flat: SpreadsheetFlat, houseId: string): Flat {
         sale: Number(flat.sale),
         house: houseId,
         squarePrice: Number(flat.squarePrice),
-        squarePriceSale: Number(flat.squarePriceSale)
+        squarePriceSale: isNaN(Number(flat.squarePriceSale)) ? undefined : Number(flat.squarePriceSale)
     };
 }
 
