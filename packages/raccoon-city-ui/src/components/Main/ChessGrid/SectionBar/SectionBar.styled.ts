@@ -1,5 +1,4 @@
-import React from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import Slider from 'react-slick';
 import {TabPanel} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 
@@ -126,9 +125,6 @@ export const AppBarContainer = styled.div`
 
     .MuiTab-textColorInherit {
         opacity: 1;
-    }
-
-    @media only screen and (max-width: 600px) {
     }
 `;
 

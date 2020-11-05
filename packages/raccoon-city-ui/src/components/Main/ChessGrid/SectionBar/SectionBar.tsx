@@ -13,7 +13,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {useParams} from 'react-router';
-import {AppBar, Grid} from '@material-ui/core';
+import {AppBar} from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import {ApartmentComplexData} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexData/ApartmentComplexData';

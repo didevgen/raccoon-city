@@ -75,23 +75,28 @@ router.get('/spreadsheets/house/:houseId', async (req, res) => {
         if (!houseId) {
             return res.status(400).send('No houseId');
         }
-        const house = await HouseModel.findById(houseId).populate({
-            path: 'flats',
-            match: {
-                isDeleted: false
-            },
-            populate: [{
-                path: 'level',
+        const house = await HouseModel.findById(houseId)
+            .populate({
+                path: 'flats',
                 match: {
                     isDeleted: false
-                }
-            }, {
-                path: 'section',
-                match: {
-                    isDeleted: false
-                }
-            }]
-        }).exec();
+                },
+                populate: [
+                    {
+                        path: 'level',
+                        match: {
+                            isDeleted: false
+                        }
+                    },
+                    {
+                        path: 'section',
+                        match: {
+                            isDeleted: false
+                        }
+                    }
+                ]
+            })
+            .exec();
         if (!house) {
             return res.status(404).send('No house');
         }
@@ -112,29 +117,34 @@ router.get('/spreadsheets/apartmentComplex/:apartmentComplexId', async (req, res
         if (!apartmentComplexId) {
             return res.status(400).send('No apartmentComplexId');
         }
-        const apartmentComplex = await ApartmentComplexModel.findById(apartmentComplexId).populate({
-            path: 'houses',
-            match: {
-                isDeleted: false
-            },
-            populate: {
-                path: 'flats',
+        const apartmentComplex = await ApartmentComplexModel.findById(apartmentComplexId)
+            .populate({
+                path: 'houses',
                 match: {
                     isDeleted: false
                 },
-                populate: [{
-                    path: 'level',
+                populate: {
+                    path: 'flats',
                     match: {
                         isDeleted: false
-                    }
-                }, {
-                    path: 'section',
-                    match: {
-                        isDeleted: false
-                    }
-                }]
-            }
-        }).exec();
+                    },
+                    populate: [
+                        {
+                            path: 'level',
+                            match: {
+                                isDeleted: false
+                            }
+                        },
+                        {
+                            path: 'section',
+                            match: {
+                                isDeleted: false
+                            }
+                        }
+                    ]
+                }
+            })
+            .exec();
         if (!apartmentComplex) {
             return res.status(404).send('No Apartment Complex');
         }
