@@ -23,7 +23,7 @@ const ModalContainer = styled.div`
     top: 50%;
     right: 3.5%;
     transform: translateY(-50%);
-    z-index: 1001px;
+    z-index: 1001;
     box-shadow: 1px 1px 10px rgba(1, 1, 1, 0.5);
 
     @media only screen and (max-width: 500px) {
