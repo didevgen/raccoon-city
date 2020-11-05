@@ -15,16 +15,16 @@ statusMap.set(FlatStatus.UNAVAILABLE, 'Недоступно');
 function mapToPapa(house: House): any[] {
     return house.flats.map((flat) => {
         return {
-            Дом: house.name,
+            'Дом': house.name,
             'Номер квартиры': flat.flatNumber,
-            Этаж: flat.level.levelNumber,
+            'Этаж': flat.level.levelNumber,
             'Полная стоимость': flat.price,
-            Подъезд: flat.section.sectionName,
+            'Подъезд': flat.section.sectionName,
             'Общая площадь, м2': flat.area,
-            Статус: statusMap.get(flat.status),
+            'Статус': statusMap.get(flat.status),
             'Кол-во комнат': flat.roomAmount,
             'Цена, м2': flat.squarePrice || '',
-            Уровни: flat.levelAmount || '',
+            'Уровни': flat.levelAmount || '',
             'Акция, м2': flat.squarePriceSale || ''
         };
     });
