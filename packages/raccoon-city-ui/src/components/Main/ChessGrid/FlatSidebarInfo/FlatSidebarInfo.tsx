@@ -193,7 +193,6 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </SendRequestContainer>
                 </ButtonsContainer>
             )}
-            {/*@ts-ignore*/}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

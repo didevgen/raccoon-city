@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import MuiPhoneNumber from 'material-ui-phone-number';
-import Select from '@appgeist/react-select-material-ui';
-import Recaptcha from 'react-recaptcha';
-import {Typography, TextField, Button} from '@material-ui/core';
-import {Form, Field} from 'react-final-form';
-import {required} from '../../../../utils/validation';
-import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {useMutation} from '@apollo/react-hooks';
+import Select from '@appgeist/react-select-material-ui';
+import {Button, TextField, Typography} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import {withRouter, BrowserRouterProps} from 'react-router-dom';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import React, {useState} from 'react';
+import {Field, Form} from 'react-final-form';
+import Recaptcha from 'react-recaptcha';
+import {BrowserRouterProps, withRouter} from 'react-router-dom';
+import styled from 'styled-components';
+import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
+import {required} from '../../../../utils/validation';
 
 const optionsValue = [
     {value: 1, label: 'Купить квартиру'},
@@ -234,7 +234,7 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                                 name={input.name}
                                                 value={input.value}
                                                 onChange={(e) => {
-                                                    input.onChange(e); //final-form's onChange
+                                                    input.onChange(e); // final-form's onChange
                                                 }}
                                                 isClearable={true}
                                             />
@@ -277,5 +277,6 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
     );
 };
 
+// TODO remove as any and type
 // @ts-ignore
-export default withRouter(FlatSidebarModal);
+export default withRouter(FlatSidebarModal) as any;
