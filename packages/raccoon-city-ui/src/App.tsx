@@ -14,6 +14,8 @@ const Main = lazy(() => import('./components/Main/Main'));
 const Public = lazy(() => import('./components/Public/Public'));
 const ApartmentComplexLayout = lazy(() => import('./components/Main/ApartmentComplexLayout/ApartmentComplexLayout'));
 
+const test = 'test';
+
 const store = createStore(rootReducer);
 const App: React.FC = () => {
     return (
