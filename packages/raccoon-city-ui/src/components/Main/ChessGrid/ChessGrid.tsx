@@ -19,14 +19,24 @@ import {House} from '../../shared/types/house.types';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
 import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {getInitialState, reducer} from './ChessGrid.reducer';
-import {ChessGridWrapper, ColumnTitle, ColumnWrapper, Container, SidebarDrawer} from './ChessGrid.styled';
+import {
+    ChessGridWrapper,
+    ColumnAndSectionBarWrapper,
+    ColumnWrapper,
+    Container,
+    InfoIcon,
+    MobileInformation,
+    SidebarDrawer
+} from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
 import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
+import {FlatStatusesBar} from './FlatStatusesBar';
 import {PublicLink} from './PublicLink/PublicLink';
+import {SectionBar} from './SectionBar/SectionBar';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -60,6 +70,7 @@ const ChessGridContent = React.memo((props: any) => {
     } = props;
 
     const [flatCardOpen, setFlatCardOpen] = useState(false);
+    const [isSideBarOpen, setSideBarOpen] = useState(false);
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     const [currentLevel, setCurrentLevel] = useState<string>();
 
@@ -91,75 +102,19 @@ const ChessGridContent = React.memo((props: any) => {
         setFlatCardOpen(true);
     };
 
-    if (filters.mode === ChessCellViewMode.FLOOR) {
-        return (
-            <Fragment>
-                <ChessFloorView
-                    setCurrentLevel={setCurrentLevel}
-                    filters={filters}
-                    onSelect={selectFlat}
-                    houseFlats={houseFlats}
-                    isPublic={isPublic}
-                />
-                {flatCardOpen && (
-                    <ChessSideBar
-                        SideBar={SideBar}
-                        selectedFlat={selectedFlat}
-                        isPublic={isPublic}
-                        showRequestButton={showRequestButton}
-                        onFlatSelected={onFlatSelected}
-                        setFlatCardOpen={setFlatCardOpen}
-                        setSelectedFlat={setSelectedFlat}
-                        flatCardOpen={flatCardOpen}
-                        houseId={houseId}
-                        setSavedFlat={setSavedFlat}
-                        viewMode={filters.mode}
-                        currentLevel={currentLevel}
-                    />
-                )}
-            </Fragment>
-        );
-    }
+    // TODO divide to views component
+    const tileView = (
+        <ChessGridWrapper hasSelect={hasSelect}>
+            {houseFlats.map((group: FlatsInHouse) => {
+                const {groupedFlats} = group;
 
-    if (filters.mode === ChessCellViewMode.LIST) {
-        return (
-            <Fragment>
-                <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />
+                if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
+                    return null;
+                }
 
-                {flatCardOpen && (
-                    <ChessSideBar
-                        SideBar={SideBar}
-                        selectedFlat={selectedFlat}
-                        isPublic={isPublic}
-                        showRequestButton={showRequestButton}
-                        onFlatSelected={onFlatSelected}
-                        setFlatCardOpen={setFlatCardOpen}
-                        setSelectedFlat={setSelectedFlat}
-                        flatCardOpen={flatCardOpen}
-                        houseId={houseId}
-                        setSavedFlat={setSavedFlat}
-                        viewMode={filters.mode}
-                    />
-                )}
-            </Fragment>
-        );
-    }
-
-    return (
-        <ViewModeContext.Provider value={filters}>
-            <ChessGridWrapper hasSelect={hasSelect}>
-                {houseFlats.map((group: FlatsInHouse) => {
-                    const {groupedFlats} = group;
-
-                    if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
-                        return null;
-                    }
-
-                    return (
-                        <Container key={group.id}>
-                            <ColumnTitle variant="h5" gutterBottom>
-                                {group.name}
-                            </ColumnTitle>
+                return (
+                    <Container key={group.id}>
+                        <ColumnAndSectionBarWrapper>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
                                     return (
@@ -173,26 +128,57 @@ const ChessGridContent = React.memo((props: any) => {
                                     );
                                 })}
                             </ColumnWrapper>
-                        </Container>
-                    );
-                })}
+                            {isPublic && filters.mode === ChessCellViewMode.TILE && (
+                                <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />
+                            )}
+                        </ColumnAndSectionBarWrapper>
+                    </Container>
+                );
+            })}
+        </ChessGridWrapper>
+    );
 
-                {flatCardOpen && (
-                    <ChessSideBar
-                        SideBar={SideBar}
-                        selectedFlat={selectedFlat}
-                        isPublic={isPublic}
-                        showRequestButton={showRequestButton}
-                        onFlatSelected={onFlatSelected}
-                        setFlatCardOpen={setFlatCardOpen}
-                        setSelectedFlat={setSelectedFlat}
-                        flatCardOpen={flatCardOpen}
-                        houseId={houseId}
-                        setSavedFlat={setSavedFlat}
-                        viewMode={filters.mode}
-                    />
-                )}
-            </ChessGridWrapper>
+    // TODO divide to views component
+    const chessViews = {
+        [ChessCellViewMode.FLOOR]: (
+            <ChessFloorView
+                setCurrentLevel={setCurrentLevel}
+                filters={filters}
+                onSelect={selectFlat}
+                houseFlats={houseFlats}
+                isPublic={isPublic}
+            />
+        ),
+        [ChessCellViewMode.LIST]: <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />,
+        [ChessCellViewMode.TILE]: tileView,
+        [ChessCellViewMode.TILE_PLUS]: tileView
+    };
+
+    return (
+        <ViewModeContext.Provider value={filters}>
+            <MobileInformation>
+                <FlatStatusesBar houseId={houseId} />
+                <InfoIcon onClick={() => setSideBarOpen(true)} />
+            </MobileInformation>
+
+            {chessViews[filters.mode]}
+
+            {flatCardOpen && (
+                <ChessSideBar
+                    SideBar={SideBar}
+                    selectedFlat={selectedFlat}
+                    isPublic={isPublic}
+                    showRequestButton={showRequestButton}
+                    onFlatSelected={onFlatSelected}
+                    setFlatCardOpen={setFlatCardOpen}
+                    setSelectedFlat={setSelectedFlat}
+                    flatCardOpen={flatCardOpen}
+                    houseId={houseId}
+                    setSavedFlat={setSavedFlat}
+                    viewMode={filters.mode}
+                    currentLevel={currentLevel}
+                />
+            )}
         </ViewModeContext.Provider>
     );
 });
@@ -208,6 +194,7 @@ function FilterIcon({setShownFilters, id}) {
 export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton, onFlatSelected, filterId}) => {
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
+    // TODO rename id to ids or something like this
     const [id, setId] = useState(uuid ? [uuid] : []);
     const [filters, dispatch] = useReducer(reducer, getInitialState(isPublic));
     const [savedFlat, setSavedFlat] = useState();
@@ -248,6 +235,10 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
     return (
         <Fragment>
+            <div>
+                <h1>ЖК Хрущёвский Дом №1 Секция 4</h1>
+            </div>
+
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridFiltersDrawer
                     filters={filters}
