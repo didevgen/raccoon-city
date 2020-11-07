@@ -1,11 +1,14 @@
 import styled from 'styled-components';
-import {TabPanel} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import Carousel from 'react-elastic-carousel';
 
 export const SectionBarContainer = styled.div<{isSideBarOpen: boolean}>`
     max-height: 80vh;
     width: 487px;
     margin-left: 30px;
+
+    .MuiBox-root-20 {
+        padding: 0 !important;
+    }
 
     @media only screen and (max-width: 600px) {
         display: ${({isSideBarOpen}) => (isSideBarOpen ? 'block' : 'none')};
@@ -111,13 +114,18 @@ export const SideBarImage = styled.img`
     width: 100%;
     height: 297px;
     border-radius: 10px;
+    margin: 5px 0;
+
+    @media only screen and (max-width: 600px) {
+        height: 247px;
+    }
 `;
 
 export const SideBarVRImage = styled<any>(SideBarImage)`
     cursor: pointer;
 `;
 
-export const TabPanelContainer = styled(TabPanel)`
+export const TabPanelContainer = styled.div`
     .MuiBox-root {
         padding: 0;
     }
@@ -132,7 +140,7 @@ export const TabPanelContainer = styled(TabPanel)`
     }
 
     @media only screen and (max-width: 600px) {
-        margin-top: 20px;
+        margin-top: 5px;
 
         .MuiBox-root {
             width: 100%;

@@ -81,36 +81,42 @@ export const SectionBar = (props: any) => {
                     </Tabs>
                 </AppBar>
             </AppBarContainer>
-            <TabPanelContainer value={value} index={0}>
-                <ApartmentComplexData apartmentComplex={data.getApartmentComplex} />
-            </TabPanelContainer>
-            <TabPanel value={value} index={1}>
-                {!images?.VR ? (
-                    <div>Нет VR фото</div>
-                ) : (
-                    images.VR.map(({downloadUrl, uuid, name}) => (
-                        <SideBarVRImage
-                            key={uuid}
-                            src={downloadUrl}
-                            alt="house image"
-                            onClick={() => {
-                                setDownloadLink(downloadUrl);
-                                setName(name);
-                                setOpen(true);
-                            }}
-                        />
-                    ))
-                )}
+            <TabPanel value={value} index={0}>
+                <TabPanelContainer>
+                    <ApartmentComplexData apartmentComplex={data.getApartmentComplex} />
+                </TabPanelContainer>
             </TabPanel>
-            <TabPanelContainer value={value} index={2}>
-                {!images?.PHOTO ? (
-                    <div>Нет фото</div>
-                ) : (
-                    <div style={{display: 'flex', flexDirection: 'column', maxHeight: '600px', overflowY: 'auto'}}>
-                        {photosJSX}
-                    </div>
-                )}
-            </TabPanelContainer>
+            <TabPanel value={value} index={1}>
+                <TabPanelContainer>
+                    {!images?.VR ? (
+                        <div>Нет VR фото</div>
+                    ) : (
+                        images.VR.map(({downloadUrl, uuid, name}) => (
+                            <SideBarVRImage
+                                key={uuid}
+                                src={downloadUrl}
+                                alt="house image"
+                                onClick={() => {
+                                    setDownloadLink(downloadUrl);
+                                    setName(name);
+                                    setOpen(true);
+                                }}
+                            />
+                        ))
+                    )}
+                </TabPanelContainer>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <TabPanelContainer>
+                    {!images?.PHOTO ? (
+                        <div>Нет фото</div>
+                    ) : (
+                        <div style={{display: 'flex', flexDirection: 'column', maxHeight: '600px', overflowY: 'auto'}}>
+                            {photosJSX}
+                        </div>
+                    )}
+                </TabPanelContainer>
+            </TabPanel>
 
             <SidebarVRDialog
                 setOpen={setOpen}
