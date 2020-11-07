@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export function TabPanel(props: TabPanelProps) {
+function TabPanel(props: TabPanelProps) {
     const {children, value, index, ...other} = props;
 
     return (

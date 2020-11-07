@@ -1,14 +1,14 @@
 import {useQuery} from '@apollo/react-hooks';
-import {AppBar} from '@material-ui/core';
+import {AppBar, Box, Typography} from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import CloseIcon from '@material-ui/icons/Close';
+import {TabPanelProps} from '@material-ui/lab';
 import React, {useState} from 'react';
 import {useParams} from 'react-router';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {ApartmentComplexData} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexData/ApartmentComplexData';
-import {TabPanel} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo';
 import {SidebarVRDialog} from '../FlatSidebarInfo/SidebarVRDialog';
 import {
     AppBarContainer,
@@ -20,6 +20,26 @@ import {
     SliderContainer,
     TabPanelContainer
 } from './SectionBar.styled';
+
+function TabPanel(props: any) {
+    const {children, value, index, ...other} = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
 
 // TODO add error handle
 export const SectionBar = (props: any) => {
