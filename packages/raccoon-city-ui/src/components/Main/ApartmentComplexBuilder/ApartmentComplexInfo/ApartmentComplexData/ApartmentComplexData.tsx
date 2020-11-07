@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import {ApartmentComplexType} from '../../../../shared/types/apartmentComplex.types';
+import styled from 'styled-components';
 
 interface ApartmentComplexDataProps {
     apartmentComplex: ApartmentComplexType;
@@ -71,6 +72,16 @@ function getTableRows(props: ApartmentComplexType) {
     ];
 }
 
+const TypographyWithFont = styled.span`
+    font-family: 'TTNorms', sans-serif;
+    font-weight: 600;
+    color: #000;
+    @media only screen and (max-width: 600px) {
+        font-weight: 400;
+        color: #636363;
+    }
+`;
+
 export function ApartmentComplexData(props: ApartmentComplexDataProps) {
     const rows = getTableRows(props.apartmentComplex);
     return (
@@ -81,12 +92,12 @@ export function ApartmentComplexData(props: ApartmentComplexDataProps) {
                         <TableRow key={row.key}>
                             <TableCell component="th" scope="row">
                                 <Typography variant="body2" component="p">
-                                    {row.label}
+                                    <TypographyWithFont>{row.label}</TypographyWithFont>
                                 </Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="body2" component="p">
-                                    {row.value}
+                                    <TypographyWithFont>{row.value}</TypographyWithFont>
                                 </Typography>
                             </TableCell>
                         </TableRow>
