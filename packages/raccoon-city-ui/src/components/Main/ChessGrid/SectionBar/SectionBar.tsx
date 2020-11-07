@@ -3,7 +3,6 @@ import {AppBar, Box, Typography} from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import CloseIcon from '@material-ui/icons/Close';
-import {TabPanelProps} from '@material-ui/lab';
 import React, {useState} from 'react';
 import {useParams} from 'react-router';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
