@@ -2,8 +2,6 @@ import {useQuery} from '@apollo/react-hooks';
 import {AppBar} from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import CloseIcon from '@material-ui/icons/Close';
 import React, {useState} from 'react';
 import {useParams} from 'react-router';
