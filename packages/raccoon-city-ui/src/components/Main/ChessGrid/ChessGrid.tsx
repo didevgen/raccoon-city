@@ -120,9 +120,6 @@ const ChessGridContent = React.memo((props: any) => {
                         <ColumnAndSectionBarWrapper>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
-                                    console.log('groupedFlats');
-                                    console.log(item.section);
-
                                     return (
                                         <ChessGridColumn
                                             key={item.id}
