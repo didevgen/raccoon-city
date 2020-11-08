@@ -44,7 +44,7 @@ export const SliderContainer = styled.div`
     }
 `;
 
-export const CustomSlider = styled(Carousel)`
+export const CustomSlider = styled(Carousel)<{isEmptyOrSingle: boolean}>`
     display: flex;
     width: 487px;
     margin-bottom: 10px;
@@ -71,8 +71,9 @@ export const CustomSlider = styled(Carousel)`
         line-height: 35px;
         position: absolute;
         bottom: 0;
-        z-index: 3000;
+        z-index: 1000;
         border-radius: 0;
+        display: ${({isEmptyOrSingle}) => (isEmptyOrSingle ? 'none' : 'block')};
     }
 
     .rec-arrow:disabled:hover {

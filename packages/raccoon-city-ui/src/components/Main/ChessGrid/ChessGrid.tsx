@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
+import {APARTMENT_COMPLEX_INFO} from '../../../graphql/queries/apartmentComplexQuery';
 import {
     FlatsInHouse,
     GET_FLAT_LIST,
@@ -11,7 +12,8 @@ import {
     GET_PUBLIC_FLATS_LIST,
     GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
-    GroupedFlats
+    GroupedFlats,
+    HOUSE_INFO
 } from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
@@ -26,7 +28,8 @@ import {
     Container,
     InfoIcon,
     MobileInformation,
-    SidebarDrawer
+    SidebarDrawer,
+    HouseTitle
 } from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
@@ -117,6 +120,9 @@ const ChessGridContent = React.memo((props: any) => {
                         <ColumnAndSectionBarWrapper>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                                    console.log('groupedFlats');
+                                    console.log(item.section);
+
                                     return (
                                         <ChessGridColumn
                                             key={item.id}
@@ -197,6 +203,44 @@ function FilterIcon({setShownFilters, id}) {
     return ReactDOM.createPortal(<ShowFilter setShownFilters={setShownFilters} />, elem);
 }
 
+function ComplexHouseName() {
+    const {apartmentComplexUuid, houseUuid} = useParams();
+
+    const {loading: houseLoading, error: houseError, data: houseData} = useQuery(HOUSE_INFO, {
+        fetchPolicy: 'cache-and-network',
+        variables: {
+            uuid: houseUuid
+        }
+    });
+
+    const {loading: apartmentComplexLoading, error: apartmentComplexError, data: apartmentComplexData} = useQuery(
+        APARTMENT_COMPLEX_INFO,
+        {
+            fetchPolicy: 'cache-and-network',
+            variables: {
+                uuid: apartmentComplexUuid
+            }
+        }
+    );
+
+    if (!apartmentComplexUuid || !houseUuid) {
+        return null;
+    }
+
+    if (houseLoading || apartmentComplexLoading) {
+        return <div>Loading</div>;
+    }
+
+    if (houseError || apartmentComplexError) {
+        return <div>Error :(</div>;
+    }
+
+    const houseName = houseData.getHouse.name;
+    const apartmentComplex = apartmentComplexData.getApartmentComplex.name;
+
+    return <HouseTitle>{`${apartmentComplex} ${houseName}`}</HouseTitle>;
+}
+
 export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton, onFlatSelected, filterId}) => {
     const [isMounted, setMounted] = useState(false);
     const [filterShown, setShownFilters] = useState(!!hasSelect);
@@ -241,9 +285,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
     return (
         <Fragment>
-            <div>
-                <h1>ЖК Хрущёвский Дом №1 Секция 4</h1>
-            </div>
+            <ComplexHouseName />
 
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridFiltersDrawer
