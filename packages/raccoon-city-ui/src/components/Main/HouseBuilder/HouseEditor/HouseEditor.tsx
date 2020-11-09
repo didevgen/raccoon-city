@@ -7,6 +7,7 @@ import {useParams} from 'react-router-dom';
 import {GET_GROUPED_FLATS, GroupedFlats} from '../../../../graphql/queries/houseQuery';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {LevelRepresentation} from './LevelRepresentation/LevelRepresentation';
+import AddSectionButton from './LevelRepresentation/AddSectionButton';
 
 function renderTabs(flats: GroupedFlats[]) {
     return flats.map((section) => {
@@ -31,10 +32,11 @@ export function HouseEditor() {
         setValue(newValue);
     };
 
-    const {houseUuid: uuid} = useParams();
+    const {houseUuid} = useParams();
+
     const {loading, error, data} = useQuery(GET_GROUPED_FLATS, {
         variables: {
-            uuid: uuid
+            uuid: houseUuid
         },
         fetchPolicy: 'cache-and-network'
     });
@@ -51,6 +53,7 @@ export function HouseEditor() {
                     {renderTabs(sections)}
                 </Tabs>
             </AppBar>
+            <AddSectionButton houseId={houseUuid} />
             {renderLevels(sections, value)}
         </Fragment>
     );

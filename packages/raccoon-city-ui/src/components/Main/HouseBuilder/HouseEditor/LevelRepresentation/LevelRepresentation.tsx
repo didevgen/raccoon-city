@@ -1,10 +1,8 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {Button, ExpansionPanelSummary, FormControlLabel} from '@material-ui/core';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import {AccordionSummary, FormControlLabel} from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import DehazeIcon from '@material-ui/icons/Dehaze';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -12,7 +10,6 @@ import arrayMove from 'array-move';
 import React, {Fragment, memo, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
-import styled from 'styled-components';
 import {ADD_LEVEL, DELETE_LEVEL, DELETE_SECTION} from '../../../../../graphql/mutations/flatMutation';
 import {REORDER_LEVELS} from '../../../../../graphql/mutations/houseMutation';
 import {GET_MAX_LEVEL, GET_SECTION} from '../../../../../graphql/queries/flatQuery';
@@ -21,6 +18,7 @@ import {Confirmation} from '../../../../shared/components/dialogs/ConfirmDialog'
 import {Flat} from '../../../../shared/types/flat.types';
 import {AddFlatCard} from '../AddFlatCard/AddFlatCard';
 import {FlatCard} from '../FlatCard/FlatCard';
+import {StyledButton, StyledIconButton, StyledInfo} from './styledComponents';
 
 interface LevelRepresentationProps {
     section: GroupedFlats;
@@ -35,19 +33,6 @@ interface SortableListRepresentation {
     }>;
     maxLevel: number;
 }
-
-const StyledButton = styled(Button)`
-    margin-bottom: 16px !important;
-`;
-
-const StyledIconButton = styled(IconButton)`
-    margin-left: auto !important;
-    margin-right: 0 !important;
-`;
-
-const StyledInfo = styled(Typography)`
-    align-self: center;
-`;
 
 interface AddLevelButtonProps {
     section: string;
@@ -175,14 +160,14 @@ function DeleteLevelButton(props: DeleteLevelButtonProps) {
     );
 }
 
-const SortableItem = SortableElement(ExpansionPanel);
+const SortableItem = SortableElement(Accordion);
 const SortableList = SortableContainer(({section, levels, maxLevel}: SortableListRepresentation) => {
     return (
         <div>
             {levels.map((level, i) => {
                 return (
                     <SortableItem key={level.id} index={i} TransitionProps={{unmountOnExit: true}}>
-                        <ExpansionPanelSummary
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
@@ -190,8 +175,8 @@ const SortableList = SortableContainer(({section, levels, maxLevel}: SortableLis
                             <FormControlLabel label="" control={<DragHandle />} />
                             <StyledInfo>Этаж {level.level}</StyledInfo>
                             <DeleteLevelButton sectionId={section.id} levelId={level.id} />
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Grid container={true} spacing={3}>
                                 <Grid container={true} spacing={3} item={true} xs={3}>
                                     <AddFlatCard
@@ -209,7 +194,7 @@ const SortableList = SortableContainer(({section, levels, maxLevel}: SortableLis
                                     );
                                 })}
                             </Grid>
-                        </ExpansionPanelDetails>
+                        </AccordionDetails>
                     </SortableItem>
                 );
             })}

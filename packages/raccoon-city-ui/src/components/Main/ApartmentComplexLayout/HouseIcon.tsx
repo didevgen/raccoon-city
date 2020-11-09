@@ -42,7 +42,6 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         <HouseIconContainer
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
-                console.log('asd');
                 // @ts-ignore
                 if (window.location !== window.parent.location) {
                     // @ts-ignore
