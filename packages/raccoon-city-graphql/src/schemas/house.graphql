@@ -40,7 +40,7 @@ type Mutation {
     addLevel(sectionId: String!): Boolean
     deleteLevel(levelId: String!): Boolean
     deleteSection(sectionId: String!): Boolean
-    addSection(uuid: String!):Boolean
+    addSection(uuid: String!): Boolean
     reorderLevels(sectionId: String!, oldIndex: Int!, newIndex: Int!): Boolean
     assignHouseToApartmentComplexLayout(
         layoutId: String!
@@ -48,10 +48,7 @@ type Mutation {
         path: [String]
         viewBox: ViewBoxInput
     ): Boolean
-    deleteHouseFromApartmentComplexLayout(
-        layoutId: String!
-        houseId: String!
-    ): Boolean
+    deleteHouseFromApartmentComplexLayout(layoutId: String!, houseId: String!): Boolean
 }
 
 extend type Query {
