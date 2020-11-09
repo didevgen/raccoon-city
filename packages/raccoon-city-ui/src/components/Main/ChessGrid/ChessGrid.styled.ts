@@ -21,10 +21,11 @@ export const ColumnWrapper = styled.div`
     flex-direction: row;
 `;
 
+// TODO check how comment on 28 line influence in project
 export const Container = styled.div`
     background-color: #fff;
     padding: 0 16px;
-    border-right: 1px solid #cccccc;
+    /* border-right: 1px solid #cccccc; */
     display: flex;
     flex-direction: column;
     align-self: flex-end;
@@ -35,7 +36,8 @@ export const ColumnAndSectionBarWrapper = styled.div`
     display: flex;
     justify-content: space-around;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 900px) {
+        justify-content: center;
         flex-direction: column;
     }
 `;
@@ -78,5 +80,16 @@ export const InfoIcon = styled.div`
         content: 'i';
         font-size: 15px;
         color: #e84f1d;
+    }
+`;
+
+export const HouseTitle = styled.p`
+    font-size: 50px;
+    margin: 0;
+
+    @media only screen and (max-width: 600px) {
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 10px;
     }
 `;

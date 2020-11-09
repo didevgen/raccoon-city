@@ -78,6 +78,12 @@ export const SectionBar = (props: any) => {
     const photosJSX = images?.PHOTO?.map(({downloadUrl, uuid}) => (
         <SideBarImage key={uuid} src={downloadUrl} alt="house image" />
     ));
+    // TODO change to static image
+    const photosJSXToRender = !photosJSX?.length
+        ? [<SideBarImage src="https://image.flaticon.com/icons/png/512/63/63813.png" alt="house image" />]
+        : photosJSX;
+
+    const isEmptyOrSingle = photosJSXToRender.length < 2;
 
     return (
         <SectionBarContainer isSideBarOpen={isSideBarOpen}>
@@ -86,8 +92,13 @@ export const SectionBar = (props: any) => {
             </CloseBarContainer>
 
             <SliderContainer>
-                <CustomSlider itemsToShow={1} pagination={false} disableArrowsOnEnd={false}>
-                    {photosJSX}
+                <CustomSlider
+                    enableMouseSwipe={false}
+                    itemsToShow={1}
+                    pagination={false}
+                    isEmptyOrSingle={isEmptyOrSingle}
+                >
+                    {photosJSXToRender}
                 </CustomSlider>
             </SliderContainer>
 
