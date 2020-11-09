@@ -9,7 +9,8 @@ export const WHITELISTED_QUERIES = [
     'countPublicFlats',
     'getApartmentComplexLayout',
     'getPublishedFlatsLayoutByHouseId',
-    'getApartmentComplex'
+    'getApartmentComplex',
+    'getHouse'
 ];
 
 export const PUBLIC_QUERIES = [
