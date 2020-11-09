@@ -175,9 +175,7 @@ export const FlatStatusesBarContainer = styled.div`
     width: 30px;
 
     @media (max-width: 750px) {
-        display: flex;
-        justify-content: center;
-        width: 95%;
+        margin-right: 10px;
     }
 `;
 
@@ -249,7 +247,7 @@ export const StatusesTooltip = styled.div`
     }
 
     @media (max-width: 750px) {
-        width: 100%;
+        width: 300px;
         left: 0;
         right: 0;
         top: 40px;

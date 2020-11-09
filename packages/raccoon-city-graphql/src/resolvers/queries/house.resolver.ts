@@ -294,5 +294,10 @@ export const hosueQuery = {
         } else {
             return [];
         }
-    }
+    },
+    getPublishedHouse: async (parent, {uuid}) => {
+        return await PublishedHouseModel.findOne({
+            house: uuid
+        }).exec();
+    },
 };

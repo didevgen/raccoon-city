@@ -60,6 +60,15 @@ export const HOUSE_INFO = gql`
     }
 `;
 
+export const PUBLISHED_HOUSE_INFO = gql`
+    query getPublishedHouse($uuid: String!) {
+        getPublishedHouse(uuid: $uuid) {
+            id
+            name
+        }
+    }
+`;
+
 export const HOUSE_DATA = gql`
     query getHouse($uuid: String!) {
         getHouse(uuid: $uuid) {

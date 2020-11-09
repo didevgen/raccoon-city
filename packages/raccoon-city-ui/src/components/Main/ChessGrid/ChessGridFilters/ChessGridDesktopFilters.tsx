@@ -29,6 +29,10 @@ const FlatStatusesBarWrapper = styled.div`
     top: 50%;
     transform: translateY(-50%);
     z-index: 999;
+
+    @media only screen and (max-width: 600px) {
+        display: none;
+    }
 `;
 
 const RangeContainer = styled.div``;

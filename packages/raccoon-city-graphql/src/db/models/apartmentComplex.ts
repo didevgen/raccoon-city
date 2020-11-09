@@ -14,7 +14,6 @@ export interface ApartmentComplex extends Document {
     class: KeyDisplayName;
     levels: number;
     sections: number;
-    price: number;
     beginDate: string;
     endDate: string;
     houses: House[];

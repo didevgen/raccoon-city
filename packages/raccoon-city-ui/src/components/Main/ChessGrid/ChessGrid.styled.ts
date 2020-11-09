@@ -5,6 +5,15 @@ import Select from '@material-ui/core/Select';
 export const ChessGridWrapper: any = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    min-width: 700px;
+    margin-top: 20px;
+
+    @media only screen and (max-width: 600px) {
+        min-width: 320px;
+        overflow-x: auto;
+        background-color: #fff;
+    }
 `;
 
 export const ColumnWrapper = styled.div`
@@ -12,13 +21,25 @@ export const ColumnWrapper = styled.div`
     flex-direction: row;
 `;
 
+// TODO check how comment on 28 line influence in project
 export const Container = styled.div`
     background-color: #fff;
     padding: 0 16px;
-    border-right: 1px solid #cccccc;
+    /* border-right: 1px solid #cccccc; */
     display: flex;
     flex-direction: column;
     align-self: flex-end;
+    width: 100%;
+`;
+
+export const ColumnAndSectionBarWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+
+    @media only screen and (max-width: 900px) {
+        justify-content: center;
+        flex-direction: column;
+    }
 `;
 
 export const ColumnTitle = styled(Typography)`
@@ -35,4 +56,40 @@ export const SidebarDrawer = styled(SwipeableDrawer)`
 
 export const SelectStyled = styled(Select)`
     margin: 0 20px;
+`;
+
+export const MobileInformation = styled.div`
+    display: none;
+
+    @media only screen and (max-width: 600px) {
+        display: flex;
+        justify-content: flex-start;
+    }
+`;
+
+export const InfoIcon = styled.div`
+    border: 1px solid #e84f1d;
+    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+        content: 'i';
+        font-size: 15px;
+        color: #e84f1d;
+    }
+`;
+
+export const HouseTitle = styled.p`
+    font-size: 50px;
+    margin: 0;
+
+    @media only screen and (max-width: 600px) {
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
 `;

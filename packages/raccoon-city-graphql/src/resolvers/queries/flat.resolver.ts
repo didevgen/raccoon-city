@@ -146,7 +146,7 @@ export const flatQuery = {
 
         flat.layout = house.layouts.find((layout) => {
             return !!layout.flats.find((item) => {
-                return item.equals(flat._id);
+                return item.equals(flat?._id);
             });
         });
         flat.levelLayouts = house.levelLayouts
@@ -156,12 +156,12 @@ export const flatQuery = {
                 }
 
                 return levelLayout.flatLayouts.some((flatLevelLayout) => {
-                    return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+                    return flatLevelLayout.flatLayout?._id.equals(flat.layout?._id);
                 });
             })
             .map((levelLayout) => {
                 const flatLayout: any[] = levelLayout.flatLayouts.filter((flatLevelLayout) => {
-                    return flatLevelLayout.flatLayout._id.equals(flat.layout._id);
+                    return flatLevelLayout.flatLayout?._id.equals(flat.layout?._id);
                 });
                 return {
                     id: String(levelLayout._id),
