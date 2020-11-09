@@ -13,7 +13,7 @@ import {
     GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
     GroupedFlats,
-    HOUSE_INFO
+    PUBLISHED_HOUSE_INFO
 } from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
@@ -26,10 +26,10 @@ import {
     ColumnAndSectionBarWrapper,
     ColumnWrapper,
     Container,
+    HouseTitle,
     InfoIcon,
     MobileInformation,
-    SidebarDrawer,
-    HouseTitle
+    SidebarDrawer
 } from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
@@ -203,7 +203,7 @@ function FilterIcon({setShownFilters, id}) {
 function ComplexHouseName() {
     const {apartmentComplexUuid, houseUuid} = useParams();
 
-    const {loading: houseLoading, error: houseError, data: houseData} = useQuery(HOUSE_INFO, {
+    const {loading: houseLoading, error: houseError, data: houseData} = useQuery(PUBLISHED_HOUSE_INFO, {
         fetchPolicy: 'cache-and-network',
         variables: {
             uuid: houseUuid
@@ -232,7 +232,7 @@ function ComplexHouseName() {
         return <div>Error :(</div>;
     }
 
-    const houseName = houseData.getHouse.name;
+    const houseName = houseData.getPublishedHouse.name;
     const apartmentComplex = apartmentComplexData.getApartmentComplex.name;
 
     return <HouseTitle>{`${apartmentComplex} ${houseName}`}</HouseTitle>;

@@ -56,6 +56,7 @@ type Mutation {
 extend type Query {
     getHouses(apartmentComplexId: String!): [House]
     getPublishedHouses(uuid: String!): [House]
+    getPublishedHouse(uuid: String!): House
     getGroupedHouseData(uuid: String!): GroupedBySectionHouseResult
     getHouse(uuid: String!): House
     getMaxLevelInSection(sectionId: String!): Int

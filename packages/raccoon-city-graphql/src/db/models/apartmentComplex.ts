@@ -14,7 +14,6 @@ export interface ApartmentComplex extends Document {
     class: KeyDisplayName;
     levels: number;
     sections: number;
-    price: number;
     beginDate: string;
     endDate: string;
     houses: House[];
@@ -31,7 +30,6 @@ const ApartmentComplexSchema: Schema = new Schema({
     class: {type: KeyDisplayNameSchema, required: true},
     levels: {type: Schema.Types.Number, required: true},
     sections: {type: Schema.Types.Number, required: true},
-    price: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String, required: true},
     endDate: {type: Schema.Types.String, required: true},
     isDeleted: {type: Schema.Types.Boolean, default: false},
