@@ -117,7 +117,7 @@ const ChessGridContent = React.memo((props: any) => {
 
                 return (
                     <Container key={group.id}>
-                        <ColumnAndSectionBarWrapper>
+                        <ColumnAndSectionBarWrapper isPublic={isPublic} mode={filters.mode}>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
                                     return (
@@ -131,10 +131,10 @@ const ChessGridContent = React.memo((props: any) => {
                                     );
                                 })}
                             </ColumnWrapper>
-                            {isPublic && filters.mode === ChessCellViewMode.TILE && (
-                                <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />
-                            )}
                         </ColumnAndSectionBarWrapper>
+                        {isPublic && filters.mode === ChessCellViewMode.TILE && (
+                            <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />
+                        )}
                     </Container>
                 );
             })}
@@ -282,7 +282,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
 
     return (
         <Fragment>
-            <ComplexHouseName />
+            {isPublic && <ComplexHouseName />}
 
             <CellViewModeContext.Provider value={filters}>
                 <ChessGridFiltersDrawer
