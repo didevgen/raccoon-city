@@ -62,6 +62,7 @@ export const RecaptchaContainer = styled.div`
     display: flex;
     justify-content: center;
     margin: 30px 0px;
+    display: none;
 `;
 
 export const ModalTitle = styled.span`
@@ -134,6 +135,11 @@ export const CustomInput = styled(Input)`
 export const CustomButton = styled(Button)`
     width: 100%;
     padding: 5px 0;
+
+    &.MuiButton-root:hover {
+        background: #e84f1d;
+        color: #fff;
+    }
 `;
 
 interface FlatModalProps extends BrowserRouterProps {
@@ -263,8 +269,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                 <CustomButton
                                     type="submit"
                                     variant="outlined"
-                                    color="primary"
-                                    disabled={invalid || !isVerify}
+                                    // disabled={invalid || !isVerify} //to enable captcha uncomment this string and remove display: none at RecaptchaContainer
+                                    disabled={invalid}
                                 >
                                     Отправить
                                 </CustomButton>
