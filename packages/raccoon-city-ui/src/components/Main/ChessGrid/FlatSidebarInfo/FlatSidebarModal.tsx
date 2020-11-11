@@ -23,7 +23,7 @@ import {
 const optionsValue = [
     {value: 1, label: 'Купить квартиру'},
     {value: 2, label: 'Купить КН'},
-    {value: 3, label: 'Оформить документы'},
+    {value: 3, label: 'Документы'},
     {value: 4, label: 'Консультация'}
 ];
 

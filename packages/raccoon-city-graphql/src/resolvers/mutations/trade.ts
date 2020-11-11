@@ -126,7 +126,7 @@ export const tradeMutation = {
 
         const amoUser = {name: args.userInfo.name, phone: args.userInfo.phone, reason: args.userInfo.reason};
 
-        sendUserToAmo('https://www.zhilstroj-2.ua/wp-content/themes/zhilstroj-2/amo4.ph', amoUser);
+        sendUserToAmo('https://www.zhilstroj-2.ua/wp-content/themes/zhilstroj-2/amo4.php', amoUser);
 
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')
