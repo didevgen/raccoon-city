@@ -217,7 +217,6 @@ export const house = {
 
             return true;
         } catch (e) {
-            
             return false;
         }
     }
