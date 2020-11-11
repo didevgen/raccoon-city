@@ -148,7 +148,8 @@ interface FlatModalProps extends BrowserRouterProps {
 }
 
 const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
-    // const [isVerify, setVerify] = useState(false); // TODO enable captcha uncomment this.
+    // TODO enable captcha uncomment this.
+    // const [isVerify, setVerify] = useState(false);
 
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
@@ -178,7 +179,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
         close(false);
     };
 
-    // const verifyCallback = () => { // TODO enable captcha uncomment this.
+    // TODO enable captcha uncomment this.
+    // const verifyCallback = () => {
     //     setVerify(true);
     // };
 
@@ -248,7 +250,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                     )}
                                 </Field>
                             </CustomInput>
-                            {/* <RecaptchaContainer>    // TODO enable captcha uncomment this.
+                            {/* TODO enable captcha uncomment this.
+                            <RecaptchaContainer>    
                                 <Recaptcha
                                     sitekey={`${process.env.REACT_APP_SITE_KEY}`} 
                                     render="explicit"
