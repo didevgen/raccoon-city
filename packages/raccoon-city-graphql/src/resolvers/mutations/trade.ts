@@ -1,6 +1,17 @@
 import { Context } from '../../utils';
 import { Trade, TradeModel } from '../../db/models/trade';
 import { ContactModel } from '../../db/models/contact';
+import axios from 'axios';
+
+async function sendUserToAmo(url: string, user: any){
+    try{
+        const response = await axios.post(url, user);
+        return response.status;
+    }
+    catch(err){
+        return err.message;
+    }
+}
 
 export const tradeMutation = {
     async createTrade(parent, args, ctx: Context): Promise<Trade> {
@@ -113,6 +124,13 @@ export const tradeMutation = {
             userInfo: { name, phone, email, developerUuid }
         } = args;
         let tradeNumber = 1;
+    
+        const amoUser = 
+        {name: args.userInfo.name, 
+        phone: args.userInfo.phone,
+        reason: args.userInfo.reason};
+
+        sendUserToAmo('https://www.zhilstroj-2.ua/wp-content/themes/zhilstroj-2/amo4.ph', amoUser);       
 
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')

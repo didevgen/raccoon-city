@@ -24,6 +24,7 @@ import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
+import SentTradeRequestModal from './SentTradeRequestModal';
 
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
@@ -91,6 +92,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     );
     const [value, setValue] = React.useState(0);
     const [isModalOpen, setModalOpen] = React.useState(false);
+    const [modal, setModal] = React.useState(false);
 
     const {showRequestButton} = props;
     let isShowButton = showRequestButton;
@@ -193,7 +195,8 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     </SendRequestContainer>
                 </ButtonsContainer>
             )}
-            {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
+            {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} open={setModal} />}
+            {modal && <SentTradeRequestModal close={setModal} />}
         </FlatSidebarWrapper>
     );
 }
