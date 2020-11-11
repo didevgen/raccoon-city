@@ -3,7 +3,7 @@ import {Trade, TradeModel} from '../../db/models/trade';
 import {ContactModel} from '../../db/models/contact';
 import {logger} from '../../aws/logger';
 import axios from 'axios';
-import { ApolloError } from 'apollo-server';
+import {ApolloError} from 'apollo-server';
 
 async function sendUserToAmo(url: string, user: any) {
     try {
@@ -11,7 +11,7 @@ async function sendUserToAmo(url: string, user: any) {
         return response.status;
     } catch (err) {
         logger.error(err);
-        throw new ApolloError(err.message)
+        throw new ApolloError(err.message);
     }
 }
 
