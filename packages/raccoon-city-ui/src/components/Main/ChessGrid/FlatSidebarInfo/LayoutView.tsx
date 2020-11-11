@@ -63,8 +63,6 @@ function fillExistingLayouts(
     setCurrentDataId?: any,
     onSelect?: any
 ) {
-    console.log('info');
-    console.log(info);
     if (info) {
         info.forEach((item, i) => {
             let pathParsed = JSON.parse(paths[i]);

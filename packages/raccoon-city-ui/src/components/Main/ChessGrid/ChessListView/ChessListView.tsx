@@ -32,53 +32,55 @@ export class ChessListView extends React.Component<any> {
 
         return (
             <ListViewBox>
-                <Header>
-                    <TableCellContainer>Секция</TableCellContainer>
-                    <TableCellContainer>Площадь</TableCellContainer>
-                    <TableCellContainer>№ Квартиры</TableCellContainer>
-                    <TableCellContainer>Этаж</TableCellContainer>
-                    <TableCellContainer>Цена</TableCellContainer>
-                    <TableCellContainer>Кол-во комнат</TableCellContainer>
-                    <TableCellContainer>Цена за м2</TableCellContainer>
-                    <TableCellContainer>Статус</TableCellContainer>
-                    <TableCellContainer>Кол-во этажей</TableCellContainer>
-                </Header>
+                <div>
+                    <Header>
+                        <TableCellContainer>Секция</TableCellContainer>
+                        <TableCellContainer>Площадь</TableCellContainer>
+                        <TableCellContainer>№ Квартиры</TableCellContainer>
+                        <TableCellContainer>Этаж</TableCellContainer>
+                        <TableCellContainer>Цена</TableCellContainer>
+                        <TableCellContainer>Кол-во комнат</TableCellContainer>
+                        <TableCellContainer>Цена за м2</TableCellContainer>
+                        <TableCellContainer>Статус</TableCellContainer>
+                        <TableCellContainer>Кол-во этажей</TableCellContainer>
+                    </Header>
 
-                <StyledDataTable>
-                    <AutoSizer>
-                        {({width, height}) => (
-                            <List
-                                width={width}
-                                height={height}
-                                rowHeight={80}
-                                style={{outline: 'none'}}
-                                rowCount={filteredList.length}
-                                rowRenderer={({key, index, style, parent}) => {
-                                    const flat = filteredList[index];
+                    <StyledDataTable>
+                        <AutoSizer>
+                            {({width, height}) => (
+                                <List
+                                    width={width}
+                                    height={height}
+                                    rowHeight={80}
+                                    style={{outline: 'none', overflow: 'overlay'}}
+                                    rowCount={filteredList.length}
+                                    rowRenderer={({key, index, style, parent}) => {
+                                        const flat = filteredList[index];
 
-                                    return (
-                                        <RowContainer key={key} onClick={() => onSelect(flat)} style={style}>
-                                            <TableRowCellContainer>{flat.section}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.area}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.flatNumber}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.level}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.price}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.roomAmount}</TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.squarePrice}</TableRowCellContainer>
-                                            <TableRowCellContainer>
-                                                {
-                                                    FLAT_STATUSES.find((statuses) => statuses.value === flat.status)
-                                                        ?.label
-                                                }
-                                            </TableRowCellContainer>
-                                            <TableRowCellContainer>{flat.levelAmount}</TableRowCellContainer>
-                                        </RowContainer>
-                                    );
-                                }}
-                            />
-                        )}
-                    </AutoSizer>
-                </StyledDataTable>
+                                        return (
+                                            <RowContainer key={key} onClick={() => onSelect(flat)} style={style}>
+                                                <TableRowCellContainer>{flat.section}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.area}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.flatNumber}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.level}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.price}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.roomAmount}</TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.squarePrice}</TableRowCellContainer>
+                                                <TableRowCellContainer>
+                                                    {
+                                                        FLAT_STATUSES.find((statuses) => statuses.value === flat.status)
+                                                            ?.label
+                                                    }
+                                                </TableRowCellContainer>
+                                                <TableRowCellContainer>{flat.levelAmount}</TableRowCellContainer>
+                                            </RowContainer>
+                                        );
+                                    }}
+                                />
+                            )}
+                        </AutoSizer>
+                    </StyledDataTable>
+                </div>
             </ListViewBox>
         );
     }
