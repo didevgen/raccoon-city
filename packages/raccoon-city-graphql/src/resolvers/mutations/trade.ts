@@ -1,14 +1,17 @@
 import {Context} from '../../utils';
 import {Trade, TradeModel} from '../../db/models/trade';
 import {ContactModel} from '../../db/models/contact';
+import {logger} from '../../aws/logger';
 import axios from 'axios';
+import { ApolloError } from 'apollo-server';
 
 async function sendUserToAmo(url: string, user: any) {
     try {
         const response = await axios.post(url, user);
         return response.status;
     } catch (err) {
-        return err.message;
+        logger.error(err);
+        throw new ApolloError(err.message)
     }
 }
 
@@ -126,7 +129,7 @@ export const tradeMutation = {
 
         const amoUser = {name: args.userInfo.name, phone: args.userInfo.phone, reason: args.userInfo.reason};
 
-        sendUserToAmo('https://www.zhilstroj-2.ua/wp-content/themes/zhilstroj-2/amo4.php', amoUser);
+        sendUserToAmo(process.env.ZHILSTROJ2_API_AMO4, amoUser);
 
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')

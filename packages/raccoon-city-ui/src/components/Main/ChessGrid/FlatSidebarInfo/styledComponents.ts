@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 import {Button} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+
+export const StyledCloseIcon = styled(CloseIcon)`
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #e84f1d;
+`;
 
 export const ModalContainer = styled.div`
     position: fixed;

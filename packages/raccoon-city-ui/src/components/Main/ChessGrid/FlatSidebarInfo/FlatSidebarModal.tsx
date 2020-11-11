@@ -1,13 +1,11 @@
 import React from 'react';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import Select from '@appgeist/react-select-material-ui';
-// import Recaptcha from 'react-recaptcha';
 import {Typography, TextField} from '@material-ui/core';
 import {Form, Field} from 'react-final-form';
 import {required} from '../../../../utils/validation';
 import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {useMutation} from '@apollo/react-hooks';
-import CloseIcon from '@material-ui/icons/Close';
 import {withRouter, BrowserRouterProps} from 'react-router-dom';
 import {
     Modal,
@@ -16,7 +14,8 @@ import {
     ButtonsContainer,
     ModalTitle,
     CustomInput,
-    CustomButton
+    CustomButton,
+    StyledCloseIcon
 } from './styledComponents';
 
 const optionsValue = [
@@ -34,8 +33,6 @@ interface FlatModalProps extends BrowserRouterProps {
 }
 
 const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
-    // const [isVerify, setVerify] = useState(false);
-
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
     const onSubmit = async (values) => {
@@ -63,10 +60,6 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
         open(true);
         close(false);
     };
-
-    // const verifyCallback = () => {
-    //     setVerify(true);
-    // };
 
     return (
         <>
@@ -135,29 +128,9 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                         )}
                                     </Field>
                                 </CustomInput>
-                                {/* <RecaptchaContainer>
-                                    <Recaptcha
-                                        sitekey={`${process.env.REACT_APP_SITE_KEY}`}
-                                        render="explicit"
-                                        verifyCallback={verifyCallback}
-                                    />
-                                </RecaptchaContainer> */}
                                 <ButtonsContainer>
-                                    <CloseIcon
-                                        onClick={() => close(false)}
-                                        style={{
-                                            position: 'absolute',
-                                            top: '15px',
-                                            right: '15px',
-                                            color: '#e84f1D'
-                                        }}
-                                    />
-                                    <CustomButton
-                                        type="submit"
-                                        variant="outlined"
-                                        // disabled={invalid || !isVerify} //to enable captcha uncomment this string and remove display: none at RecaptchaContainer
-                                        disabled={invalid}
-                                    >
+                                    <StyledCloseIcon onClick={() => close(false)} />
+                                    <CustomButton type="submit" variant="outlined" disabled={invalid}>
                                         Отправить
                                     </CustomButton>
                                 </ButtonsContainer>
