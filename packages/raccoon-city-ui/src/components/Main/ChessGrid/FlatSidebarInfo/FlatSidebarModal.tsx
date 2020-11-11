@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import Select from '@appgeist/react-select-material-ui';
-import Recaptcha from 'react-recaptcha';
+// import Recaptcha from 'react-recaptcha';
 import {Typography, TextField} from '@material-ui/core';
 import {Form, Field} from 'react-final-form';
 import {required} from '../../../../utils/validation';
@@ -14,7 +14,6 @@ import {
     ModalContainer,
     InputError,
     ButtonsContainer,
-    RecaptchaContainer,
     ModalTitle,
     CustomInput,
     CustomButton
@@ -35,7 +34,7 @@ interface FlatModalProps extends BrowserRouterProps {
 }
 
 const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
-    const [isVerify, setVerify] = useState(false);
+    // const [isVerify, setVerify] = useState(false);
 
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
@@ -65,9 +64,9 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
         close(false);
     };
 
-    const verifyCallback = () => {
-        setVerify(true);
-    };
+    // const verifyCallback = () => {
+    //     setVerify(true);
+    // };
 
     return (
         <>
@@ -136,13 +135,13 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                         )}
                                     </Field>
                                 </CustomInput>
-                                <RecaptchaContainer>
+                                {/* <RecaptchaContainer>
                                     <Recaptcha
                                         sitekey={`${process.env.REACT_APP_SITE_KEY}`}
                                         render="explicit"
                                         verifyCallback={verifyCallback}
                                     />
-                                </RecaptchaContainer>
+                                </RecaptchaContainer> */}
                                 <ButtonsContainer>
                                     <CloseIcon
                                         onClick={() => close(false)}
