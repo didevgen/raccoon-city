@@ -30,12 +30,12 @@ type TradeFlat {
     houseId: String
 }
 
-type Reason{
+type Reason {
     value: Int
     label: String
 }
 
-input ReasonInput{
+input ReasonInput {
     value: Int
     label: String
 }
