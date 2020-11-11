@@ -206,14 +206,9 @@ export const house = {
     },
     async addSection(parent, {uuid}) {
         try {
-            let maxSectionNumber: number;
             const existingSections = await SectionModel.find({house: uuid, isDeleted: false}).exec();
-
-            if (existingSections.length === 0) {
-                maxSectionNumber = 1;
-            } else {
-                maxSectionNumber = Number(existingSections.length) + 1;
-            }
+            
+            const maxSectionNumber = !existingSections.length ? 1 : Number(existingSections.length) + 1;
 
             await SectionModel.create({
                 house: uuid,
@@ -221,7 +216,6 @@ export const house = {
             });
             return true;
         } catch (e) {
-            console.log('create section error: ', e.message);
             return false;
         }
     }
