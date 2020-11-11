@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import Select from '@appgeist/react-select-material-ui';
-import Recaptcha from 'react-recaptcha';
 import {Typography, TextField, Button} from '@material-ui/core';
 import {Form, Field} from 'react-final-form';
 import {required} from '../../../../utils/validation';
@@ -10,6 +9,8 @@ import {FORM_REQUEST_TRADE} from '../../../../graphql/mutations/tradeMutation';
 import {useMutation} from '@apollo/react-hooks';
 import CloseIcon from '@material-ui/icons/Close';
 import {withRouter, BrowserRouterProps} from 'react-router-dom';
+// TODO enable captcha uncomment this
+// import Recaptcha from 'react-recaptcha';
 
 const optionsValue = [
     {value: 1, label: 'Купить квартиру'},
@@ -149,7 +150,8 @@ interface FlatModalProps extends BrowserRouterProps {
 }
 
 const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
-    const [isVerify, setVerify] = useState(false);
+    // TODO enable captcha uncomment this
+    // const [isVerify, setVerify] = useState(false);
 
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
@@ -179,9 +181,10 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
         close(false);
     };
 
-    const verifyCallback = () => {
-        setVerify(true);
-    };
+    // TODO enable captcha uncomment this
+    // const verifyCallback = () => {
+    //     setVerify(true);
+    // };
 
     return (
         <ModalContainer>
@@ -249,13 +252,14 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                     )}
                                 </Field>
                             </CustomInput>
+                            {/* // TODO enable captcha uncomment this
                             <RecaptchaContainer>
                                 <Recaptcha
                                     sitekey={`${process.env.REACT_APP_SITE_KEY}`}
                                     render="explicit"
                                     verifyCallback={verifyCallback}
                                 />
-                            </RecaptchaContainer>
+                            </RecaptchaContainer> */}
                             <ButtonsContainer>
                                 <CloseIcon
                                     onClick={() => close(false)}
@@ -269,7 +273,8 @@ const FlatSidebarModal = ({close, flat, match}: FlatModalProps) => {
                                 <CustomButton
                                     type="submit"
                                     variant="outlined"
-                                    // disabled={invalid || !isVerify} //to enable captcha uncomment this string and remove display: none at RecaptchaContainer
+                                    // TODO enable captcha uncomment this
+                                    // disabled={invalid || !isVerify}
                                     disabled={invalid}
                                 >
                                     Отправить
