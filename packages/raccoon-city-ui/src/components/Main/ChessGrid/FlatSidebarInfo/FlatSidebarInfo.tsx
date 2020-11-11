@@ -185,7 +185,6 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     {flat?.layout?.images?.PHOTO?.length && <StyledTab icon={<ImageIcon />} aria-label="gallery" />}
                     {flat?.levelLayouts && <StyledTab icon={<ViewCompactIcon />} aria-label="layout" />}
                     {Boolean(flat) && <StyledTab icon={<PrintIcon />} aria-label="print" />}
-                    console.log()
                 </Tabs>
             </AppBar>
 
