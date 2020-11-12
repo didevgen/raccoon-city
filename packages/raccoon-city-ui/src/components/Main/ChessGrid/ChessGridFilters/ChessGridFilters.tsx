@@ -9,7 +9,6 @@ import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
-import {FlatStatusesBar} from '../FlatStatusesBar';
 
 export const SelectContainer = styled.div`
     display: flex;
@@ -114,6 +113,15 @@ const DimensionSpan = styled.span`
 export const FilterTitle = styled.div`
     text-align: center;
     margin-bottom: 8px;
+`;
+
+export const FilterWrapper = styled.div`
+    max-height: 100vh;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 30px;
 `;
 
 function ValueLabelComponent(props) {
@@ -468,7 +476,7 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;
     return (
-        <Fragment>
+        <FilterWrapper>
             <Grid container spacing={1}>
                 {props.onHouseChange && (
                     <Grid item xs={12}>
@@ -479,11 +487,6 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                 )}
                 {hasPrices && (
                     <Fragment>
-                        <Grid item xs={12} md={2}>
-                            <Grid container justify="center">
-                                <FlatStatusesBar houseId={props.houseId} />
-                            </Grid>
-                        </Grid>
                         <Grid item xs={12} md={4}>
                             <Grid container justify="center">
                                 <RoomAmountFilter dispatch={props.dispatchFn} />
@@ -522,6 +525,6 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                     </Fragment>
                 )}
             </Grid>
-        </Fragment>
+        </FilterWrapper>
     );
 }

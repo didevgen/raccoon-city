@@ -25,6 +25,7 @@ import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
 import SentTradeRequestModal from './SentTradeRequestModal';
+import {defaultFlatPicture} from './svgImages';
 
 interface FlatSidebarInfoProps {
     flat: Flat;
@@ -164,15 +165,17 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     Выбрать квартиру
                 </Button>
             )}
-            {flat.layout && (
-                <ImageContainer>
+            <ImageContainer>
+                {!!flat.layout ? (
                     <img
                         className="FlatSidebarInfo__image"
                         src={flat.layout?.image.previewImageUrl}
                         alt={flat.layout?.name}
                     />
-                </ImageContainer>
-            )}
+                ) : (
+                    defaultFlatPicture
+                )}
+            </ImageContainer>
             <AppBar position="static">
                 <Tabs
                     value={value}
