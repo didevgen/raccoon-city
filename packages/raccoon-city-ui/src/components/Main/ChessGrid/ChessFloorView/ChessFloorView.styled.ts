@@ -35,12 +35,16 @@ export const FloorsListContainer = styled.div`
     }
 `;
 
-export const FloorsListItem = styled.p<{isPublic: boolean}>`
+export const FloorsListItem = styled.p<{isPublic: boolean; currentLevel: boolean}>`
     width: 100%;
     padding: 5px 0;
     text-align: center;
     transition: 0.3s;
     cursor: pointer;
+    font-family: 'TTNorms', sans-serif;
+    font-weight: 500;
+
+    color: ${({currentLevel}) => (currentLevel ? '#E84F1D' : '#1D1D1B')};
 
     &:hover {
         color: ${({isPublic}) => (isPublic ? '#E84F1D' : '#3f51b5')};

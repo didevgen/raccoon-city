@@ -45,12 +45,59 @@ export const ViewModeContext = React.createContext({selectedViewMode: ViewModeVa
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
 
 export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
+    .MuiPaper-elevation4 {
+        box-shadow: none;
+    }
+
     .MuiAppBar-colorPrimary {
-        background-color: #e84f1d;
+        background-color: transparent;
     }
 
     .PrivateTabIndicator-colorSecondary-42 {
         background-color: #fff;
+    }
+
+    .MuiTabs-flexContainer {
+        box-shadow: none;
+    }
+
+    .MuiAppBar-root {
+        margin-top: 10px;
+    }
+
+    .MuiTab-root {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .MuiAppBar-root .MuiTouchRipple-root {
+        border: 1px solid #000;
+        border-radius: 10px;
+        margin: 0 5px;
+    }
+
+    .MuiAppBar-root .MuiTab-wrapper {
+        font-size: 12px;
+        color: #000;
+    }
+
+    .Mui-selected .MuiTab-wrapper {
+        color: #e84f1d;
+    }
+
+    .Mui-selected .MuiTouchRipple-root {
+        border-color: #e84f1d;
+    }
+
+    .MuiTabs-indicator {
+        display: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .MuiTabs-flexContainer {
+            justify-content: center;
+        }
     }
 `;
 
@@ -232,8 +279,8 @@ function ComplexHouseName() {
         return <div>Error :(</div>;
     }
 
-    const houseName = houseData.getPublishedHouse.name;
-    const apartmentComplex = apartmentComplexData.getApartmentComplex.name;
+    const houseName = houseData?.getPublishedHouse?.name || '';
+    const apartmentComplex = apartmentComplexData?.getApartmentComplex?.name || '';
 
     return <HouseTitle>{`${apartmentComplex} ${houseName}`}</HouseTitle>;
 }

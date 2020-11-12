@@ -24,7 +24,19 @@ import {ImageViewPhotos} from './ImageViewPhotos';
 import {ImageViewVR} from './ImageViewVR';
 import {LayoutView} from './LayoutView';
 import {SidebarPdfInfo} from './SidebarPdfInfo';
+import {defaultFlatPicture} from './SvgImages';
+interface FlatSidebarInfoProps {
+    flat: Flat;
+    houseId: string;
+    viewMode: ChessCellViewMode;
+    isPublic: boolean;
+    showRequestButton: boolean;
+    onFlatSelected?: (flat: Flat) => void;
+    currentLevel?: string;
+    setSavedFlat: any;
+}
 
+// TODO replace styles to separate file
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
     width: 420px;
@@ -50,20 +62,9 @@ const SaleChip = styled(Chip)`
 
 const SendRequestContainer = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     padding: 0px 15px;
 `;
-
-interface FlatSidebarInfoProps {
-    flat: Flat;
-    houseId: string;
-    viewMode: ChessCellViewMode;
-    isPublic: boolean;
-    showRequestButton: boolean;
-    onFlatSelected?: (flat: Flat) => void;
-    currentLevel?: string;
-    setSavedFlat: any;
-}
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
@@ -71,11 +72,32 @@ const StyledTab = styled(Tab)`
 
 export const ButtonsContainer = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 
     .MuiButton-outlinedPrimary {
         color: #e84f1d;
         border: 1px solid #e84f1d;
+    }
+
+    .MuiButton-outlinedPrimary:hover {
+        border-color: #e84f1d;
+    }
+
+    @media only screen and (max-width: 600px) {
+        display: none;
+    }
+`;
+
+// @ts-ignore
+export const ButtonsContainerMobile = styled(ButtonsContainer)`
+    margin-top: 10px;
+
+    @media only screen and (max-width: 600px) {
+        display: block;
+    }
+
+    @media only screen and (min-width: 600px) {
+        display: none;
     }
 `;
 
@@ -112,6 +134,14 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
 
     const flat = data.getFlatSidebarInfo;
 
+    const ButtonView = (
+        <SendRequestContainer>
+            <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
+                Оставить заявку
+            </Button>
+        </SendRequestContainer>
+    );
+
     return (
         <FlatSidebarWrapper>
             <FlatTitleContainer>
@@ -132,15 +162,17 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     Выбрать квартиру
                 </Button>
             )}
-            {flat.layout && (
-                <ImageContainer>
+            <ImageContainer>
+                {!!flat.layout ? (
                     <img
                         className="FlatSidebarInfo__image"
                         src={flat.layout?.image.previewImageUrl}
                         alt={flat.layout?.name}
                     />
-                </ImageContainer>
-            )}
+                ) : (
+                    defaultFlatPicture
+                )}
+            </ImageContainer>
             <AppBar position="static">
                 <Tabs
                     value={value}
@@ -150,13 +182,16 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     aria-label="scrollable prevent tabs example"
                 >
                     <StyledTab icon={<InfoIcon />} aria-label="phone" />
-                    <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />
-                    <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />
-                    <StyledTab icon={<ImageIcon />} aria-label="gallery" />
-                    <StyledTab icon={<ViewCompactIcon />} aria-label="layout" />
-                    <StyledTab icon={<PrintIcon />} aria-label="print" />
+                    {flat?.layout?.images?.VR?.length && <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />}
+                    {flat?.layout?.images?.HALF_VR?.length && <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />}
+                    {flat?.layout?.images?.PHOTO?.length && <StyledTab icon={<ImageIcon />} aria-label="gallery" />}
+                    {flat?.levelLayouts && <StyledTab icon={<ViewCompactIcon />} aria-label="layout" />}
+                    {Boolean(flat) && <StyledTab icon={<PrintIcon />} aria-label="print" />}
                 </Tabs>
             </AppBar>
+
+            {isShowButton && props.isPublic && <ButtonsContainerMobile>{ButtonView}</ButtonsContainerMobile>}
+
             <TabPanel value={value} index={0}>
                 {value === 0 && (
                     <FlatSidebarData
@@ -184,15 +219,8 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             <TabPanel value={value} index={5}>
                 {value === 5 && <SidebarPdfInfo flat={flat} />}
             </TabPanel>
-            {isShowButton && props.isPublic && (
-                <ButtonsContainer>
-                    <SendRequestContainer>
-                        <Button variant="outlined" color="primary" onClick={() => setModalOpen(!isModalOpen)}>
-                            Оставить заявку
-                        </Button>
-                    </SendRequestContainer>
-                </ButtonsContainer>
-            )}
+
+            {isShowButton && props.isPublic && <ButtonsContainer>{ButtonView}</ButtonsContainer>}
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} />}
         </FlatSidebarWrapper>
     );

@@ -132,8 +132,11 @@ export const flatQuery = {
         let flat = house.sections.levels.flats;
 
         const {squarePrice} = flat as {squarePrice: string};
-        if (isNaN(Number(squarePrice))) {
+        if (isNaN(Number(squarePrice)) && squarePrice) {
             flat.squarePrice = squarePrice.replace(',', '.');
+        }
+        if (!squarePrice) {
+            flat.squarePrice = '0';
         }
 
         flat.id = flatId;

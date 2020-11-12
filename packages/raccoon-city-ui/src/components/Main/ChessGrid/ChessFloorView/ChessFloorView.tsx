@@ -167,6 +167,7 @@ export const ChessFloorView = (props) => {
                                     setCurrentLevel(id);
                                 }}
                                 isPublic={isPublic}
+                                currentLevel={currentLevel === id}
                             >
                                 {`Этаж ${level}`}
                             </FloorsListItem>
