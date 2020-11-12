@@ -1,5 +1,5 @@
 import {Grid} from '@material-ui/core';
-import React from 'react';
+import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import {
     AreaFilter,
@@ -12,6 +12,7 @@ import {
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
 import {FlatStatusesBar} from '../FlatStatusesBar';
+import {ChessCellViewMode} from '../ChessEnums';
 
 const DesktopFilterWrapper = styled.div`
     display: flex;
@@ -40,6 +41,8 @@ const RangeContainer = styled.div``;
 export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;
+    const {mode} = props.filters;
+
     return (
         <Grid container spacing={1}>
             {props.onHouseChange && (
@@ -54,24 +57,28 @@ export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
                     <FlatStatusesBarWrapper>
                         <FlatStatusesBar houseId={props.houseId} />
                     </FlatStatusesBarWrapper>
-                    <RoomAmountFilter dispatch={props.dispatchFn} />
-                    <RangeContainer>
-                        <PriceFilter
-                            data={data}
-                            maxPrice={data.maxPrice}
-                            minPrice={data.minPrice}
-                            dispatch={props.dispatchFn}
-                        />
-                    </RangeContainer>
-                    <RangeContainer>
-                        <AreaFilter
-                            maxArea={data.maxArea}
-                            minArea={data.minArea}
-                            dispatch={props.dispatchFn}
-                            data={data}
-                        />
-                    </RangeContainer>
-                    <ViewMode dispatch={props.dispatchFn} />
+                    {mode !== ChessCellViewMode.FLOOR && (
+                        <Fragment>
+                            <RoomAmountFilter dispatch={props.dispatchFn} />
+                            <RangeContainer>
+                                <PriceFilter
+                                    data={data}
+                                    maxPrice={data.maxPrice}
+                                    minPrice={data.minPrice}
+                                    dispatch={props.dispatchFn}
+                                />
+                            </RangeContainer>
+                            <RangeContainer>
+                                <AreaFilter
+                                    maxArea={data.maxArea}
+                                    minArea={data.minArea}
+                                    dispatch={props.dispatchFn}
+                                    data={data}
+                                />
+                            </RangeContainer>
+                            <ViewMode dispatch={props.dispatchFn} />
+                        </Fragment>
+                    )}
                     <ViewModeFilters mode={props.filters.mode} dispatch={props.dispatchFn} />
                 </DesktopFilterWrapper>
             )}
