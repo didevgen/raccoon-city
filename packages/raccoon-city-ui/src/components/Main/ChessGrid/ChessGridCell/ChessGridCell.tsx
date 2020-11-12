@@ -60,6 +60,14 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         )
     };
 
+    // TODO show price inside CRM
+    const priceField =
+        flat.status === 'SOLD_OUT' ? null : (
+            <div className="Cell__price">
+                <ReducedPrice flat={flat} />
+            </div>
+        );
+
     return (
         <HtmlTooltip
             title={
@@ -67,9 +75,7 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                     <PriceContainer>
                         <PreviewCell className={flat.status}>{flat.roomAmount}</PreviewCell>
                         <PriceAndAmountContainer>
-                            <div className="Cell__price">
-                                <ReducedPrice flat={flat} />
-                            </div>
+                            {priceField}
                             <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>
                         </PriceAndAmountContainer>
                     </PriceContainer>

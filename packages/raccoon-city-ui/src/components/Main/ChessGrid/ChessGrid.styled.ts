@@ -101,10 +101,12 @@ export const InfoIcon = styled.div`
 export const HouseTitle = styled.p`
     font-size: 50px;
     margin: 0;
+    margin-top: -60px;
 
     @media only screen and (max-width: 600px) {
         font-size: 18px;
         text-align: center;
         margin-bottom: 10px;
+        margin-top: 0;
     }
 `;

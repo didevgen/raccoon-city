@@ -279,8 +279,8 @@ function ComplexHouseName() {
         return <div>Error :(</div>;
     }
 
-    const houseName = houseData.getPublishedHouse.name;
-    const apartmentComplex = apartmentComplexData.getApartmentComplex.name;
+    const houseName = houseData?.getPublishedHouse?.name || '';
+    const apartmentComplex = apartmentComplexData?.getApartmentComplex?.name || '';
 
     return <HouseTitle>{`${apartmentComplex} ${houseName}`}</HouseTitle>;
 }
