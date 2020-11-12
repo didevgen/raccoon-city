@@ -19,7 +19,6 @@ import {
     SliderContainer,
     TabPanelContainer
 } from './SectionBar.styled';
-import defaultFlatPicture from '../FlatSidebarInfo/SvgImages';
 
 function TabPanel(props: any) {
     const {children, value, index, ...other} = props;
