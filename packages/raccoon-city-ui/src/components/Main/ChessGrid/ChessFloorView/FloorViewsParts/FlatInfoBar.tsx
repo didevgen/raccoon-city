@@ -19,7 +19,7 @@ export const FlatInfoBar = ({info}: Props) => (
                 <span>{`Кол-во уровней: ${info.levelAmount}`}</span>
             </>
         ) : (
-            <span>Выберете квартиру</span>
+            <span>Выберите квартиру</span>
         )}
     </FlatInfo>
 );

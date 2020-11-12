@@ -131,15 +131,17 @@ export const ChessFloorView = (props) => {
 
     return (
         <FloorViewContainer>
-            <FloorLegendInfo>
-                <CustomSelector
-                    currentValue={currentSection}
-                    setValue={currentValueTest}
-                    isPublic={isPublic}
-                    items={Object.values(sections)}
-                    itemName="Подъезд"
-                    keyToShow="section"
-                />
+            <FloorLegendInfo isPublic={isPublic}>
+                {!isPublic && (
+                    <CustomSelector
+                        currentValue={currentSection}
+                        setValue={currentValueTest}
+                        isPublic={isPublic}
+                        items={Object.values(sections)}
+                        itemName="Подъезд"
+                        keyToShow="section"
+                    />
+                )}
 
                 <LevelSelectMobile>
                     <CustomSelector

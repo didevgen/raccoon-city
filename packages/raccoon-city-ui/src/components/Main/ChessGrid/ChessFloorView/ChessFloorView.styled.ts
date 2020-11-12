@@ -62,12 +62,12 @@ export const FloorContentContainer = styled.div`
     }
 `;
 
-export const FloorLegendInfo = styled.div`
+export const FloorLegendInfo = styled.div<{isPublic: boolean}>`
     display: flex;
     padding: 10px 35px 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
-    justify-content: space-between;
+    justify-content: ${({isPublic}) => (isPublic ? 'flex-end' : 'space-between')};
     font-family: 'TTNorms', sans-serif;
 
     @media only screen and (max-width: 500px) {
