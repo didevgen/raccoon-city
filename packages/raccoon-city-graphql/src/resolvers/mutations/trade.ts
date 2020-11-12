@@ -13,7 +13,7 @@ async function sendUserToAmo(url: string, user: any) {
         logger.log({
             level: 'error',
             message: err.message
-        })
+        });
         throw new ApolloError(err.message);
     }
 }
