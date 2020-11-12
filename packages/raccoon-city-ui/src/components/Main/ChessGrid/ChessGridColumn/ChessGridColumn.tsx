@@ -80,7 +80,7 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
         return (
             <ColumnWrapper className="ChessGridColumn">
                 <CellContainer className="ChessGridColumn__cell">
-                    {this.props.levels.map((level) => {
+                    {this.props.levels.reverse().map((level) => {
                         return (
                             <ChessGridRow
                                 key={level.id}
