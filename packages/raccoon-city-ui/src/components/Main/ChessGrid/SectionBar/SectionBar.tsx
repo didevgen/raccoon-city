@@ -19,6 +19,7 @@ import {
     SliderContainer,
     TabPanelContainer
 } from './SectionBar.styled';
+import defaultFlatPicture from '../FlatSidebarInfo/SvgImages';
 
 function TabPanel(props: any) {
     const {children, value, index, ...other} = props;
@@ -80,7 +81,7 @@ export const SectionBar = (props: any) => {
     ));
     // TODO change to static image
     const photosJSXToRender = !photosJSX?.length
-        ? [<SideBarImage src="https://image.flaticon.com/icons/png/512/63/63813.png" alt="house image" />]
+        ? [<SideBarImage src={'https://image.flaticon.com/icons/png/512/63/63813.png'} alt="house image" />]
         : photosJSX;
 
     const isEmptyOrSingle = photosJSXToRender.length < 2;
