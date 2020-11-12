@@ -10,7 +10,10 @@ async function sendUserToAmo(url: string, user: any) {
         const response = await axios.post(url, user);
         return response.status;
     } catch (err) {
-        logger.error(err);
+        logger.log({
+            level: 'error',
+            message: err.message
+        })
         throw new ApolloError(err.message);
     }
 }
