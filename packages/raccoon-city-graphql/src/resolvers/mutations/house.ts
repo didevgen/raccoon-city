@@ -8,7 +8,7 @@ import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFa
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
-import { logger } from './../../aws/logger';
+import {logger} from './../../aws/logger';
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
@@ -220,7 +220,7 @@ export const house = {
         } catch (e) {
             logger.log({
                 level: 'error',
-                message: err.message
+                message: e.message
             });
             return false;
         }
