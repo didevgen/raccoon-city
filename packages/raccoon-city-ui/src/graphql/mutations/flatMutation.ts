@@ -59,3 +59,9 @@ export const DELETE_SECTION = gql`
         deleteSection(sectionId: $sectionId)
     }
 `;
+
+export const ADD_SECTION = gql`
+    mutation addSection($uuid: String!) {
+        addSection(uuid: $uuid)
+    }
+`;
