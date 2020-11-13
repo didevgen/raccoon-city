@@ -9,21 +9,20 @@ import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
 import HouseIcons from './HouseIcons';
 
+const LayoutContainer = styled.div`
+    height: 100vh;
+`;
+
 const ImageContainer = styled.div`
     display: flex;
-    height: 100%;
-    max-height: calc(100vh - 100px);
+    max-height: 80vh;
 `;
 
 const LayoutImage = styled.div<any>`
     flex: 1;
     background: url(${(props: any) => props.url}) no-repeat center;
     background-size: contain;
-    max-height: calc(100vh - 100px);
-`;
-
-const LayoutContainer = styled.div`
-    height: 100vh;
+    /* max-height: calc(100vh - 100px); */
 `;
 
 function attachSvg(container: string) {
