@@ -8,6 +8,7 @@ import {HouseImageServiceFactory} from '../../services/image/houseImageServiceFa
 import {HouseDataInputArgs} from '../../types/house';
 import {Context} from '../../utils';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import {logger} from './../../aws/logger';
 
 export const house = {
     async createHouse(parent, args, ctx: Context): Promise<House> {
@@ -206,22 +207,21 @@ export const house = {
     },
     async addSection(parent, {uuid}) {
         try {
-            let maxSectionNumber: number;
             const existingSections = await SectionModel.find({house: uuid, isDeleted: false}).exec();
 
-            if (existingSections.length === 0) {
-                maxSectionNumber = 1;
-            } else {
-                maxSectionNumber = Number(existingSections.length) + 1;
-            }
+            const maxSectionNumber = !existingSections.length ? 1 : Number(existingSections.length) + 1;
 
             await SectionModel.create({
                 house: uuid,
                 sectionName: maxSectionNumber.toString()
             });
+
             return true;
         } catch (e) {
-            console.log('create section error: ', e.message);
+            logger.log({
+                level: 'error',
+                message: e.message
+            });
             return false;
         }
     }
