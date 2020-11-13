@@ -12,7 +12,7 @@ export const FlatInfoBar = ({info}: Props) => (
             <>
                 <span>{`№${info.flatNumber}`}</span>
                 <span>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label}`}</span>
-                <span>{`Цена: ${info.price}`}</span>
+                {info.status !== 'SOLD_OUT' && <span>{`Цена: ${info.price}`}</span>}
                 <span>{`М2: ${info.area}`}</span>
                 <span>{`Цена м2: ${info.squarePrice}`}</span>
                 <span>{`Комнат: ${info.roomAmount}`}</span>
