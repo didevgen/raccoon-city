@@ -30,9 +30,21 @@ type TradeFlat {
     houseId: String
 }
 
+type Reason {
+    value: Int
+    label: String
+}
+
+input ReasonInput {
+    value: Int
+    label: String
+}
+
 input TradeFlatInput {
     sale: Float
     price: Float
+    squarePrice: Float
+    squarePriceSale: Float
     flatId: String
     flatNumber: String
     section: String
@@ -68,6 +80,7 @@ input UserFormInput {
     email: String
     phone: String
     developerUuid: String
+    reason: ReasonInput
 }
 
 type Mutation {

@@ -1,10 +1,26 @@
-import { Context } from '../../utils';
-import { Trade, TradeModel } from '../../db/models/trade';
-import { ContactModel } from '../../db/models/contact';
+import {Context} from '../../utils';
+import {Trade, TradeModel} from '../../db/models/trade';
+import {ContactModel} from '../../db/models/contact';
+import {logger} from '../../aws/logger';
+import axios from 'axios';
+import {ApolloError} from 'apollo-server';
+
+async function sendUserToAmo(url: string, user: any) {
+    try {
+        const response = await axios.post(url, user);
+        return response.status;
+    } catch (err) {
+        logger.log({
+            level: 'error',
+            message: err.message
+        });
+        throw new ApolloError(err.message);
+    }
+}
 
 export const tradeMutation = {
     async createTrade(parent, args, ctx: Context): Promise<Trade> {
-        const { developerUuid, trade } = args;
+        const {developerUuid, trade} = args;
         let tradeNumber = 1;
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')
@@ -20,7 +36,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: { $in: trade.newContact.phones }
+                    $elemMatch: {$in: trade.newContact.phones}
                 }
             }).exec();
 
@@ -50,7 +66,7 @@ export const tradeMutation = {
         });
     },
     async updateTrade(parent, args, ctx: Context): Promise<Trade> {
-        const { uuid, trade } = args;
+        const {uuid, trade} = args;
 
         const existingTrade = await TradeModel.findById(uuid).exec();
         let contact;
@@ -60,7 +76,7 @@ export const tradeMutation = {
             const contacts = await ContactModel.find({
                 isDeleted: false,
                 phones: {
-                    $elemMatch: { $in: trade.newContact.phones }
+                    $elemMatch: {$in: trade.newContact.phones}
                 }
             }).exec();
 
@@ -94,7 +110,7 @@ export const tradeMutation = {
             }
         ).exec();
     },
-    async deleteTrade(parent, { uuid }, ctx: Context) {
+    async deleteTrade(parent, {uuid}, ctx: Context) {
         await TradeModel.findOneAndUpdate(
             {
                 _id: uuid
@@ -110,9 +126,13 @@ export const tradeMutation = {
     async requestFromPublicForm(parent, args, ctx: Context) {
         const {
             flat,
-            userInfo: { name, phone, email, developerUuid }
+            userInfo: {name, phone, email, developerUuid}
         } = args;
         let tradeNumber = 1;
+
+        const amoUser = {name: args.userInfo.name, phone: args.userInfo.phone, reason: args.userInfo.reason};
+
+        sendUserToAmo(process.env.ZHILSTROJ2_API_AMO4, amoUser);
 
         const maxNumberTrade = await TradeModel.findOne({})
             .sort('-tradeNumber')
@@ -124,7 +144,7 @@ export const tradeMutation = {
         const contacts = await ContactModel.find({
             isDeleted: false,
             phones: {
-                $elemMatch: { $in: [phone] }
+                $elemMatch: {$in: [phone]}
             }
         }).exec();
 

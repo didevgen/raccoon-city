@@ -40,6 +40,7 @@ function ReducedPrice({flat}) {
 export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
     const viewContextValue = useContext<any>(ViewModeContext);
     const cellView = useContext<any>(CellViewModeContext);
+    const isSoldOut = flat.status === 'SOLD_OUT';
 
     const CellViewJSX = {
         [ChessCellViewMode.TILE]: <>{flat[viewContextValue.selectedViewMode]}</>,
@@ -47,7 +48,7 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             <Fragment>
                 <CellInfoWrapperTop>
                     <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
-                    <ReducedPrice flat={flat} />
+                    {!isSoldOut && <ReducedPrice flat={flat} />}
                 </CellInfoWrapperTop>
                 <CellInfoWrapperTop>
                     <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
@@ -61,12 +62,11 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
     };
 
     // TODO show price inside CRM
-    const priceField =
-        flat.status === 'SOLD_OUT' ? null : (
-            <div className="Cell__price">
-                <ReducedPrice flat={flat} />
-            </div>
-        );
+    const priceField = isSoldOut ? null : (
+        <div className="Cell__price">
+            <ReducedPrice flat={flat} />
+        </div>
+    );
 
     return (
         <HtmlTooltip
