@@ -21,8 +21,8 @@ export const house = {
         return await HouseModel.create(houseDataObj, (err, res) => {
             //When button 'AddSection' will be added remove this
             SectionModel.create({
-            house: res._id,
-            sectionName:'1'
+                house: res._id,
+                sectionName: '1'
             });
             //-----------------------------------------------------
 
