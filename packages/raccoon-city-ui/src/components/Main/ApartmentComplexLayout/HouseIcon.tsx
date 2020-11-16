@@ -84,7 +84,7 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         if (!data.getPublicFlatsList.length) {
             iconsColor = 'empty';
         } else {
-            !!data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE')
+            data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE')
                 ? (iconsColor = 'free')
                 : (iconsColor = 'sold_out');
         }
