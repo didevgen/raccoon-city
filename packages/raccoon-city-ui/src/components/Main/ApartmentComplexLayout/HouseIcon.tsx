@@ -81,11 +81,13 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
 
     let iconsColor;
     if (!loading) {
-        iconsColor = !data.getPublicFlatsList.length
-            ? 'empty'
-            : !!data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE')
-            ? 'free'
-            : 'sold_out';
+        if (!data.getPublicFlatsList.length) {
+            iconsColor = 'empty';
+        } else {
+            !!data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE')
+                ? (iconsColor = 'free')
+                : (iconsColor = 'sold_out');
+        }
     }
 
     return (

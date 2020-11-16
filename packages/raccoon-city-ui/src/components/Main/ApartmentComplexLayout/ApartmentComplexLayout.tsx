@@ -22,13 +22,12 @@ const LayoutImage = styled.div<any>`
     flex: 1;
     background: url(${(props: any) => props.url}) no-repeat center;
     background-size: contain;
-    /* max-height: calc(100vh - 100px); */
 `;
 
 function attachSvg(container: string) {
     return SVG()
         .addTo(container)
-        .size('100%', '100%');
+        .size('100%', '80vh');
 }
 
 function fillExistingLayouts(
