@@ -19,6 +19,13 @@ export const house = {
             ...houseData
         };
         return await HouseModel.create(houseDataObj, (err, res) => {
+            //When button 'AddSection' will be added remove this
+            SectionModel.create({
+            house: res._id,
+            sectionName:'1'
+            });
+            //-----------------------------------------------------
+
             ApartmentComplexModel.findOne({_id: apartmentComplexId, isDeleted: false}, (error, doc) => {
                 doc.houses.push(res);
                 doc.save();
