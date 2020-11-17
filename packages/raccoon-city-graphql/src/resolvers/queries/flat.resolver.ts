@@ -175,6 +175,20 @@ export const flatQuery = {
                     viewBox: flatLayout[0].viewBox
                 };
             });
+
+        const isAppropriate = (
+            flat.status === "SOLD_OUT"
+            || flat.status === "RESERVED"
+            || flat.status === "DOCUMENTS_IN_PROGRESS"
+            || flat.status === "UNAVAILABLE"
+        );
+
+        if (isAppropriate) {
+            flat.squarePrice = '0';
+            flat.squarePriceSale = '0';
+            flat.price = '0';
+        }
+
         return flat;
     },
     getPublicGroupedFlatsBySection: async (parent, {uuid}) => {
@@ -244,11 +258,27 @@ export const flatQuery = {
                                         section: section.sectionName
                                     };
                                     const flats = level.flats.map((flat) => {
-                                        return {
+                                        const updatedFlat = {
                                             id: flat.id,
                                             ...flat.toObject(),
-                                            ...newFlat
+                                            ...newFlat,
                                         };
+
+                                        const isAppropriate = (
+                                            flat.status === "SOLD_OUT"
+                                            || flat.status === "RESERVED"
+                                            || flat.status === "DOCUMENTS_IN_PROGRESS"
+                                            || flat.status === "UNAVAILABLE"
+                                        );
+
+                                        return !isAppropriate
+                                            ? updatedFlat
+                                            : {
+                                                ...updatedFlat,
+                                                price: null,
+                                                squarePrice: null,
+                                                squarePriceSale: null,
+                                            }
                                     });
                                     return {
                                         id: level.id,
@@ -283,11 +313,27 @@ export const flatQuery = {
                         };
 
                         const flats = level.flats.map((flat) => {
-                            return {
+                            const updatedFlat = {
                                 id: flat.id,
                                 ...flat.toObject(),
-                                ...newFlat
+                                ...newFlat,
                             };
+
+                            const isAppropriate = (
+                                flat.status === "SOLD_OUT"
+                                || flat.status === "RESERVED"
+                                || flat.status === "DOCUMENTS_IN_PROGRESS"
+                                || flat.status === "UNAVAILABLE"
+                            );
+
+                            return !isAppropriate
+                                ? updatedFlat
+                                : {
+                                    ...updatedFlat,
+                                    price: null,
+                                    squarePrice: null,
+                                    squarePriceSale: null,
+                                }
                         });
 
                         flats.forEach((flat) => {

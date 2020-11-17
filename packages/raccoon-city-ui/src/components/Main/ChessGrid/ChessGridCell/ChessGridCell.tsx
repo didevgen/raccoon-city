@@ -68,6 +68,8 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         </div>
     );
 
+    console.log(flat);
+
     return (
         <HtmlTooltip
             title={
