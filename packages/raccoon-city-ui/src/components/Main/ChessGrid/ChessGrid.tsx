@@ -154,7 +154,7 @@ const ChessGridContent = React.memo((props: any) => {
 
     // TODO divide to views component
     const tileView = (
-        <ChessGridWrapper hasSelect={hasSelect}>
+        <ChessGridWrapper hasSelect={hasSelect} style={{border: '2px solid black'}} className="QWEQWE">
             {houseFlats.map((group: FlatsInHouse) => {
                 const {groupedFlats} = group;
 
@@ -163,7 +163,7 @@ const ChessGridContent = React.memo((props: any) => {
                 }
 
                 return (
-                    <Container key={group.id}>
+                    <Container key={group.id} style={{border: '2px solid black', padding: '0'}} className="ASDASD">
                         <ColumnAndSectionBarWrapper isPublic={isPublic} mode={filters.mode}>
                             <ColumnWrapper>
                                 {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
