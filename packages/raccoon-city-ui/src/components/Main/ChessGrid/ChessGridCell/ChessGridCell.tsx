@@ -5,17 +5,19 @@ import {CellViewModeContext, ViewModeContext} from '../ChessGrid';
 import {
     AreaContainer,
     Cell,
-    CellInfoWrapper,
-    CellInfoWrapperTop,
     DataContainer,
-    FirstInfoItem,
     HtmlTooltip,
     NumberContainer,
     PriceContainer,
     StyledBagde,
     TooltipContainer,
     PriceAndAmountContainer,
-    PreviewCell
+    PreviewCell,
+    TilePlusFirstSection,
+    TilePlusSecondSection,
+    TilePlusAreaInfo,
+    TilePlusPriceInfo,
+    TilePlusSquarePriceInfo
 } from './ChessGridCell.styled';
 
 interface Props {
@@ -46,17 +48,18 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         [ChessCellViewMode.TILE]: <>{flat[viewContextValue.selectedViewMode]}</>,
         [ChessCellViewMode.TILE_PLUS]: (
             <Fragment>
-                <CellInfoWrapperTop>
-                    <FirstInfoItem>№{flat.flatNumber}</FirstInfoItem>
-                    {!isSoldOut && <ReducedPrice flat={flat} />}
-                </CellInfoWrapperTop>
-                <CellInfoWrapperTop>
-                    <FirstInfoItem>{`${flat.roomAmount}к`}</FirstInfoItem>
-                    <span>1м2 - {flat.squarePriceSale || flat.squarePrice} грн</span>
-                </CellInfoWrapperTop>
-                <CellInfoWrapper>
-                    <span>{flat.area}м2</span>
-                </CellInfoWrapper>
+                <TilePlusFirstSection>№{flat.flatNumber}</TilePlusFirstSection>
+                <TilePlusSecondSection>
+                    <TilePlusAreaInfo>
+                        {`${flat.roomAmount}к`} <span>{flat.area}м2</span>
+                    </TilePlusAreaInfo>
+                    <TilePlusPriceInfo>
+                        <TilePlusSquarePriceInfo>
+                            1м2 - {flat.squarePriceSale || flat.squarePrice} грн
+                        </TilePlusSquarePriceInfo>
+                        {!isSoldOut ? <ReducedPrice flat={flat} /> : 'SOLD OUT'}
+                    </TilePlusPriceInfo>
+                </TilePlusSecondSection>
             </Fragment>
         )
     };
@@ -89,7 +92,7 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             }
         >
             {flat.levelAmount > 1 ? (
-                <StyledBagde color="primary" badgeContent={flat.levelAmount}>
+                <StyledBagde badgeContent={flat.levelAmount}>
                     <Cell
                         className={flat.isActive ? flat.status : 'MUTED'}
                         onClick={() => {
