@@ -1,20 +1,17 @@
 import styled from 'styled-components';
 import {SwipeableDrawer, Typography} from '@material-ui/core';
 import Select from '@material-ui/core/Select';
-import {ChessCellViewMode} from './ChessEnums';
+//TO DO use this func in  ColumnAndSectionBarWrapper at width
+// import {ChessCellViewMode} from './ChessEnums';
 
 export const ChessGridWrapper: any = styled.div`
-    /* overflow: auto; */
-    padding: 0;
-    min-width: 0;
-    width: 230vw;
-
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* max-width: 90vw; //there */
     margin-top: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: center;
 
     @media only screen and (max-width: 600px) {
         /* min-width: 320px; */
@@ -26,43 +23,34 @@ export const ChessGridWrapper: any = styled.div`
 export const ColumnWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    /* max-width: 1000px; */
-
-    min-width: 0;
-    /* overflow: auto; */
 `;
 
 // TODO check how comment on 28 line influence in project
 export const Container = styled.div`
-    flex: 0 1 auto;
-    min-width: 0;
     overflow: auto;
-
     background-color: #fff;
-    /* padding: 0; */
-    /* border-right: 1px solid #cccccc; */
-    display: flex;
-    flex-direction: row;
-    align-self: flex-end;
-    /* width: 100vw; */ //there
+
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
 `;
 
-function getChessWidth(props: any) {
-    // if (props.isPublic && props.mode === ChessCellViewMode.TILE_PLUS) {
-    //     return '90vw';
-    // } else if (props.isPublic) {
-    //     return '60vw';
-    // } else {
-    //     return '90vw';
-    // }
-    return 'auto';
-}
+//TO DO use this func in  ColumnAndSectionBarWrapper at width
+// function getChessWidth(props: any) {
+// if (props.isPublic && props.mode === ChessCellViewMode.TILE_PLUS) {
+//     return '90vw';
+// } else if (props.isPublic) {
+//     return '60vw';
+// } else {
+//     return '90vw';
+// }
+// }
 
 export const ColumnAndSectionBarWrapper = styled.div<{isPublic: boolean; mode: string}>`
     display: flex;
     justify-content: space-around;
     overflow-x: auto;
-    width: ${getChessWidth};
+    width:'auto'
     margin: 0 auto;
 
     @media only screen and (max-width: 900px) {
