@@ -12,14 +12,14 @@ import HouseIcons from './HouseIcons';
 const ImageContainer = styled.div`
     display: flex;
     height: 100%;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 200px);
 `;
 
 const LayoutImage = styled.div<any>`
     flex: 1;
     background: url(${(props: any) => props.url}) no-repeat center;
     background-size: contain;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 200px);
 `;
 
 const LayoutContainer = styled.div`
