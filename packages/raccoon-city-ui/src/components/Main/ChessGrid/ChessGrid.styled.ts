@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import {SwipeableDrawer, Typography} from '@material-ui/core';
 import Select from '@material-ui/core/Select';
-//TO DO use this func in  ColumnAndSectionBarWrapper at width
-// import {ChessCellViewMode} from './ChessEnums';
 
 export const ChessGridWrapper: any = styled.div`
     box-sizing: border-box;
@@ -14,7 +12,6 @@ export const ChessGridWrapper: any = styled.div`
     text-align: center;
 
     @media only screen and (max-width: 600px) {
-        /* min-width: 320px; */
         overflow-x: auto;
         background-color: #fff;
     }
@@ -35,22 +32,11 @@ export const Container = styled.div`
     margin: 0 auto;
 `;
 
-//TO DO use this func in  ColumnAndSectionBarWrapper at width
-// function getChessWidth(props: any) {
-// if (props.isPublic && props.mode === ChessCellViewMode.TILE_PLUS) {
-//     return '90vw';
-// } else if (props.isPublic) {
-//     return '60vw';
-// } else {
-//     return '90vw';
-// }
-// }
-
 export const ColumnAndSectionBarWrapper = styled.div<{isPublic: boolean; mode: string}>`
     display: flex;
     justify-content: space-around;
     overflow-x: auto;
-    width:'auto'
+    width: auto;
     margin: 0 auto;
 
     @media only screen and (max-width: 900px) {
