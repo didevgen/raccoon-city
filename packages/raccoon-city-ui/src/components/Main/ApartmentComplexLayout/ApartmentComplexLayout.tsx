@@ -1,34 +1,13 @@
 import {useQuery} from '@apollo/react-hooks';
-import {Path, SVG, Svg} from '@svgdotjs/svg.js';
+import {Path, Svg} from '@svgdotjs/svg.js';
 import Cookies from 'js-cookie';
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router';
 import {Redirect} from 'react-router-dom';
-import styled from 'styled-components';
 import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
 import HouseIcons from './HouseIcons';
-
-const LayoutContainer = styled.div`
-    height: 100vh;
-`;
-
-const ImageContainer = styled.div`
-    display: flex;
-    max-height: 80vh;
-`;
-
-const LayoutImage = styled.div<any>`
-    flex: 1;
-    background: url(${(props: any) => props.url}) no-repeat center;
-    background-size: contain;
-`;
-
-function attachSvg(container: string) {
-    return SVG()
-        .addTo(container)
-        .size('100%', '80vh');
-}
+import {LayoutContainer, ImageContainer, LayoutImage, attachSvg} from './styledComponents';
 
 function fillExistingLayouts(
     svgItem: Svg,
