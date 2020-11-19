@@ -193,27 +193,11 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     aria-label="scrollable prevent tabs example"
                 >
                     <StyledTab icon={<InfoIcon />} aria-label="phone" />
-                    {isHasVR ? (
-                        <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />
-                    ) : (
-                        <StyledTab disabled icon={<ThreeDRotationIcon />} aria-label="3d" />
-                    )}
-                    {isHasHalfVR ? (
-                        <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />
-                    ) : (
-                        <StyledTab disabled icon={<ThreeSixtyIcon />} aria-label="2d" />
-                    )}
-                    {isHasPhoto ? (
-                        <StyledTab icon={<ImageIcon />} aria-label="gallery" />
-                    ) : (
-                        <StyledTab disabled icon={<ImageIcon />} aria-label="gallery" />
-                    )}
-                    {isHasLevelsPhoto ? (
-                        <StyledTab icon={<PhotoLibraryIcon />} aria-label="layout" />
-                    ) : (
-                        <StyledTab disabled icon={<PhotoLibraryIcon />} aria-label="layout" />
-                    )}
-                    {flat && <StyledTab icon={<PrintIcon />} aria-label="print" className="disabled" />}
+                    <StyledTab disabled={!isHasVR} icon={<ThreeDRotationIcon />} aria-label="3d" />
+                    <StyledTab disabled={!isHasHalfVR} icon={<ThreeSixtyIcon />} aria-label="2d" />
+                    <StyledTab disabled={!isHasPhoto} icon={<ImageIcon />} aria-label="gallery" />
+                    <StyledTab disabled={!isHasLevelsPhoto} icon={<PhotoLibraryIcon />} aria-label="layout" />
+                    <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />}
                 </Tabs>
             </AppBar>
 

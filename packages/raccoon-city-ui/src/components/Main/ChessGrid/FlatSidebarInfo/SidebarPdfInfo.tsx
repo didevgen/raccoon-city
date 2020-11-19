@@ -1,4 +1,4 @@
-import {Button, Icon} from '@material-ui/core';
+import {Icon} from '@material-ui/core';
 import {Document, Font, Page, PDFDownloadLink, StyleSheet, Text, View} from '@react-pdf/renderer';
 import styled from '@react-pdf/styled-components';
 import React from 'react';
