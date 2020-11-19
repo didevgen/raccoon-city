@@ -5,7 +5,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import PrintIcon from '@material-ui/icons/Print';
 import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
-import ViewCompactIcon from '@material-ui/icons/ViewCompact';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -70,6 +70,10 @@ const SendRequestContainer = styled.div`
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
+
+    &.disabled {
+        color: gray;
+    }
 `;
 
 export const ButtonsContainer = styled.div`
@@ -136,6 +140,10 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     };
 
     const flat = data.getFlatSidebarInfo;
+    const isHasVR: boolean = Boolean(flat?.layout?.images?.VR?.length);
+    const isHasHalfVR: boolean = Boolean(flat?.layout?.images?.HALF_VR?.length);
+    const isHasPhoto: boolean = Boolean(flat?.layout?.images?.PHOTO?.length);
+    const isHasLevelsPhoto: boolean = Boolean(flat?.levelLayouts);
 
     const ButtonView = (
         <SendRequestContainer>
@@ -185,11 +193,27 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     aria-label="scrollable prevent tabs example"
                 >
                     <StyledTab icon={<InfoIcon />} aria-label="phone" />
-                    {flat?.layout?.images?.VR?.length && <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />}
-                    {flat?.layout?.images?.HALF_VR?.length && <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />}
-                    {flat?.layout?.images?.PHOTO?.length && <StyledTab icon={<ImageIcon />} aria-label="gallery" />}
-                    {flat?.levelLayouts && <StyledTab icon={<ViewCompactIcon />} aria-label="layout" />}
-                    {Boolean(flat) && <StyledTab icon={<PrintIcon />} aria-label="print" />}
+                    {isHasVR ? (
+                        <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />
+                    ) : (
+                        <StyledTab disabled icon={<ThreeDRotationIcon />} aria-label="3d" />
+                    )}
+                    {isHasHalfVR ? (
+                        <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />
+                    ) : (
+                        <StyledTab disabled icon={<ThreeSixtyIcon />} aria-label="2d" />
+                    )}
+                    {isHasPhoto ? (
+                        <StyledTab icon={<ImageIcon />} aria-label="gallery" />
+                    ) : (
+                        <StyledTab disabled icon={<ImageIcon />} aria-label="gallery" />
+                    )}
+                    {isHasLevelsPhoto ? (
+                        <StyledTab icon={<PhotoLibraryIcon />} aria-label="layout" />
+                    ) : (
+                        <StyledTab disabled icon={<PhotoLibraryIcon />} aria-label="layout" />
+                    )}
+                    {flat && <StyledTab icon={<PrintIcon />} aria-label="print" className="disabled" />}
                 </Tabs>
             </AppBar>
 
