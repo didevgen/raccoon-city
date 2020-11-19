@@ -1,55 +1,17 @@
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import React, {useCallback} from 'react';
 import {useLocation, useParams} from 'react-router';
-import styled from 'styled-components';
 import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
 import {useQuery} from '@apollo/react-hooks';
-
-const HouseIconContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px;
-    &:hover,
-    &:hover *,
-    &.active,
-    &.active * {
-        color: #e84f1d !important;
-        cursor: pointer;
-    }
-`;
-
-const StyledIcon = styled(ApartmentIcon)`
-    &.empty {
-        color: #808080;
-    }
-
-    &.free {
-        color: #008000;
-    }
-
-    &.sold_out {
-        color: #ff0047;
-    }
-
-    &:hover {
-        color: #e84f1d !important;
-    }
-`;
-
-const HouseNameDiv = styled.div`
-    font-size: 1vw;
-    text-align: center;
-`;
+import {HouseIconContainer, StyledIcon, HouseNameDiv} from './styledComponents';
 
 function houseNameSplitter(houseName: string) {
-    const partArr = houseName.split(' ');
+    const [firstNameItem, secondNameItem, ...restName] = houseName.split(' ');
     return (
         <>
             <div>
-                {partArr[0]} {partArr[1]}
+                {firstNameItem} {secondNameItem}
             </div>
-            <div>{partArr.splice(2, partArr.length - 2).join(' ')}</div>
+            <div>{restName.join(' ')}</div>
         </>
     );
 }
@@ -79,15 +41,15 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         }
     });
 
-    let iconsColor;
-    if (!loading) {
-        if (!data.getPublicFlatsList.length) {
-            iconsColor = 'empty';
-        } else {
-            data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE')
-                ? (iconsColor = 'free')
-                : (iconsColor = 'sold_out');
-        }
+    const isHouseHasFlats = !loading && data.getPublicFlatsList.length;
+    const isHouseHasFreeFlats =
+        !loading && data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE');
+
+    let iconColor: string;
+    if (!isHouseHasFlats) {
+        iconColor = 'icon-empty';
+    } else {
+        isHouseHasFreeFlats ? (iconColor = 'icon-free') : (iconColor = 'icon-sold_out');
     }
 
     return (
@@ -111,7 +73,7 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
             onMouseEnter={() => handler(house)}
             onMouseLeave={() => handler(null)}
         >
-            <StyledIcon fontSize="large" className={iconsColor} />
+            <StyledIcon fontSize="large" className={iconColor} />
             <HouseNameDiv>{houseNameSplitter(house.name)}</HouseNameDiv>
         </HouseIconContainer>
     );
