@@ -70,10 +70,6 @@ const SendRequestContainer = styled.div`
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
-
-    &.disabled {
-        color: gray;
-    }
 `;
 
 export const ButtonsContainer = styled.div`
@@ -140,10 +136,10 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     };
 
     const flat = data.getFlatSidebarInfo;
-    const isHasVR: boolean = Boolean(flat?.layout?.images?.VR?.length);
-    const isHasHalfVR: boolean = Boolean(flat?.layout?.images?.HALF_VR?.length);
-    const isHasPhoto: boolean = Boolean(flat?.layout?.images?.PHOTO?.length);
-    const isHasLevelsPhoto: boolean = Boolean(flat?.levelLayouts);
+    const isHasVR = Boolean(flat?.layout?.images?.VR?.length);
+    const isHasHalfVR = Boolean(flat?.layout?.images?.HALF_VR?.length);
+    const isHasPhoto = Boolean(flat?.layout?.images?.PHOTO?.length);
+    const isHasLevelsPhoto = Boolean(flat?.levelLayouts);
 
     const ButtonView = (
         <SendRequestContainer>
