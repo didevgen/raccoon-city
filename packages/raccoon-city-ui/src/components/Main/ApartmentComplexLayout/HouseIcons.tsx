@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Carousel from 'react-elastic-carousel';
 
 const HouseChooseContainer = styled.div`
-    height: 15vh;
+    height: 15%;
     display: flex;
     justify-content: center;
     margin-bottom: 16px;

@@ -15,7 +15,7 @@ const LayoutContainer = styled.div`
 
 const ImageContainer = styled.div`
     display: flex;
-    max-height: 80vh;
+    height: 80vh;
 `;
 
 const LayoutImage = styled.div<any>`
@@ -27,7 +27,7 @@ const LayoutImage = styled.div<any>`
 function attachSvg(container: string) {
     return SVG()
         .addTo(container)
-        .size('100%', '80vh');
+        .size('100%', '100%');
 }
 
 function fillExistingLayouts(
