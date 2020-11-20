@@ -46,10 +46,11 @@ function getChessWidth(props: any) {
 
 export const ColumnAndSectionBarWrapper = styled.div<{isPublic: boolean; mode: string}>`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     overflow-x: auto;
     width: ${getChessWidth};
     margin: 0 auto;
+    padding: 0 20px;
 
     @media only screen and (max-width: 900px) {
         justify-content: center;

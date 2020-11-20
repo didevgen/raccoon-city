@@ -27,6 +27,7 @@ import {SidebarPdfInfo} from './SidebarPdfInfo';
 import SentTradeRequestModal from './SentTradeRequestModal';
 
 import {defaultFlatPicture} from './SvgImages';
+import {GET_USER_INFO} from '../../../../graphql/queries/userQuery';
 interface FlatSidebarInfoProps {
     flat: Flat;
     houseId: string;
@@ -117,6 +118,10 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [modal, setModal] = React.useState(false);
 
+    const {data: user, loading: userLoading} = useQuery(GET_USER_INFO, {
+        fetchPolicy: 'cache-and-network'
+    });
+
     const {showRequestButton} = props;
     let isShowButton = showRequestButton;
     if (isShowButton === undefined) {
@@ -131,11 +136,26 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
         return <span>error</span>;
     }
 
+    if (userLoading) {
+        return <span>Loading...</span>;
+    }
+
+    const userInfo = !user?.getUserInfo
+        ? null
+        : {
+              name: user.getUserInfo?.name,
+              role: user.getUserInfo?.role
+          };
+
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
 
     const flat = data.getFlatSidebarInfo;
+    const isHasVR = Boolean(flat?.layout?.images?.VR?.length);
+    const isHasHalfVR = Boolean(flat?.layout?.images?.HALF_VR?.length);
+    const isHasPhoto = Boolean(flat?.layout?.images?.PHOTO?.length);
+    const isHasLevelsPhoto = Boolean(flat?.levelLayouts);
 
     const ButtonView = (
         <SendRequestContainer>
@@ -185,11 +205,11 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     aria-label="scrollable prevent tabs example"
                 >
                     <StyledTab icon={<InfoIcon />} aria-label="phone" />
-                    {flat?.layout?.images?.VR?.length && <StyledTab icon={<ThreeDRotationIcon />} aria-label="3d" />}
-                    {flat?.layout?.images?.HALF_VR?.length && <StyledTab icon={<ThreeSixtyIcon />} aria-label="2d" />}
-                    {flat?.layout?.images?.PHOTO?.length && <StyledTab icon={<ImageIcon />} aria-label="gallery" />}
-                    {flat?.levelLayouts && <StyledTab icon={<ViewCompactIcon />} aria-label="layout" />}
-                    {Boolean(flat) && <StyledTab icon={<PrintIcon />} aria-label="print" />}
+                    <StyledTab disabled={!isHasVR} icon={<ThreeDRotationIcon />} aria-label="3d" />
+                    <StyledTab disabled={!isHasHalfVR} icon={<ThreeSixtyIcon />} aria-label="2d" />
+                    <StyledTab disabled={!isHasPhoto} icon={<ImageIcon />} aria-label="gallery" />
+                    <StyledTab disabled={!isHasLevelsPhoto} icon={<ImageIcon />} aria-label="layout" />
+                    <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />
                 </Tabs>
             </AppBar>
 
@@ -220,7 +240,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 {value === 4 && <LayoutView levelLayouts={flat.levelLayouts} />}
             </TabPanel>
             <TabPanel value={value} index={5}>
-                {value === 5 && <SidebarPdfInfo flat={flat} />}
+                {value === 5 && <SidebarPdfInfo userInfo={userInfo} flat={flat} />}
             </TabPanel>
 
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} open={setModal} />}

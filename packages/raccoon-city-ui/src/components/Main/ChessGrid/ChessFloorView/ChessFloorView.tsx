@@ -129,10 +129,13 @@ export const ChessFloorView = (props) => {
         setCurrentLevel(levels[0].id);
     };
 
+    const levels = sections[currentSection].levels;
+    const updatedLevels = isPublic ? levels.reverse() : levels;
+
     return (
         <FloorViewContainer>
             <FloorLegendInfo isPublic={isPublic}>
-                {!isPublic && (
+                {
                     <CustomSelector
                         currentValue={currentSection}
                         setValue={currentValueTest}
@@ -141,14 +144,14 @@ export const ChessFloorView = (props) => {
                         itemName="Подъезд"
                         keyToShow="section"
                     />
-                )}
+                }
 
                 <LevelSelectMobile>
                     <CustomSelector
                         currentValue={currentLevel}
                         setValue={setCurrentLevel}
                         isPublic={isPublic}
-                        items={sections[currentSection].levels}
+                        items={levels}
                         itemName="Этаж"
                         keyToShow="level"
                     />
@@ -159,7 +162,7 @@ export const ChessFloorView = (props) => {
 
             <FloorContainer>
                 <FloorsListContainer>
-                    {sections[currentSection].levels.map(({id, level}) => {
+                    {updatedLevels.map(({id, level}) => {
                         return (
                             <FloorsListItem
                                 key={id}
