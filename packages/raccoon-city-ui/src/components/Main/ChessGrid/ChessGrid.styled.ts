@@ -26,8 +26,7 @@ export const ColumnWrapper = styled.div`
 export const Container = styled.div`
     overflow: auto;
     background-color: #fff;
-
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     margin: 0 auto;
 `;
