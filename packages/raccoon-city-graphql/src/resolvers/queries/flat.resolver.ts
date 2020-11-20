@@ -27,6 +27,32 @@ export interface FlatLevelLayouts {
     paths: string[];
 }
 
+function isHidePriceInFlat(flat: Flat): boolean {
+    return (
+        flat.status === 'SOLD_OUT' ||
+        flat.status === 'RESERVED' ||
+        flat.status === 'DOCUMENTS_IN_PROGRESS' ||
+        flat.status === 'UNAVAILABLE'
+    );
+}
+
+function getUpdatedFlat(flat: Flat, newFlat: any) {
+    const updatedFlat = {
+        id: flat.id,
+        ...flat.toObject(),
+        ...newFlat
+    };
+
+    return !isHidePriceInFlat(flat)
+        ? updatedFlat
+        : {
+            ...updatedFlat,
+            price: null,
+            squarePrice: null,
+            squarePriceSale: null
+        };
+}
+
 export const flatQuery = {
     getFlatSidebarInfo: async (parent, {flatId}) => {
         const flat = await FlatModel.findOne({_id: flatId, isDeleted: false})
@@ -166,6 +192,7 @@ export const flatQuery = {
                 const flatLayout: any[] = levelLayout.flatLayouts.filter((flatLevelLayout) => {
                     return flatLevelLayout.flatLayout?._id.equals(flat.layout?._id);
                 });
+
                 return {
                     id: String(levelLayout._id),
                     image: levelLayout.image,
@@ -176,13 +203,7 @@ export const flatQuery = {
                 };
             });
 
-        const isAppropriate =
-            flat.status === 'SOLD_OUT' ||
-            flat.status === 'RESERVED' ||
-            flat.status === 'DOCUMENTS_IN_PROGRESS' ||
-            flat.status === 'UNAVAILABLE';
-
-        if (isAppropriate) {
+        if (isHidePriceInFlat(flat)) {
             flat.squarePrice = '0';
             flat.squarePriceSale = '0';
             flat.price = '0';
@@ -257,26 +278,7 @@ export const flatQuery = {
                                         section: section.sectionName
                                     };
                                     const flats = level.flats.map((flat) => {
-                                        const updatedFlat = {
-                                            id: flat.id,
-                                            ...flat.toObject(),
-                                            ...newFlat
-                                        };
-
-                                        const isAppropriate =
-                                            flat.status === 'SOLD_OUT' ||
-                                            flat.status === 'RESERVED' ||
-                                            flat.status === 'DOCUMENTS_IN_PROGRESS' ||
-                                            flat.status === 'UNAVAILABLE';
-
-                                        return !isAppropriate
-                                            ? updatedFlat
-                                            : {
-                                                  ...updatedFlat,
-                                                  price: null,
-                                                  squarePrice: null,
-                                                  squarePriceSale: null
-                                              };
+                                        return getUpdatedFlat(flat, newFlat);
                                     });
                                     return {
                                         id: level.id,
@@ -311,26 +313,7 @@ export const flatQuery = {
                         };
 
                         const flats = level.flats.map((flat) => {
-                            const updatedFlat = {
-                                id: flat.id,
-                                ...flat.toObject(),
-                                ...newFlat
-                            };
-
-                            const isAppropriate =
-                                flat.status === 'SOLD_OUT' ||
-                                flat.status === 'RESERVED' ||
-                                flat.status === 'DOCUMENTS_IN_PROGRESS' ||
-                                flat.status === 'UNAVAILABLE';
-
-                            return !isAppropriate
-                                ? updatedFlat
-                                : {
-                                      ...updatedFlat,
-                                      price: null,
-                                      squarePrice: null,
-                                      squarePriceSale: null
-                                  };
+                            return getUpdatedFlat(flat, newFlat);
                         });
 
                         flats.forEach((flat) => {
