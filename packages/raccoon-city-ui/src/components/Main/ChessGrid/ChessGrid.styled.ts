@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 import {SwipeableDrawer, Typography} from '@material-ui/core';
 import Select from '@material-ui/core/Select';
-import {ChessCellViewMode} from './ChessEnums';
 
 export const ChessGridWrapper: any = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 90vw;
+    box-sizing: border-box;
     margin-top: 20px;
 
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: center;
+
     @media only screen and (max-width: 600px) {
-        min-width: 320px;
         overflow-x: auto;
         background-color: #fff;
     }
@@ -20,35 +20,23 @@ export const ChessGridWrapper: any = styled.div`
 export const ColumnWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    max-width: 1000px;
 `;
 
 // TODO check how comment on 28 line influence in project
 export const Container = styled.div`
+    overflow: auto;
     background-color: #fff;
-    padding: 0;
-    /* border-right: 1px solid #cccccc; */
-    display: flex;
-    flex-direction: row;
-    align-self: flex-end;
-    width: 100vw;
-`;
 
-function getChessWidth(props: any) {
-    if (props.isPublic && props.mode === ChessCellViewMode.TILE_PLUS) {
-        return '90vw';
-    } else if (props.isPublic) {
-        return '60vw';
-    } else {
-        return '90vw';
-    }
-}
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+`;
 
 export const ColumnAndSectionBarWrapper = styled.div<{isPublic: boolean; mode: string}>`
     display: flex;
     justify-content: space-around;
     overflow-x: auto;
-    width: ${getChessWidth};
+    width: auto;
     margin: 0 auto;
 
     @media only screen and (max-width: 900px) {
@@ -99,7 +87,7 @@ export const InfoIcon = styled.div`
 `;
 
 export const HouseTitle = styled.p`
-    font-size: 50px;
+    font-size: 20px;
     margin: 0;
     margin-top: -60px;
 
