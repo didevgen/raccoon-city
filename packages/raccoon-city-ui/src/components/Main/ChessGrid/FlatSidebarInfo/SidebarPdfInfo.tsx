@@ -1,9 +1,10 @@
-import {Button, Icon} from '@material-ui/core';
+import {Icon} from '@material-ui/core';
 import {Document, Font, Page, PDFDownloadLink, StyleSheet, Text, View} from '@react-pdf/renderer';
 import styled from '@react-pdf/styled-components';
 import React from 'react';
 import {FLAT_STATUSES} from '../../../../core/constants';
 import {SidebarFlat} from '../../../../graphql/queries/flatQuery';
+import {CustomButton} from './styledComponents';
 
 interface SidebarPdfInfoProps {
     flat: SidebarFlat;
@@ -252,9 +253,9 @@ export function SidebarPdfInfo({flat, userInfo}: SidebarPdfInfoProps) {
                 loading ? (
                     'Loading document...'
                 ) : (
-                    <Button variant="contained" color="primary" endIcon={<Icon>print</Icon>}>
+                    <CustomButton variant="contained" endIcon={<Icon>print</Icon>}>
                         Скачать PDF
-                    </Button>
+                    </CustomButton>
                 )
             }
         </PDFDownloadLink>

@@ -16,9 +16,9 @@ const TileViewMobile = css`
 const TileViewPlus = css`
     width: 202px;
     height: auto;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
-    padding: 5px;
+    padding: 0;
 `;
 
 const getCellView = (props) => {
@@ -60,16 +60,14 @@ export const Cell = styled.div<{viewMode?: string}>`
     color: #fff;
     background-color: #3ab71e;
     font-weight: 500;
-    border-radius: 0;
+    border-radius: 5px;
     margin: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
-
     width: 145px;
     height: auto;
-    flex-direction: column;
     padding: 5px;
 
     ${getCellView}
@@ -187,5 +185,38 @@ export const StyledBagde = styled(Badge)`
     .MuiBadge-badge {
         top: 10px;
         right: 10px;
+        background: #fff;
+        color: black;
+        border: 1px solid #000;
     }
+`;
+
+export const TilePlusFirstSection = styled.div`
+    width: 25%;
+    padding: 0 5px;
+`;
+
+export const TilePlusSecondSection = styled.div`
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #fff;
+`;
+
+export const TilePlusAreaInfo = styled.div`
+    height: 30%;
+    border-bottom: 1px solid #fff;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const TilePlusPriceInfo = styled.div`
+    height: 70%;
+    padding: 5px;
+    text-align: center;
+`;
+
+export const TilePlusSquarePriceInfo = styled.div`
+    margin-bottom: 5px;
 `;

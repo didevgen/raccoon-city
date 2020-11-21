@@ -135,7 +135,7 @@ export const ChessFloorView = (props) => {
     return (
         <FloorViewContainer>
             <FloorLegendInfo isPublic={isPublic}>
-                {
+                {!isPublic && (
                     <CustomSelector
                         currentValue={currentSection}
                         setValue={currentValueTest}
@@ -144,7 +144,7 @@ export const ChessFloorView = (props) => {
                         itemName="Подъезд"
                         keyToShow="section"
                     />
-                }
+                )}
 
                 <LevelSelectMobile>
                     <CustomSelector
@@ -162,20 +162,24 @@ export const ChessFloorView = (props) => {
 
             <FloorContainer>
                 <FloorsListContainer>
-                    {updatedLevels.map(({id, level}) => {
-                        return (
-                            <FloorsListItem
-                                key={id}
-                                onClick={() => {
-                                    setCurrentLevel(id);
-                                }}
-                                isPublic={isPublic}
-                                currentLevel={currentLevel === id}
-                            >
-                                {`Этаж ${level}`}
-                            </FloorsListItem>
-                        );
-                    })}
+                    {updatedLevels
+                        .sort((level1, level2) => {
+                            return level2.level - level1.level;
+                        })
+                        .map(({id, level}) => {
+                            return (
+                                <FloorsListItem
+                                    key={id}
+                                    onClick={() => {
+                                        setCurrentLevel(id);
+                                    }}
+                                    isPublic={isPublic}
+                                    currentLevel={currentLevel === id}
+                                >
+                                    {`Этаж ${level}`}
+                                </FloorsListItem>
+                            );
+                        })}
                 </FloorsListContainer>
                 <FloorContentContainer>{contentView}</FloorContentContainer>
             </FloorContainer>

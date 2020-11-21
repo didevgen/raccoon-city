@@ -1,24 +1,20 @@
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import React, {useCallback} from 'react';
 import {useLocation, useParams} from 'react-router';
-import styled from 'styled-components';
+import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
+import {useQuery} from '@apollo/react-hooks';
+import {HouseIconContainer, StyledIcon, HouseNameDiv} from './styledComponents';
 
-const HouseIconContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px;
-    &:hover,
-    &.active {
-        color: #e84f1d !important;
-        cursor: pointer;
-    }
-`;
-
-const HouseNameDiv = styled.div`
-    font-size: 1.5vw;
-    text-align: center;
-`;
+function houseNameSplitter(houseName: string) {
+    const [firstNameItem, secondNameItem, ...restName] = houseName.split(' ');
+    return (
+        <>
+            <div>
+                {firstNameItem} {secondNameItem}
+            </div>
+            <div>{restName.join(' ')}</div>
+        </>
+    );
+}
 
 function debounce(fn, interval) {
     let timer;
@@ -38,6 +34,24 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
     const authToken = params.get('authToken');
     const {apartmentComplexUuid, developerUuid} = useParams() as any;
     const handler = useCallback(debounce(setHoveredItem, 100), []);
+
+    const {data, loading} = useQuery(GET_PUBLIC_FLATS_LIST, {
+        variables: {
+            uuid: house.id
+        }
+    });
+
+    const isHouseHasFlats = !loading && data.getPublicFlatsList.length;
+    const isHouseHasFreeFlats =
+        !loading && data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE');
+
+    let iconColor: string;
+    if (!isHouseHasFlats) {
+        iconColor = 'icon-empty';
+    } else {
+        isHouseHasFreeFlats ? (iconColor = 'icon-free') : (iconColor = 'icon-sold_out');
+    }
+
     return (
         <HouseIconContainer
             className={hoveredItem?.id === house?.id ? 'active' : ''}
@@ -59,8 +73,8 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
             onMouseEnter={() => handler(house)}
             onMouseLeave={() => handler(null)}
         >
-            <ApartmentIcon fontSize="large" />
-            <HouseNameDiv>{house.name}</HouseNameDiv>
+            <StyledIcon fontSize="large" className={iconColor} />
+            <HouseNameDiv>{houseNameSplitter(house.name)}</HouseNameDiv>
         </HouseIconContainer>
     );
 }

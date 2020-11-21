@@ -50,6 +50,7 @@ export const HouseCreateForm = connect(null, (dispatch) => ({
         applyTitle('Создание дома');
     }, [params]); // eslint-disable-line
     const [createHouse, {data, loading}] = useMutation(CREATE_HOUSE);
+    //@ts-ignore
     const {apartmentComplexUuid, developerUuid} = useParams();
 
     if (data) {
@@ -67,6 +68,7 @@ export const HouseCreateForm = connect(null, (dispatch) => ({
                     </Typography>
                     <HouseForm
                         loading={loading}
+                        //When button 'AddSection' will be added remove 'add section' at back/resolvers/house.ts/createHouse
                         onSubmit={async (values) => {
                             await createHouse({
                                 variables: {
@@ -93,6 +95,7 @@ export const HouseEditForm = connect(null, (dispatch) => ({
         applyTitle('Редактирование дома');
     }, [params]); // eslint-disable-line
     const [updateHouse, {data: result, loading: updating}] = useMutation(UPDATE_HOUSE);
+    //@ts-ignore
     const {apartmentComplexUuid, houseUuid, developerUuid} = useParams();
 
     const {loading, error, data} = useQuery<{getHouse: House}>(HOUSE_DATA, {
@@ -147,6 +150,7 @@ interface HouseFormProps {
 }
 
 export function HouseForm(outerProps: HouseFormProps) {
+    //@ts-ignore
     const {apartmentComplexUuid, developerUuid} = useParams();
     return (
         <Fragment>
