@@ -8,6 +8,7 @@ import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
+import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -25,6 +26,27 @@ export interface FlatLevelLayouts {
         height: number;
     };
     paths: string[];
+}
+
+function isHidePriceInFlat(status: string): boolean {
+    return flatStatusesWithoutPrice.includes(status);
+}
+
+function getUpdatedFlat(flat: Flat, newFlat: any) {
+    const updatedFlat = {
+        id: flat.id,
+        ...flat.toObject(),
+        ...newFlat
+    };
+
+    return !isHidePriceInFlat(flat.status)
+        ? updatedFlat
+        : {
+            ...updatedFlat,
+            price: null,
+            squarePrice: null,
+            squarePriceSale: null
+        };
 }
 
 export const flatQuery = {
@@ -166,6 +188,7 @@ export const flatQuery = {
                 const flatLayout: any[] = levelLayout.flatLayouts.filter((flatLevelLayout) => {
                     return flatLevelLayout.flatLayout?._id.equals(flat.layout?._id);
                 });
+
                 return {
                     id: String(levelLayout._id),
                     image: levelLayout.image,
@@ -175,6 +198,13 @@ export const flatQuery = {
                     viewBox: flatLayout[0].viewBox
                 };
             });
+
+        if (isHidePriceInFlat(flat.status)) {
+            flat.squarePrice = '0';
+            flat.squarePriceSale = '0';
+            flat.price = '0';
+        }
+
         return flat;
     },
     getPublicGroupedFlatsBySection: async (parent, {uuid}) => {
@@ -244,11 +274,7 @@ export const flatQuery = {
                                         section: section.sectionName
                                     };
                                     const flats = level.flats.map((flat) => {
-                                        return {
-                                            id: flat.id,
-                                            ...flat.toObject(),
-                                            ...newFlat
-                                        };
+                                        return getUpdatedFlat(flat, newFlat);
                                     });
                                     return {
                                         id: level.id,
@@ -283,11 +309,7 @@ export const flatQuery = {
                         };
 
                         const flats = level.flats.map((flat) => {
-                            return {
-                                id: flat.id,
-                                ...flat.toObject(),
-                                ...newFlat
-                            };
+                            return getUpdatedFlat(flat, newFlat);
                         });
 
                         flats.forEach((flat) => {

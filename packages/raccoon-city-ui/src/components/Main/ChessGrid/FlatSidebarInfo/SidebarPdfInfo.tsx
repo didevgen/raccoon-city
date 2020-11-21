@@ -8,6 +8,10 @@ import {CustomButton} from './styledComponents';
 
 interface SidebarPdfInfoProps {
     flat: SidebarFlat;
+    userInfo: {
+        name: string | null;
+        role: string | null;
+    } | null;
 }
 
 Font.register({
@@ -116,7 +120,14 @@ const PhoneSectionTitle = styled.Text`
     font-weight: bold;
 `;
 
-function FlatTable({flat}: SidebarPdfInfoProps) {
+function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
+    let manager: string | null = null;
+
+    if (userInfo) {
+        const role = userInfo?.role ? userInfo.role : '';
+        manager = `${userInfo.name} ${role}`;
+    }
+
     return (
         <View style={styles.table}>
             <TR>
@@ -167,6 +178,24 @@ function FlatTable({flat}: SidebarPdfInfoProps) {
                     <Text>{flat.roomAmount}</Text>
                 </View>
             </TR>
+            <TR>
+                <View style={styles.td}>
+                    <Text>Дата</Text>
+                </View>
+                <View style={styles.value}>
+                    <Text>{new Date().toLocaleDateString()}</Text>
+                </View>
+            </TR>
+            {manager ? (
+                <TR>
+                    <View style={styles.td}>
+                        <Text>Менеджер</Text>
+                    </View>
+                    <View style={styles.value}>
+                        <Text>{manager}</Text>
+                    </View>
+                </TR>
+            ) : null}
         </View>
     );
 }
@@ -178,7 +207,7 @@ const makeHttps = (url?: string) => {
 
     return url.replace('http://', 'https://');
 };
-const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
+const FlatPdf = ({flat, userInfo}: SidebarPdfInfoProps) => {
     const status = FLAT_STATUSES.find((item) => item.value === flat.status);
     return (
         <Document>
@@ -196,7 +225,7 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
                         <StyledImage src={makeHttps(flat.layout?.image.previewImageUrl)} />
                     </ImageWrapper>
                 )}
-                <FlatTable flat={flat} />
+                <FlatTable flat={flat} userInfo={userInfo} />
                 <Call>По всем вопросам:</Call>
                 <NumberSection>
                     <PhoneSection>
@@ -217,9 +246,9 @@ const FlatPdf = ({flat}: SidebarPdfInfoProps) => {
     );
 };
 
-export function SidebarPdfInfo({flat}: SidebarPdfInfoProps) {
+export function SidebarPdfInfo({flat, userInfo}: SidebarPdfInfoProps) {
     return (
-        <PDFDownloadLink document={<FlatPdf flat={flat} />} fileName={`${flat.flatNumber}.pdf`}>
+        <PDFDownloadLink document={<FlatPdf userInfo={userInfo} flat={flat} />} fileName={`${flat.flatNumber}.pdf`}>
             {({blob, url, loading, error}) =>
                 loading ? (
                     'Loading document...'

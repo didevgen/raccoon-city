@@ -28,7 +28,11 @@ export class ChessListView extends React.Component<any> {
 
     public render() {
         const {filters, onSelect, listData} = this.props as any;
-        const filteredList = listData.filter((flat) => isActive(flat, filters));
+        const filteredList = listData
+            .sort((level1, level2) => {
+                return level2.level - level1.level;
+            })
+            .filter((flat) => isActive(flat, filters));
 
         return (
             <ListViewBox>

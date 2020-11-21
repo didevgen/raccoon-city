@@ -22,9 +22,7 @@ export const ColumnWrapper = styled.div`
     flex-direction: row;
 `;
 
-// TODO check how comment on 28 line influence in project
 export const Container = styled.div`
-    overflow: auto;
     background-color: #fff;
     display: inline-flex;
     vertical-align: top;
@@ -33,10 +31,11 @@ export const Container = styled.div`
 
 export const ColumnAndSectionBarWrapper = styled.div<{isPublic: boolean; mode: string}>`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     overflow-x: auto;
     width: auto;
     margin: 0 auto;
+    padding: 0 20px;
 
     @media only screen and (max-width: 900px) {
         justify-content: center;

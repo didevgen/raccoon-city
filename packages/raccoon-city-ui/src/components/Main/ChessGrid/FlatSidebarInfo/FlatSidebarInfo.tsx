@@ -27,6 +27,7 @@ import {SidebarPdfInfo} from './SidebarPdfInfo';
 import SentTradeRequestModal from './SentTradeRequestModal';
 
 import {defaultFlatPicture} from './SvgImages';
+import {GET_USER_INFO} from '../../../../graphql/queries/userQuery';
 interface FlatSidebarInfoProps {
     flat: Flat;
     houseId: string;
@@ -117,6 +118,10 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [modal, setModal] = React.useState(false);
 
+    const {data: user, loading: userLoading} = useQuery(GET_USER_INFO, {
+        fetchPolicy: 'cache-and-network'
+    });
+
     const {showRequestButton} = props;
     let isShowButton = showRequestButton;
     if (isShowButton === undefined) {
@@ -130,6 +135,17 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     if (error) {
         return <span>error</span>;
     }
+
+    if (userLoading) {
+        return <span>Loading...</span>;
+    }
+
+    const userInfo = !user?.getUserInfo
+        ? null
+        : {
+              name: user.getUserInfo?.name,
+              role: user.getUserInfo?.role
+          };
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -226,7 +242,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 {value === 4 && <LayoutView levelLayouts={flat.levelLayouts} />}
             </TabPanel>
             <TabPanel value={value} index={5}>
-                {value === 5 && <SidebarPdfInfo flat={flat} />}
+                {value === 5 && <SidebarPdfInfo userInfo={userInfo} flat={flat} />}
             </TabPanel>
 
             {isModalOpen && <FlatSidebarModal flat={flat} close={setModalOpen} open={setModal} />}
