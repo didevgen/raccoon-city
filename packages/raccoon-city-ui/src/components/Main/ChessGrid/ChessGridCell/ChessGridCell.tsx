@@ -55,9 +55,9 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                     </TilePlusAreaInfo>
                     <TilePlusPriceInfo>
                         <TilePlusSquarePriceInfo>
-                            1м2 - {flat.squarePriceSale || flat.squarePrice} грн
+                            1м2 - {flat.squarePriceSale || flat.squarePrice || '0'} грн
                         </TilePlusSquarePriceInfo>
-                        {!isSoldOut ? <ReducedPrice flat={flat} /> : 'SOLD OUT'}
+                        <ReducedPrice flat={flat} />
                     </TilePlusPriceInfo>
                 </TilePlusSecondSection>
             </Fragment>

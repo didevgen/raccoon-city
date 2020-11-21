@@ -20,5 +20,6 @@ export const PUBLIC_QUERIES = [
     'getPublicFlatsList',
     'countPublicFlats',
     'getApartmentComplexLayout',
-    'getPublishedFlatsLayoutByHouseId'
+    'getPublishedFlatsLayoutByHouseId',
+    'getUserInfo'
 ];

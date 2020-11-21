@@ -10,14 +10,12 @@ import {API_TOKEN} from '../../core/constants';
 import ChessGrid from '../Main/ChessGrid/ChessGrid';
 import {useStyles} from '../Main/drawerStyles';
 
-// TODO check how comment on 17 line influence in project
 const Content = styled.div`
     position: relative;
     max-width: 100%;
-    /* overflow-y: scroll; */
 
     .ChessGridColumn__cell {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 `;
 const FilterContainer = styled.div`

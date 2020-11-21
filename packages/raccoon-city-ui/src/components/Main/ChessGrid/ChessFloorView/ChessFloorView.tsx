@@ -129,6 +129,9 @@ export const ChessFloorView = (props) => {
         setCurrentLevel(levels[0].id);
     };
 
+    const levels = sections[currentSection].levels;
+    const updatedLevels = isPublic ? levels.reverse() : levels;
+
     return (
         <FloorViewContainer>
             <FloorLegendInfo isPublic={isPublic}>
@@ -148,7 +151,7 @@ export const ChessFloorView = (props) => {
                         currentValue={currentLevel}
                         setValue={setCurrentLevel}
                         isPublic={isPublic}
-                        items={sections[currentSection].levels}
+                        items={levels}
                         itemName="Этаж"
                         keyToShow="level"
                     />
@@ -159,20 +162,24 @@ export const ChessFloorView = (props) => {
 
             <FloorContainer>
                 <FloorsListContainer>
-                    {sections[currentSection].levels.map(({id, level}) => {
-                        return (
-                            <FloorsListItem
-                                key={id}
-                                onClick={() => {
-                                    setCurrentLevel(id);
-                                }}
-                                isPublic={isPublic}
-                                currentLevel={currentLevel === id}
-                            >
-                                {`Этаж ${level}`}
-                            </FloorsListItem>
-                        );
-                    })}
+                    {updatedLevels
+                        .sort((level1, level2) => {
+                            return level2.level - level1.level;
+                        })
+                        .map(({id, level}) => {
+                            return (
+                                <FloorsListItem
+                                    key={id}
+                                    onClick={() => {
+                                        setCurrentLevel(id);
+                                    }}
+                                    isPublic={isPublic}
+                                    currentLevel={currentLevel === id}
+                                >
+                                    {`Этаж ${level}`}
+                                </FloorsListItem>
+                            );
+                        })}
                 </FloorsListContainer>
                 <FloorContentContainer>{contentView}</FloorContentContainer>
             </FloorContainer>
