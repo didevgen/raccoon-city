@@ -8,6 +8,7 @@ import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
+import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
@@ -27,13 +28,8 @@ export interface FlatLevelLayouts {
     paths: string[];
 }
 
-function isHidePriceInFlat(flat: Flat): boolean {
-    return (
-        flat.status === 'SOLD_OUT' ||
-        flat.status === 'RESERVED' ||
-        flat.status === 'DOCUMENTS_IN_PROGRESS' ||
-        flat.status === 'UNAVAILABLE'
-    );
+function isHidePriceInFlat(status: string): boolean {
+    return flatStatusesWithoutPrice.includes(status);
 }
 
 function getUpdatedFlat(flat: Flat, newFlat: any) {
@@ -43,7 +39,7 @@ function getUpdatedFlat(flat: Flat, newFlat: any) {
         ...newFlat
     };
 
-    return !isHidePriceInFlat(flat)
+    return !isHidePriceInFlat(flat.status)
         ? updatedFlat
         : {
             ...updatedFlat,
@@ -203,7 +199,7 @@ export const flatQuery = {
                 };
             });
 
-        if (isHidePriceInFlat(flat)) {
+        if (isHidePriceInFlat(flat.status)) {
             flat.squarePrice = '0';
             flat.squarePriceSale = '0';
             flat.price = '0';

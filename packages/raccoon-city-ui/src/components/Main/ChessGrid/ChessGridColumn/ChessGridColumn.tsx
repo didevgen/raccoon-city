@@ -81,8 +81,6 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
             return level2.level - level1.level;
         });
 
-        console.log(sortedLevels);
-
         return (
             <ColumnWrapper className="ChessGridColumn">
                 <CellContainer className="ChessGridColumn__cell">
