@@ -119,7 +119,8 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const [modal, setModal] = React.useState(false);
 
     const {data: user, loading: userLoading} = useQuery(GET_USER_INFO, {
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
+        skip: props.isPublic
     });
 
     const {showRequestButton} = props;
