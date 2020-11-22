@@ -1,13 +1,13 @@
-import * as React from 'react';
-import ruLocale from 'date-fns/locale/ru';
-import {format, parseISO} from 'date-fns';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import {ApartmentComplexType} from '../../../../shared/types/apartmentComplex.types';
+import {format, parseISO} from 'date-fns';
+import ruLocale from 'date-fns/locale/ru';
+import * as React from 'react';
 import styled from 'styled-components';
+import {ApartmentComplexType} from '../../../../shared/types/apartmentComplex.types';
 
 interface ApartmentComplexDataProps {
     apartmentComplex: ApartmentComplexType;
@@ -65,9 +65,11 @@ function getTableRows(props: ApartmentComplexType) {
         {
             key: 'endDate',
             label: 'Конец строительства',
-            value: format(parseISO(props.endDate), 'MM yyyy', {
-                locale: ruLocale
-            })
+            value: !!props.endDate
+                ? format(parseISO(props.endDate), 'MM yyyy', {
+                      locale: ruLocale
+                  })
+                : 'Не определено'
         }
     ];
 }

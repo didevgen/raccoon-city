@@ -166,7 +166,7 @@ const ChessGridContent = React.memo((props: any) => {
                     <Container key={group.id}>
                         <ColumnAndSectionBarWrapper isPublic={isPublic} mode={filters.mode}>
                             <ColumnWrapper>
-                                {showMutedFlats(groupedFlats, filters).map((item: GroupedFlats) => {
+                                {showMutedFlats(groupedFlats, filters, isPublic).map((item: GroupedFlats) => {
                                     return (
                                         <ChessGridColumn
                                             key={item.id}

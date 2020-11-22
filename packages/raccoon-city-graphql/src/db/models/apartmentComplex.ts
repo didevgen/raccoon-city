@@ -31,7 +31,7 @@ const ApartmentComplexSchema: Schema = new Schema({
     levels: {type: Schema.Types.Number, required: true},
     sections: {type: Schema.Types.Number, required: true},
     beginDate: {type: Schema.Types.String, required: true},
-    endDate: {type: Schema.Types.String, required: true},
+    endDate: {type: Schema.Types.String},
     isDeleted: {type: Schema.Types.Boolean, default: false},
     houses: [
         {

@@ -8,16 +8,16 @@ import {
     DataContainer,
     HtmlTooltip,
     NumberContainer,
+    PreviewCell,
+    PriceAndAmountContainer,
     PriceContainer,
     StyledBagde,
-    TooltipContainer,
-    PriceAndAmountContainer,
-    PreviewCell,
-    TilePlusFirstSection,
-    TilePlusSecondSection,
     TilePlusAreaInfo,
+    TilePlusFirstSection,
     TilePlusPriceInfo,
-    TilePlusSquarePriceInfo
+    TilePlusSecondSection,
+    TilePlusSquarePriceInfo,
+    TooltipContainer
 } from './ChessGridCell.styled';
 
 interface Props {
@@ -26,6 +26,10 @@ interface Props {
 }
 
 function ReducedPrice({flat}) {
+    if (!flat.squarePrice) {
+        return <span>Цена недоступна</span>;
+    }
+
     const price = flat.area * flat.squarePrice;
     const salePrice = flat.area * (flat.squarePriceSale || -1);
 
@@ -55,7 +59,11 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                     </TilePlusAreaInfo>
                     <TilePlusPriceInfo>
                         <TilePlusSquarePriceInfo>
-                            1м2 - {flat.squarePriceSale || flat.squarePrice || '0'} грн
+                            {!!flat.squarePrice ? (
+                                <span>1м2 - {flat.squarePriceSale || flat.squarePrice} грн</span>
+                            ) : (
+                                <span>&nbsp;</span>
+                            )}
                         </TilePlusSquarePriceInfo>
                         <ReducedPrice flat={flat} />
                     </TilePlusPriceInfo>
@@ -77,10 +85,12 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                 <TooltipContainer>
                     <PriceContainer>
                         <PreviewCell className={flat.status}>{flat.roomAmount}</PreviewCell>
-                        <PriceAndAmountContainer>
-                            {priceField}
-                            <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>
-                        </PriceAndAmountContainer>
+                        {flat.squarePrice && (
+                            <PriceAndAmountContainer>
+                                {priceField}
+                                <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>
+                            </PriceAndAmountContainer>
+                        )}
                     </PriceContainer>
                     <DataContainer>
                         <NumberContainer>
