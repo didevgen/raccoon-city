@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
 import {ChessCellViewMode} from '../ChessEnums';
+import {withTooltip} from './ChessGridDesktopFilters';
 import {FilterItemContainer, FilterTitle} from './ChessGridFilters';
 
 const ViewModeContainer = styled.div`
@@ -141,10 +142,10 @@ export function ViewModeFilters({mode, dispatch}) {
         <FilterItemContainer>
             <FilterTitle>Отображение</FilterTitle>
             <ViewModeContainer>
-                <ChessGridIcon value={mode} onClick={onClick} />
-                <ChessGridPlusIcon value={mode} onClick={onClick} />
-                <ListIcon value={mode} onClick={onClick} />
-                <LevelIcon value={mode} onClick={onClick} />
+                {withTooltip(<ChessGridIcon value={mode} onClick={onClick} />, 'Плитка')}
+                {withTooltip(<ChessGridPlusIcon value={mode} onClick={onClick} />, 'Плитка+')}
+                {withTooltip(<ListIcon value={mode} onClick={onClick} />, 'Список')}
+                {withTooltip(<LevelIcon value={mode} onClick={onClick} />, 'План этажа')}
             </ViewModeContainer>
         </FilterItemContainer>
     );

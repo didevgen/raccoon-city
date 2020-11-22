@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
+import {withTooltip} from './ChessGridDesktopFilters';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
 
@@ -140,7 +141,14 @@ const RangeInput = styled(Input)`
     text-align: center;
 `;
 
-const roomFilters = [{value: 'КН'}, {value: 'П'}, {value: '1'}, {value: '2'}, {value: '3'}, {value: '4+'}];
+const roomFilters = [
+    {value: 'КН', title: 'Коммерческое помещение'},
+    {value: 'П', title: 'Паркинг'},
+    {value: '1', title: 'Однокомнатные'},
+    {value: '2', title: 'Двухкомнатные'},
+    {value: '3', title: 'Трёхкомнатные'},
+    {value: '4+', title: 'От четырёх комнат'}
+];
 
 export function RoomAmountFilter({dispatch}) {
     const [selected, setSelected] = useState({});
@@ -155,7 +163,7 @@ export function RoomAmountFilter({dispatch}) {
                         active: filterSelected,
                         empty: !filterSelected
                     });
-                    return (
+                    return withTooltip(
                         <StyledAvatar
                             variant="square"
                             key={item.value}
@@ -171,7 +179,8 @@ export function RoomAmountFilter({dispatch}) {
                             }}
                         >
                             {item.value}
-                        </StyledAvatar>
+                        </StyledAvatar>,
+                        item.title
                     );
                 })}
             </RoomContainer>
@@ -421,42 +430,51 @@ export function ViewMode({dispatch}) {
         <FilterItemContainer>
             <FilterTitle>Режим просмотра</FilterTitle>
             <RoomContainer>
-                <ViewModeAvatar
-                    className={classNames({...isSelected(ViewModeValues.ROOM)})}
-                    onClick={() => {
-                        setSelected(ViewModeValues.ROOM);
-                        dispatch({
-                            type: 'mode',
-                            payload: ViewModeValues.ROOM
-                        });
-                    }}
-                >
-                    <ApartmentIcon />
-                </ViewModeAvatar>
-                <ViewModeAvatar
-                    className={classNames({...isSelected(ViewModeValues.AREA)})}
-                    onClick={() => {
-                        setSelected(ViewModeValues.AREA);
-                        dispatch({
-                            type: 'mode',
-                            payload: ViewModeValues.AREA
-                        });
-                    }}
-                >
-                    М²
-                </ViewModeAvatar>
-                <ViewModeAvatar
-                    className={classNames({...isSelected(ViewModeValues.NUMBER)})}
-                    onClick={() => {
-                        setSelected(ViewModeValues.NUMBER);
-                        dispatch({
-                            type: 'mode',
-                            payload: ViewModeValues.NUMBER
-                        });
-                    }}
-                >
-                    №
-                </ViewModeAvatar>
+                {withTooltip(
+                    <ViewModeAvatar
+                        className={classNames({...isSelected(ViewModeValues.ROOM)})}
+                        onClick={() => {
+                            setSelected(ViewModeValues.ROOM);
+                            dispatch({
+                                type: 'mode',
+                                payload: ViewModeValues.ROOM
+                            });
+                        }}
+                    >
+                        <ApartmentIcon />
+                    </ViewModeAvatar>,
+                    'Кол-во комнат'
+                )}
+                {withTooltip(
+                    <ViewModeAvatar
+                        className={classNames({...isSelected(ViewModeValues.AREA)})}
+                        onClick={() => {
+                            setSelected(ViewModeValues.AREA);
+                            dispatch({
+                                type: 'mode',
+                                payload: ViewModeValues.AREA
+                            });
+                        }}
+                    >
+                        М²
+                    </ViewModeAvatar>,
+                    'Площадь квартиры'
+                )}
+                {withTooltip(
+                    <ViewModeAvatar
+                        className={classNames({...isSelected(ViewModeValues.NUMBER)})}
+                        onClick={() => {
+                            setSelected(ViewModeValues.NUMBER);
+                            dispatch({
+                                type: 'mode',
+                                payload: ViewModeValues.NUMBER
+                            });
+                        }}
+                    >
+                        №
+                    </ViewModeAvatar>,
+                    'Номер квартиры'
+                )}
             </RoomContainer>
         </FilterItemContainer>
     );

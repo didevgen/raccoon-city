@@ -120,6 +120,10 @@ const PhoneSectionTitle = styled.Text`
     font-weight: bold;
 `;
 
+const CustomPDFDownloadLink = styled(PDFDownloadLink)`
+    text-decoration: none;
+`;
+
 function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
     let manager: string | null = null;
 
@@ -252,7 +256,10 @@ const FlatPdf = ({flat, userInfo}: SidebarPdfInfoProps) => {
 
 export function SidebarPdfInfo({flat, userInfo}: SidebarPdfInfoProps) {
     return (
-        <PDFDownloadLink document={<FlatPdf userInfo={userInfo} flat={flat} />} fileName={`${flat.flatNumber}.pdf`}>
+        <CustomPDFDownloadLink
+            document={<FlatPdf userInfo={userInfo} flat={flat} />}
+            fileName={`${flat.flatNumber}.pdf`}
+        >
             {({blob, url, loading, error}) =>
                 loading ? (
                     'Loading document...'
@@ -262,6 +269,6 @@ export function SidebarPdfInfo({flat, userInfo}: SidebarPdfInfoProps) {
                     </CustomButton>
                 )
             }
-        </PDFDownloadLink>
+        </CustomPDFDownloadLink>
     );
 }
