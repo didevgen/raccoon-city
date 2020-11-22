@@ -130,22 +130,26 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
 
     return (
         <View style={styles.table}>
-            <TR>
-                <View style={styles.td}>
-                    <Text>Полная цена</Text>
-                </View>
-                <View style={styles.value}>
-                    <Text>{flat.price} грн</Text>
-                </View>
-            </TR>
-            <TR>
-                <View style={styles.td}>
-                    <Text>Цена за метр</Text>
-                </View>
-                <View style={styles.value}>
-                    <Text>{flat.squarePrice} грн</Text>
-                </View>
-            </TR>
+            {flat.price && (
+                <TR>
+                    <View style={styles.td}>
+                        <Text>Полная цена</Text>
+                    </View>
+                    <View style={styles.value}>
+                        <Text>{flat.price} грн</Text>
+                    </View>
+                </TR>
+            )}
+            {flat.squarePrice && (
+                <TR>
+                    <View style={styles.td}>
+                        <Text>Цена за метр</Text>
+                    </View>
+                    <View style={styles.value}>
+                        <Text>{flat.squarePrice} грн</Text>
+                    </View>
+                </TR>
+            )}
             <TR>
                 <View style={styles.td}>
                     <Text>Площадь</Text>
@@ -222,7 +226,7 @@ const FlatPdf = ({flat, userInfo}: SidebarPdfInfoProps) => {
                 <Text style={styles.status}>{status?.label}</Text>
                 {flat.layout && (
                     <ImageWrapper>
-                        <StyledImage src={makeHttps(flat.layout?.image.previewImageUrl)} />
+                        <StyledImage src={makeHttps(`${flat.layout?.image.previewImageUrl}?x-some-key=some-value`)} />
                     </ImageWrapper>
                 )}
                 <FlatTable flat={flat} userInfo={userInfo} />
