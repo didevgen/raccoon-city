@@ -212,7 +212,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     <StyledTab disabled={!hasHalfVR} icon={<ThreeSixtyIcon />} aria-label="2d" />
                     <StyledTab disabled={!hasPhoto} icon={<ImageIcon />} aria-label="gallery" />
                     <StyledTab disabled={!hasLevelsPhoto} icon={<PhotoLibraryIcon />} aria-label="layout" />
-                    <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />}
+                    <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />
                 </Tabs>
             </AppBar>
 

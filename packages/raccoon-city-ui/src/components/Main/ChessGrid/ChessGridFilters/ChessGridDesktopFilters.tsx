@@ -1,4 +1,4 @@
-import {Grid} from '@material-ui/core';
+import {Grid, Tooltip} from '@material-ui/core';
 import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import {
@@ -37,6 +37,14 @@ const FlatStatusesBarWrapper = styled.div`
 `;
 
 const RangeContainer = styled.div``;
+
+export function withTooltip(component: JSX.Element, title: string) {
+    return (
+        <Tooltip title={title} placement="bottom">
+            <div>{component}</div>
+        </Tooltip>
+    );
+}
 
 export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
