@@ -1,13 +1,13 @@
-import React, {Fragment, useState} from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {MenuItem, Select} from '@material-ui/core';
+import React, {Fragment, useState} from 'react';
 import styled from 'styled-components';
 import {FLAT_STATUSES} from '../../../../core/constants';
-import {Flat} from '../../../shared/types/flat.types';
 import {UPDATE_FLAT_STATUS} from '../../../../graphql/mutations/flatMutation';
 import {GET_FLAT_LIST, GET_GROUPED_FLATS_CHESSGRID} from '../../../../graphql/queries/houseQuery';
-import {ChessCellViewMode} from '../ChessEnums';
 import {GET_FLATS_INFO_WITH_SVG_LAYOUTS} from '../../../../graphql/queries/layoutQuery';
+import {Flat} from '../../../shared/types/flat.types';
+import {ChessCellViewMode} from '../ChessEnums';
 
 const FlatInfoLine = styled.div`
     display: flex;
@@ -30,6 +30,10 @@ const FlatSale = styled.span`
 `;
 
 function FlatInfoItem({label, value}: any) {
+    if (!value) {
+        return null;
+    }
+
     return (
         <FlatInfoLine>
             <div className="FlatInfoItem__label">{label}</div>
@@ -48,6 +52,10 @@ interface FlatSidebarDataProps {
 }
 
 function FlatPriceInfoItem({flat}) {
+    if (!flat.squarePrice) {
+        return null;
+    }
+
     const price = flat.area * flat.squarePrice;
     const salePrice = flat.area * (flat.squarePriceSale || -1);
 
@@ -109,7 +117,7 @@ export function FlatSidebarData(props: FlatSidebarDataProps) {
     return (
         <div>
             <FlatInfoItem label="Номер квартиры" value={flat.flatNumber} />
-            <FlatInfoItem label="Цена" value={<FlatPriceInfoItem flat={flat} />} />
+            {!!flat.price && <FlatInfoItem label="Цена" value={<FlatPriceInfoItem flat={flat} />} />}
             <FlatInfoItem label="Цена м2" value={flat.squarePriceSale || flat.squarePrice} />
             <FlatInfoItem label="Этаж" value={flat.level} />
             <FlatInfoItem label="Количество уровней" value={flat.levelAmount} />
