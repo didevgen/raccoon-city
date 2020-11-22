@@ -4,6 +4,7 @@ import {LevelFlatLayoutModel} from '../../db/models/levelFlatLayout';
 import {LevelLayoutModel} from '../../db/models/levelLayout';
 import {Section} from '../../db/models/section';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import {shouldHidePriceInFlat} from './flat.resolver';
 
 const convertPathsToString = (path) => {
     const converted = path.map((pathItem) => String(pathItem));
@@ -267,7 +268,16 @@ export const levelQuery = {
         }
 
         return {
-            fullFlatsInfo,
+            fullFlatsInfo: fullFlatsInfo.map((fullFlatInfo) => {
+                const flatInfo = fullFlatInfo?.flatInfo;
+                if (flatInfo && shouldHidePriceInFlat(flatInfo.status)) {
+                    flatInfo.price = null;
+                    flatInfo.squarePrice = null;
+                    flatInfo.squarePriceSale = null;
+                }
+
+                return fullFlatInfo;
+            }),
             image: {
                 previewImageUrl: levelLayout.image.previewImageUrl
             }

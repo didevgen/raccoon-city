@@ -28,7 +28,7 @@ export interface FlatLevelLayouts {
     paths: string[];
 }
 
-function isHidePriceInFlat(status: string): boolean {
+export function shouldHidePriceInFlat(status: string): boolean {
     return flatStatusesWithoutPrice.includes(status);
 }
 
@@ -39,7 +39,7 @@ function getUpdatedFlat(flat: Flat, newFlat: any) {
         ...newFlat
     };
 
-    return !isHidePriceInFlat(flat.status)
+    return !shouldHidePriceInFlat(flat.status)
         ? updatedFlat
         : {
             ...updatedFlat,
@@ -199,7 +199,7 @@ export const flatQuery = {
                 };
             });
 
-        if (isHidePriceInFlat(flat.status)) {
+        if (shouldHidePriceInFlat(flat.status)) {
             flat.squarePrice = '0';
             flat.squarePriceSale = '0';
             flat.price = '0';
