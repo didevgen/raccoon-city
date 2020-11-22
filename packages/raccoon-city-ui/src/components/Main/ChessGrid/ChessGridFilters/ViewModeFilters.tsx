@@ -1,4 +1,4 @@
-import {Avatar, SvgIcon, Tooltip} from '@material-ui/core';
+import {Avatar, SvgIcon} from '@material-ui/core';
 import classNames from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
