@@ -169,7 +169,8 @@ export const levelQuery = {
 
         return {
             image: {
-                previewImageUrl: levelUrl?.image?.previewImageUrl || ''
+                previewImageUrl: levelUrl?.image?.previewImageUrl || '',
+                downloadUrl: levelUrl?.image?.downloadUrl || ''
             },
             fullFlatsInfo
         };
@@ -189,7 +190,8 @@ export const levelQuery = {
             return {
                 fullFlatsInfo: [],
                 image: {
-                    previewImageUrl: ''
+                    previewImageUrl: '',
+                    downloadUrl: ''
                 }
             };
         }
@@ -204,7 +206,8 @@ export const levelQuery = {
             return {
                 fullFlatsInfo: [],
                 image: {
-                    previewImageUrl: levelLayout?.image.previewImageUrl
+                    previewImageUrl: levelLayout?.image.previewImageUrl,
+                    downloadUrl: levelLayout?.image.downloadUrl
                 }
             };
         }
@@ -262,7 +265,8 @@ export const levelQuery = {
             return {
                 fullFlatsInfo: [],
                 image: {
-                    previewImageUrl: levelLayout?.image.previewImageUrl
+                    previewImageUrl: levelLayout?.image.previewImageUrl,
+                    downloadUrl: levelLayout?.image.downloadUrl
                 }
             };
         }
@@ -279,7 +283,8 @@ export const levelQuery = {
                 return fullFlatInfo;
             }),
             image: {
-                previewImageUrl: levelLayout.image.previewImageUrl
+                previewImageUrl: levelLayout.image.previewImageUrl,
+                downloadUrl: levelLayout.image.downloadUrl
             }
         };
     }

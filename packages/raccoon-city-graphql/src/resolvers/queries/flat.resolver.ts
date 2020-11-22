@@ -42,11 +42,11 @@ function getUpdatedFlat(flat: Flat, newFlat: any) {
     return !shouldHidePriceInFlat(flat.status)
         ? updatedFlat
         : {
-            ...updatedFlat,
-            price: null,
-            squarePrice: null,
-            squarePriceSale: null
-        };
+              ...updatedFlat,
+              price: null,
+              squarePrice: null,
+              squarePriceSale: null
+          };
 }
 
 export const flatQuery = {
@@ -241,7 +241,7 @@ export const flatQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
+            maxPrice = Number(String(result.maxPrice).replace(',', '.'));;
             minPrice = Number(String(result.minPrice).replace(',', '.'));
             maxArea = result.maxArea;
             minArea = result.minArea;

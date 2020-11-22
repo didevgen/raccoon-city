@@ -10,7 +10,7 @@ interface SidebarPdfInfoProps {
     flat: SidebarFlat;
     userInfo: {
         name: string | null;
-        role: string | null;
+        role: {displayName: string};
     } | null;
 }
 
@@ -30,23 +30,23 @@ const styles = StyleSheet.create({
     },
     title: {
         marginTop: -15,
-        fontSize: 24,
-        paddingBottom: 8,
+        fontSize: 16,
+        paddingBottom: 5,
         textAlign: 'center',
         fontWeight: 'bold'
     },
     flatNumber: {
-        fontSize: 24,
+        fontSize: 16,
         textAlign: 'left',
         fontWeight: 'bold'
     },
     status: {
-        fontSize: 18
+        fontSize: 14
     },
     image: {
         marginVertical: 8,
         marginHorizontal: 150,
-        maxWidth: 240
+        maxWidth: 200
     },
     table: {
         fontSize: 12,
@@ -70,6 +70,7 @@ const TR = styled.View`
     border-color: #ccc;
     border-bottom-style: solid;
     padding: 8px;
+    font-size: 12px;
 `;
 
 const ImageWrapper = styled.View`
@@ -79,40 +80,53 @@ const ImageWrapper = styled.View`
     width: 100%;
 `;
 
+const LogoImageWrapper = styled(ImageWrapper)`
+    width: 60%;
+`;
+
 const Logo = styled.Image`
     max-height: 100px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     max-width: 100px;
     height: auto;
 `;
 
 const StyledImage = styled.Image`
-    margin-top: 4px;
+    margin-top: 2px;
     max-width: 50%;
     left: 25%;
     justify-self: center;
 `;
 
 const Call = styled.Text`
-    font-size: 18px;
+    font-size: 13px;
     margin-top: 8px;
     text-align: center;
 `;
 
 const NumberSection = styled.View`
-    width: 100%;
     display: flex;
-    justify-self: center;
-    justify-content: center;
-    align-items: center;
     flex-direction: row;
+    justify-self: end;
+`;
+
+const HeaderWrapper = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: -20px;
+`;
+
+const InfoWrapper = styled.View`
+    display: flex;
+    justify-content: center;
+    width: 40%;
 `;
 
 const PhoneSection = styled.View`
     margin: 8px;
-    display: inline-flex;
-    justify-self: center;
-    font-size: 11px;
+    font-size: 10px;
 `;
 
 const PhoneSectionTitle = styled.Text`
@@ -128,7 +142,8 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
     let manager: string | null = null;
 
     if (userInfo) {
-        const role = userInfo?.role ? userInfo.role : '';
+        const role = userInfo?.role?.displayName || '';
+        console.log(role);
         manager = `${userInfo.name} ${role}`;
     }
 
@@ -197,7 +212,7 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
             {manager ? (
                 <TR>
                     <View style={styles.td}>
-                        <Text>Менеджер</Text>
+                        <Text>Имя/Роль</Text>
                     </View>
                     <View style={styles.value}>
                         <Text>{manager}</Text>
@@ -220,35 +235,41 @@ const FlatPdf = ({flat, userInfo}: SidebarPdfInfoProps) => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-                {flat.developer.logo && (
-                    <ImageWrapper>
-                        <Logo src={makeHttps(flat.developer.logo.downloadUrl)} />
-                    </ImageWrapper>
-                )}
+                <HeaderWrapper>
+                    {flat.developer.logo && (
+                        <LogoImageWrapper>
+                            <Logo src={makeHttps(flat.developer.logo.downloadUrl)} />
+                        </LogoImageWrapper>
+                    )}
+
+                    <InfoWrapper>
+                        <Call>По всем вопросам:</Call>
+                        <NumberSection>
+                            <PhoneSection>
+                                <PhoneSectionTitle>Приемная</PhoneSectionTitle>
+                                {flat.developer.receptionNumbers.map((phone, i) => {
+                                    return <Text key={phone + i}>{phone}</Text>;
+                                })}
+                            </PhoneSection>
+                            <PhoneSection>
+                                <PhoneSectionTitle>Отдел продаж</PhoneSectionTitle>
+                                {flat.developer.salesNumbers.map((phone, i) => {
+                                    return <Text key={phone + i}>{phone}</Text>;
+                                })}
+                            </PhoneSection>
+                        </NumberSection>
+                    </InfoWrapper>
+                </HeaderWrapper>
                 <Text style={styles.title}>ЖК {flat.apartmentComplex.name}</Text>
-                <Text style={styles.flatNumber}>Квартира №{flat.flatNumber}</Text>
-                <Text style={styles.status}>{status?.label}</Text>
+                <Text style={styles.flatNumber}>
+                    Квартира №{flat.flatNumber} {status?.label}
+                </Text>
                 {flat.layout && (
                     <ImageWrapper>
                         <StyledImage src={makeHttps(`${flat.layout?.image.previewImageUrl}?x-some-key=some-value`)} />
                     </ImageWrapper>
                 )}
                 <FlatTable flat={flat} userInfo={userInfo} />
-                <Call>По всем вопросам:</Call>
-                <NumberSection>
-                    <PhoneSection>
-                        <PhoneSectionTitle>Приемная</PhoneSectionTitle>
-                        {flat.developer.receptionNumbers.map((phone, i) => {
-                            return <Text key={phone + i}>{phone}</Text>;
-                        })}
-                    </PhoneSection>
-                    <PhoneSection>
-                        <PhoneSectionTitle>Отдел продаж</PhoneSectionTitle>
-                        {flat.developer.salesNumbers.map((phone, i) => {
-                            return <Text key={phone + i}>{phone}</Text>;
-                        })}
-                    </PhoneSection>
-                </NumberSection>
             </Page>
         </Document>
     );

@@ -1,4 +1,5 @@
 import React, {Fragment, useContext} from 'react';
+import {FLAT_STATUSES} from '../../../../core/constants';
 import {Flat} from '../../../shared/types/flat.types';
 import {ChessCellViewMode} from '../ChessEnums';
 import {CellViewModeContext, ViewModeContext} from '../ChessGrid';
@@ -85,7 +86,11 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
                 <TooltipContainer>
                     <PriceContainer>
                         <PreviewCell className={flat.status}>{flat.roomAmount}</PreviewCell>
-                        {flat.squarePrice && (
+                        {!flat.squarePrice ? (
+                            <div className="Cell__flat-status">
+                                {FLAT_STATUSES.find(({value}) => value === flat.status)?.label}
+                            </div>
+                        ) : (
                             <PriceAndAmountContainer>
                                 {priceField}
                                 <div>1 м2 - {flat.squarePriceSale || flat.squarePrice} грн</div>

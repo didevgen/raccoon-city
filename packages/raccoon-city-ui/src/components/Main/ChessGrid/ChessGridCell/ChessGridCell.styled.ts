@@ -145,11 +145,15 @@ export const TooltipContainer = styled.div`
 export const PriceContainer = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     min-width: 150px;
     .Cell__price {
         font-size: 14px;
+    }
+
+    .Cell__flat-status {
+        font-weight: 600;
     }
 `;
 

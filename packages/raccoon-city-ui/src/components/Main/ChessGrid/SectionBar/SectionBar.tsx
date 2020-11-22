@@ -75,15 +75,11 @@ export const SectionBar = (props: any) => {
 
     const {images} = data.getApartmentComplex;
 
-    const photosJSX = images?.PHOTO?.map(({downloadUrl, uuid}) => (
-        <SideBarImage key={uuid} src={downloadUrl} alt="house image" />
-    ));
-    // TODO change to static image
-    const photosJSXToRender = !photosJSX?.length
-        ? [<SideBarImage src={'https://image.flaticon.com/icons/png/512/63/63813.png'} alt="house image" />]
-        : photosJSX;
+    const photosJSX =
+        images?.PHOTO?.map(({downloadUrl, uuid}) => <SideBarImage key={uuid} src={downloadUrl} alt="house image" />) ||
+        [];
 
-    const isEmptyOrSingle = photosJSXToRender.length < 2;
+    const isEmptyOrSingle = photosJSX.length < 2;
 
     return (
         <SectionBarContainer isSideBarOpen={isSideBarOpen}>
@@ -91,16 +87,18 @@ export const SectionBar = (props: any) => {
                 <CloseIcon onClick={() => setSideBarOpen(false)} />
             </CloseBarContainer>
 
-            <SliderContainer>
-                <CustomSlider
-                    enableMouseSwipe={false}
-                    itemsToShow={1}
-                    pagination={false}
-                    isEmptyOrSingle={isEmptyOrSingle}
-                >
-                    {photosJSXToRender}
-                </CustomSlider>
-            </SliderContainer>
+            {Boolean(photosJSX.length) && (
+                <SliderContainer>
+                    <CustomSlider
+                        enableMouseSwipe={false}
+                        itemsToShow={1}
+                        pagination={false}
+                        isEmptyOrSingle={isEmptyOrSingle}
+                    >
+                        {photosJSX}
+                    </CustomSlider>
+                </SliderContainer>
+            )}
 
             <AppBarContainer>
                 <AppBar position="static" color="default">

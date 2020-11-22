@@ -1,8 +1,8 @@
+import {useQuery} from '@apollo/react-hooks';
 import React, {useCallback} from 'react';
 import {useLocation, useParams} from 'react-router';
 import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
-import {useQuery} from '@apollo/react-hooks';
-import {HouseIconContainer, StyledIcon, HouseNameDiv} from './styledComponents';
+import {HouseIconContainer, HouseNameDiv, StyledIcon} from './styledComponents';
 
 function houseNameSplitter(houseName: string) {
     const [firstNameItem, secondNameItem, ...restName] = houseName.split(' ');
@@ -41,21 +41,25 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         }
     });
 
-    const isHouseHasFlats = !loading && data.getPublicFlatsList.length;
-    const isHouseHasFreeFlats =
+    const houseHasFlats = !loading && data.getPublicFlatsList.length;
+    const houseHasFreeFlats =
         !loading && data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE');
 
     let iconColor: string;
-    if (!isHouseHasFlats) {
+    if (!houseHasFlats) {
         iconColor = 'icon-empty';
     } else {
-        isHouseHasFreeFlats ? (iconColor = 'icon-free') : (iconColor = 'icon-sold_out');
+        houseHasFreeFlats ? (iconColor = 'icon-free') : (iconColor = 'icon-sold_out');
     }
 
     return (
         <HouseIconContainer
             className={hoveredItem?.id === house?.id ? 'active' : ''}
             onClick={() => {
+                if (!houseHasFlats) {
+                    return;
+                }
+
                 // @ts-ignore
                 if (window.location !== window.parent.location) {
                     // @ts-ignore
