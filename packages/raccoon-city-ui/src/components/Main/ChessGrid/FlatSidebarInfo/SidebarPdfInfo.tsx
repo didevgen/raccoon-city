@@ -130,7 +130,7 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
 
     return (
         <View style={styles.table}>
-            {flat.price && (
+            {flat.price ? (
                 <TR>
                     <View style={styles.td}>
                         <Text>Полная цена</Text>
@@ -139,8 +139,8 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
                         <Text>{flat.price} грн</Text>
                     </View>
                 </TR>
-            )}
-            {flat.squarePrice && (
+            ) : null}
+            {flat.squarePrice ? (
                 <TR>
                     <View style={styles.td}>
                         <Text>Цена за метр</Text>
@@ -149,7 +149,7 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
                         <Text>{flat.squarePrice} грн</Text>
                     </View>
                 </TR>
-            )}
+            ) : null}
             <TR>
                 <View style={styles.td}>
                     <Text>Площадь</Text>
