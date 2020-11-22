@@ -1,4 +1,4 @@
-import {Avatar, SvgIcon} from '@material-ui/core';
+import {Avatar, SvgIcon, Tooltip} from '@material-ui/core';
 import classNames from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
@@ -141,7 +141,11 @@ export function ViewModeFilters({mode, dispatch}) {
         <FilterItemContainer>
             <FilterTitle>Отображение</FilterTitle>
             <ViewModeContainer>
-                <ChessGridIcon value={mode} onClick={onClick} />
+                <Tooltip title="lol" placement="bottom">
+                    <div>
+                        <ChessGridIcon value={mode} onClick={onClick} />
+                    </div>
+                </Tooltip>
                 <ChessGridPlusIcon value={mode} onClick={onClick} />
                 <ListIcon value={mode} onClick={onClick} />
                 <LevelIcon value={mode} onClick={onClick} />
