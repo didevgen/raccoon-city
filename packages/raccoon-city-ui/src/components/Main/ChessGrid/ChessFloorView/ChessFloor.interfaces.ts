@@ -30,4 +30,5 @@ export interface FullFlatInfoInterface {
 
 export interface LevelImageUrlInterface {
     previewImageUrl: string;
+    downloadUrl: string;
 }

@@ -115,6 +115,7 @@ export const GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
         getPublishedFlatsLayoutByHouseId(houseId: $houseId, sectionId: $sectionId, levelId: $levelId) {
             image {
                 previewImageUrl
+                downloadUrl
             }
             fullFlatsInfo {
                 flatInfo {
@@ -153,6 +154,7 @@ export const GET_FLATS_INFO_WITH_SVG_LAYOUTS = gql`
         getFlatsLayoutsByIds(levelId: $levelId) {
             image {
                 previewImageUrl
+                downloadUrl
             }
             fullFlatsInfo {
                 flatInfo {

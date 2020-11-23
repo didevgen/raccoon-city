@@ -120,10 +120,10 @@ function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCu
     }, []);
 
     if (isLarge) {
-        return <ImageContainerLarge id={`img-container__${index}`} url={image.previewImageUrl} alt={'layout image'} />;
+        return <ImageContainerLarge id={`img-container__${index}`} url={image.downloadUrl} alt={'layout image'} />;
     }
 
-    return <ImageContainer id={`img-container__${index}`} url={image.previewImageUrl} alt={'layout image'} />;
+    return <ImageContainer id={`img-container__${index}`} url={image.downloadUrl} alt={'layout image'} />;
 }
 
 export function LayoutView(props: LayoutViewProps) {

@@ -66,6 +66,7 @@ type FloorViewData {
 
 type FloorViewImage {
     previewImageUrl: String
+    downloadUrl: String
 }
 
 type FloorViewInfo {
