@@ -77,6 +77,7 @@ export const HouseIconContainer = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 12px;
+
     &:hover,
     &:hover svg,
     &.active,
@@ -84,23 +85,27 @@ export const HouseIconContainer = styled.div`
         color: #e84f1d !important;
         cursor: pointer;
     }
+
+    &.house-flat_empty,
+    &.house-flat_empty svg,
+    &.house-flat_empty:hover,
+    &.house-flat_empty:hover svg {
+        cursor: not-allowed;
+        color: #808080 !important;
+    }
 `;
 
 export const StyledIcon = styled(ApartmentIcon)`
-    &.icon-empty {
+    &.house-flat_empty {
         color: #808080;
     }
 
-    &.icon-free {
+    &.house-flat_free {
         color: #008000;
     }
 
-    &.icon-sold_out {
+    &.house-flat_sold_out {
         color: #ff0047;
-    }
-
-    &:hover {
-        color: #e84f1d !important;
     }
 `;
 
