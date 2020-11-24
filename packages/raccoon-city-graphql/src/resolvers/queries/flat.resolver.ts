@@ -10,6 +10,26 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
 import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
+export const maxPriceCalc =  (flats) => {
+    let max = flats[0];
+    flats.forEach(flat =>{
+        max = (flat > max) ? flat : max;
+        return max;
+    })
+    return max
+}
+
+export const minPriceCalc = (flats) => {
+    let min = flats[0];
+    flats.forEach(flat =>{
+        if (flat){
+        min = (flat < min) ? flat : min;
+        return min;
+        }
+    })
+    return min
+}
+
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
 });
@@ -214,6 +234,17 @@ export const flatQuery = {
             }
         }).exec();
 
+        const squarePrices: number[] = [];
+        houses.forEach(house => house.sections.forEach(
+            section => section.levels.forEach(
+                level => level.flats.forEach(
+                    flat => {
+                        if(flat) squarePrices.push(flat.squarePrice)
+                    }
+                ))
+            )
+        );
+
         const [result] = await PublishedHouseModel.aggregate([
             {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
@@ -241,8 +272,8 @@ export const flatQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
-            minPrice = Number(String(result.minPrice).replace(',', '.'));
+            maxPrice = maxPriceCalc(squarePrices);
+            minPrice = minPriceCalc(squarePrices);;
             maxArea = result.maxArea;
             minArea = result.minArea;
         }
@@ -287,7 +318,6 @@ export const flatQuery = {
                 });
             }
         });
-
         return res;
     },
     getPublicFlatsList: async (parent, {uuid}) => {

@@ -6,6 +6,7 @@ import HouseModel from '../../db/models/house';
 import {Level, LevelModel} from '../../db/models/level';
 import {Section, SectionModel} from '../../db/models/section';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import {maxPriceCalc, minPriceCalc} from './flat.resolver'
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -92,32 +93,6 @@ export const hosueQuery = {
         };
     },
     getGroupedFlatsBySection: async (parent, {uuid}) => {
-
-    const data =  await HouseModel.findOne({_id: uuid, isDeleted: false}).populate({
-        path: 'flats',
-        match: {isDeleted: false}
-    });
-    const flats = data ? (data.flats || []) : ([]);
-    const maxPriceCalc =  (flats) => {
-        let max = flats[0].squarePrice;
-        flats.forEach(flat =>{
-            max = (flat.squarePrice > max) ? flat.squarePrice : max;
-            return max;
-        })
-        return max
-    }
-
-    const minPriceCalc = (flats) => {
-        let min = flats[0].squarePrice;
-        flats.forEach(flat =>{
-            if (flat.squarePrice){
-            min = (flat.squarePrice < min) ? flat.squarePrice : min;
-            return min;
-            }
-        })
-        return min
-    }
-
         const houses = await HouseModel.find({
             _id: {
                 $in: uuid.map((item) => mongoose.Types.ObjectId(item))
@@ -160,11 +135,20 @@ export const hosueQuery = {
         let maxArea = 0;
         let minArea = 0;
 
-
+        const squarePrices: number[] = [];
+        houses.forEach(house => house.sections.forEach(
+            section => section.levels.forEach(
+                level => level.flats.forEach(
+                    flat => {
+                        if(flat) squarePrices.push(flat.squarePrice)
+                    }
+                ))
+            )
+        );
 
         if (!!result) {
-            maxPrice = maxPriceCalc(flats);
-            minPrice = minPriceCalc(flats);
+            maxPrice = maxPriceCalc(squarePrices);
+            minPrice = minPriceCalc(squarePrices);
             maxArea = result.maxArea;
             minArea = result.minArea;
         }
