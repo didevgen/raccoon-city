@@ -10,7 +10,7 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
 import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
-export const getFlatsByGruppedSection = (houses): Flat[] =>{
+export const getFlatsByGroupedSection = (houses): Flat[] =>{
     const flats: Flat[] = [];
         houses.forEach(house => house.sections.forEach(
             section => section.levels.forEach(
@@ -33,10 +33,10 @@ export interface HouseRanges {
 
 
 export const getHouseRanges = (flats:Flat[]): HouseRanges => {
-    let minPrice = 100000;
-    let maxPrice = flats[0].squarePrice;
-    let minArea = 10000;
-    let maxArea = flats[0].area;
+    let minPrice = Number.MAX_SAFE_INTEGER;
+    let maxPrice = 0;
+    let minArea = Number.MAX_SAFE_INTEGER;
+    let maxArea = 0;
     flats.forEach(flat =>{
         minPrice = (flat.squarePrice && flat.squarePrice < minPrice) ? flat.squarePrice : minPrice;
         maxPrice = (flat.squarePrice > maxPrice) ? flat.squarePrice : maxPrice;
@@ -255,8 +255,8 @@ export const flatQuery = {
             }
         }).exec();
 
-        const flats = getFlatsByGruppedSection(houses);
-        
+        const flats = getFlatsByGroupedSection(houses);
+
         const [result] = await PublishedHouseModel.aggregate([
             {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {

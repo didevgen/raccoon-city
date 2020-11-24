@@ -6,7 +6,7 @@ import HouseModel from '../../db/models/house';
 import {Level, LevelModel} from '../../db/models/level';
 import {Section, SectionModel} from '../../db/models/section';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
-import {getHouseRanges, getFlatsByGruppedSection} from './flat.resolver'
+import {getHouseRanges, getFlatsByGroupedSection} from './flat.resolver'
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -135,8 +135,8 @@ export const hosueQuery = {
         let maxArea = 0;
         let minArea = 0;
 
-        const flats = getFlatsByGruppedSection(houses);
-        
+        const flats = getFlatsByGroupedSection(houses);
+
         if (!!result) {
             maxPrice = getHouseRanges(flats).maxPrice;
             minPrice = getHouseRanges(flats).minPrice;
