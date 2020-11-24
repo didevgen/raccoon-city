@@ -10,24 +10,45 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
 import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
-export const maxPriceCalc =  (flats) => {
-    let max = flats[0];
-    flats.forEach(flat =>{
-        max = (flat > max) ? flat : max;
-        return max;
-    })
-    return max
+export const getFlatsByGruppedSection = (houses): Flat[] =>{
+    const flats: Flat[] = [];
+        houses.forEach(house => house.sections.forEach(
+            section => section.levels.forEach(
+                level => level.flats.forEach(
+                    flat => {
+                        if(flat) {flats.push(flat)}
+                    }
+                ))
+            )
+        );
+    return flats;
 }
 
-export const minPriceCalc = (flats) => {
-    let min = flats[0];
+export interface HouseRanges {
+    minPrice: number;
+    maxPrice: number;
+    minArea: number;
+    maxArea: number;
+}
+
+
+export const getHouseRanges = (flats:Flat[]): HouseRanges => {
+    let minPrice = 100000;
+    let maxPrice = flats[0].squarePrice;
+    let minArea = 10000;
+    let maxArea = flats[0].area;
     flats.forEach(flat =>{
-        if (flat){
-        min = (flat < min) ? flat : min;
-        return min;
-        }
+        minPrice = (flat.squarePrice && flat.squarePrice < minPrice) ? flat.squarePrice : minPrice;
+        maxPrice = (flat.squarePrice > maxPrice) ? flat.squarePrice : maxPrice;
+        minArea = (flat.area < minArea) ? flat.area : minArea;
+        maxArea = (flat.area > maxArea) ? flat.area : maxArea;
     })
-    return min
+    return {
+        minPrice,
+        maxPrice,
+        minArea,
+        maxArea
+    }
 }
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
@@ -234,17 +255,8 @@ export const flatQuery = {
             }
         }).exec();
 
-        const squarePrices: number[] = [];
-        houses.forEach(house => house.sections.forEach(
-            section => section.levels.forEach(
-                level => level.flats.forEach(
-                    flat => {
-                        if(flat) squarePrices.push(flat.squarePrice)
-                    }
-                ))
-            )
-        );
-
+        const flats = getFlatsByGruppedSection(houses);
+        
         const [result] = await PublishedHouseModel.aggregate([
             {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
@@ -272,10 +284,10 @@ export const flatQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = maxPriceCalc(squarePrices);
-            minPrice = minPriceCalc(squarePrices);;
-            maxArea = result.maxArea;
-            minArea = result.minArea;
+            maxPrice = getHouseRanges(flats).maxPrice;
+            minPrice = getHouseRanges(flats).minPrice;
+            maxArea = getHouseRanges(flats).maxArea;
+            minArea = getHouseRanges(flats).minArea;
         }
 
         const res = {
