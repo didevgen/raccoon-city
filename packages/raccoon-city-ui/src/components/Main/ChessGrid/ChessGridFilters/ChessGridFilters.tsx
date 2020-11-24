@@ -69,7 +69,7 @@ const ViewModeAvatar = styled(StyledAvatar)`
 
 const RoomContainer = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 `;
 
 export const FilterItemContainer = styled.div`
@@ -121,7 +121,7 @@ export const FilterWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    padding-bottom: 30px;
+    padding-bottom: 80px;
 `;
 
 function ValueLabelComponent(props) {
@@ -141,23 +141,26 @@ const RangeInput = styled(Input)`
     text-align: center;
 `;
 
-const roomFilters = [
-    {value: 'КН', title: 'Коммерческое помещение'},
-    {value: 'П', title: 'Паркинг'},
+export const roomFilters = [
     {value: '1', title: 'Однокомнатные'},
     {value: '2', title: 'Двухкомнатные'},
     {value: '3', title: 'Трёхкомнатные'},
     {value: '4+', title: 'От четырёх комнат'}
 ];
 
-export function RoomAmountFilter({dispatch}) {
+export const otherPremisesFilter = [
+    {value: 'КН', title: 'Коммерческое помещение'},
+    {value: 'П', title: 'Паркинг'}
+];
+
+export function RoomAmountFilter({dispatch, premisses = roomFilters, title = 'Количество комнат'}) {
     const [selected, setSelected] = useState({});
 
     return (
         <FilterItemContainer>
-            <FilterTitle>Количество комнат</FilterTitle>
+            <FilterTitle>{title}</FilterTitle>
             <RoomContainer>
-                {roomFilters.map((item) => {
+                {premisses.map((item) => {
                     const filterSelected = selected[item.value];
                     const avatarClasses = classNames({
                         active: filterSelected,
@@ -506,6 +509,11 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                     <Fragment>
                         <Grid item xs={12} md={4}>
                             <Grid container justify="center">
+                                <RoomAmountFilter
+                                    dispatch={props.dispatchFn}
+                                    premisses={otherPremisesFilter}
+                                    title="Другие помещения"
+                                />
                                 <RoomAmountFilter dispatch={props.dispatchFn} />
                             </Grid>
                         </Grid>

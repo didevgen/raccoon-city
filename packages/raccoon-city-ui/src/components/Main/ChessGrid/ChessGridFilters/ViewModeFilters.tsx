@@ -15,6 +15,12 @@ const ViewModeContainer = styled.div`
     }
 `;
 
+const DesktopsView = styled.div`
+    @media only screen and (max-width: 700px) {
+        display: none;
+    }
+`;
+
 const ViewModeIcon = styled(Avatar)`
     &.MuiAvatar-root {
         background-color: transparent;
@@ -143,7 +149,12 @@ export function ViewModeFilters({mode, dispatch}) {
             <FilterTitle>Отображение</FilterTitle>
             <ViewModeContainer>
                 {withTooltip(<ChessGridIcon value={mode} onClick={onClick} />, 'Плитка')}
-                {withTooltip(<ChessGridPlusIcon value={mode} onClick={onClick} />, 'Плитка+')}
+                {withTooltip(
+                    <DesktopsView>
+                        <ChessGridPlusIcon value={mode} onClick={onClick} />
+                    </DesktopsView>,
+                    'Плитка+'
+                )}
                 {withTooltip(<ListIcon value={mode} onClick={onClick} />, 'Список')}
                 {withTooltip(<LevelIcon value={mode} onClick={onClick} />, 'План этажа')}
             </ViewModeContainer>

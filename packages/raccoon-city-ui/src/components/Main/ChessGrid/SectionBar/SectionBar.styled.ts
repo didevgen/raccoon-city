@@ -154,7 +154,7 @@ export const TabPanelContainer = styled.div`
 `;
 
 export const AppBarContainer = styled.div`
-    margin-bottom: 5px;
+    margin: 10px 0;
 
     .MuiAppBar-root {
         border-radius: 10px;
