@@ -10,6 +10,47 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
 import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
 
+export const getFlatsByGroupedSection = (houses): Flat[] =>{
+    const flats: Flat[] = [];
+        houses.forEach(house => house.sections.forEach(
+            section => section.levels.forEach(
+                level => level.flats.forEach(
+                    flat => {
+                        if(flat) {flats.push(flat)}
+                    }
+                ))
+            )
+        );
+    return flats;
+}
+
+export interface HouseRanges {
+    minPrice: number;
+    maxPrice: number;
+    minArea: number;
+    maxArea: number;
+}
+
+
+export const getHouseRanges = (flats:Flat[]): HouseRanges => {
+    let minPrice = Number.MAX_SAFE_INTEGER;
+    let maxPrice = 0;
+    let minArea = Number.MAX_SAFE_INTEGER;
+    let maxArea = 0;
+    flats.forEach(flat =>{
+        minPrice = (flat.squarePrice && flat.squarePrice < minPrice) ? flat.squarePrice : minPrice;
+        maxPrice = (flat.squarePrice > maxPrice) ? flat.squarePrice : maxPrice;
+        minArea = (flat.area < minArea) ? flat.area : minArea;
+        maxArea = (flat.area > maxArea) ? flat.area : maxArea;
+    })
+    return {
+        minPrice,
+        maxPrice,
+        minArea,
+        maxArea
+    }
+}
+
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
 });
@@ -214,6 +255,8 @@ export const flatQuery = {
             }
         }).exec();
 
+        const flats = getFlatsByGroupedSection(houses);
+
         const [result] = await PublishedHouseModel.aggregate([
             {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
             {
@@ -241,10 +284,10 @@ export const flatQuery = {
         let minArea = 0;
 
         if (!!result) {
-            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
-            minPrice = Number(String(result.minPrice).replace(',', '.'));
-            maxArea = result.maxArea;
-            minArea = result.minArea;
+            maxPrice = getHouseRanges(flats).maxPrice;
+            minPrice = getHouseRanges(flats).minPrice;
+            maxArea = getHouseRanges(flats).maxArea;
+            minArea = getHouseRanges(flats).minArea;
         }
 
         const res = {
@@ -287,7 +330,6 @@ export const flatQuery = {
                 });
             }
         });
-
         return res;
     },
     getPublicFlatsList: async (parent, {uuid}) => {
