@@ -1,4 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React, {useCallback} from 'react';
 import {useLocation, useParams} from 'react-router';
 import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
@@ -6,6 +7,7 @@ import {HouseIconContainer, HouseNameDiv, StyledIcon} from './styledComponents';
 
 function houseNameSplitter(houseName: string) {
     const [firstNameItem, secondNameItem, ...restName] = houseName.split(' ');
+
     return (
         <>
             <div>
@@ -18,10 +20,13 @@ function houseNameSplitter(houseName: string) {
 
 function debounce(fn, interval) {
     let timer;
+
     return function debounced(...args) {
         clearTimeout(timer);
+
         // @ts-ignore
         const that = this;
+
         timer = setTimeout(function callOriginalFn() {
             fn.apply(that, args);
         }, interval);
@@ -41,9 +46,15 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         }
     });
 
-    const houseHasFlats = !loading && data.getPublicFlatsList.length;
-    const houseHasFreeFlats =
-        !loading && data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE');
+    if (loading) {
+        return <Skeleton variant="rect" width={40} height={40} />;
+    }
+
+    const availableFlatStatuses = ['FREE', 'BOOKED', 'RESERVED'];
+
+    const houseHasFlats = data.getPublicFlatsList.length;
+    const isFlatFreeOrReserved = data.getPublicFlatsList.find(({status}) => availableFlatStatuses.includes(status));
+    const houseHasFreeFlats = isFlatFreeOrReserved;
 
     let iconColor: string;
     if (!houseHasFlats) {
