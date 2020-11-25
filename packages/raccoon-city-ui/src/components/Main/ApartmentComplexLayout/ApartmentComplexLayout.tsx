@@ -8,6 +8,8 @@ import {API_TOKEN} from '../../../core/constants';
 import {GET_APARTMENT_COMPLEX_LAYOUT} from '../../../graphql/queries/layoutQuery';
 import HouseIcons from './HouseIcons';
 import {LayoutContainer, ImageContainer, LayoutImage, attachSvg} from './styledComponents';
+import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
+import {client} from './../../../core/apollo/client';
 
 function fillExistingLayouts(
     svgItem: Svg,
@@ -18,39 +20,50 @@ function fillExistingLayouts(
     const pathArray: Path[] = [];
     const params = new URLSearchParams(location.search);
     const authToken = params.get('authToken');
+    const svgClickHandler = (houseHasFlats: Boolean, layout: any) => {
+        // @ts-ignore
+        if (!houseHasFlats) return;
+        if (window.location !== window.parent.location) {
+            // @ts-ignore
+            window.parent.postMessage(
+                `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
+                '*'
+            );
+        } else {
+            window.open(
+                `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
+                '_blank'
+            );
+        }
+    };
 
     layouts.forEach((layout) => {
         const {path: pathValue, viewBox} = layout;
         const pathParsed = JSON.parse(pathValue);
-        const path = svgItem
-            .viewbox(0, 0, viewBox.width, viewBox.height)
-            .path(pathParsed)
-            .fill({color: '#000', opacity: 0.5})
-            .stroke({color: '#3f51b5', width: 3})
-            .addClass('SVG--highlighted')
-            .attr('id', `svg${layout.house.id}`)
-            .on('mouseover', () => {
-                setHoveredHouse(layout.house);
+        client
+            .query({
+                query: GET_PUBLIC_FLATS_LIST,
+                variables: {uuid: layout.house.id}
             })
-            .on('mouseleave', () => {
-                setHoveredHouse(null);
-            })
-            .on('click', () => {
-                // @ts-ignore
-                if (window.location !== window.parent.location) {
-                    // @ts-ignore
-                    window.parent.postMessage(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
-                        '*'
-                    );
-                } else {
-                    window.open(
-                        `${process.env.REACT_APP_PUBLIC_BASE_URL}/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${layout.house.id}?authToken=${authToken}`,
-                        '_blank'
-                    );
-                }
+            .then(({data}) => {
+                const houseHasFlats = data.getPublicFlatsList.length;
+                const path = svgItem
+                    .viewbox(0, 0, viewBox.width, viewBox.height)
+                    .path(pathParsed)
+                    .fill({color: '#000', opacity: 0.5})
+                    .stroke({color: '#3f51b5', width: 3})
+                    .addClass(`SVG--highlighted ${!houseHasFlats ? 'house-flat_empty' : ''}`)
+                    .attr('id', `svg${layout.house.id}`)
+                    .on('mouseover', () => {
+                        setHoveredHouse(layout.house);
+                    })
+                    .on('mouseleave', () => {
+                        setHoveredHouse(null);
+                    })
+                    .on('click', () => svgClickHandler(houseHasFlats, layout));
+
+                pathArray.push(path);
             });
-        pathArray.push(path);
     });
 }
 
@@ -78,8 +91,8 @@ function ImageWithSvg({url, imageId, layouts, setHoveredHouse}) {
 export default function ApartmentComplexLayout() {
     const {layoutUuid} = useParams() as any;
     const imageId = `apartment-complex-layout-${layoutUuid}`;
-
     const [hoveredHouse, setHoveredHouse] = useState<any>(null);
+
     useEffect(() => {
         if (hoveredHouse) {
             document.querySelector(`#svg${hoveredHouse.id}`)?.classList.add('active');

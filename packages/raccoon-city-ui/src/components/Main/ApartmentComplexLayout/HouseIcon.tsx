@@ -58,14 +58,14 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
 
     let iconColor: string;
     if (!houseHasFlats) {
-        iconColor = 'icon-empty';
+        iconColor = 'house-flat_empty';
     } else {
-        houseHasFreeFlats ? (iconColor = 'icon-free') : (iconColor = 'icon-sold_out');
+        houseHasFreeFlats ? (iconColor = 'house-flat_free') : (iconColor = 'house-flat_sold_out');
     }
 
     return (
         <HouseIconContainer
-            className={hoveredItem?.id === house?.id ? 'active' : ''}
+            className={`${hoveredItem?.id === house?.id ? 'active' : ''} ${iconColor}`}
             onClick={() => {
                 if (!houseHasFlats) {
                     return;
