@@ -45,7 +45,6 @@ function fillExistingLayouts(
                 query: GET_PUBLIC_FLATS_LIST,
                 variables: {uuid: layout.house.id}
             })
-            // .then(({data}) => data.getPublicFlatsList.length)
             .then(({data}) => {
                 const houseHasFlats = data.getPublicFlatsList.length;
                 const path = svgItem
