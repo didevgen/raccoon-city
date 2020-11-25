@@ -3,4 +3,5 @@ export const flatStatusesWithoutPrice = [
   'RESERVED',
   'DOCUMENTS_IN_PROGRESS',
   'UNAVAILABLE',
+  'BOOKED',
 ];
