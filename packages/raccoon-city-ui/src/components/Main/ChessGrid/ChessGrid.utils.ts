@@ -1,7 +1,7 @@
 import {GroupedFlats} from '../../../graphql/queries/houseQuery';
 import {Flat} from '../../shared/types/flat.types';
 
-export const flatStatusesWithoutPrice = ['SOLD_OUT', 'RESERVED', 'DOCUMENTS_IN_PROGRESS', 'UNAVAILABLE'];
+export const flatStatusesWithoutPrice = ['SOLD_OUT', 'RESERVED', 'DOCUMENTS_IN_PROGRESS', 'UNAVAILABLE', 'BOOKED'];
 
 function checkRoomAmount(flat, selectedRoomAmount) {
     if (!!selectedRoomAmount && Object.values(selectedRoomAmount).some((value) => !!value)) {
