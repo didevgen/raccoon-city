@@ -40,15 +40,14 @@ function fillExistingLayouts(
     layouts.forEach((layout) => {
         const {path: pathValue, viewBox} = layout;
         const pathParsed = JSON.parse(pathValue);
-
         client
             .query({
                 query: GET_PUBLIC_FLATS_LIST,
                 variables: {uuid: layout.house.id}
             })
-            .then((data) => Boolean(data.data.getPublicFlatsList.length))
-            .then((data) => {
-                const houseHasFlats = data;
+            // .then(({data}) => data.getPublicFlatsList.length)
+            .then(({data}) => {
+                const houseHasFlats = data.getPublicFlatsList.length;
                 const path = svgItem
                     .viewbox(0, 0, viewBox.width, viewBox.height)
                     .path(pathParsed)
