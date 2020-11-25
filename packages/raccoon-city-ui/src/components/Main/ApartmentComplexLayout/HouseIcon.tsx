@@ -1,4 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React, {useCallback} from 'react';
 import {useLocation, useParams} from 'react-router';
 import {GET_PUBLIC_FLATS_LIST} from '../../../graphql/queries/houseQuery';
@@ -46,7 +47,7 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
     });
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Skeleton variant="rect" width={40} height={40} />;
     }
 
     const availableFlatStatuses = ['FREE', 'BOOKED', 'RESERVED'];
