@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
     AreaFilter,
     ChessGridFiltersProps,
+    otherPremisesFilter,
     PriceFilter,
     RoomAmountFilter,
     SelectContainer,
@@ -67,6 +68,11 @@ export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
                     </FlatStatusesBarWrapper>
                     {mode !== ChessCellViewMode.FLOOR && (
                         <Fragment>
+                            <RoomAmountFilter
+                                dispatch={props.dispatchFn}
+                                premisses={otherPremisesFilter}
+                                title="Другие помещения"
+                            />
                             <RoomAmountFilter dispatch={props.dispatchFn} />
                             <RangeContainer>
                                 <PriceFilter
