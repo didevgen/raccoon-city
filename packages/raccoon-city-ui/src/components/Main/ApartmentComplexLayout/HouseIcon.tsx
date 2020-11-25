@@ -49,10 +49,10 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         return <div>Loading...</div>;
     }
 
-    const isFlatAvailable = ['FREE', 'BOOKED', 'RESERVED'];
+    const availableFlatStatuses = ['FREE', 'BOOKED', 'RESERVED'];
 
     const houseHasFlats = data.getPublicFlatsList.length;
-    const isFlatFreeOrReserved = data.getPublicFlatsList.find(({status}) => isFlatAvailable.includes(status));
+    const isFlatFreeOrReserved = data.getPublicFlatsList.find(({status}) => availableFlatStatuses.includes(status));
     const houseHasFreeFlats = isFlatFreeOrReserved;
 
     let iconColor: string;
