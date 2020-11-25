@@ -8,25 +8,30 @@ function HouseIcons({data, hoveredHouse, setHoveredHouse}) {
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
     const layoutLength = data.getApartmentComplexLayout.layouts.length;
 
-    const maxItemsToScreem = matches ? 5 : 10;
+    const maxItemsToScreen = matches ? 5 : 10;
 
-    if (maxItemsToScreem < layoutLength) {
+    const HouseIconContainer = (layout) => (
+        <HouseIcon
+            key={layout.house.id}
+            house={layout.house}
+            hoveredItem={hoveredHouse}
+            setHoveredItem={setHoveredHouse}
+        />
+    );
+    const {layouts} = data.getApartmentComplexLayout;
+
+    if (maxItemsToScreen < layoutLength) {
+        const isItemToShow = layoutLength >= maxItemsToScreen ? maxItemsToScreen : layoutLength;
+
         return (
             <HouseChooseContainer>
-                <StyledCarousel itemsToShow={layoutLength >= maxItemsToScreem ? maxItemsToScreem : layoutLength}>
-                    {data.getApartmentComplexLayout.layouts
+                <StyledCarousel itemsToShow={isItemToShow}>
+                    {layouts
                         .sort((a, b) => {
                             return a.house.order - b.house.order;
                         })
                         .map((layout) => {
-                            return (
-                                <HouseIcon
-                                    key={layout.house.id}
-                                    house={layout.house}
-                                    hoveredItem={hoveredHouse}
-                                    setHoveredItem={setHoveredHouse}
-                                />
-                            );
+                            return HouseIconContainer(layout);
                         })}
                 </StyledCarousel>
             </HouseChooseContainer>
@@ -35,19 +40,12 @@ function HouseIcons({data, hoveredHouse, setHoveredHouse}) {
 
     return (
         <HouseChooseContainer>
-            {data.getApartmentComplexLayout.layouts
+            {layouts
                 .sort((a, b) => {
                     return a.house.order - b.house.order;
                 })
                 .map((layout) => {
-                    return (
-                        <HouseIcon
-                            key={layout.house.id}
-                            house={layout.house}
-                            hoveredItem={hoveredHouse}
-                            setHoveredItem={setHoveredHouse}
-                        />
-                    );
+                    return HouseIconContainer(layout);
                 })}
         </HouseChooseContainer>
     );

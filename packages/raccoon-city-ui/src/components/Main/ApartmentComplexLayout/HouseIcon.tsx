@@ -6,6 +6,7 @@ import {HouseIconContainer, HouseNameDiv, StyledIcon} from './styledComponents';
 
 function houseNameSplitter(houseName: string) {
     const [firstNameItem, secondNameItem, ...restName] = houseName.split(' ');
+
     return (
         <>
             <div>
@@ -18,10 +19,13 @@ function houseNameSplitter(houseName: string) {
 
 function debounce(fn, interval) {
     let timer;
+
     return function debounced(...args) {
         clearTimeout(timer);
+
         // @ts-ignore
         const that = this;
+
         timer = setTimeout(function callOriginalFn() {
             fn.apply(that, args);
         }, interval);
@@ -41,9 +45,15 @@ function HouseIcon({house, setHoveredItem, hoveredItem}) {
         }
     });
 
-    const houseHasFlats = !loading && data.getPublicFlatsList.length;
-    const houseHasFreeFlats =
-        !loading && data.getPublicFlatsList.find((flat) => flat.status === 'RESERVED' || flat.status === 'FREE');
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    const isFlatAvailable = ['FREE', 'BOOKED', 'RESERVED'];
+
+    const houseHasFlats = data.getPublicFlatsList.length;
+    const isFlatFreeOrReserved = data.getPublicFlatsList.find(({status}) => isFlatAvailable.includes(status));
+    const houseHasFreeFlats = isFlatFreeOrReserved;
 
     let iconColor: string;
     if (!houseHasFlats) {
