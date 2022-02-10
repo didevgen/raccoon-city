@@ -37,7 +37,7 @@
         "js-cookie": "^2.2.1",
         "material-table": "^1.59.0",
         "material-ui-phone-number": "^2.2.6",
-        "node-sass": "^4.13.0",
+        "node-sass": "^7.0.0",
         "pannellum-react": "^1.2.4",
         "prettier": "^1.19.1",
         "pretty-quick": "^2.0.1",
